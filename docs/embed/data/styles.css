@@ -1,0 +1,140 @@
+﻿.ax_default {
+  font-family:'方正兰亭细黑_GBK_M';
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  color:#333333;
+  text-align:center;
+  line-height:normal;
+}
+.box_1 {
+}
+._删除按钮悬停警告 {
+  color:#FFFFFF;
+}
+._新增按钮悬停 {
+  color:#2FD4BE;
+}
+._修改按钮悬停 {
+  color:#FFFFFF;
+}
+._置顶按钮悬停 {
+  color:#000000;
+}
+.box_2 {
+}
+.box_3 {
+}
+.image {
+}
+.placeholder {
+}
+.button {
+}
+.primary_button {
+  color:#FFFFFF;
+}
+.link_button {
+  color:#169BD5;
+}
+._一级标题 {
+  font-size:32px;
+  text-align:left;
+}
+._二级标题 {
+  font-size:24px;
+  text-align:left;
+}
+._三级标题 {
+  font-size:18px;
+  text-align:left;
+}
+._四级标题 {
+  font-size:14px;
+  text-align:left;
+}
+._五级标题 {
+  text-align:left;
+}
+._六级标题 {
+  font-size:10px;
+  text-align:left;
+}
+.label {
+  font-size:14px;
+  text-align:left;
+}
+._文本段落 {
+  text-align:left;
+}
+._流程形状 {
+}
+.line {
+}
+.text_field {
+  color:#000000;
+  text-align:left;
+}
+.text_area {
+  color:#000000;
+  text-align:left;
+}
+.droplist {
+  color:#000000;
+  text-align:left;
+}
+.list_box {
+  color:#000000;
+  text-align:left;
+}
+.checkbox {
+  text-align:left;
+}
+.radio_button {
+  text-align:left;
+}
+.tree_node {
+  text-align:left;
+}
+.table_cell {
+}
+.menu_item {
+}
+.snapshot {
+}
+.box_4 {
+  color:#FFFFFF;
+}
+._文本框 {
+  font-size:13px;
+  color:#000000;
+  text-align:left;
+}
+._下拉列表框 {
+  font-size:13px;
+  color:#000000;
+  text-align:left;
+}
+._单选按钮 {
+  font-size:13px;
+  color:#000000;
+  text-align:left;
+}
+._文本段落1 {
+  font-size:13px;
+  color:#000000;
+  text-align:left;
+}
+._形状 {
+  font-size:13px;
+  color:#000000;
+}
+._表格 {
+  font-size:13px;
+  color:#000000;
+  text-align:left;
+}
+._单元格 {
+  font-size:13px;
+  color:#000000;
+}
