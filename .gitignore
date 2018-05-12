@@ -1,0 +1,4 @@
+/backend/out/
+/backend/target/
+/backend/.idea/
+*.iml
