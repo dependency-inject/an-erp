@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <classPathEntry  location="out/artifacts/cao_war_exploded/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
+    <classPathEntry  location="out/artifacts/an_erp_war_exploded/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
     <context id="DB2Tables"  targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressDate" value="true"/>
