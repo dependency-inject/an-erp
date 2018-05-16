@@ -149,5 +149,13 @@
         <table tableName="module" mapperName="{0}DAO">
             <generatedKey column="module_id" sqlStatement="MySql" identity="true" />
         </table>
+
+        <!-- 系统 -->
+        <table tableName="config" mapperName="{0}DAO">
+            <generatedKey column="config_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="log" mapperName="{0}DAO">
+            <generatedKey column="log_id" sqlStatement="MySql" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>
