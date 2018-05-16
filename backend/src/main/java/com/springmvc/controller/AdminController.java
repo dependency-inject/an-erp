@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 @Controller
-public class main {
+public class AdminController {
 
     @Resource
     AdminService adminService;
+
     @RequestMapping("/")
     @ResponseBody
     public String index(){

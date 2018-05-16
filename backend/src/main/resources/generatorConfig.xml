@@ -3,13 +3,36 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <classPathEntry  location="out/artifacts/an_erp_war_exploded/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
-    <context id="DB2Tables"  targetRuntime="MyBatis3">
-        <commentGenerator>
+    <!-- 根据计算机情况修改 -->
+    <classPathEntry location="C:\Users\asus\.m2\repository\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar"/>
+    <context id="DB2Tables" targetRuntime="org.mybatis.generator.codegen.mybatis3.LocalMyBatis3Impl">
+
+        <!-- 生成toString -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        <!-- 生成 mapping 时覆盖 -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+
+        <!-- 分页 -->
+        <plugin type="org.mybatis.generator.plugins.MySQLLimitPlugin" />
+        <!-- 批量新增 -->
+        <plugin type="org.mybatis.generator.plugins.BatchInsertPlugin" />
+        <!-- 批量更新 -->
+        <plugin type="org.mybatis.generator.plugins.BatchUpdatePlugin" />
+
+        <!-- 将Example改名为Query -->
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$" />
+            <property name="replaceString" value="Query" />
+        </plugin>
+
+        <!-- bean 注释 -->
+        <commentGenerator type="org.mybatis.generator.plugins.BDTCommentGenerator">
+            <property name="javaFileEncoding" value="UTF-8"/>
             <property name="suppressDate" value="true"/>
-            <property name="suppressAllComments" value="true"/>
+            <property name="suppressAllComments" value="false" />
         </commentGenerator>
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1/erp" userId="user" password="123456">
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://121.42.181.88/an_erp" userId="erp" password="123456">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -27,6 +50,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.springmvc.dao" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <table tableName="admin" domainObjectName="Admin" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table tableName="%" mapperName="{0}DAO"></table>
     </context>
 </generatorConfiguration>

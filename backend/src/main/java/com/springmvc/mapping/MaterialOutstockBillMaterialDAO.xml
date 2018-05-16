@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.MaterialOutstockBillMaterialDAO">
+  <resultMap id="BaseResultMap" type="com.springmvc.pojo.MaterialOutstockBillMaterial">
+    <id column="bill_material_id" jdbcType="INTEGER" property="billMaterialId" />
+    <result column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="material_id" jdbcType="INTEGER" property="materialId" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="principal" jdbcType="INTEGER" property="principal" />
+    <result column="warehouse" jdbcType="INTEGER" property="warehouse" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    bill_material_id, bill_id, material_id, quantity, principal, warehouse, place, remark
+  </sql>
+  <select id="selectByExample" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterialQuery" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from material_outstock_bill_material
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from material_outstock_bill_material
+    where bill_material_id = #{billMaterialId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from material_outstock_bill_material
+    where bill_material_id = #{billMaterialId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterialQuery">
+    delete from material_outstock_bill_material
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterial">
+    insert into material_outstock_bill_material (bill_material_id, bill_id, material_id, 
+      quantity, principal, warehouse, 
+      place, remark)
+    values (#{billMaterialId,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, 
+      #{quantity,jdbcType=INTEGER}, #{principal,jdbcType=INTEGER}, #{warehouse,jdbcType=INTEGER}, 
+      #{place,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterial">
+    insert into material_outstock_bill_material
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="billMaterialId != null">
+        bill_material_id,
+      </if>
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="materialId != null">
+        material_id,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="principal != null">
+        principal,
+      </if>
+      <if test="warehouse != null">
+        warehouse,
+      </if>
+      <if test="place != null">
+        place,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="billMaterialId != null">
+        #{billMaterialId,jdbcType=INTEGER},
+      </if>
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null">
+        #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="principal != null">
+        #{principal,jdbcType=INTEGER},
+      </if>
+      <if test="warehouse != null">
+        #{warehouse,jdbcType=INTEGER},
+      </if>
+      <if test="place != null">
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterialQuery" resultType="java.lang.Long">
+    select count(*) from material_outstock_bill_material
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update material_outstock_bill_material
+    <set>
+      <if test="record.billMaterialId != null">
+        bill_material_id = #{record.billMaterialId,jdbcType=INTEGER},
+      </if>
+      <if test="record.billId != null">
+        bill_id = #{record.billId,jdbcType=INTEGER},
+      </if>
+      <if test="record.materialId != null">
+        material_id = #{record.materialId,jdbcType=INTEGER},
+      </if>
+      <if test="record.quantity != null">
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.principal != null">
+        principal = #{record.principal,jdbcType=INTEGER},
+      </if>
+      <if test="record.warehouse != null">
+        warehouse = #{record.warehouse,jdbcType=INTEGER},
+      </if>
+      <if test="record.place != null">
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update material_outstock_bill_material
+    set bill_material_id = #{record.billMaterialId,jdbcType=INTEGER},
+      bill_id = #{record.billId,jdbcType=INTEGER},
+      material_id = #{record.materialId,jdbcType=INTEGER},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      principal = #{record.principal,jdbcType=INTEGER},
+      warehouse = #{record.warehouse,jdbcType=INTEGER},
+      place = #{record.place,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterial">
+    update material_outstock_bill_material
+    <set>
+      <if test="billId != null">
+        bill_id = #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null">
+        material_id = #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="principal != null">
+        principal = #{principal,jdbcType=INTEGER},
+      </if>
+      <if test="warehouse != null">
+        warehouse = #{warehouse,jdbcType=INTEGER},
+      </if>
+      <if test="place != null">
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bill_material_id = #{billMaterialId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.MaterialOutstockBillMaterial">
+    update material_outstock_bill_material
+    set bill_id = #{billId,jdbcType=INTEGER},
+      material_id = #{materialId,jdbcType=INTEGER},
+      quantity = #{quantity,jdbcType=INTEGER},
+      principal = #{principal,jdbcType=INTEGER},
+      warehouse = #{warehouse,jdbcType=INTEGER},
+      place = #{place,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where bill_material_id = #{billMaterialId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into material_outstock_bill_material
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].billMaterialId!=null">
+        bill_material_id,
+      </if>
+      <if test="list[0].billId!=null">
+        bill_id,
+      </if>
+      <if test="list[0].materialId!=null">
+        material_id,
+      </if>
+      <if test="list[0].quantity!=null">
+        quantity,
+      </if>
+      <if test="list[0].principal!=null">
+        principal,
+      </if>
+      <if test="list[0].warehouse!=null">
+        warehouse,
+      </if>
+      <if test="list[0].place!=null">
+        place,
+      </if>
+      <if test="list[0].remark!=null">
+        remark,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.billMaterialId!=null">
+          #{item.billMaterialId,jdbcType=INTEGER},
+        </if>
+        <if test="item.billId!=null">
+          #{item.billId,jdbcType=INTEGER},
+        </if>
+        <if test="item.materialId!=null">
+          #{item.materialId,jdbcType=INTEGER},
+        </if>
+        <if test="item.quantity!=null">
+          #{item.quantity,jdbcType=INTEGER},
+        </if>
+        <if test="item.principal!=null">
+          #{item.principal,jdbcType=INTEGER},
+        </if>
+        <if test="item.warehouse!=null">
+          #{item.warehouse,jdbcType=INTEGER},
+        </if>
+        <if test="item.place!=null">
+          #{item.place,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark!=null">
+          #{item.remark,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update material_outstock_bill_material
+      <set>
+        <if test="item.billId!=null">
+          bill_id=#{item.billId,jdbcType=INTEGER},
+        </if>
+        <if test="item.materialId!=null">
+          material_id=#{item.materialId,jdbcType=INTEGER},
+        </if>
+        <if test="item.quantity!=null">
+          quantity=#{item.quantity,jdbcType=INTEGER},
+        </if>
+        <if test="item.principal!=null">
+          principal=#{item.principal,jdbcType=INTEGER},
+        </if>
+        <if test="item.warehouse!=null">
+          warehouse=#{item.warehouse,jdbcType=INTEGER},
+        </if>
+        <if test="item.place!=null">
+          place=#{item.place,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark!=null">
+          remark=#{item.remark,jdbcType=VARCHAR},
+        </if>
+      </set>
+      where 
+      bill_material_id = #{item.billMaterialId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+</mapper>

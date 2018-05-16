@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.ReturnMaterialBillDAO">
+  <resultMap id="BaseResultMap" type="com.springmvc.pojo.ReturnMaterialBill">
+    <id column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="bill_no" jdbcType="VARCHAR" property="billNo" />
+    <result column="from_principal" jdbcType="INTEGER" property="fromPrincipal" />
+    <result column="warehouse_principal" jdbcType="INTEGER" property="warehousePrincipal" />
+    <result column="bill_time" jdbcType="TIMESTAMP" property="billTime" />
+    <result column="return_reason" jdbcType="INTEGER" property="returnReason" />
+    <result column="related_bill" jdbcType="INTEGER" property="relatedBill" />
+    <result column="bill_state" jdbcType="INTEGER" property="billState" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="audit_at" jdbcType="TIMESTAMP" property="auditAt" />
+    <result column="audit_by" jdbcType="INTEGER" property="auditBy" />
+    <result column="finish_at" jdbcType="TIMESTAMP" property="finishAt" />
+    <result column="finish_by" jdbcType="INTEGER" property="finishBy" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    bill_id, bill_no, from_principal, warehouse_principal, bill_time, return_reason, 
+    related_bill, bill_state, remark, audit_at, audit_by, finish_at, finish_by, create_at, 
+    create_by, update_at, update_by
+  </sql>
+  <select id="selectByExample" parameterType="com.springmvc.pojo.ReturnMaterialBillQuery" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from return_material_bill
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from return_material_bill
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from return_material_bill
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.springmvc.pojo.ReturnMaterialBillQuery">
+    delete from return_material_bill
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.ReturnMaterialBill">
+    insert into return_material_bill (bill_id, bill_no, from_principal, 
+      warehouse_principal, bill_time, return_reason, 
+      related_bill, bill_state, remark, 
+      audit_at, audit_by, finish_at, 
+      finish_by, create_at, create_by, 
+      update_at, update_by)
+    values (#{billId,jdbcType=INTEGER}, #{billNo,jdbcType=VARCHAR}, #{fromPrincipal,jdbcType=INTEGER}, 
+      #{warehousePrincipal,jdbcType=INTEGER}, #{billTime,jdbcType=TIMESTAMP}, #{returnReason,jdbcType=INTEGER}, 
+      #{relatedBill,jdbcType=INTEGER}, #{billState,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{auditAt,jdbcType=TIMESTAMP}, #{auditBy,jdbcType=INTEGER}, #{finishAt,jdbcType=TIMESTAMP}, 
+      #{finishBy,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springmvc.pojo.ReturnMaterialBill">
+    insert into return_material_bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="billNo != null">
+        bill_no,
+      </if>
+      <if test="fromPrincipal != null">
+        from_principal,
+      </if>
+      <if test="warehousePrincipal != null">
+        warehouse_principal,
+      </if>
+      <if test="billTime != null">
+        bill_time,
+      </if>
+      <if test="returnReason != null">
+        return_reason,
+      </if>
+      <if test="relatedBill != null">
+        related_bill,
+      </if>
+      <if test="billState != null">
+        bill_state,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="auditAt != null">
+        audit_at,
+      </if>
+      <if test="auditBy != null">
+        audit_by,
+      </if>
+      <if test="finishAt != null">
+        finish_at,
+      </if>
+      <if test="finishBy != null">
+        finish_by,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="billNo != null">
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="fromPrincipal != null">
+        #{fromPrincipal,jdbcType=INTEGER},
+      </if>
+      <if test="warehousePrincipal != null">
+        #{warehousePrincipal,jdbcType=INTEGER},
+      </if>
+      <if test="billTime != null">
+        #{billTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnReason != null">
+        #{returnReason,jdbcType=INTEGER},
+      </if>
+      <if test="relatedBill != null">
+        #{relatedBill,jdbcType=INTEGER},
+      </if>
+      <if test="billState != null">
+        #{billState,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditAt != null">
+        #{auditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditBy != null">
+        #{auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="finishAt != null">
+        #{finishAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishBy != null">
+        #{finishBy,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.springmvc.pojo.ReturnMaterialBillQuery" resultType="java.lang.Long">
+    select count(*) from return_material_bill
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update return_material_bill
+    <set>
+      <if test="record.billId != null">
+        bill_id = #{record.billId,jdbcType=INTEGER},
+      </if>
+      <if test="record.billNo != null">
+        bill_no = #{record.billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromPrincipal != null">
+        from_principal = #{record.fromPrincipal,jdbcType=INTEGER},
+      </if>
+      <if test="record.warehousePrincipal != null">
+        warehouse_principal = #{record.warehousePrincipal,jdbcType=INTEGER},
+      </if>
+      <if test="record.billTime != null">
+        bill_time = #{record.billTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.returnReason != null">
+        return_reason = #{record.returnReason,jdbcType=INTEGER},
+      </if>
+      <if test="record.relatedBill != null">
+        related_bill = #{record.relatedBill,jdbcType=INTEGER},
+      </if>
+      <if test="record.billState != null">
+        bill_state = #{record.billState,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditAt != null">
+        audit_at = #{record.auditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditBy != null">
+        audit_by = #{record.auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishAt != null">
+        finish_at = #{record.finishAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.finishBy != null">
+        finish_by = #{record.finishBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createAt != null">
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateAt != null">
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update return_material_bill
+    set bill_id = #{record.billId,jdbcType=INTEGER},
+      bill_no = #{record.billNo,jdbcType=VARCHAR},
+      from_principal = #{record.fromPrincipal,jdbcType=INTEGER},
+      warehouse_principal = #{record.warehousePrincipal,jdbcType=INTEGER},
+      bill_time = #{record.billTime,jdbcType=TIMESTAMP},
+      return_reason = #{record.returnReason,jdbcType=INTEGER},
+      related_bill = #{record.relatedBill,jdbcType=INTEGER},
+      bill_state = #{record.billState,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      audit_at = #{record.auditAt,jdbcType=TIMESTAMP},
+      audit_by = #{record.auditBy,jdbcType=INTEGER},
+      finish_at = #{record.finishAt,jdbcType=TIMESTAMP},
+      finish_by = #{record.finishBy,jdbcType=INTEGER},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.ReturnMaterialBill">
+    update return_material_bill
+    <set>
+      <if test="billNo != null">
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="fromPrincipal != null">
+        from_principal = #{fromPrincipal,jdbcType=INTEGER},
+      </if>
+      <if test="warehousePrincipal != null">
+        warehouse_principal = #{warehousePrincipal,jdbcType=INTEGER},
+      </if>
+      <if test="billTime != null">
+        bill_time = #{billTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnReason != null">
+        return_reason = #{returnReason,jdbcType=INTEGER},
+      </if>
+      <if test="relatedBill != null">
+        related_bill = #{relatedBill,jdbcType=INTEGER},
+      </if>
+      <if test="billState != null">
+        bill_state = #{billState,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditAt != null">
+        audit_at = #{auditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditBy != null">
+        audit_by = #{auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="finishAt != null">
+        finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishBy != null">
+        finish_by = #{finishBy,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+    </set>
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.ReturnMaterialBill">
+    update return_material_bill
+    set bill_no = #{billNo,jdbcType=VARCHAR},
+      from_principal = #{fromPrincipal,jdbcType=INTEGER},
+      warehouse_principal = #{warehousePrincipal,jdbcType=INTEGER},
+      bill_time = #{billTime,jdbcType=TIMESTAMP},
+      return_reason = #{returnReason,jdbcType=INTEGER},
+      related_bill = #{relatedBill,jdbcType=INTEGER},
+      bill_state = #{billState,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      audit_at = #{auditAt,jdbcType=TIMESTAMP},
+      audit_by = #{auditBy,jdbcType=INTEGER},
+      finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      finish_by = #{finishBy,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER}
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into return_material_bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].billId!=null">
+        bill_id,
+      </if>
+      <if test="list[0].billNo!=null">
+        bill_no,
+      </if>
+      <if test="list[0].fromPrincipal!=null">
+        from_principal,
+      </if>
+      <if test="list[0].warehousePrincipal!=null">
+        warehouse_principal,
+      </if>
+      <if test="list[0].billTime!=null">
+        bill_time,
+      </if>
+      <if test="list[0].returnReason!=null">
+        return_reason,
+      </if>
+      <if test="list[0].relatedBill!=null">
+        related_bill,
+      </if>
+      <if test="list[0].billState!=null">
+        bill_state,
+      </if>
+      <if test="list[0].remark!=null">
+        remark,
+      </if>
+      <if test="list[0].auditAt!=null">
+        audit_at,
+      </if>
+      <if test="list[0].auditBy!=null">
+        audit_by,
+      </if>
+      <if test="list[0].finishAt!=null">
+        finish_at,
+      </if>
+      <if test="list[0].finishBy!=null">
+        finish_by,
+      </if>
+      <if test="list[0].createAt!=null">
+        create_at,
+      </if>
+      <if test="list[0].createBy!=null">
+        create_by,
+      </if>
+      <if test="list[0].updateAt!=null">
+        update_at,
+      </if>
+      <if test="list[0].updateBy!=null">
+        update_by,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.billId!=null">
+          #{item.billId,jdbcType=INTEGER},
+        </if>
+        <if test="item.billNo!=null">
+          #{item.billNo,jdbcType=VARCHAR},
+        </if>
+        <if test="item.fromPrincipal!=null">
+          #{item.fromPrincipal,jdbcType=INTEGER},
+        </if>
+        <if test="item.warehousePrincipal!=null">
+          #{item.warehousePrincipal,jdbcType=INTEGER},
+        </if>
+        <if test="item.billTime!=null">
+          #{item.billTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.returnReason!=null">
+          #{item.returnReason,jdbcType=INTEGER},
+        </if>
+        <if test="item.relatedBill!=null">
+          #{item.relatedBill,jdbcType=INTEGER},
+        </if>
+        <if test="item.billState!=null">
+          #{item.billState,jdbcType=INTEGER},
+        </if>
+        <if test="item.remark!=null">
+          #{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.auditAt!=null">
+          #{item.auditAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.auditBy!=null">
+          #{item.auditBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.finishAt!=null">
+          #{item.finishAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.finishBy!=null">
+          #{item.finishBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.createAt!=null">
+          #{item.createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createBy!=null">
+          #{item.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.updateAt!=null">
+          #{item.updateAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateBy!=null">
+          #{item.updateBy,jdbcType=INTEGER},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update return_material_bill
+      <set>
+        <if test="item.billNo!=null">
+          bill_no=#{item.billNo,jdbcType=VARCHAR},
+        </if>
+        <if test="item.fromPrincipal!=null">
+          from_principal=#{item.fromPrincipal,jdbcType=INTEGER},
+        </if>
+        <if test="item.warehousePrincipal!=null">
+          warehouse_principal=#{item.warehousePrincipal,jdbcType=INTEGER},
+        </if>
+        <if test="item.billTime!=null">
+          bill_time=#{item.billTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.returnReason!=null">
+          return_reason=#{item.returnReason,jdbcType=INTEGER},
+        </if>
+        <if test="item.relatedBill!=null">
+          related_bill=#{item.relatedBill,jdbcType=INTEGER},
+        </if>
+        <if test="item.billState!=null">
+          bill_state=#{item.billState,jdbcType=INTEGER},
+        </if>
+        <if test="item.remark!=null">
+          remark=#{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.auditAt!=null">
+          audit_at=#{item.auditAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.auditBy!=null">
+          audit_by=#{item.auditBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.finishAt!=null">
+          finish_at=#{item.finishAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.finishBy!=null">
+          finish_by=#{item.finishBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.createAt!=null">
+          create_at=#{item.createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createBy!=null">
+          create_by=#{item.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.updateAt!=null">
+          update_at=#{item.updateAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateBy!=null">
+          update_by=#{item.updateBy,jdbcType=INTEGER},
+        </if>
+      </set>
+      where 
+      bill_id = #{item.billId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+</mapper>

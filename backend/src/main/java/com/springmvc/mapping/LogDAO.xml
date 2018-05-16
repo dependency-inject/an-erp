@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.LogDAO">
+  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Log">
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="log_type" jdbcType="VARCHAR" property="logType" />
+    <result column="operate" jdbcType="VARCHAR" property="operate" />
+    <result column="log_time" jdbcType="TIMESTAMP" property="logTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.pojo.Log">
+    <result column="sql" jdbcType="LONGVARCHAR" property="sql" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    log_id, admin_id, log_type, operate, log_time, description, ip, create_at, create_by
+  </sql>
+  <sql id="Blob_Column_List">
+    sql
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.springmvc.pojo.LogQuery" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.springmvc.pojo.LogQuery" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from log
+    where log_id = #{logId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from log
+    where log_id = #{logId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.springmvc.pojo.LogQuery">
+    delete from log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.Log">
+    insert into log (log_id, admin_id, log_type, 
+      operate, log_time, description, 
+      ip, create_at, create_by, 
+      sql)
+    values (#{logId,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, #{logType,jdbcType=VARCHAR}, 
+      #{operate,jdbcType=VARCHAR}, #{logTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{sql,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springmvc.pojo.Log">
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        log_id,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="logType != null">
+        log_type,
+      </if>
+      <if test="operate != null">
+        operate,
+      </if>
+      <if test="logTime != null">
+        log_time,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="sql != null">
+        sql,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="logType != null">
+        #{logType,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="logTime != null">
+        #{logTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="sql != null">
+        #{sql,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.springmvc.pojo.LogQuery" resultType="java.lang.Long">
+    select count(*) from log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update log
+    <set>
+      <if test="record.logId != null">
+        log_id = #{record.logId,jdbcType=INTEGER},
+      </if>
+      <if test="record.adminId != null">
+        admin_id = #{record.adminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.logType != null">
+        log_type = #{record.logType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operate != null">
+        operate = #{record.operate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logTime != null">
+        log_time = #{record.logTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createAt != null">
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.sql != null">
+        sql = #{record.sql,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update log
+    set log_id = #{record.logId,jdbcType=INTEGER},
+      admin_id = #{record.adminId,jdbcType=INTEGER},
+      log_type = #{record.logType,jdbcType=VARCHAR},
+      operate = #{record.operate,jdbcType=VARCHAR},
+      log_time = #{record.logTime,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      sql = #{record.sql,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update log
+    set log_id = #{record.logId,jdbcType=INTEGER},
+      admin_id = #{record.adminId,jdbcType=INTEGER},
+      log_type = #{record.logType,jdbcType=VARCHAR},
+      operate = #{record.operate,jdbcType=VARCHAR},
+      log_time = #{record.logTime,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Log">
+    update log
+    <set>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="logType != null">
+        log_type = #{logType,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        operate = #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="logTime != null">
+        log_time = #{logTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="sql != null">
+        sql = #{sql,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.springmvc.pojo.Log">
+    update log
+    set admin_id = #{adminId,jdbcType=INTEGER},
+      log_type = #{logType,jdbcType=VARCHAR},
+      operate = #{operate,jdbcType=VARCHAR},
+      log_time = #{logTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      sql = #{sql,jdbcType=LONGVARCHAR}
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Log">
+    update log
+    set admin_id = #{adminId,jdbcType=INTEGER},
+      log_type = #{logType,jdbcType=VARCHAR},
+      operate = #{operate,jdbcType=VARCHAR},
+      log_time = #{logTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER}
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].logId!=null">
+        log_id,
+      </if>
+      <if test="list[0].adminId!=null">
+        admin_id,
+      </if>
+      <if test="list[0].logType!=null">
+        log_type,
+      </if>
+      <if test="list[0].operate!=null">
+        operate,
+      </if>
+      <if test="list[0].logTime!=null">
+        log_time,
+      </if>
+      <if test="list[0].description!=null">
+        description,
+      </if>
+      <if test="list[0].ip!=null">
+        ip,
+      </if>
+      <if test="list[0].createAt!=null">
+        create_at,
+      </if>
+      <if test="list[0].createBy!=null">
+        create_by,
+      </if>
+      <if test="list[0].sql!=null">
+        sql,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.logId!=null">
+          #{item.logId,jdbcType=INTEGER},
+        </if>
+        <if test="item.adminId!=null">
+          #{item.adminId,jdbcType=INTEGER},
+        </if>
+        <if test="item.logType!=null">
+          #{item.logType,jdbcType=VARCHAR},
+        </if>
+        <if test="item.operate!=null">
+          #{item.operate,jdbcType=VARCHAR},
+        </if>
+        <if test="item.logTime!=null">
+          #{item.logTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.description!=null">
+          #{item.description,jdbcType=VARCHAR},
+        </if>
+        <if test="item.ip!=null">
+          #{item.ip,jdbcType=VARCHAR},
+        </if>
+        <if test="item.createAt!=null">
+          #{item.createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createBy!=null">
+          #{item.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.sql!=null">
+          #{item.sql,jdbcType=LONGVARCHAR},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update log
+      <set>
+        <if test="item.adminId!=null">
+          admin_id=#{item.adminId,jdbcType=INTEGER},
+        </if>
+        <if test="item.logType!=null">
+          log_type=#{item.logType,jdbcType=VARCHAR},
+        </if>
+        <if test="item.operate!=null">
+          operate=#{item.operate,jdbcType=VARCHAR},
+        </if>
+        <if test="item.logTime!=null">
+          log_time=#{item.logTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.description!=null">
+          description=#{item.description,jdbcType=VARCHAR},
+        </if>
+        <if test="item.ip!=null">
+          ip=#{item.ip,jdbcType=VARCHAR},
+        </if>
+        <if test="item.createAt!=null">
+          create_at=#{item.createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createBy!=null">
+          create_by=#{item.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.sql!=null">
+          sql=#{item.sql,jdbcType=LONGVARCHAR},
+        </if>
+      </set>
+      where 
+      log_id = #{item.logId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+</mapper>

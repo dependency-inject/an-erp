@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.AdminDAO">
+  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Admin">
+    <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="true_name" jdbcType="VARCHAR" property="trueName" />
+    <result column="closed" jdbcType="BIT" property="closed" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="sys_default" jdbcType="BIT" property="sysDefault" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    admin_id, login_name, password, true_name, closed, mobile, sys_default, create_at, 
+    create_by, update_at, update_by
+  </sql>
+  <select id="selectByExample" parameterType="com.springmvc.pojo.AdminQuery" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from admin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.springmvc.pojo.AdminQuery">
+    delete from admin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.Admin">
+    insert into admin (admin_id, login_name, password, 
+      true_name, closed, mobile, 
+      sys_default, create_at, create_by, 
+      update_at, update_by)
+    values (#{adminId,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{trueName,jdbcType=VARCHAR}, #{closed,jdbcType=BIT}, #{mobile,jdbcType=VARCHAR}, 
+      #{sysDefault,jdbcType=BIT}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springmvc.pojo.Admin">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="trueName != null">
+        true_name,
+      </if>
+      <if test="closed != null">
+        closed,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="sysDefault != null">
+        sys_default,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="closed != null">
+        #{closed,jdbcType=BIT},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="sysDefault != null">
+        #{sysDefault,jdbcType=BIT},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.springmvc.pojo.AdminQuery" resultType="java.lang.Long">
+    select count(*) from admin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update admin
+    <set>
+      <if test="record.adminId != null">
+        admin_id = #{record.adminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginName != null">
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trueName != null">
+        true_name = #{record.trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.closed != null">
+        closed = #{record.closed,jdbcType=BIT},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysDefault != null">
+        sys_default = #{record.sysDefault,jdbcType=BIT},
+      </if>
+      <if test="record.createAt != null">
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateAt != null">
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update admin
+    set admin_id = #{record.adminId,jdbcType=INTEGER},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      true_name = #{record.trueName,jdbcType=VARCHAR},
+      closed = #{record.closed,jdbcType=BIT},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      sys_default = #{record.sysDefault,jdbcType=BIT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Admin">
+    update admin
+    <set>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="closed != null">
+        closed = #{closed,jdbcType=BIT},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="sysDefault != null">
+        sys_default = #{sysDefault,jdbcType=BIT},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Admin">
+    update admin
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      true_name = #{trueName,jdbcType=VARCHAR},
+      closed = #{closed,jdbcType=BIT},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      sys_default = #{sysDefault,jdbcType=BIT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].adminId!=null">
+        admin_id,
+      </if>
+      <if test="list[0].loginName!=null">
+        login_name,
+      </if>
+      <if test="list[0].password!=null">
+        password,
+      </if>
+      <if test="list[0].trueName!=null">
+        true_name,
+      </if>
+      <if test="list[0].closed!=null">
+        closed,
+      </if>
+      <if test="list[0].mobile!=null">
+        mobile,
+      </if>
+      <if test="list[0].sysDefault!=null">
+        sys_default,
+      </if>
+      <if test="list[0].createAt!=null">
+        create_at,
+      </if>
+      <if test="list[0].createBy!=null">
+        create_by,
+      </if>
+      <if test="list[0].updateAt!=null">
+        update_at,
+      </if>
+      <if test="list[0].updateBy!=null">
+        update_by,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.adminId!=null">
+          #{item.adminId,jdbcType=INTEGER},
+        </if>
+        <if test="item.loginName!=null">
+          #{item.loginName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.password!=null">
+          #{item.password,jdbcType=VARCHAR},
+        </if>
+        <if test="item.trueName!=null">
+          #{item.trueName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.closed!=null">
+          #{item.closed,jdbcType=BIT},
+        </if>
+        <if test="item.mobile!=null">
+          #{item.mobile,jdbcType=VARCHAR},
+        </if>
+        <if test="item.sysDefault!=null">
+          #{item.sysDefault,jdbcType=BIT},
+        </if>
+        <if test="item.createAt!=null">
+          #{item.createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createBy!=null">
+          #{item.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.updateAt!=null">
+          #{item.updateAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateBy!=null">
+          #{item.updateBy,jdbcType=INTEGER},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update admin
+      <set>
+        <if test="item.loginName!=null">
+          login_name=#{item.loginName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.password!=null">
+          password=#{item.password,jdbcType=VARCHAR},
+        </if>
+        <if test="item.trueName!=null">
+          true_name=#{item.trueName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.closed!=null">
+          closed=#{item.closed,jdbcType=BIT},
+        </if>
+        <if test="item.mobile!=null">
+          mobile=#{item.mobile,jdbcType=VARCHAR},
+        </if>
+        <if test="item.sysDefault!=null">
+          sys_default=#{item.sysDefault,jdbcType=BIT},
+        </if>
+        <if test="item.createAt!=null">
+          create_at=#{item.createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createBy!=null">
+          create_by=#{item.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="item.updateAt!=null">
+          update_at=#{item.updateAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateBy!=null">
+          update_by=#{item.updateBy,jdbcType=INTEGER},
+        </if>
+      </set>
+      where 
+      admin_id = #{item.adminId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+</mapper>
