@@ -110,19 +110,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.Role">
-    insert into role (role_id, role_name, sys_default, 
-      create_at, create_by, update_at, 
-      update_by)
-    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{sysDefault,jdbcType=BIT}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=INTEGER})
+    <selectKey keyProperty="roleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into role (role_name, sys_default, create_at, 
+      create_by, update_at, update_by
+      )
+    values (#{roleName,jdbcType=VARCHAR}, #{sysDefault,jdbcType=BIT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Role">
+    <selectKey keyProperty="roleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="roleId != null">
-        role_id,
-      </if>
       <if test="roleName != null">
         role_name,
       </if>
@@ -143,9 +146,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="roleId != null">
-        #{roleId,jdbcType=INTEGER},
-      </if>
       <if test="roleName != null">
         #{roleName,jdbcType=VARCHAR},
       </if>
@@ -175,9 +175,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update role
     <set>
-      <if test="record.roleId != null">
-        role_id = #{record.roleId,jdbcType=INTEGER},
-      </if>
       <if test="record.roleName != null">
         role_name = #{record.roleName,jdbcType=VARCHAR},
       </if>
@@ -203,8 +200,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update role
-    set role_id = #{record.roleId,jdbcType=INTEGER},
-      role_name = #{record.roleName,jdbcType=VARCHAR},
+    set role_name = #{record.roleName,jdbcType=VARCHAR},
       sys_default = #{record.sysDefault,jdbcType=BIT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       create_by = #{record.createBy,jdbcType=INTEGER},
@@ -249,52 +245,45 @@
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].roleId!=null">
-        role_id,
-      </if>
-      <if test="list[0].roleName!=null">
-        role_name,
-      </if>
-      <if test="list[0].sysDefault!=null">
-        sys_default,
-      </if>
-      <if test="list[0].createAt!=null">
-        create_at,
-      </if>
-      <if test="list[0].createBy!=null">
-        create_by,
-      </if>
-      <if test="list[0].updateAt!=null">
-        update_at,
-      </if>
-      <if test="list[0].updateBy!=null">
-        update_by,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.roleId!=null">
-          #{item.roleId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into role
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.roleName != null">
+          role_name,
         </if>
-        <if test="item.roleName!=null">
+        <if test="item.sysDefault != null">
+          sys_default,
+        </if>
+        <if test="item.createAt != null">
+          create_at,
+        </if>
+        <if test="item.createBy != null">
+          create_by,
+        </if>
+        <if test="item.updateAt != null">
+          update_at,
+        </if>
+        <if test="item.updateBy != null">
+          update_by,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.roleName != null">
           #{item.roleName,jdbcType=VARCHAR},
         </if>
-        <if test="item.sysDefault!=null">
+        <if test="item.sysDefault != null">
           #{item.sysDefault,jdbcType=BIT},
         </if>
-        <if test="item.createAt!=null">
+        <if test="item.createAt != null">
           #{item.createAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.createBy!=null">
+        <if test="item.createBy != null">
           #{item.createBy,jdbcType=INTEGER},
         </if>
-        <if test="item.updateAt!=null">
+        <if test="item.updateAt != null">
           #{item.updateAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.updateBy!=null">
+        <if test="item.updateBy != null">
           #{item.updateBy,jdbcType=INTEGER},
         </if>
       </trim>

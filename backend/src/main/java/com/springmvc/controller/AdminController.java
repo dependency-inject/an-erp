@@ -1,37 +1,30 @@
 package com.springmvc.controller;
 
+import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.Admin;
 import com.springmvc.service.AdminService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     @Resource
     AdminService adminService;
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public String index(){
-        return "... ......";
+    public Admin add(@RequestParam String loginName, @RequestParam String trueName,
+                     @RequestParam Boolean closed, @RequestParam String mobile) throws BadRequestException {
+        return adminService.addAdmin(loginName, trueName, closed, mobile);
     }
 
-    @RequestMapping(value = "/admin",method = RequestMethod.POST)
+    @RequestMapping(value = "/getById", method = RequestMethod.POST)
     @ResponseBody
-    public int insertUser(Admin admin){
-        return adminService.insertAdmin(admin);
-
-    }
-    @RequestMapping(value = "/admin/{id}",method = RequestMethod.GET)
-    @ResponseBody
-    public Admin getUser(@PathVariable  Integer id){
-        return adminService.getAdmin(id);
-
+    public Admin getById(@RequestParam Integer adminId) {
+        return adminService.getAdminById(adminId);
     }
 }

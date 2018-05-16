@@ -111,19 +111,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.ProductCategory">
-    insert into product_category (category_id, category_name, parent_id, 
-      sort, create_at, create_by, 
-      update_at, update_by)
-    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
-      #{sort,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
+    <selectKey keyProperty="categoryId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into product_category (category_name, parent_id, sort, 
+      create_at, create_by, update_at, 
+      update_by)
+    values (#{categoryName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.ProductCategory">
+    <selectKey keyProperty="categoryId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into product_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="categoryId != null">
-        category_id,
-      </if>
       <if test="categoryName != null">
         category_name,
       </if>
@@ -147,9 +150,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="categoryId != null">
-        #{categoryId,jdbcType=INTEGER},
-      </if>
       <if test="categoryName != null">
         #{categoryName,jdbcType=VARCHAR},
       </if>
@@ -182,9 +182,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update product_category
     <set>
-      <if test="record.categoryId != null">
-        category_id = #{record.categoryId,jdbcType=INTEGER},
-      </if>
       <if test="record.categoryName != null">
         category_name = #{record.categoryName,jdbcType=VARCHAR},
       </if>
@@ -213,8 +210,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update product_category
-    set category_id = #{record.categoryId,jdbcType=INTEGER},
-      category_name = #{record.categoryName,jdbcType=VARCHAR},
+    set category_name = #{record.categoryName,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=INTEGER},
       sort = #{record.sort,jdbcType=INTEGER},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -264,58 +260,51 @@
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into product_category
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].categoryId!=null">
-        category_id,
-      </if>
-      <if test="list[0].categoryName!=null">
-        category_name,
-      </if>
-      <if test="list[0].parentId!=null">
-        parent_id,
-      </if>
-      <if test="list[0].sort!=null">
-        sort,
-      </if>
-      <if test="list[0].createAt!=null">
-        create_at,
-      </if>
-      <if test="list[0].createBy!=null">
-        create_by,
-      </if>
-      <if test="list[0].updateAt!=null">
-        update_at,
-      </if>
-      <if test="list[0].updateBy!=null">
-        update_by,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.categoryId!=null">
-          #{item.categoryId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into product_category
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.categoryName != null">
+          category_name,
         </if>
-        <if test="item.categoryName!=null">
+        <if test="item.parentId != null">
+          parent_id,
+        </if>
+        <if test="item.sort != null">
+          sort,
+        </if>
+        <if test="item.createAt != null">
+          create_at,
+        </if>
+        <if test="item.createBy != null">
+          create_by,
+        </if>
+        <if test="item.updateAt != null">
+          update_at,
+        </if>
+        <if test="item.updateBy != null">
+          update_by,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.categoryName != null">
           #{item.categoryName,jdbcType=VARCHAR},
         </if>
-        <if test="item.parentId!=null">
+        <if test="item.parentId != null">
           #{item.parentId,jdbcType=INTEGER},
         </if>
-        <if test="item.sort!=null">
+        <if test="item.sort != null">
           #{item.sort,jdbcType=INTEGER},
         </if>
-        <if test="item.createAt!=null">
+        <if test="item.createAt != null">
           #{item.createAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.createBy!=null">
+        <if test="item.createBy != null">
           #{item.createBy,jdbcType=INTEGER},
         </if>
-        <if test="item.updateAt!=null">
+        <if test="item.updateAt != null">
           #{item.updateAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.updateBy!=null">
+        <if test="item.updateBy != null">
           #{item.updateBy,jdbcType=INTEGER},
         </if>
       </trim>

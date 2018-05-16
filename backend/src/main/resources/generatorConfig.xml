@@ -5,7 +5,7 @@
 <generatorConfiguration>
     <!-- 根据计算机情况修改 -->
     <classPathEntry location="C:\Users\asus\.m2\repository\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar"/>
-    <context id="DB2Tables" targetRuntime="org.mybatis.generator.codegen.mybatis3.LocalMyBatis3Impl">
+    <context id="DB2Tables" targetRuntime="org.mybatis.generator.codegen.mybatis3.CustomMyBatis3Impl">
 
         <!-- 生成toString -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
@@ -51,6 +51,103 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="%" mapperName="{0}DAO"></table>
+        <!-- BOM -->
+        <table tableName="product" mapperName="{0}DAO">
+            <generatedKey column="product_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="product_category" mapperName="{0}DAO">
+            <generatedKey column="category_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="product_material" mapperName="{0}DAO">
+            <generatedKey column="product_material_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="material" mapperName="{0}DAO">
+            <generatedKey column="material_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="material_category" mapperName="{0}DAO">
+            <generatedKey column="category_id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <!-- 订单 -->
+        <table tableName="order_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="order_bill_product" mapperName="{0}DAO">
+            <generatedKey column="bill_product_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="client" mapperName="{0}DAO">
+            <generatedKey column="client_id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <!-- 领料/退料 -->
+        <table tableName="draw_material_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="draw_material_bill_material" mapperName="{0}DAO">
+            <generatedKey column="bill_material_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="return_material_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="return_material_bill_material" mapperName="{0}DAO">
+            <generatedKey column="bill_material_id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <!-- 库存 -->
+        <table tableName="warehouse" mapperName="{0}DAO">
+            <generatedKey column="warehouse_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="product_outstock_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="product_outstock_bill_product" mapperName="{0}DAO">
+            <generatedKey column="bill_product_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="product_instock_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="product_instock_bill_product" mapperName="{0}DAO">
+            <generatedKey column="bill_product_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="material_outstock_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="material_outstock_bill_material" mapperName="{0}DAO">
+            <generatedKey column="bill_material_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="material_instock_bill" mapperName="{0}DAO">
+            <generatedKey column="bill_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="material_instock_bill_material" mapperName="{0}DAO">
+            <generatedKey column="bill_material_id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <!-- 采购 -->
+        <table tableName="supplier" mapperName="{0}DAO">
+            <generatedKey column="supplier_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="supplier_material" mapperName="{0}DAO">
+            <generatedKey column="supplier_material_id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <!-- 用户与权限 -->
+        <table tableName="admin" mapperName="{0}DAO">
+            <generatedKey column="admin_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="admin_role" mapperName="{0}DAO">
+            <generatedKey column="admin_role_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="role" mapperName="{0}DAO">
+            <generatedKey column="role_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="role_permission" mapperName="{0}DAO">
+            <generatedKey column="role_permission_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="permission" mapperName="{0}DAO">
+            <generatedKey column="permission_id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="module" mapperName="{0}DAO">
+            <generatedKey column="module_id" sqlStatement="MySql" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>

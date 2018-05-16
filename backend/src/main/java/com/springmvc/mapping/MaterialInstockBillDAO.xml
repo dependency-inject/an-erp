@@ -122,25 +122,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.MaterialInstockBill">
-    insert into material_instock_bill (bill_id, bill_no, from_principal, 
-      warehouse_principal, bill_time, material_source, 
-      related_bill, bill_state, remark, 
-      audit_at, audit_by, finish_at, 
-      finish_by, create_at, create_by, 
-      update_at, update_by)
-    values (#{billId,jdbcType=INTEGER}, #{billNo,jdbcType=VARCHAR}, #{fromPrincipal,jdbcType=INTEGER}, 
-      #{warehousePrincipal,jdbcType=INTEGER}, #{billTime,jdbcType=TIMESTAMP}, #{materialSource,jdbcType=INTEGER}, 
-      #{relatedBill,jdbcType=INTEGER}, #{billState,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{auditAt,jdbcType=TIMESTAMP}, #{auditBy,jdbcType=INTEGER}, #{finishAt,jdbcType=TIMESTAMP}, 
-      #{finishBy,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
+    <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into material_instock_bill (bill_no, from_principal, warehouse_principal, 
+      bill_time, material_source, related_bill, 
+      bill_state, remark, audit_at, 
+      audit_by, finish_at, finish_by, 
+      create_at, create_by, update_at, 
+      update_by)
+    values (#{billNo,jdbcType=VARCHAR}, #{fromPrincipal,jdbcType=INTEGER}, #{warehousePrincipal,jdbcType=INTEGER}, 
+      #{billTime,jdbcType=TIMESTAMP}, #{materialSource,jdbcType=INTEGER}, #{relatedBill,jdbcType=INTEGER}, 
+      #{billState,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{auditAt,jdbcType=TIMESTAMP}, 
+      #{auditBy,jdbcType=INTEGER}, #{finishAt,jdbcType=TIMESTAMP}, #{finishBy,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.MaterialInstockBill">
+    <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into material_instock_bill
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="billId != null">
-        bill_id,
-      </if>
       <if test="billNo != null">
         bill_no,
       </if>
@@ -191,9 +194,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="billId != null">
-        #{billId,jdbcType=INTEGER},
-      </if>
       <if test="billNo != null">
         #{billNo,jdbcType=VARCHAR},
       </if>
@@ -253,9 +253,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update material_instock_bill
     <set>
-      <if test="record.billId != null">
-        bill_id = #{record.billId,jdbcType=INTEGER},
-      </if>
       <if test="record.billNo != null">
         bill_no = #{record.billNo,jdbcType=VARCHAR},
       </if>
@@ -311,8 +308,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update material_instock_bill
-    set bill_id = #{record.billId,jdbcType=INTEGER},
-      bill_no = #{record.billNo,jdbcType=VARCHAR},
+    set bill_no = #{record.billNo,jdbcType=VARCHAR},
       from_principal = #{record.fromPrincipal,jdbcType=INTEGER},
       warehouse_principal = #{record.warehousePrincipal,jdbcType=INTEGER},
       bill_time = #{record.billTime,jdbcType=TIMESTAMP},
@@ -407,112 +403,105 @@
     where bill_id = #{billId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into material_instock_bill
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].billId!=null">
-        bill_id,
-      </if>
-      <if test="list[0].billNo!=null">
-        bill_no,
-      </if>
-      <if test="list[0].fromPrincipal!=null">
-        from_principal,
-      </if>
-      <if test="list[0].warehousePrincipal!=null">
-        warehouse_principal,
-      </if>
-      <if test="list[0].billTime!=null">
-        bill_time,
-      </if>
-      <if test="list[0].materialSource!=null">
-        material_source,
-      </if>
-      <if test="list[0].relatedBill!=null">
-        related_bill,
-      </if>
-      <if test="list[0].billState!=null">
-        bill_state,
-      </if>
-      <if test="list[0].remark!=null">
-        remark,
-      </if>
-      <if test="list[0].auditAt!=null">
-        audit_at,
-      </if>
-      <if test="list[0].auditBy!=null">
-        audit_by,
-      </if>
-      <if test="list[0].finishAt!=null">
-        finish_at,
-      </if>
-      <if test="list[0].finishBy!=null">
-        finish_by,
-      </if>
-      <if test="list[0].createAt!=null">
-        create_at,
-      </if>
-      <if test="list[0].createBy!=null">
-        create_by,
-      </if>
-      <if test="list[0].updateAt!=null">
-        update_at,
-      </if>
-      <if test="list[0].updateBy!=null">
-        update_by,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.billId!=null">
-          #{item.billId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into material_instock_bill
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.billNo != null">
+          bill_no,
         </if>
-        <if test="item.billNo!=null">
+        <if test="item.fromPrincipal != null">
+          from_principal,
+        </if>
+        <if test="item.warehousePrincipal != null">
+          warehouse_principal,
+        </if>
+        <if test="item.billTime != null">
+          bill_time,
+        </if>
+        <if test="item.materialSource != null">
+          material_source,
+        </if>
+        <if test="item.relatedBill != null">
+          related_bill,
+        </if>
+        <if test="item.billState != null">
+          bill_state,
+        </if>
+        <if test="item.remark != null">
+          remark,
+        </if>
+        <if test="item.auditAt != null">
+          audit_at,
+        </if>
+        <if test="item.auditBy != null">
+          audit_by,
+        </if>
+        <if test="item.finishAt != null">
+          finish_at,
+        </if>
+        <if test="item.finishBy != null">
+          finish_by,
+        </if>
+        <if test="item.createAt != null">
+          create_at,
+        </if>
+        <if test="item.createBy != null">
+          create_by,
+        </if>
+        <if test="item.updateAt != null">
+          update_at,
+        </if>
+        <if test="item.updateBy != null">
+          update_by,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.billNo != null">
           #{item.billNo,jdbcType=VARCHAR},
         </if>
-        <if test="item.fromPrincipal!=null">
+        <if test="item.fromPrincipal != null">
           #{item.fromPrincipal,jdbcType=INTEGER},
         </if>
-        <if test="item.warehousePrincipal!=null">
+        <if test="item.warehousePrincipal != null">
           #{item.warehousePrincipal,jdbcType=INTEGER},
         </if>
-        <if test="item.billTime!=null">
+        <if test="item.billTime != null">
           #{item.billTime,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.materialSource!=null">
+        <if test="item.materialSource != null">
           #{item.materialSource,jdbcType=INTEGER},
         </if>
-        <if test="item.relatedBill!=null">
+        <if test="item.relatedBill != null">
           #{item.relatedBill,jdbcType=INTEGER},
         </if>
-        <if test="item.billState!=null">
+        <if test="item.billState != null">
           #{item.billState,jdbcType=INTEGER},
         </if>
-        <if test="item.remark!=null">
+        <if test="item.remark != null">
           #{item.remark,jdbcType=VARCHAR},
         </if>
-        <if test="item.auditAt!=null">
+        <if test="item.auditAt != null">
           #{item.auditAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.auditBy!=null">
+        <if test="item.auditBy != null">
           #{item.auditBy,jdbcType=INTEGER},
         </if>
-        <if test="item.finishAt!=null">
+        <if test="item.finishAt != null">
           #{item.finishAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.finishBy!=null">
+        <if test="item.finishBy != null">
           #{item.finishBy,jdbcType=INTEGER},
         </if>
-        <if test="item.createAt!=null">
+        <if test="item.createAt != null">
           #{item.createAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.createBy!=null">
+        <if test="item.createBy != null">
           #{item.createBy,jdbcType=INTEGER},
         </if>
-        <if test="item.updateAt!=null">
+        <if test="item.updateAt != null">
           #{item.updateAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.updateBy!=null">
+        <if test="item.updateBy != null">
           #{item.updateBy,jdbcType=INTEGER},
         </if>
       </trim>

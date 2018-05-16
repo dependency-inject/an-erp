@@ -106,17 +106,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.AdminRole">
-    insert into admin_role (admin_role_id, admin_id, role_id
-      )
-    values (#{adminRoleId,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
-      )
+    <selectKey keyProperty="adminRoleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into admin_role (admin_id, role_id)
+    values (#{adminId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.AdminRole">
+    <selectKey keyProperty="adminRoleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into admin_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="adminRoleId != null">
-        admin_role_id,
-      </if>
       <if test="adminId != null">
         admin_id,
       </if>
@@ -125,9 +126,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="adminRoleId != null">
-        #{adminRoleId,jdbcType=INTEGER},
-      </if>
       <if test="adminId != null">
         #{adminId,jdbcType=INTEGER},
       </if>
@@ -145,9 +143,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update admin_role
     <set>
-      <if test="record.adminRoleId != null">
-        admin_role_id = #{record.adminRoleId,jdbcType=INTEGER},
-      </if>
       <if test="record.adminId != null">
         admin_id = #{record.adminId,jdbcType=INTEGER},
       </if>
@@ -161,8 +156,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update admin_role
-    set admin_role_id = #{record.adminRoleId,jdbcType=INTEGER},
-      admin_id = #{record.adminId,jdbcType=INTEGER},
+    set admin_id = #{record.adminId,jdbcType=INTEGER},
       role_id = #{record.roleId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -187,28 +181,21 @@
     where admin_role_id = #{adminRoleId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into admin_role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].adminRoleId!=null">
-        admin_role_id,
-      </if>
-      <if test="list[0].adminId!=null">
-        admin_id,
-      </if>
-      <if test="list[0].roleId!=null">
-        role_id,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.adminRoleId!=null">
-          #{item.adminRoleId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into admin_role
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.adminId != null">
+          admin_id,
         </if>
-        <if test="item.adminId!=null">
+        <if test="item.roleId != null">
+          role_id,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.adminId != null">
           #{item.adminId,jdbcType=INTEGER},
         </if>
-        <if test="item.roleId!=null">
+        <if test="item.roleId != null">
           #{item.roleId,jdbcType=INTEGER},
         </if>
       </trim>

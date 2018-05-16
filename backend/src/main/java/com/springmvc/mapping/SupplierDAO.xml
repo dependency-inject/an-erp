@@ -114,21 +114,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.Supplier">
-    insert into supplier (supplier_id, supplier_name, contact, 
-      contact_phone, region, address, 
-      create_at, create_by, update_at, 
-      update_by)
-    values (#{supplierId,jdbcType=INTEGER}, #{supplierName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{contactPhone,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=INTEGER})
+    <selectKey keyProperty="supplierId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into supplier (supplier_name, contact, contact_phone, 
+      region, address, create_at, 
+      create_by, update_at, update_by
+      )
+    values (#{supplierName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, 
+      #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Supplier">
+    <selectKey keyProperty="supplierId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into supplier
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="supplierId != null">
-        supplier_id,
-      </if>
       <if test="supplierName != null">
         supplier_name,
       </if>
@@ -158,9 +161,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="supplierId != null">
-        #{supplierId,jdbcType=INTEGER},
-      </if>
       <if test="supplierName != null">
         #{supplierName,jdbcType=VARCHAR},
       </if>
@@ -199,9 +199,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update supplier
     <set>
-      <if test="record.supplierId != null">
-        supplier_id = #{record.supplierId,jdbcType=INTEGER},
-      </if>
       <if test="record.supplierName != null">
         supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       </if>
@@ -236,8 +233,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update supplier
-    set supplier_id = #{record.supplierId,jdbcType=INTEGER},
-      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
+    set supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       contact = #{record.contact,jdbcType=VARCHAR},
       contact_phone = #{record.contactPhone,jdbcType=VARCHAR},
       region = #{record.region,jdbcType=VARCHAR},
@@ -297,70 +293,63 @@
     where supplier_id = #{supplierId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into supplier
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].supplierId!=null">
-        supplier_id,
-      </if>
-      <if test="list[0].supplierName!=null">
-        supplier_name,
-      </if>
-      <if test="list[0].contact!=null">
-        contact,
-      </if>
-      <if test="list[0].contactPhone!=null">
-        contact_phone,
-      </if>
-      <if test="list[0].region!=null">
-        region,
-      </if>
-      <if test="list[0].address!=null">
-        address,
-      </if>
-      <if test="list[0].createAt!=null">
-        create_at,
-      </if>
-      <if test="list[0].createBy!=null">
-        create_by,
-      </if>
-      <if test="list[0].updateAt!=null">
-        update_at,
-      </if>
-      <if test="list[0].updateBy!=null">
-        update_by,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.supplierId!=null">
-          #{item.supplierId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into supplier
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.supplierName != null">
+          supplier_name,
         </if>
-        <if test="item.supplierName!=null">
+        <if test="item.contact != null">
+          contact,
+        </if>
+        <if test="item.contactPhone != null">
+          contact_phone,
+        </if>
+        <if test="item.region != null">
+          region,
+        </if>
+        <if test="item.address != null">
+          address,
+        </if>
+        <if test="item.createAt != null">
+          create_at,
+        </if>
+        <if test="item.createBy != null">
+          create_by,
+        </if>
+        <if test="item.updateAt != null">
+          update_at,
+        </if>
+        <if test="item.updateBy != null">
+          update_by,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.supplierName != null">
           #{item.supplierName,jdbcType=VARCHAR},
         </if>
-        <if test="item.contact!=null">
+        <if test="item.contact != null">
           #{item.contact,jdbcType=VARCHAR},
         </if>
-        <if test="item.contactPhone!=null">
+        <if test="item.contactPhone != null">
           #{item.contactPhone,jdbcType=VARCHAR},
         </if>
-        <if test="item.region!=null">
+        <if test="item.region != null">
           #{item.region,jdbcType=VARCHAR},
         </if>
-        <if test="item.address!=null">
+        <if test="item.address != null">
           #{item.address,jdbcType=VARCHAR},
         </if>
-        <if test="item.createAt!=null">
+        <if test="item.createAt != null">
           #{item.createAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.createBy!=null">
+        <if test="item.createBy != null">
           #{item.createBy,jdbcType=INTEGER},
         </if>
-        <if test="item.updateAt!=null">
+        <if test="item.updateAt != null">
           #{item.updateAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.updateBy!=null">
+        <if test="item.updateBy != null">
           #{item.updateBy,jdbcType=INTEGER},
         </if>
       </trim>

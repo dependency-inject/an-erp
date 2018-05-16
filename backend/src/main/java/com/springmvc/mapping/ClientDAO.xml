@@ -112,19 +112,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.Client">
-    insert into client (client_id, client_name, contact, 
-      contact_phone, create_at, create_by, 
-      update_at, update_by)
-    values (#{clientId,jdbcType=INTEGER}, #{clientName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{contactPhone,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
+    <selectKey keyProperty="clientId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into client (client_name, contact, contact_phone, 
+      create_at, create_by, update_at, 
+      update_by)
+    values (#{clientName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Client">
+    <selectKey keyProperty="clientId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into client
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="clientId != null">
-        client_id,
-      </if>
       <if test="clientName != null">
         client_name,
       </if>
@@ -148,9 +151,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="clientId != null">
-        #{clientId,jdbcType=INTEGER},
-      </if>
       <if test="clientName != null">
         #{clientName,jdbcType=VARCHAR},
       </if>
@@ -183,9 +183,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update client
     <set>
-      <if test="record.clientId != null">
-        client_id = #{record.clientId,jdbcType=INTEGER},
-      </if>
       <if test="record.clientName != null">
         client_name = #{record.clientName,jdbcType=VARCHAR},
       </if>
@@ -214,8 +211,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update client
-    set client_id = #{record.clientId,jdbcType=INTEGER},
-      client_name = #{record.clientName,jdbcType=VARCHAR},
+    set client_name = #{record.clientName,jdbcType=VARCHAR},
       contact = #{record.contact,jdbcType=VARCHAR},
       contact_phone = #{record.contactPhone,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -265,58 +261,51 @@
     where client_id = #{clientId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into client
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].clientId!=null">
-        client_id,
-      </if>
-      <if test="list[0].clientName!=null">
-        client_name,
-      </if>
-      <if test="list[0].contact!=null">
-        contact,
-      </if>
-      <if test="list[0].contactPhone!=null">
-        contact_phone,
-      </if>
-      <if test="list[0].createAt!=null">
-        create_at,
-      </if>
-      <if test="list[0].createBy!=null">
-        create_by,
-      </if>
-      <if test="list[0].updateAt!=null">
-        update_at,
-      </if>
-      <if test="list[0].updateBy!=null">
-        update_by,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.clientId!=null">
-          #{item.clientId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into client
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.clientName != null">
+          client_name,
         </if>
-        <if test="item.clientName!=null">
+        <if test="item.contact != null">
+          contact,
+        </if>
+        <if test="item.contactPhone != null">
+          contact_phone,
+        </if>
+        <if test="item.createAt != null">
+          create_at,
+        </if>
+        <if test="item.createBy != null">
+          create_by,
+        </if>
+        <if test="item.updateAt != null">
+          update_at,
+        </if>
+        <if test="item.updateBy != null">
+          update_by,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.clientName != null">
           #{item.clientName,jdbcType=VARCHAR},
         </if>
-        <if test="item.contact!=null">
+        <if test="item.contact != null">
           #{item.contact,jdbcType=VARCHAR},
         </if>
-        <if test="item.contactPhone!=null">
+        <if test="item.contactPhone != null">
           #{item.contactPhone,jdbcType=VARCHAR},
         </if>
-        <if test="item.createAt!=null">
+        <if test="item.createAt != null">
           #{item.createAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.createBy!=null">
+        <if test="item.createBy != null">
           #{item.createBy,jdbcType=INTEGER},
         </if>
-        <if test="item.updateAt!=null">
+        <if test="item.updateAt != null">
           #{item.updateAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.updateBy!=null">
+        <if test="item.updateBy != null">
           #{item.updateBy,jdbcType=INTEGER},
         </if>
       </trim>

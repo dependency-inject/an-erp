@@ -108,17 +108,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.SupplierMaterial">
-    insert into supplier_material (supplier_material_id, supplier_id, material_id, 
-      price, remark)
-    values (#{supplierMaterialId,jdbcType=INTEGER}, #{supplierId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, 
-      #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
+    <selectKey keyProperty="supplierMaterialId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into supplier_material (supplier_id, material_id, price, 
+      remark)
+    values (#{supplierId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.SupplierMaterial">
+    <selectKey keyProperty="supplierMaterialId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into supplier_material
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="supplierMaterialId != null">
-        supplier_material_id,
-      </if>
       <if test="supplierId != null">
         supplier_id,
       </if>
@@ -133,9 +136,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="supplierMaterialId != null">
-        #{supplierMaterialId,jdbcType=INTEGER},
-      </if>
       <if test="supplierId != null">
         #{supplierId,jdbcType=INTEGER},
       </if>
@@ -159,9 +159,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update supplier_material
     <set>
-      <if test="record.supplierMaterialId != null">
-        supplier_material_id = #{record.supplierMaterialId,jdbcType=INTEGER},
-      </if>
       <if test="record.supplierId != null">
         supplier_id = #{record.supplierId,jdbcType=INTEGER},
       </if>
@@ -181,8 +178,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update supplier_material
-    set supplier_material_id = #{record.supplierMaterialId,jdbcType=INTEGER},
-      supplier_id = #{record.supplierId,jdbcType=INTEGER},
+    set supplier_id = #{record.supplierId,jdbcType=INTEGER},
       material_id = #{record.materialId,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR}
@@ -217,40 +213,33 @@
     where supplier_material_id = #{supplierMaterialId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into supplier_material
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].supplierMaterialId!=null">
-        supplier_material_id,
-      </if>
-      <if test="list[0].supplierId!=null">
-        supplier_id,
-      </if>
-      <if test="list[0].materialId!=null">
-        material_id,
-      </if>
-      <if test="list[0].price!=null">
-        price,
-      </if>
-      <if test="list[0].remark!=null">
-        remark,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.supplierMaterialId!=null">
-          #{item.supplierMaterialId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into supplier_material
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.supplierId != null">
+          supplier_id,
         </if>
-        <if test="item.supplierId!=null">
+        <if test="item.materialId != null">
+          material_id,
+        </if>
+        <if test="item.price != null">
+          price,
+        </if>
+        <if test="item.remark != null">
+          remark,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.supplierId != null">
           #{item.supplierId,jdbcType=INTEGER},
         </if>
-        <if test="item.materialId!=null">
+        <if test="item.materialId != null">
           #{item.materialId,jdbcType=INTEGER},
         </if>
-        <if test="item.price!=null">
+        <if test="item.price != null">
           #{item.price,jdbcType=DECIMAL},
         </if>
-        <if test="item.remark!=null">
+        <if test="item.remark != null">
           #{item.remark,jdbcType=VARCHAR},
         </if>
       </trim>

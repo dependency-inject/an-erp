@@ -110,19 +110,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.Warehouse">
-    insert into warehouse (warehouse_id, warehouse_no, warehouse_name, 
-      create_at, create_by, update_at, 
-      update_by)
-    values (#{warehouseId,jdbcType=INTEGER}, #{warehouseNo,jdbcType=VARCHAR}, #{warehouseName,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=INTEGER})
+    <selectKey keyProperty="warehouseId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into warehouse (warehouse_no, warehouse_name, create_at, 
+      create_by, update_at, update_by
+      )
+    values (#{warehouseNo,jdbcType=VARCHAR}, #{warehouseName,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Warehouse">
+    <selectKey keyProperty="warehouseId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into warehouse
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="warehouseId != null">
-        warehouse_id,
-      </if>
       <if test="warehouseNo != null">
         warehouse_no,
       </if>
@@ -143,9 +146,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="warehouseId != null">
-        #{warehouseId,jdbcType=INTEGER},
-      </if>
       <if test="warehouseNo != null">
         #{warehouseNo,jdbcType=VARCHAR},
       </if>
@@ -175,9 +175,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update warehouse
     <set>
-      <if test="record.warehouseId != null">
-        warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
-      </if>
       <if test="record.warehouseNo != null">
         warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       </if>
@@ -203,8 +200,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update warehouse
-    set warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
-      warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
+    set warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       warehouse_name = #{record.warehouseName,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       create_by = #{record.createBy,jdbcType=INTEGER},
@@ -249,52 +245,45 @@
     where warehouse_id = #{warehouseId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into warehouse
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].warehouseId!=null">
-        warehouse_id,
-      </if>
-      <if test="list[0].warehouseNo!=null">
-        warehouse_no,
-      </if>
-      <if test="list[0].warehouseName!=null">
-        warehouse_name,
-      </if>
-      <if test="list[0].createAt!=null">
-        create_at,
-      </if>
-      <if test="list[0].createBy!=null">
-        create_by,
-      </if>
-      <if test="list[0].updateAt!=null">
-        update_at,
-      </if>
-      <if test="list[0].updateBy!=null">
-        update_by,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.warehouseId!=null">
-          #{item.warehouseId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into warehouse
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.warehouseNo != null">
+          warehouse_no,
         </if>
-        <if test="item.warehouseNo!=null">
+        <if test="item.warehouseName != null">
+          warehouse_name,
+        </if>
+        <if test="item.createAt != null">
+          create_at,
+        </if>
+        <if test="item.createBy != null">
+          create_by,
+        </if>
+        <if test="item.updateAt != null">
+          update_at,
+        </if>
+        <if test="item.updateBy != null">
+          update_by,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.warehouseNo != null">
           #{item.warehouseNo,jdbcType=VARCHAR},
         </if>
-        <if test="item.warehouseName!=null">
+        <if test="item.warehouseName != null">
           #{item.warehouseName,jdbcType=VARCHAR},
         </if>
-        <if test="item.createAt!=null">
+        <if test="item.createAt != null">
           #{item.createAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.createBy!=null">
+        <if test="item.createBy != null">
           #{item.createBy,jdbcType=INTEGER},
         </if>
-        <if test="item.updateAt!=null">
+        <if test="item.updateAt != null">
           #{item.updateAt,jdbcType=TIMESTAMP},
         </if>
-        <if test="item.updateBy!=null">
+        <if test="item.updateBy != null">
           #{item.updateBy,jdbcType=INTEGER},
         </if>
       </trim>

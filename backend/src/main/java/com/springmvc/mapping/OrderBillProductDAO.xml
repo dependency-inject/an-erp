@@ -110,19 +110,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springmvc.pojo.OrderBillProduct">
-    insert into order_bill_product (bill_product_id, bill_id, product_id, 
-      quantity, price, total, 
-      remark)
-    values (#{billProductId,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
-      #{quantity,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL}, 
-      #{remark,jdbcType=VARCHAR})
+    <selectKey keyProperty="billProductId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into order_bill_product (bill_id, product_id, quantity, 
+      price, total, remark
+      )
+    values (#{billId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.OrderBillProduct">
+    <selectKey keyProperty="billProductId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into order_bill_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="billProductId != null">
-        bill_product_id,
-      </if>
       <if test="billId != null">
         bill_id,
       </if>
@@ -143,9 +146,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="billProductId != null">
-        #{billProductId,jdbcType=INTEGER},
-      </if>
       <if test="billId != null">
         #{billId,jdbcType=INTEGER},
       </if>
@@ -175,9 +175,6 @@
   <update id="updateByExampleSelective" parameterType="map">
     update order_bill_product
     <set>
-      <if test="record.billProductId != null">
-        bill_product_id = #{record.billProductId,jdbcType=INTEGER},
-      </if>
       <if test="record.billId != null">
         bill_id = #{record.billId,jdbcType=INTEGER},
       </if>
@@ -203,8 +200,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update order_bill_product
-    set bill_product_id = #{record.billProductId,jdbcType=INTEGER},
-      bill_id = #{record.billId,jdbcType=INTEGER},
+    set bill_id = #{record.billId,jdbcType=INTEGER},
       product_id = #{record.productId,jdbcType=INTEGER},
       quantity = #{record.quantity,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DECIMAL},
@@ -249,52 +245,45 @@
     where bill_product_id = #{billProductId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
-    insert into order_bill_product
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="list[0].billProductId!=null">
-        bill_product_id,
-      </if>
-      <if test="list[0].billId!=null">
-        bill_id,
-      </if>
-      <if test="list[0].productId!=null">
-        product_id,
-      </if>
-      <if test="list[0].quantity!=null">
-        quantity,
-      </if>
-      <if test="list[0].price!=null">
-        price,
-      </if>
-      <if test="list[0].total!=null">
-        total,
-      </if>
-      <if test="list[0].remark!=null">
-        remark,
-      </if>
-    </trim>
-     values 
-    <foreach collection="list" index="index" item="item" separator=",">
-      <trim prefix=" (" suffix=")" suffixOverrides=",">
-        <if test="item.billProductId!=null">
-          #{item.billProductId,jdbcType=INTEGER},
+    <foreach collection="list" index="index" item="item" separator=";">
+      insert into order_bill_product
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.billId != null">
+          bill_id,
         </if>
-        <if test="item.billId!=null">
+        <if test="item.productId != null">
+          product_id,
+        </if>
+        <if test="item.quantity != null">
+          quantity,
+        </if>
+        <if test="item.price != null">
+          price,
+        </if>
+        <if test="item.total != null">
+          total,
+        </if>
+        <if test="item.remark != null">
+          remark,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.billId != null">
           #{item.billId,jdbcType=INTEGER},
         </if>
-        <if test="item.productId!=null">
+        <if test="item.productId != null">
           #{item.productId,jdbcType=INTEGER},
         </if>
-        <if test="item.quantity!=null">
+        <if test="item.quantity != null">
           #{item.quantity,jdbcType=INTEGER},
         </if>
-        <if test="item.price!=null">
+        <if test="item.price != null">
           #{item.price,jdbcType=DECIMAL},
         </if>
-        <if test="item.total!=null">
+        <if test="item.total != null">
           #{item.total,jdbcType=DECIMAL},
         </if>
-        <if test="item.remark!=null">
+        <if test="item.remark != null">
           #{item.remark,jdbcType=VARCHAR},
         </if>
       </trim>

@@ -48,11 +48,12 @@
         <appender-ref ref="consoleAppender"/>
     </logger>
 
-    <!-- ActiveMQ -->
-    <logger name="org.apache.activemq" additivity="true">
-        <level value="ERROR"/>
+    <!-- 应用日志 LogUtils -->
+    <logger name="com.springmvc" additivity="true">
+        <level value="DEBUG"/>
         <appender-ref ref="consoleAppender"/>
     </logger>
+
     <!-- ===================================================================== -->
     <!--  根日志记录器                                                          -->
     <!-- ===================================================================== -->
