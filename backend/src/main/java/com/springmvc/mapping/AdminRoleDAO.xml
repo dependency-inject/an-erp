@@ -105,6 +105,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.AdminRole">
+    <selectKey keyProperty="adminRoleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into admin_role (admin_id, role_id)
+    values (#{adminId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.AdminRole">
     <selectKey keyProperty="adminRoleId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -147,6 +154,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExample" parameterType="map">
+    update admin_role
+    set admin_id = #{record.adminId,jdbcType=INTEGER},
+      role_id = #{record.roleId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.AdminRole">
     update admin_role
     <set>
@@ -157,6 +172,12 @@
         role_id = #{roleId,jdbcType=INTEGER},
       </if>
     </set>
+    where admin_role_id = #{adminRoleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.AdminRole">
+    update admin_role
+    set admin_id = #{adminId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER}
     where admin_role_id = #{adminRoleId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

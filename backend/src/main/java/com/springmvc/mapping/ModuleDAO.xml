@@ -105,6 +105,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.Module">
+    <selectKey keyProperty="moduleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into module (module_name, sort)
+    values (#{moduleName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Module">
     <selectKey keyProperty="moduleId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -147,6 +154,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExample" parameterType="map">
+    update module
+    set module_name = #{record.moduleName,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Module">
     update module
     <set>
@@ -157,6 +172,12 @@
         sort = #{sort,jdbcType=INTEGER},
       </if>
     </set>
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Module">
+    update module
+    set module_name = #{moduleName,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
     where module_id = #{moduleId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

@@ -110,6 +110,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.ProductInstockBillProduct">
+    <selectKey keyProperty="billProductId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into product_instock_bill_product (bill_id, product_id, quantity, 
+      principal, warehouse, place, 
+      remark)
+    values (#{billId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
+      #{principal,jdbcType=INTEGER}, #{warehouse,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.ProductInstockBillProduct">
     <selectKey keyProperty="billProductId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -197,6 +208,19 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExample" parameterType="map">
+    update product_instock_bill_product
+    set bill_id = #{record.billId,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      principal = #{record.principal,jdbcType=INTEGER},
+      warehouse = #{record.warehouse,jdbcType=INTEGER},
+      place = #{record.place,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.ProductInstockBillProduct">
     update product_instock_bill_product
     <set>
@@ -222,6 +246,17 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
+    where bill_product_id = #{billProductId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.ProductInstockBillProduct">
+    update product_instock_bill_product
+    set bill_id = #{billId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      quantity = #{quantity,jdbcType=INTEGER},
+      principal = #{principal,jdbcType=INTEGER},
+      warehouse = #{warehouse,jdbcType=INTEGER},
+      place = #{place,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
     where bill_product_id = #{billProductId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

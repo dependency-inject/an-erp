@@ -109,6 +109,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.Role">
+    <selectKey keyProperty="roleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into role (role_name, sys_default, create_at, 
+      create_by, update_at, update_by
+      )
+    values (#{roleName,jdbcType=VARCHAR}, #{sysDefault,jdbcType=BIT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
+      )
+  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Role">
     <selectKey keyProperty="roleId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -187,6 +198,18 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExample" parameterType="map">
+    update role
+    set role_name = #{record.roleName,jdbcType=VARCHAR},
+      sys_default = #{record.sysDefault,jdbcType=BIT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Role">
     update role
     <set>
@@ -209,6 +232,16 @@
         update_by = #{updateBy,jdbcType=INTEGER},
       </if>
     </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Role">
+    update role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      sys_default = #{sysDefault,jdbcType=BIT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

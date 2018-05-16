@@ -121,6 +121,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.ReturnMaterialBill">
+    <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into return_material_bill (bill_no, from_principal, warehouse_principal, 
+      bill_time, return_reason, related_bill, 
+      bill_state, remark, audit_at, 
+      audit_by, finish_at, finish_by, 
+      create_at, create_by, update_at, 
+      update_by)
+    values (#{billNo,jdbcType=VARCHAR}, #{fromPrincipal,jdbcType=INTEGER}, #{warehousePrincipal,jdbcType=INTEGER}, 
+      #{billTime,jdbcType=TIMESTAMP}, #{returnReason,jdbcType=INTEGER}, #{relatedBill,jdbcType=INTEGER}, 
+      #{billState,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{auditAt,jdbcType=TIMESTAMP}, 
+      #{auditBy,jdbcType=INTEGER}, #{finishAt,jdbcType=TIMESTAMP}, #{finishBy,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER})
+  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.ReturnMaterialBill">
     <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -289,6 +306,28 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExample" parameterType="map">
+    update return_material_bill
+    set bill_no = #{record.billNo,jdbcType=VARCHAR},
+      from_principal = #{record.fromPrincipal,jdbcType=INTEGER},
+      warehouse_principal = #{record.warehousePrincipal,jdbcType=INTEGER},
+      bill_time = #{record.billTime,jdbcType=TIMESTAMP},
+      return_reason = #{record.returnReason,jdbcType=INTEGER},
+      related_bill = #{record.relatedBill,jdbcType=INTEGER},
+      bill_state = #{record.billState,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      audit_at = #{record.auditAt,jdbcType=TIMESTAMP},
+      audit_by = #{record.auditBy,jdbcType=INTEGER},
+      finish_at = #{record.finishAt,jdbcType=TIMESTAMP},
+      finish_by = #{record.finishBy,jdbcType=INTEGER},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.ReturnMaterialBill">
     update return_material_bill
     <set>
@@ -341,6 +380,26 @@
         update_by = #{updateBy,jdbcType=INTEGER},
       </if>
     </set>
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.ReturnMaterialBill">
+    update return_material_bill
+    set bill_no = #{billNo,jdbcType=VARCHAR},
+      from_principal = #{fromPrincipal,jdbcType=INTEGER},
+      warehouse_principal = #{warehousePrincipal,jdbcType=INTEGER},
+      bill_time = #{billTime,jdbcType=TIMESTAMP},
+      return_reason = #{returnReason,jdbcType=INTEGER},
+      related_bill = #{relatedBill,jdbcType=INTEGER},
+      bill_state = #{billState,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      audit_at = #{auditAt,jdbcType=TIMESTAMP},
+      audit_by = #{auditBy,jdbcType=INTEGER},
+      finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      finish_by = #{finishBy,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER}
     where bill_id = #{billId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

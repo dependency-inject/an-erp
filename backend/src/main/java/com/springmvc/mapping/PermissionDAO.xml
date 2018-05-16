@@ -106,6 +106,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insert" parameterType="com.springmvc.pojo.Permission">
+    <selectKey keyProperty="permissionId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into permission (permission_name, module_id, sort
+      )
+    values (#{permissionName,jdbcType=VARCHAR}, #{moduleId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}
+      )
+  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Permission">
     <selectKey keyProperty="permissionId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -157,6 +166,15 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExample" parameterType="map">
+    update permission
+    set permission_name = #{record.permissionName,jdbcType=VARCHAR},
+      module_id = #{record.moduleId,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Permission">
     update permission
     <set>
@@ -170,6 +188,13 @@
         sort = #{sort,jdbcType=INTEGER},
       </if>
     </set>
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Permission">
+    update permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      module_id = #{moduleId,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER}
     where permission_id = #{permissionId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
