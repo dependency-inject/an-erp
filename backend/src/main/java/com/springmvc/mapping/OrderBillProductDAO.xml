@@ -109,17 +109,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.OrderBillProduct">
-    <selectKey keyProperty="billProductId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into order_bill_product (bill_id, product_id, quantity, 
-      price, total, remark
-      )
-    values (#{billId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
-      #{price,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.OrderBillProduct">
     <selectKey keyProperty="billProductId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -198,18 +187,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update order_bill_product
-    set bill_id = #{record.billId,jdbcType=INTEGER},
-      product_id = #{record.productId,jdbcType=INTEGER},
-      quantity = #{record.quantity,jdbcType=INTEGER},
-      price = #{record.price,jdbcType=DECIMAL},
-      total = #{record.total,jdbcType=DECIMAL},
-      remark = #{record.remark,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.OrderBillProduct">
     update order_bill_product
     <set>
@@ -232,16 +209,6 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
-    where bill_product_id = #{billProductId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.OrderBillProduct">
-    update order_bill_product
-    set bill_id = #{billId,jdbcType=INTEGER},
-      product_id = #{productId,jdbcType=INTEGER},
-      quantity = #{quantity,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
-      total = #{total,jdbcType=DECIMAL},
-      remark = #{remark,jdbcType=VARCHAR}
     where bill_product_id = #{billProductId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

@@ -115,19 +115,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Material">
-    <selectKey keyProperty="materialId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into material (material_no, material_name, unit, 
-      category_id, spec, cost, 
-      remark, create_at, create_by, 
-      update_at, update_by)
-    values (#{materialNo,jdbcType=VARCHAR}, #{materialName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
-      #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{cost,jdbcType=DECIMAL}, 
-      #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Material">
     <selectKey keyProperty="materialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -251,23 +238,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update material
-    set material_no = #{record.materialNo,jdbcType=VARCHAR},
-      material_name = #{record.materialName,jdbcType=VARCHAR},
-      unit = #{record.unit,jdbcType=VARCHAR},
-      category_id = #{record.categoryId,jdbcType=INTEGER},
-      spec = #{record.spec,jdbcType=VARCHAR},
-      cost = #{record.cost,jdbcType=DECIMAL},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Material">
     update material
     <set>
@@ -305,21 +275,6 @@
         update_by = #{updateBy,jdbcType=INTEGER},
       </if>
     </set>
-    where material_id = #{materialId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Material">
-    update material
-    set material_no = #{materialNo,jdbcType=VARCHAR},
-      material_name = #{materialName,jdbcType=VARCHAR},
-      unit = #{unit,jdbcType=VARCHAR},
-      category_id = #{categoryId,jdbcType=INTEGER},
-      spec = #{spec,jdbcType=VARCHAR},
-      cost = #{cost,jdbcType=DECIMAL},
-      remark = #{remark,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=INTEGER},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=INTEGER}
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

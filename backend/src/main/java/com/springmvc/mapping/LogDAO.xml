@@ -135,19 +135,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Log">
-    <selectKey keyProperty="logId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into log (admin_id, log_type, operate, 
-      log_time, description, ip, 
-      create_at, create_by, sql
-      )
-    values (#{adminId,jdbcType=INTEGER}, #{logType,jdbcType=VARCHAR}, #{operate,jdbcType=VARCHAR}, 
-      #{logTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{sql,jdbcType=LONGVARCHAR}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Log">
     <selectKey keyProperty="logId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -253,35 +240,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update log
-    set admin_id = #{record.adminId,jdbcType=INTEGER},
-      log_type = #{record.logType,jdbcType=VARCHAR},
-      operate = #{record.operate,jdbcType=VARCHAR},
-      log_time = #{record.logTime,jdbcType=TIMESTAMP},
-      description = #{record.description,jdbcType=VARCHAR},
-      ip = #{record.ip,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER},
-      sql = #{record.sql,jdbcType=LONGVARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update log
-    set admin_id = #{record.adminId,jdbcType=INTEGER},
-      log_type = #{record.logType,jdbcType=VARCHAR},
-      operate = #{record.operate,jdbcType=VARCHAR},
-      log_time = #{record.logTime,jdbcType=TIMESTAMP},
-      description = #{record.description,jdbcType=VARCHAR},
-      ip = #{record.ip,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Log">
     update log
     <set>
@@ -313,31 +271,6 @@
         sql = #{sql,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where log_id = #{logId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.springmvc.pojo.Log">
-    update log
-    set admin_id = #{adminId,jdbcType=INTEGER},
-      log_type = #{logType,jdbcType=VARCHAR},
-      operate = #{operate,jdbcType=VARCHAR},
-      log_time = #{logTime,jdbcType=TIMESTAMP},
-      description = #{description,jdbcType=VARCHAR},
-      ip = #{ip,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=INTEGER},
-      sql = #{sql,jdbcType=LONGVARCHAR}
-    where log_id = #{logId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Log">
-    update log
-    set admin_id = #{adminId,jdbcType=INTEGER},
-      log_type = #{logType,jdbcType=VARCHAR},
-      operate = #{operate,jdbcType=VARCHAR},
-      log_time = #{logTime,jdbcType=TIMESTAMP},
-      description = #{description,jdbcType=VARCHAR},
-      ip = #{ip,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=INTEGER}
     where log_id = #{logId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

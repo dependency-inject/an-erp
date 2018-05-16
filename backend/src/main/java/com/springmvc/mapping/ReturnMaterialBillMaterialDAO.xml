@@ -107,15 +107,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.ReturnMaterialBillMaterial">
-    <selectKey keyProperty="billMaterialId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into return_material_bill_material (bill_id, material_id, quantity, 
-      remark)
-    values (#{billId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.ReturnMaterialBillMaterial">
     <selectKey keyProperty="billMaterialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -176,16 +167,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update return_material_bill_material
-    set bill_id = #{record.billId,jdbcType=INTEGER},
-      material_id = #{record.materialId,jdbcType=INTEGER},
-      quantity = #{record.quantity,jdbcType=INTEGER},
-      remark = #{record.remark,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.ReturnMaterialBillMaterial">
     update return_material_bill_material
     <set>
@@ -202,14 +183,6 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
-    where bill_material_id = #{billMaterialId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.ReturnMaterialBillMaterial">
-    update return_material_bill_material
-    set bill_id = #{billId,jdbcType=INTEGER},
-      material_id = #{materialId,jdbcType=INTEGER},
-      quantity = #{quantity,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR}
     where bill_material_id = #{billMaterialId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

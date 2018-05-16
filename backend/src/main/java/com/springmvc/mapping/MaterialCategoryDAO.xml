@@ -110,17 +110,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.MaterialCategory">
-    <selectKey keyProperty="categoryId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into material_category (category_name, parent_id, sort, 
-      create_at, create_by, update_at, 
-      update_by)
-    values (#{categoryName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.MaterialCategory">
     <selectKey keyProperty="categoryId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -208,19 +197,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update material_category
-    set category_name = #{record.categoryName,jdbcType=VARCHAR},
-      parent_id = #{record.parentId,jdbcType=INTEGER},
-      sort = #{record.sort,jdbcType=INTEGER},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.MaterialCategory">
     update material_category
     <set>
@@ -246,17 +222,6 @@
         update_by = #{updateBy,jdbcType=INTEGER},
       </if>
     </set>
-    where category_id = #{categoryId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.MaterialCategory">
-    update material_category
-    set category_name = #{categoryName,jdbcType=VARCHAR},
-      parent_id = #{parentId,jdbcType=INTEGER},
-      sort = #{sort,jdbcType=INTEGER},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=INTEGER},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

@@ -28,20 +28,6 @@ public interface ProductDAO {
     int deleteByPrimaryKey(Integer productId);
 
     /**
-     *  新写入数据库记录
-     *
-     * @param record
-     */
-    int insert(Product record);
-
-    /**
-     *  动态字段,写入数据库记录
-     *
-     * @param record
-     */
-    int insertSelective(Product record);
-
-    /**
      *  根据指定的条件查询符合条件的数据库记录
      *
      * @param example

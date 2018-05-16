@@ -108,15 +108,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.ProductMaterial">
-    <selectKey keyProperty="productMaterialId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into product_material (product_id, material_id, quantity, 
-      material_property, remark)
-    values (#{productId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
-      #{materialProperty,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.ProductMaterial">
     <selectKey keyProperty="productMaterialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -186,17 +177,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update product_material
-    set product_id = #{record.productId,jdbcType=INTEGER},
-      material_id = #{record.materialId,jdbcType=INTEGER},
-      quantity = #{record.quantity,jdbcType=INTEGER},
-      material_property = #{record.materialProperty,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.ProductMaterial">
     update product_material
     <set>
@@ -216,15 +196,6 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
-    where product_material_id = #{productMaterialId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.ProductMaterial">
-    update product_material
-    set product_id = #{productId,jdbcType=INTEGER},
-      material_id = #{materialId,jdbcType=INTEGER},
-      quantity = #{quantity,jdbcType=INTEGER},
-      material_property = #{materialProperty,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
     where product_material_id = #{productMaterialId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">

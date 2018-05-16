@@ -109,17 +109,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Config">
-    <selectKey keyProperty="configId" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into config (config_name, config_type, config_value, 
-      sort, update_at, update_by
-      )
-    values (#{configName,jdbcType=VARCHAR}, #{configType,jdbcType=INTEGER}, #{configValue,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
-      )
-  </insert>
   <insert id="insertSelective" parameterType="com.springmvc.pojo.Config">
     <selectKey keyProperty="configId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -198,18 +187,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update config
-    set config_name = #{record.configName,jdbcType=VARCHAR},
-      config_type = #{record.configType,jdbcType=INTEGER},
-      config_value = #{record.configValue,jdbcType=VARCHAR},
-      sort = #{record.sort,jdbcType=INTEGER},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Config">
     update config
     <set>
@@ -232,16 +209,6 @@
         update_by = #{updateBy,jdbcType=INTEGER},
       </if>
     </set>
-    where config_id = #{configId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Config">
-    update config
-    set config_name = #{configName,jdbcType=VARCHAR},
-      config_type = #{configType,jdbcType=INTEGER},
-      config_value = #{configValue,jdbcType=VARCHAR},
-      sort = #{sort,jdbcType=INTEGER},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=INTEGER}
     where config_id = #{configId,jdbcType=INTEGER}
   </update>
   <insert id="insertBatchSelective" parameterType="java.util.List">
