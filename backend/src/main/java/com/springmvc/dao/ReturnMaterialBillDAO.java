@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.ReturnMaterialBill;
+import com.springmvc.dto.ReturnMaterialBill;
 import com.springmvc.pojo.ReturnMaterialBillQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

@@ -185,192 +185,192 @@ public class ModuleQuery {
         }
 
         public Criteria andModuleIdIsNull() {
-            addCriterion("module_id is null");
+            addCriterion("module.module_id is null");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdIsNotNull() {
-            addCriterion("module_id is not null");
+            addCriterion("module.module_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdEqualTo(Integer value) {
-            addCriterion("module_id =", value, "moduleId");
+            addCriterion("module.module_id =", value, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdNotEqualTo(Integer value) {
-            addCriterion("module_id <>", value, "moduleId");
+            addCriterion("module.module_id <>", value, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdGreaterThan(Integer value) {
-            addCriterion("module_id >", value, "moduleId");
+            addCriterion("module.module_id >", value, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("module_id >=", value, "moduleId");
+            addCriterion("module.module_id >=", value, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdLessThan(Integer value) {
-            addCriterion("module_id <", value, "moduleId");
+            addCriterion("module.module_id <", value, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("module_id <=", value, "moduleId");
+            addCriterion("module.module_id <=", value, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdIn(List<Integer> values) {
-            addCriterion("module_id in", values, "moduleId");
+            addCriterion("module.module_id in", values, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdNotIn(List<Integer> values) {
-            addCriterion("module_id not in", values, "moduleId");
+            addCriterion("module.module_id not in", values, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdBetween(Integer value1, Integer value2) {
-            addCriterion("module_id between", value1, value2, "moduleId");
+            addCriterion("module.module_id between", value1, value2, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("module_id not between", value1, value2, "moduleId");
+            addCriterion("module.module_id not between", value1, value2, "moduleId");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameIsNull() {
-            addCriterion("module_name is null");
+            addCriterion("module.module_name is null");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameIsNotNull() {
-            addCriterion("module_name is not null");
+            addCriterion("module.module_name is not null");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameEqualTo(String value) {
-            addCriterion("module_name =", value, "moduleName");
+            addCriterion("module.module_name =", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameNotEqualTo(String value) {
-            addCriterion("module_name <>", value, "moduleName");
+            addCriterion("module.module_name <>", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameGreaterThan(String value) {
-            addCriterion("module_name >", value, "moduleName");
+            addCriterion("module.module_name >", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameGreaterThanOrEqualTo(String value) {
-            addCriterion("module_name >=", value, "moduleName");
+            addCriterion("module.module_name >=", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameLessThan(String value) {
-            addCriterion("module_name <", value, "moduleName");
+            addCriterion("module.module_name <", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameLessThanOrEqualTo(String value) {
-            addCriterion("module_name <=", value, "moduleName");
+            addCriterion("module.module_name <=", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameLike(String value) {
-            addCriterion("module_name like", value, "moduleName");
+            addCriterion("module.module_name like", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameNotLike(String value) {
-            addCriterion("module_name not like", value, "moduleName");
+            addCriterion("module.module_name not like", value, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameIn(List<String> values) {
-            addCriterion("module_name in", values, "moduleName");
+            addCriterion("module.module_name in", values, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameNotIn(List<String> values) {
-            addCriterion("module_name not in", values, "moduleName");
+            addCriterion("module.module_name not in", values, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameBetween(String value1, String value2) {
-            addCriterion("module_name between", value1, value2, "moduleName");
+            addCriterion("module.module_name between", value1, value2, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andModuleNameNotBetween(String value1, String value2) {
-            addCriterion("module_name not between", value1, value2, "moduleName");
+            addCriterion("module.module_name not between", value1, value2, "moduleName");
             return (Criteria) this;
         }
 
         public Criteria andSortIsNull() {
-            addCriterion("sort is null");
+            addCriterion("module.sort is null");
             return (Criteria) this;
         }
 
         public Criteria andSortIsNotNull() {
-            addCriterion("sort is not null");
+            addCriterion("module.sort is not null");
             return (Criteria) this;
         }
 
         public Criteria andSortEqualTo(Integer value) {
-            addCriterion("sort =", value, "sort");
+            addCriterion("module.sort =", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortNotEqualTo(Integer value) {
-            addCriterion("sort <>", value, "sort");
+            addCriterion("module.sort <>", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortGreaterThan(Integer value) {
-            addCriterion("sort >", value, "sort");
+            addCriterion("module.sort >", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sort >=", value, "sort");
+            addCriterion("module.sort >=", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortLessThan(Integer value) {
-            addCriterion("sort <", value, "sort");
+            addCriterion("module.sort <", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortLessThanOrEqualTo(Integer value) {
-            addCriterion("sort <=", value, "sort");
+            addCriterion("module.sort <=", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortIn(List<Integer> values) {
-            addCriterion("sort in", values, "sort");
+            addCriterion("module.sort in", values, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortNotIn(List<Integer> values) {
-            addCriterion("sort not in", values, "sort");
+            addCriterion("module.sort not in", values, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortBetween(Integer value1, Integer value2) {
-            addCriterion("sort between", value1, value2, "sort");
+            addCriterion("module.sort between", value1, value2, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortNotBetween(Integer value1, Integer value2) {
-            addCriterion("sort not between", value1, value2, "sort");
+            addCriterion("module.sort not between", value1, value2, "sort");
             return (Criteria) this;
         }
     }

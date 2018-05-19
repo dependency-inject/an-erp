@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.OrderBillDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.OrderBill">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.OrderBill">
     <id column="bill_id" jdbcType="INTEGER" property="billId" />
     <result column="bill_no" jdbcType="VARCHAR" property="billNo" />
     <result column="salesman" jdbcType="INTEGER" property="salesman" />
@@ -124,7 +124,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.OrderBill">
+  <insert id="insert" parameterType="com.springmvc.dto.OrderBill">
     <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -143,7 +143,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.OrderBill">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.OrderBill">
     <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -363,7 +363,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.OrderBill">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.OrderBill">
     update order_bill
     <set>
       <if test="billNo != null">
@@ -426,7 +426,7 @@
     </set>
     where bill_id = #{billId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.OrderBill">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.OrderBill">
     update order_bill
     set bill_no = #{billNo,jdbcType=VARCHAR},
       salesman = #{salesman,jdbcType=INTEGER},

@@ -185,182 +185,182 @@ public class RolePermissionQuery {
         }
 
         public Criteria andRolePermissionIdIsNull() {
-            addCriterion("role_permission_id is null");
+            addCriterion("role_permission.role_permission_id is null");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdIsNotNull() {
-            addCriterion("role_permission_id is not null");
+            addCriterion("role_permission.role_permission_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdEqualTo(Integer value) {
-            addCriterion("role_permission_id =", value, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id =", value, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdNotEqualTo(Integer value) {
-            addCriterion("role_permission_id <>", value, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id <>", value, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdGreaterThan(Integer value) {
-            addCriterion("role_permission_id >", value, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id >", value, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("role_permission_id >=", value, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id >=", value, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdLessThan(Integer value) {
-            addCriterion("role_permission_id <", value, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id <", value, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdLessThanOrEqualTo(Integer value) {
-            addCriterion("role_permission_id <=", value, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id <=", value, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdIn(List<Integer> values) {
-            addCriterion("role_permission_id in", values, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id in", values, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdNotIn(List<Integer> values) {
-            addCriterion("role_permission_id not in", values, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id not in", values, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdBetween(Integer value1, Integer value2) {
-            addCriterion("role_permission_id between", value1, value2, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id between", value1, value2, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRolePermissionIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("role_permission_id not between", value1, value2, "rolePermissionId");
+            addCriterion("role_permission.role_permission_id not between", value1, value2, "rolePermissionId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdIsNull() {
-            addCriterion("role_id is null");
+            addCriterion("role_permission.role_id is null");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdIsNotNull() {
-            addCriterion("role_id is not null");
+            addCriterion("role_permission.role_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdEqualTo(Integer value) {
-            addCriterion("role_id =", value, "roleId");
+            addCriterion("role_permission.role_id =", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdNotEqualTo(Integer value) {
-            addCriterion("role_id <>", value, "roleId");
+            addCriterion("role_permission.role_id <>", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdGreaterThan(Integer value) {
-            addCriterion("role_id >", value, "roleId");
+            addCriterion("role_permission.role_id >", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("role_id >=", value, "roleId");
+            addCriterion("role_permission.role_id >=", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdLessThan(Integer value) {
-            addCriterion("role_id <", value, "roleId");
+            addCriterion("role_permission.role_id <", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("role_id <=", value, "roleId");
+            addCriterion("role_permission.role_id <=", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdIn(List<Integer> values) {
-            addCriterion("role_id in", values, "roleId");
+            addCriterion("role_permission.role_id in", values, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdNotIn(List<Integer> values) {
-            addCriterion("role_id not in", values, "roleId");
+            addCriterion("role_permission.role_id not in", values, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdBetween(Integer value1, Integer value2) {
-            addCriterion("role_id between", value1, value2, "roleId");
+            addCriterion("role_permission.role_id between", value1, value2, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("role_id not between", value1, value2, "roleId");
+            addCriterion("role_permission.role_id not between", value1, value2, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdIsNull() {
-            addCriterion("permission_id is null");
+            addCriterion("role_permission.permission_id is null");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdIsNotNull() {
-            addCriterion("permission_id is not null");
+            addCriterion("role_permission.permission_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdEqualTo(Integer value) {
-            addCriterion("permission_id =", value, "permissionId");
+            addCriterion("role_permission.permission_id =", value, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdNotEqualTo(Integer value) {
-            addCriterion("permission_id <>", value, "permissionId");
+            addCriterion("role_permission.permission_id <>", value, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdGreaterThan(Integer value) {
-            addCriterion("permission_id >", value, "permissionId");
+            addCriterion("role_permission.permission_id >", value, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("permission_id >=", value, "permissionId");
+            addCriterion("role_permission.permission_id >=", value, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdLessThan(Integer value) {
-            addCriterion("permission_id <", value, "permissionId");
+            addCriterion("role_permission.permission_id <", value, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdLessThanOrEqualTo(Integer value) {
-            addCriterion("permission_id <=", value, "permissionId");
+            addCriterion("role_permission.permission_id <=", value, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdIn(List<Integer> values) {
-            addCriterion("permission_id in", values, "permissionId");
+            addCriterion("role_permission.permission_id in", values, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdNotIn(List<Integer> values) {
-            addCriterion("permission_id not in", values, "permissionId");
+            addCriterion("role_permission.permission_id not in", values, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdBetween(Integer value1, Integer value2) {
-            addCriterion("permission_id between", value1, value2, "permissionId");
+            addCriterion("role_permission.permission_id between", value1, value2, "permissionId");
             return (Criteria) this;
         }
 
         public Criteria andPermissionIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("permission_id not between", value1, value2, "permissionId");
+            addCriterion("role_permission.permission_id not between", value1, value2, "permissionId");
             return (Criteria) this;
         }
     }

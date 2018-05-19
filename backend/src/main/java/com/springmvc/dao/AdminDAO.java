@@ -1,8 +1,11 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.Admin;
+import com.springmvc.dto.Admin;
+import com.springmvc.dto.Role;
 import com.springmvc.pojo.AdminQuery;
 import java.util.List;
+
+import com.springmvc.pojo.RoleQuery;
 import org.apache.ibatis.annotations.Param;
 
 public interface AdminDAO {
@@ -98,4 +101,11 @@ public interface AdminDAO {
      * @param records
      */
     int updateBatchByPrimaryKeySelective(List<Admin> records);
+
+    /**
+     *  根据指定的条件查询符合条件的数据库记录（关联admin_role,role表取出roleIdList,roleNameList）
+     *
+     * @param example
+     */
+    List<Admin> selectWithRoleByExample(AdminQuery example);
 }

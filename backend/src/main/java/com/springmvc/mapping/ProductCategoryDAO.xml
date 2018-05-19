@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.ProductCategoryDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.ProductCategory">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.ProductCategory">
     <id column="category_id" jdbcType="INTEGER" property="categoryId" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
@@ -110,7 +110,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.ProductCategory">
+  <insert id="insert" parameterType="com.springmvc.dto.ProductCategory">
     <selectKey keyProperty="categoryId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -121,7 +121,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.ProductCategory">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.ProductCategory">
     <selectKey keyProperty="categoryId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -221,7 +221,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.ProductCategory">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.ProductCategory">
     update product_category
     <set>
       <if test="categoryName != null">
@@ -248,7 +248,7 @@
     </set>
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.ProductCategory">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.ProductCategory">
     update product_category
     set category_name = #{categoryName,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},

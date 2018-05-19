@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.Client;
+import com.springmvc.dto.Client;
 import com.springmvc.pojo.ClientQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.OrderBillProduct;
+import com.springmvc.dto.OrderBillProduct;
 import com.springmvc.pojo.OrderBillProductQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

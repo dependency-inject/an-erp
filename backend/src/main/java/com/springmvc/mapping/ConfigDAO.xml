@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.ConfigDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Config">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.Config">
     <id column="config_id" jdbcType="INTEGER" property="configId" />
     <result column="config_name" jdbcType="VARCHAR" property="configName" />
     <result column="config_type" jdbcType="INTEGER" property="configType" />
@@ -109,7 +109,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Config">
+  <insert id="insert" parameterType="com.springmvc.dto.Config">
     <selectKey keyProperty="configId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -120,7 +120,7 @@
       #{sort,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.Config">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.Config">
     <selectKey keyProperty="configId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -210,7 +210,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Config">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.Config">
     update config
     <set>
       <if test="configName != null">
@@ -234,7 +234,7 @@
     </set>
     where config_id = #{configId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Config">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Config">
     update config
     set config_name = #{configName,jdbcType=VARCHAR},
       config_type = #{configType,jdbcType=INTEGER},

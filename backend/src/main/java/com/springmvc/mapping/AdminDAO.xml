@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.AdminDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Admin">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.Admin">
     <id column="admin_id" jdbcType="INTEGER" property="adminId" />
     <result column="login_name" jdbcType="VARCHAR" property="loginName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -114,7 +114,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Admin">
+  <insert id="insert" parameterType="com.springmvc.dto.Admin">
     <selectKey keyProperty="adminId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -127,7 +127,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.Admin">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.Admin">
     <selectKey keyProperty="adminId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -257,7 +257,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Admin">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.Admin">
     update admin
     <set>
       <if test="loginName != null">
@@ -293,7 +293,7 @@
     </set>
     where admin_id = #{adminId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Admin">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Admin">
     update admin
     set login_name = #{loginName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -415,4 +415,48 @@
       admin_id = #{item.adminId,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <!-- 关联admin_role,role表取出roleIdList,roleNameList -->
+  <resultMap id="ResultMapWithRole" type="com.springmvc.dto.Admin">
+    <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="true_name" jdbcType="VARCHAR" property="trueName" />
+    <result column="closed" jdbcType="BIT" property="closed" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="sys_default" jdbcType="BIT" property="sysDefault" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="role_id_list" jdbcType="VARCHAR" property="roleIdList" />
+    <result column="role_name_list" jdbcType="VARCHAR" property="roleNameList" />
+  </resultMap>
+  <select id="selectWithRoleByExample" parameterType="com.springmvc.pojo.AdminQuery" resultMap="ResultMapWithRole">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    admin.admin_id, admin.login_name, admin.password, admin.true_name, admin.closed, admin.mobile,
+    admin.sys_default, admin.create_at, admin.create_by, admin.update_at, admin.update_by,
+    group_concat(admin_role.role_id) as role_id_list, group_concat(role.role_name) as role_name_list
+    from admin
+    left join admin_role on admin.admin_id = admin_role.admin_id
+    left join role on admin_role.role_id = role.role_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    group by admin.admin_id
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>

@@ -185,382 +185,382 @@ public class ProductMaterialQuery {
         }
 
         public Criteria andProductMaterialIdIsNull() {
-            addCriterion("product_material_id is null");
+            addCriterion("product_material.product_material_id is null");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdIsNotNull() {
-            addCriterion("product_material_id is not null");
+            addCriterion("product_material.product_material_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdEqualTo(Integer value) {
-            addCriterion("product_material_id =", value, "productMaterialId");
+            addCriterion("product_material.product_material_id =", value, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdNotEqualTo(Integer value) {
-            addCriterion("product_material_id <>", value, "productMaterialId");
+            addCriterion("product_material.product_material_id <>", value, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdGreaterThan(Integer value) {
-            addCriterion("product_material_id >", value, "productMaterialId");
+            addCriterion("product_material.product_material_id >", value, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("product_material_id >=", value, "productMaterialId");
+            addCriterion("product_material.product_material_id >=", value, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdLessThan(Integer value) {
-            addCriterion("product_material_id <", value, "productMaterialId");
+            addCriterion("product_material.product_material_id <", value, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdLessThanOrEqualTo(Integer value) {
-            addCriterion("product_material_id <=", value, "productMaterialId");
+            addCriterion("product_material.product_material_id <=", value, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdIn(List<Integer> values) {
-            addCriterion("product_material_id in", values, "productMaterialId");
+            addCriterion("product_material.product_material_id in", values, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdNotIn(List<Integer> values) {
-            addCriterion("product_material_id not in", values, "productMaterialId");
+            addCriterion("product_material.product_material_id not in", values, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdBetween(Integer value1, Integer value2) {
-            addCriterion("product_material_id between", value1, value2, "productMaterialId");
+            addCriterion("product_material.product_material_id between", value1, value2, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductMaterialIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("product_material_id not between", value1, value2, "productMaterialId");
+            addCriterion("product_material.product_material_id not between", value1, value2, "productMaterialId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIsNull() {
-            addCriterion("product_id is null");
+            addCriterion("product_material.product_id is null");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIsNotNull() {
-            addCriterion("product_id is not null");
+            addCriterion("product_material.product_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andProductIdEqualTo(Integer value) {
-            addCriterion("product_id =", value, "productId");
+            addCriterion("product_material.product_id =", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotEqualTo(Integer value) {
-            addCriterion("product_id <>", value, "productId");
+            addCriterion("product_material.product_id <>", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdGreaterThan(Integer value) {
-            addCriterion("product_id >", value, "productId");
+            addCriterion("product_material.product_id >", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("product_id >=", value, "productId");
+            addCriterion("product_material.product_id >=", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdLessThan(Integer value) {
-            addCriterion("product_id <", value, "productId");
+            addCriterion("product_material.product_id <", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdLessThanOrEqualTo(Integer value) {
-            addCriterion("product_id <=", value, "productId");
+            addCriterion("product_material.product_id <=", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIn(List<Integer> values) {
-            addCriterion("product_id in", values, "productId");
+            addCriterion("product_material.product_id in", values, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotIn(List<Integer> values) {
-            addCriterion("product_id not in", values, "productId");
+            addCriterion("product_material.product_id not in", values, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdBetween(Integer value1, Integer value2) {
-            addCriterion("product_id between", value1, value2, "productId");
+            addCriterion("product_material.product_id between", value1, value2, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("product_id not between", value1, value2, "productId");
+            addCriterion("product_material.product_id not between", value1, value2, "productId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdIsNull() {
-            addCriterion("material_id is null");
+            addCriterion("product_material.material_id is null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdIsNotNull() {
-            addCriterion("material_id is not null");
+            addCriterion("product_material.material_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdEqualTo(Integer value) {
-            addCriterion("material_id =", value, "materialId");
+            addCriterion("product_material.material_id =", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdNotEqualTo(Integer value) {
-            addCriterion("material_id <>", value, "materialId");
+            addCriterion("product_material.material_id <>", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdGreaterThan(Integer value) {
-            addCriterion("material_id >", value, "materialId");
+            addCriterion("product_material.material_id >", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("material_id >=", value, "materialId");
+            addCriterion("product_material.material_id >=", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdLessThan(Integer value) {
-            addCriterion("material_id <", value, "materialId");
+            addCriterion("product_material.material_id <", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdLessThanOrEqualTo(Integer value) {
-            addCriterion("material_id <=", value, "materialId");
+            addCriterion("product_material.material_id <=", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdIn(List<Integer> values) {
-            addCriterion("material_id in", values, "materialId");
+            addCriterion("product_material.material_id in", values, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdNotIn(List<Integer> values) {
-            addCriterion("material_id not in", values, "materialId");
+            addCriterion("product_material.material_id not in", values, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdBetween(Integer value1, Integer value2) {
-            addCriterion("material_id between", value1, value2, "materialId");
+            addCriterion("product_material.material_id between", value1, value2, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("material_id not between", value1, value2, "materialId");
+            addCriterion("product_material.material_id not between", value1, value2, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIsNull() {
-            addCriterion("quantity is null");
+            addCriterion("product_material.quantity is null");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIsNotNull() {
-            addCriterion("quantity is not null");
+            addCriterion("product_material.quantity is not null");
             return (Criteria) this;
         }
 
         public Criteria andQuantityEqualTo(Integer value) {
-            addCriterion("quantity =", value, "quantity");
+            addCriterion("product_material.quantity =", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotEqualTo(Integer value) {
-            addCriterion("quantity <>", value, "quantity");
+            addCriterion("product_material.quantity <>", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityGreaterThan(Integer value) {
-            addCriterion("quantity >", value, "quantity");
+            addCriterion("product_material.quantity >", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityGreaterThanOrEqualTo(Integer value) {
-            addCriterion("quantity >=", value, "quantity");
+            addCriterion("product_material.quantity >=", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityLessThan(Integer value) {
-            addCriterion("quantity <", value, "quantity");
+            addCriterion("product_material.quantity <", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityLessThanOrEqualTo(Integer value) {
-            addCriterion("quantity <=", value, "quantity");
+            addCriterion("product_material.quantity <=", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIn(List<Integer> values) {
-            addCriterion("quantity in", values, "quantity");
+            addCriterion("product_material.quantity in", values, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotIn(List<Integer> values) {
-            addCriterion("quantity not in", values, "quantity");
+            addCriterion("product_material.quantity not in", values, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityBetween(Integer value1, Integer value2) {
-            addCriterion("quantity between", value1, value2, "quantity");
+            addCriterion("product_material.quantity between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotBetween(Integer value1, Integer value2) {
-            addCriterion("quantity not between", value1, value2, "quantity");
+            addCriterion("product_material.quantity not between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyIsNull() {
-            addCriterion("material_property is null");
+            addCriterion("product_material.material_property is null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyIsNotNull() {
-            addCriterion("material_property is not null");
+            addCriterion("product_material.material_property is not null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyEqualTo(String value) {
-            addCriterion("material_property =", value, "materialProperty");
+            addCriterion("product_material.material_property =", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyNotEqualTo(String value) {
-            addCriterion("material_property <>", value, "materialProperty");
+            addCriterion("product_material.material_property <>", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyGreaterThan(String value) {
-            addCriterion("material_property >", value, "materialProperty");
+            addCriterion("product_material.material_property >", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyGreaterThanOrEqualTo(String value) {
-            addCriterion("material_property >=", value, "materialProperty");
+            addCriterion("product_material.material_property >=", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyLessThan(String value) {
-            addCriterion("material_property <", value, "materialProperty");
+            addCriterion("product_material.material_property <", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyLessThanOrEqualTo(String value) {
-            addCriterion("material_property <=", value, "materialProperty");
+            addCriterion("product_material.material_property <=", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyLike(String value) {
-            addCriterion("material_property like", value, "materialProperty");
+            addCriterion("product_material.material_property like", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyNotLike(String value) {
-            addCriterion("material_property not like", value, "materialProperty");
+            addCriterion("product_material.material_property not like", value, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyIn(List<String> values) {
-            addCriterion("material_property in", values, "materialProperty");
+            addCriterion("product_material.material_property in", values, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyNotIn(List<String> values) {
-            addCriterion("material_property not in", values, "materialProperty");
+            addCriterion("product_material.material_property not in", values, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyBetween(String value1, String value2) {
-            addCriterion("material_property between", value1, value2, "materialProperty");
+            addCriterion("product_material.material_property between", value1, value2, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andMaterialPropertyNotBetween(String value1, String value2) {
-            addCriterion("material_property not between", value1, value2, "materialProperty");
+            addCriterion("product_material.material_property not between", value1, value2, "materialProperty");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
+            addCriterion("product_material.remark is null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
+            addCriterion("product_material.remark is not null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
+            addCriterion("product_material.remark =", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
+            addCriterion("product_material.remark <>", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
+            addCriterion("product_material.remark >", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
+            addCriterion("product_material.remark >=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
+            addCriterion("product_material.remark <", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
+            addCriterion("product_material.remark <=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
+            addCriterion("product_material.remark like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
+            addCriterion("product_material.remark not like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
+            addCriterion("product_material.remark in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
+            addCriterion("product_material.remark not in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
+            addCriterion("product_material.remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
+            addCriterion("product_material.remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
     }

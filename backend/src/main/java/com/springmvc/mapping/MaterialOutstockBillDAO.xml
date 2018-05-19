@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.MaterialOutstockBillDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.MaterialOutstockBill">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.MaterialOutstockBill">
     <id column="bill_id" jdbcType="INTEGER" property="billId" />
     <result column="bill_no" jdbcType="VARCHAR" property="billNo" />
     <result column="to_principal" jdbcType="INTEGER" property="toPrincipal" />
@@ -121,7 +121,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.MaterialOutstockBill">
+  <insert id="insert" parameterType="com.springmvc.dto.MaterialOutstockBill">
     <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -138,7 +138,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.MaterialOutstockBill">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.MaterialOutstockBill">
     <selectKey keyProperty="billId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -328,7 +328,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.MaterialOutstockBill">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.MaterialOutstockBill">
     update material_outstock_bill
     <set>
       <if test="billNo != null">
@@ -382,7 +382,7 @@
     </set>
     where bill_id = #{billId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.MaterialOutstockBill">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.MaterialOutstockBill">
     update material_outstock_bill
     set bill_no = #{billNo,jdbcType=VARCHAR},
       to_principal = #{toPrincipal,jdbcType=INTEGER},

@@ -185,502 +185,502 @@ public class ProductOutstockBillProductQuery {
         }
 
         public Criteria andBillProductIdIsNull() {
-            addCriterion("bill_product_id is null");
+            addCriterion("product_outstock_bill_product.bill_product_id is null");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdIsNotNull() {
-            addCriterion("bill_product_id is not null");
+            addCriterion("product_outstock_bill_product.bill_product_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdEqualTo(Integer value) {
-            addCriterion("bill_product_id =", value, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id =", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdNotEqualTo(Integer value) {
-            addCriterion("bill_product_id <>", value, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id <>", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdGreaterThan(Integer value) {
-            addCriterion("bill_product_id >", value, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id >", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("bill_product_id >=", value, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id >=", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdLessThan(Integer value) {
-            addCriterion("bill_product_id <", value, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id <", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdLessThanOrEqualTo(Integer value) {
-            addCriterion("bill_product_id <=", value, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id <=", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdIn(List<Integer> values) {
-            addCriterion("bill_product_id in", values, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id in", values, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdNotIn(List<Integer> values) {
-            addCriterion("bill_product_id not in", values, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id not in", values, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdBetween(Integer value1, Integer value2) {
-            addCriterion("bill_product_id between", value1, value2, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id between", value1, value2, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("bill_product_id not between", value1, value2, "billProductId");
+            addCriterion("product_outstock_bill_product.bill_product_id not between", value1, value2, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdIsNull() {
-            addCriterion("bill_id is null");
+            addCriterion("product_outstock_bill_product.bill_id is null");
             return (Criteria) this;
         }
 
         public Criteria andBillIdIsNotNull() {
-            addCriterion("bill_id is not null");
+            addCriterion("product_outstock_bill_product.bill_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andBillIdEqualTo(Integer value) {
-            addCriterion("bill_id =", value, "billId");
+            addCriterion("product_outstock_bill_product.bill_id =", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdNotEqualTo(Integer value) {
-            addCriterion("bill_id <>", value, "billId");
+            addCriterion("product_outstock_bill_product.bill_id <>", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdGreaterThan(Integer value) {
-            addCriterion("bill_id >", value, "billId");
+            addCriterion("product_outstock_bill_product.bill_id >", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("bill_id >=", value, "billId");
+            addCriterion("product_outstock_bill_product.bill_id >=", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdLessThan(Integer value) {
-            addCriterion("bill_id <", value, "billId");
+            addCriterion("product_outstock_bill_product.bill_id <", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdLessThanOrEqualTo(Integer value) {
-            addCriterion("bill_id <=", value, "billId");
+            addCriterion("product_outstock_bill_product.bill_id <=", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdIn(List<Integer> values) {
-            addCriterion("bill_id in", values, "billId");
+            addCriterion("product_outstock_bill_product.bill_id in", values, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdNotIn(List<Integer> values) {
-            addCriterion("bill_id not in", values, "billId");
+            addCriterion("product_outstock_bill_product.bill_id not in", values, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdBetween(Integer value1, Integer value2) {
-            addCriterion("bill_id between", value1, value2, "billId");
+            addCriterion("product_outstock_bill_product.bill_id between", value1, value2, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("bill_id not between", value1, value2, "billId");
+            addCriterion("product_outstock_bill_product.bill_id not between", value1, value2, "billId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIsNull() {
-            addCriterion("product_id is null");
+            addCriterion("product_outstock_bill_product.product_id is null");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIsNotNull() {
-            addCriterion("product_id is not null");
+            addCriterion("product_outstock_bill_product.product_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andProductIdEqualTo(Integer value) {
-            addCriterion("product_id =", value, "productId");
+            addCriterion("product_outstock_bill_product.product_id =", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotEqualTo(Integer value) {
-            addCriterion("product_id <>", value, "productId");
+            addCriterion("product_outstock_bill_product.product_id <>", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdGreaterThan(Integer value) {
-            addCriterion("product_id >", value, "productId");
+            addCriterion("product_outstock_bill_product.product_id >", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("product_id >=", value, "productId");
+            addCriterion("product_outstock_bill_product.product_id >=", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdLessThan(Integer value) {
-            addCriterion("product_id <", value, "productId");
+            addCriterion("product_outstock_bill_product.product_id <", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdLessThanOrEqualTo(Integer value) {
-            addCriterion("product_id <=", value, "productId");
+            addCriterion("product_outstock_bill_product.product_id <=", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIn(List<Integer> values) {
-            addCriterion("product_id in", values, "productId");
+            addCriterion("product_outstock_bill_product.product_id in", values, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotIn(List<Integer> values) {
-            addCriterion("product_id not in", values, "productId");
+            addCriterion("product_outstock_bill_product.product_id not in", values, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdBetween(Integer value1, Integer value2) {
-            addCriterion("product_id between", value1, value2, "productId");
+            addCriterion("product_outstock_bill_product.product_id between", value1, value2, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("product_id not between", value1, value2, "productId");
+            addCriterion("product_outstock_bill_product.product_id not between", value1, value2, "productId");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIsNull() {
-            addCriterion("quantity is null");
+            addCriterion("product_outstock_bill_product.quantity is null");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIsNotNull() {
-            addCriterion("quantity is not null");
+            addCriterion("product_outstock_bill_product.quantity is not null");
             return (Criteria) this;
         }
 
         public Criteria andQuantityEqualTo(Integer value) {
-            addCriterion("quantity =", value, "quantity");
+            addCriterion("product_outstock_bill_product.quantity =", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotEqualTo(Integer value) {
-            addCriterion("quantity <>", value, "quantity");
+            addCriterion("product_outstock_bill_product.quantity <>", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityGreaterThan(Integer value) {
-            addCriterion("quantity >", value, "quantity");
+            addCriterion("product_outstock_bill_product.quantity >", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityGreaterThanOrEqualTo(Integer value) {
-            addCriterion("quantity >=", value, "quantity");
+            addCriterion("product_outstock_bill_product.quantity >=", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityLessThan(Integer value) {
-            addCriterion("quantity <", value, "quantity");
+            addCriterion("product_outstock_bill_product.quantity <", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityLessThanOrEqualTo(Integer value) {
-            addCriterion("quantity <=", value, "quantity");
+            addCriterion("product_outstock_bill_product.quantity <=", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIn(List<Integer> values) {
-            addCriterion("quantity in", values, "quantity");
+            addCriterion("product_outstock_bill_product.quantity in", values, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotIn(List<Integer> values) {
-            addCriterion("quantity not in", values, "quantity");
+            addCriterion("product_outstock_bill_product.quantity not in", values, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityBetween(Integer value1, Integer value2) {
-            addCriterion("quantity between", value1, value2, "quantity");
+            addCriterion("product_outstock_bill_product.quantity between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotBetween(Integer value1, Integer value2) {
-            addCriterion("quantity not between", value1, value2, "quantity");
+            addCriterion("product_outstock_bill_product.quantity not between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalIsNull() {
-            addCriterion("principal is null");
+            addCriterion("product_outstock_bill_product.principal is null");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalIsNotNull() {
-            addCriterion("principal is not null");
+            addCriterion("product_outstock_bill_product.principal is not null");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalEqualTo(Integer value) {
-            addCriterion("principal =", value, "principal");
+            addCriterion("product_outstock_bill_product.principal =", value, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalNotEqualTo(Integer value) {
-            addCriterion("principal <>", value, "principal");
+            addCriterion("product_outstock_bill_product.principal <>", value, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalGreaterThan(Integer value) {
-            addCriterion("principal >", value, "principal");
+            addCriterion("product_outstock_bill_product.principal >", value, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalGreaterThanOrEqualTo(Integer value) {
-            addCriterion("principal >=", value, "principal");
+            addCriterion("product_outstock_bill_product.principal >=", value, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalLessThan(Integer value) {
-            addCriterion("principal <", value, "principal");
+            addCriterion("product_outstock_bill_product.principal <", value, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalLessThanOrEqualTo(Integer value) {
-            addCriterion("principal <=", value, "principal");
+            addCriterion("product_outstock_bill_product.principal <=", value, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalIn(List<Integer> values) {
-            addCriterion("principal in", values, "principal");
+            addCriterion("product_outstock_bill_product.principal in", values, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalNotIn(List<Integer> values) {
-            addCriterion("principal not in", values, "principal");
+            addCriterion("product_outstock_bill_product.principal not in", values, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalBetween(Integer value1, Integer value2) {
-            addCriterion("principal between", value1, value2, "principal");
+            addCriterion("product_outstock_bill_product.principal between", value1, value2, "principal");
             return (Criteria) this;
         }
 
         public Criteria andPrincipalNotBetween(Integer value1, Integer value2) {
-            addCriterion("principal not between", value1, value2, "principal");
+            addCriterion("product_outstock_bill_product.principal not between", value1, value2, "principal");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIsNull() {
-            addCriterion("warehouse is null");
+            addCriterion("product_outstock_bill_product.warehouse is null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIsNotNull() {
-            addCriterion("warehouse is not null");
+            addCriterion("product_outstock_bill_product.warehouse is not null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseEqualTo(Integer value) {
-            addCriterion("warehouse =", value, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse =", value, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNotEqualTo(Integer value) {
-            addCriterion("warehouse <>", value, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse <>", value, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseGreaterThan(Integer value) {
-            addCriterion("warehouse >", value, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse >", value, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseGreaterThanOrEqualTo(Integer value) {
-            addCriterion("warehouse >=", value, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse >=", value, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseLessThan(Integer value) {
-            addCriterion("warehouse <", value, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse <", value, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseLessThanOrEqualTo(Integer value) {
-            addCriterion("warehouse <=", value, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse <=", value, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIn(List<Integer> values) {
-            addCriterion("warehouse in", values, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse in", values, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNotIn(List<Integer> values) {
-            addCriterion("warehouse not in", values, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse not in", values, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseBetween(Integer value1, Integer value2) {
-            addCriterion("warehouse between", value1, value2, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse between", value1, value2, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNotBetween(Integer value1, Integer value2) {
-            addCriterion("warehouse not between", value1, value2, "warehouse");
+            addCriterion("product_outstock_bill_product.warehouse not between", value1, value2, "warehouse");
             return (Criteria) this;
         }
 
         public Criteria andPlaceIsNull() {
-            addCriterion("place is null");
+            addCriterion("product_outstock_bill_product.place is null");
             return (Criteria) this;
         }
 
         public Criteria andPlaceIsNotNull() {
-            addCriterion("place is not null");
+            addCriterion("product_outstock_bill_product.place is not null");
             return (Criteria) this;
         }
 
         public Criteria andPlaceEqualTo(String value) {
-            addCriterion("place =", value, "place");
+            addCriterion("product_outstock_bill_product.place =", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceNotEqualTo(String value) {
-            addCriterion("place <>", value, "place");
+            addCriterion("product_outstock_bill_product.place <>", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceGreaterThan(String value) {
-            addCriterion("place >", value, "place");
+            addCriterion("product_outstock_bill_product.place >", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceGreaterThanOrEqualTo(String value) {
-            addCriterion("place >=", value, "place");
+            addCriterion("product_outstock_bill_product.place >=", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceLessThan(String value) {
-            addCriterion("place <", value, "place");
+            addCriterion("product_outstock_bill_product.place <", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceLessThanOrEqualTo(String value) {
-            addCriterion("place <=", value, "place");
+            addCriterion("product_outstock_bill_product.place <=", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceLike(String value) {
-            addCriterion("place like", value, "place");
+            addCriterion("product_outstock_bill_product.place like", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceNotLike(String value) {
-            addCriterion("place not like", value, "place");
+            addCriterion("product_outstock_bill_product.place not like", value, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceIn(List<String> values) {
-            addCriterion("place in", values, "place");
+            addCriterion("product_outstock_bill_product.place in", values, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceNotIn(List<String> values) {
-            addCriterion("place not in", values, "place");
+            addCriterion("product_outstock_bill_product.place not in", values, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceBetween(String value1, String value2) {
-            addCriterion("place between", value1, value2, "place");
+            addCriterion("product_outstock_bill_product.place between", value1, value2, "place");
             return (Criteria) this;
         }
 
         public Criteria andPlaceNotBetween(String value1, String value2) {
-            addCriterion("place not between", value1, value2, "place");
+            addCriterion("product_outstock_bill_product.place not between", value1, value2, "place");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
+            addCriterion("product_outstock_bill_product.remark is null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
+            addCriterion("product_outstock_bill_product.remark is not null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
+            addCriterion("product_outstock_bill_product.remark =", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
+            addCriterion("product_outstock_bill_product.remark <>", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
+            addCriterion("product_outstock_bill_product.remark >", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
+            addCriterion("product_outstock_bill_product.remark >=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
+            addCriterion("product_outstock_bill_product.remark <", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
+            addCriterion("product_outstock_bill_product.remark <=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
+            addCriterion("product_outstock_bill_product.remark like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
+            addCriterion("product_outstock_bill_product.remark not like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
+            addCriterion("product_outstock_bill_product.remark in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
+            addCriterion("product_outstock_bill_product.remark not in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
+            addCriterion("product_outstock_bill_product.remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
+            addCriterion("product_outstock_bill_product.remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
     }

@@ -186,492 +186,492 @@ public class MaterialCategoryQuery {
         }
 
         public Criteria andCategoryIdIsNull() {
-            addCriterion("category_id is null");
+            addCriterion("material_category.category_id is null");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdIsNotNull() {
-            addCriterion("category_id is not null");
+            addCriterion("material_category.category_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdEqualTo(Integer value) {
-            addCriterion("category_id =", value, "categoryId");
+            addCriterion("material_category.category_id =", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdNotEqualTo(Integer value) {
-            addCriterion("category_id <>", value, "categoryId");
+            addCriterion("material_category.category_id <>", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdGreaterThan(Integer value) {
-            addCriterion("category_id >", value, "categoryId");
+            addCriterion("material_category.category_id >", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("category_id >=", value, "categoryId");
+            addCriterion("material_category.category_id >=", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdLessThan(Integer value) {
-            addCriterion("category_id <", value, "categoryId");
+            addCriterion("material_category.category_id <", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdLessThanOrEqualTo(Integer value) {
-            addCriterion("category_id <=", value, "categoryId");
+            addCriterion("material_category.category_id <=", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdIn(List<Integer> values) {
-            addCriterion("category_id in", values, "categoryId");
+            addCriterion("material_category.category_id in", values, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdNotIn(List<Integer> values) {
-            addCriterion("category_id not in", values, "categoryId");
+            addCriterion("material_category.category_id not in", values, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdBetween(Integer value1, Integer value2) {
-            addCriterion("category_id between", value1, value2, "categoryId");
+            addCriterion("material_category.category_id between", value1, value2, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("category_id not between", value1, value2, "categoryId");
+            addCriterion("material_category.category_id not between", value1, value2, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameIsNull() {
-            addCriterion("category_name is null");
+            addCriterion("material_category.category_name is null");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameIsNotNull() {
-            addCriterion("category_name is not null");
+            addCriterion("material_category.category_name is not null");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameEqualTo(String value) {
-            addCriterion("category_name =", value, "categoryName");
+            addCriterion("material_category.category_name =", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameNotEqualTo(String value) {
-            addCriterion("category_name <>", value, "categoryName");
+            addCriterion("material_category.category_name <>", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameGreaterThan(String value) {
-            addCriterion("category_name >", value, "categoryName");
+            addCriterion("material_category.category_name >", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameGreaterThanOrEqualTo(String value) {
-            addCriterion("category_name >=", value, "categoryName");
+            addCriterion("material_category.category_name >=", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameLessThan(String value) {
-            addCriterion("category_name <", value, "categoryName");
+            addCriterion("material_category.category_name <", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameLessThanOrEqualTo(String value) {
-            addCriterion("category_name <=", value, "categoryName");
+            addCriterion("material_category.category_name <=", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameLike(String value) {
-            addCriterion("category_name like", value, "categoryName");
+            addCriterion("material_category.category_name like", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameNotLike(String value) {
-            addCriterion("category_name not like", value, "categoryName");
+            addCriterion("material_category.category_name not like", value, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameIn(List<String> values) {
-            addCriterion("category_name in", values, "categoryName");
+            addCriterion("material_category.category_name in", values, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameNotIn(List<String> values) {
-            addCriterion("category_name not in", values, "categoryName");
+            addCriterion("material_category.category_name not in", values, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameBetween(String value1, String value2) {
-            addCriterion("category_name between", value1, value2, "categoryName");
+            addCriterion("material_category.category_name between", value1, value2, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andCategoryNameNotBetween(String value1, String value2) {
-            addCriterion("category_name not between", value1, value2, "categoryName");
+            addCriterion("material_category.category_name not between", value1, value2, "categoryName");
             return (Criteria) this;
         }
 
         public Criteria andParentIdIsNull() {
-            addCriterion("parent_id is null");
+            addCriterion("material_category.parent_id is null");
             return (Criteria) this;
         }
 
         public Criteria andParentIdIsNotNull() {
-            addCriterion("parent_id is not null");
+            addCriterion("material_category.parent_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andParentIdEqualTo(Integer value) {
-            addCriterion("parent_id =", value, "parentId");
+            addCriterion("material_category.parent_id =", value, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdNotEqualTo(Integer value) {
-            addCriterion("parent_id <>", value, "parentId");
+            addCriterion("material_category.parent_id <>", value, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdGreaterThan(Integer value) {
-            addCriterion("parent_id >", value, "parentId");
+            addCriterion("material_category.parent_id >", value, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("parent_id >=", value, "parentId");
+            addCriterion("material_category.parent_id >=", value, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdLessThan(Integer value) {
-            addCriterion("parent_id <", value, "parentId");
+            addCriterion("material_category.parent_id <", value, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdLessThanOrEqualTo(Integer value) {
-            addCriterion("parent_id <=", value, "parentId");
+            addCriterion("material_category.parent_id <=", value, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdIn(List<Integer> values) {
-            addCriterion("parent_id in", values, "parentId");
+            addCriterion("material_category.parent_id in", values, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdNotIn(List<Integer> values) {
-            addCriterion("parent_id not in", values, "parentId");
+            addCriterion("material_category.parent_id not in", values, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdBetween(Integer value1, Integer value2) {
-            addCriterion("parent_id between", value1, value2, "parentId");
+            addCriterion("material_category.parent_id between", value1, value2, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andParentIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("parent_id not between", value1, value2, "parentId");
+            addCriterion("material_category.parent_id not between", value1, value2, "parentId");
             return (Criteria) this;
         }
 
         public Criteria andSortIsNull() {
-            addCriterion("sort is null");
+            addCriterion("material_category.sort is null");
             return (Criteria) this;
         }
 
         public Criteria andSortIsNotNull() {
-            addCriterion("sort is not null");
+            addCriterion("material_category.sort is not null");
             return (Criteria) this;
         }
 
         public Criteria andSortEqualTo(Integer value) {
-            addCriterion("sort =", value, "sort");
+            addCriterion("material_category.sort =", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortNotEqualTo(Integer value) {
-            addCriterion("sort <>", value, "sort");
+            addCriterion("material_category.sort <>", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortGreaterThan(Integer value) {
-            addCriterion("sort >", value, "sort");
+            addCriterion("material_category.sort >", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sort >=", value, "sort");
+            addCriterion("material_category.sort >=", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortLessThan(Integer value) {
-            addCriterion("sort <", value, "sort");
+            addCriterion("material_category.sort <", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortLessThanOrEqualTo(Integer value) {
-            addCriterion("sort <=", value, "sort");
+            addCriterion("material_category.sort <=", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortIn(List<Integer> values) {
-            addCriterion("sort in", values, "sort");
+            addCriterion("material_category.sort in", values, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortNotIn(List<Integer> values) {
-            addCriterion("sort not in", values, "sort");
+            addCriterion("material_category.sort not in", values, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortBetween(Integer value1, Integer value2) {
-            addCriterion("sort between", value1, value2, "sort");
+            addCriterion("material_category.sort between", value1, value2, "sort");
             return (Criteria) this;
         }
 
         public Criteria andSortNotBetween(Integer value1, Integer value2) {
-            addCriterion("sort not between", value1, value2, "sort");
+            addCriterion("material_category.sort not between", value1, value2, "sort");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNull() {
-            addCriterion("create_at is null");
+            addCriterion("material_category.create_at is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNotNull() {
-            addCriterion("create_at is not null");
+            addCriterion("material_category.create_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtEqualTo(Date value) {
-            addCriterion("create_at =", value, "createAt");
+            addCriterion("material_category.create_at =", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotEqualTo(Date value) {
-            addCriterion("create_at <>", value, "createAt");
+            addCriterion("material_category.create_at <>", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThan(Date value) {
-            addCriterion("create_at >", value, "createAt");
+            addCriterion("material_category.create_at >", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("create_at >=", value, "createAt");
+            addCriterion("material_category.create_at >=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThan(Date value) {
-            addCriterion("create_at <", value, "createAt");
+            addCriterion("material_category.create_at <", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThanOrEqualTo(Date value) {
-            addCriterion("create_at <=", value, "createAt");
+            addCriterion("material_category.create_at <=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIn(List<Date> values) {
-            addCriterion("create_at in", values, "createAt");
+            addCriterion("material_category.create_at in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotIn(List<Date> values) {
-            addCriterion("create_at not in", values, "createAt");
+            addCriterion("material_category.create_at not in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtBetween(Date value1, Date value2) {
-            addCriterion("create_at between", value1, value2, "createAt");
+            addCriterion("material_category.create_at between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotBetween(Date value1, Date value2) {
-            addCriterion("create_at not between", value1, value2, "createAt");
+            addCriterion("material_category.create_at not between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNull() {
-            addCriterion("create_by is null");
+            addCriterion("material_category.create_by is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNotNull() {
-            addCriterion("create_by is not null");
+            addCriterion("material_category.create_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByEqualTo(Integer value) {
-            addCriterion("create_by =", value, "createBy");
+            addCriterion("material_category.create_by =", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotEqualTo(Integer value) {
-            addCriterion("create_by <>", value, "createBy");
+            addCriterion("material_category.create_by <>", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThan(Integer value) {
-            addCriterion("create_by >", value, "createBy");
+            addCriterion("material_category.create_by >", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("create_by >=", value, "createBy");
+            addCriterion("material_category.create_by >=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThan(Integer value) {
-            addCriterion("create_by <", value, "createBy");
+            addCriterion("material_category.create_by <", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThanOrEqualTo(Integer value) {
-            addCriterion("create_by <=", value, "createBy");
+            addCriterion("material_category.create_by <=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIn(List<Integer> values) {
-            addCriterion("create_by in", values, "createBy");
+            addCriterion("material_category.create_by in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotIn(List<Integer> values) {
-            addCriterion("create_by not in", values, "createBy");
+            addCriterion("material_category.create_by not in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByBetween(Integer value1, Integer value2) {
-            addCriterion("create_by between", value1, value2, "createBy");
+            addCriterion("material_category.create_by between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("create_by not between", value1, value2, "createBy");
+            addCriterion("material_category.create_by not between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNull() {
-            addCriterion("update_at is null");
+            addCriterion("material_category.update_at is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNotNull() {
-            addCriterion("update_at is not null");
+            addCriterion("material_category.update_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtEqualTo(Date value) {
-            addCriterion("update_at =", value, "updateAt");
+            addCriterion("material_category.update_at =", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotEqualTo(Date value) {
-            addCriterion("update_at <>", value, "updateAt");
+            addCriterion("material_category.update_at <>", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThan(Date value) {
-            addCriterion("update_at >", value, "updateAt");
+            addCriterion("material_category.update_at >", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("update_at >=", value, "updateAt");
+            addCriterion("material_category.update_at >=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThan(Date value) {
-            addCriterion("update_at <", value, "updateAt");
+            addCriterion("material_category.update_at <", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThanOrEqualTo(Date value) {
-            addCriterion("update_at <=", value, "updateAt");
+            addCriterion("material_category.update_at <=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIn(List<Date> values) {
-            addCriterion("update_at in", values, "updateAt");
+            addCriterion("material_category.update_at in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotIn(List<Date> values) {
-            addCriterion("update_at not in", values, "updateAt");
+            addCriterion("material_category.update_at not in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtBetween(Date value1, Date value2) {
-            addCriterion("update_at between", value1, value2, "updateAt");
+            addCriterion("material_category.update_at between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
-            addCriterion("update_at not between", value1, value2, "updateAt");
+            addCriterion("material_category.update_at not between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNull() {
-            addCriterion("update_by is null");
+            addCriterion("material_category.update_by is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNotNull() {
-            addCriterion("update_by is not null");
+            addCriterion("material_category.update_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByEqualTo(Integer value) {
-            addCriterion("update_by =", value, "updateBy");
+            addCriterion("material_category.update_by =", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotEqualTo(Integer value) {
-            addCriterion("update_by <>", value, "updateBy");
+            addCriterion("material_category.update_by <>", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThan(Integer value) {
-            addCriterion("update_by >", value, "updateBy");
+            addCriterion("material_category.update_by >", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("update_by >=", value, "updateBy");
+            addCriterion("material_category.update_by >=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThan(Integer value) {
-            addCriterion("update_by <", value, "updateBy");
+            addCriterion("material_category.update_by <", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThanOrEqualTo(Integer value) {
-            addCriterion("update_by <=", value, "updateBy");
+            addCriterion("material_category.update_by <=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIn(List<Integer> values) {
-            addCriterion("update_by in", values, "updateBy");
+            addCriterion("material_category.update_by in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotIn(List<Integer> values) {
-            addCriterion("update_by not in", values, "updateBy");
+            addCriterion("material_category.update_by not in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByBetween(Integer value1, Integer value2) {
-            addCriterion("update_by between", value1, value2, "updateBy");
+            addCriterion("material_category.update_by between", value1, value2, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("update_by not between", value1, value2, "updateBy");
+            addCriterion("material_category.update_by not between", value1, value2, "updateBy");
             return (Criteria) this;
         }
     }

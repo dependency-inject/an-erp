@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.SupplierMaterialDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.SupplierMaterial">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.SupplierMaterial">
     <id column="supplier_material_id" jdbcType="INTEGER" property="supplierMaterialId" />
     <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
     <result column="material_id" jdbcType="INTEGER" property="materialId" />
@@ -107,7 +107,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.SupplierMaterial">
+  <insert id="insert" parameterType="com.springmvc.dto.SupplierMaterial">
     <selectKey keyProperty="supplierMaterialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -116,7 +116,7 @@
     values (#{supplierId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.SupplierMaterial">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.SupplierMaterial">
     <selectKey keyProperty="supplierMaterialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -186,7 +186,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.SupplierMaterial">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.SupplierMaterial">
     update supplier_material
     <set>
       <if test="supplierId != null">
@@ -204,7 +204,7 @@
     </set>
     where supplier_material_id = #{supplierMaterialId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.SupplierMaterial">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.SupplierMaterial">
     update supplier_material
     set supplier_id = #{supplierId,jdbcType=INTEGER},
       material_id = #{materialId,jdbcType=INTEGER},

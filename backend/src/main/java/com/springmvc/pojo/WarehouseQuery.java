@@ -186,442 +186,442 @@ public class WarehouseQuery {
         }
 
         public Criteria andWarehouseIdIsNull() {
-            addCriterion("warehouse_id is null");
+            addCriterion("warehouse.warehouse_id is null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdIsNotNull() {
-            addCriterion("warehouse_id is not null");
+            addCriterion("warehouse.warehouse_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdEqualTo(Integer value) {
-            addCriterion("warehouse_id =", value, "warehouseId");
+            addCriterion("warehouse.warehouse_id =", value, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdNotEqualTo(Integer value) {
-            addCriterion("warehouse_id <>", value, "warehouseId");
+            addCriterion("warehouse.warehouse_id <>", value, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdGreaterThan(Integer value) {
-            addCriterion("warehouse_id >", value, "warehouseId");
+            addCriterion("warehouse.warehouse_id >", value, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("warehouse_id >=", value, "warehouseId");
+            addCriterion("warehouse.warehouse_id >=", value, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdLessThan(Integer value) {
-            addCriterion("warehouse_id <", value, "warehouseId");
+            addCriterion("warehouse.warehouse_id <", value, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdLessThanOrEqualTo(Integer value) {
-            addCriterion("warehouse_id <=", value, "warehouseId");
+            addCriterion("warehouse.warehouse_id <=", value, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdIn(List<Integer> values) {
-            addCriterion("warehouse_id in", values, "warehouseId");
+            addCriterion("warehouse.warehouse_id in", values, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdNotIn(List<Integer> values) {
-            addCriterion("warehouse_id not in", values, "warehouseId");
+            addCriterion("warehouse.warehouse_id not in", values, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdBetween(Integer value1, Integer value2) {
-            addCriterion("warehouse_id between", value1, value2, "warehouseId");
+            addCriterion("warehouse.warehouse_id between", value1, value2, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("warehouse_id not between", value1, value2, "warehouseId");
+            addCriterion("warehouse.warehouse_id not between", value1, value2, "warehouseId");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoIsNull() {
-            addCriterion("warehouse_no is null");
+            addCriterion("warehouse.warehouse_no is null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoIsNotNull() {
-            addCriterion("warehouse_no is not null");
+            addCriterion("warehouse.warehouse_no is not null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoEqualTo(String value) {
-            addCriterion("warehouse_no =", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no =", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoNotEqualTo(String value) {
-            addCriterion("warehouse_no <>", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no <>", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoGreaterThan(String value) {
-            addCriterion("warehouse_no >", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no >", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoGreaterThanOrEqualTo(String value) {
-            addCriterion("warehouse_no >=", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no >=", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoLessThan(String value) {
-            addCriterion("warehouse_no <", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no <", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoLessThanOrEqualTo(String value) {
-            addCriterion("warehouse_no <=", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no <=", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoLike(String value) {
-            addCriterion("warehouse_no like", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no like", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoNotLike(String value) {
-            addCriterion("warehouse_no not like", value, "warehouseNo");
+            addCriterion("warehouse.warehouse_no not like", value, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoIn(List<String> values) {
-            addCriterion("warehouse_no in", values, "warehouseNo");
+            addCriterion("warehouse.warehouse_no in", values, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoNotIn(List<String> values) {
-            addCriterion("warehouse_no not in", values, "warehouseNo");
+            addCriterion("warehouse.warehouse_no not in", values, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoBetween(String value1, String value2) {
-            addCriterion("warehouse_no between", value1, value2, "warehouseNo");
+            addCriterion("warehouse.warehouse_no between", value1, value2, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNoNotBetween(String value1, String value2) {
-            addCriterion("warehouse_no not between", value1, value2, "warehouseNo");
+            addCriterion("warehouse.warehouse_no not between", value1, value2, "warehouseNo");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameIsNull() {
-            addCriterion("warehouse_name is null");
+            addCriterion("warehouse.warehouse_name is null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameIsNotNull() {
-            addCriterion("warehouse_name is not null");
+            addCriterion("warehouse.warehouse_name is not null");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameEqualTo(String value) {
-            addCriterion("warehouse_name =", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name =", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameNotEqualTo(String value) {
-            addCriterion("warehouse_name <>", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name <>", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameGreaterThan(String value) {
-            addCriterion("warehouse_name >", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name >", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameGreaterThanOrEqualTo(String value) {
-            addCriterion("warehouse_name >=", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name >=", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameLessThan(String value) {
-            addCriterion("warehouse_name <", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name <", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameLessThanOrEqualTo(String value) {
-            addCriterion("warehouse_name <=", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name <=", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameLike(String value) {
-            addCriterion("warehouse_name like", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name like", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameNotLike(String value) {
-            addCriterion("warehouse_name not like", value, "warehouseName");
+            addCriterion("warehouse.warehouse_name not like", value, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameIn(List<String> values) {
-            addCriterion("warehouse_name in", values, "warehouseName");
+            addCriterion("warehouse.warehouse_name in", values, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameNotIn(List<String> values) {
-            addCriterion("warehouse_name not in", values, "warehouseName");
+            addCriterion("warehouse.warehouse_name not in", values, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameBetween(String value1, String value2) {
-            addCriterion("warehouse_name between", value1, value2, "warehouseName");
+            addCriterion("warehouse.warehouse_name between", value1, value2, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andWarehouseNameNotBetween(String value1, String value2) {
-            addCriterion("warehouse_name not between", value1, value2, "warehouseName");
+            addCriterion("warehouse.warehouse_name not between", value1, value2, "warehouseName");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNull() {
-            addCriterion("create_at is null");
+            addCriterion("warehouse.create_at is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNotNull() {
-            addCriterion("create_at is not null");
+            addCriterion("warehouse.create_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtEqualTo(Date value) {
-            addCriterion("create_at =", value, "createAt");
+            addCriterion("warehouse.create_at =", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotEqualTo(Date value) {
-            addCriterion("create_at <>", value, "createAt");
+            addCriterion("warehouse.create_at <>", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThan(Date value) {
-            addCriterion("create_at >", value, "createAt");
+            addCriterion("warehouse.create_at >", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("create_at >=", value, "createAt");
+            addCriterion("warehouse.create_at >=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThan(Date value) {
-            addCriterion("create_at <", value, "createAt");
+            addCriterion("warehouse.create_at <", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThanOrEqualTo(Date value) {
-            addCriterion("create_at <=", value, "createAt");
+            addCriterion("warehouse.create_at <=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIn(List<Date> values) {
-            addCriterion("create_at in", values, "createAt");
+            addCriterion("warehouse.create_at in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotIn(List<Date> values) {
-            addCriterion("create_at not in", values, "createAt");
+            addCriterion("warehouse.create_at not in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtBetween(Date value1, Date value2) {
-            addCriterion("create_at between", value1, value2, "createAt");
+            addCriterion("warehouse.create_at between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotBetween(Date value1, Date value2) {
-            addCriterion("create_at not between", value1, value2, "createAt");
+            addCriterion("warehouse.create_at not between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNull() {
-            addCriterion("create_by is null");
+            addCriterion("warehouse.create_by is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNotNull() {
-            addCriterion("create_by is not null");
+            addCriterion("warehouse.create_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByEqualTo(Integer value) {
-            addCriterion("create_by =", value, "createBy");
+            addCriterion("warehouse.create_by =", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotEqualTo(Integer value) {
-            addCriterion("create_by <>", value, "createBy");
+            addCriterion("warehouse.create_by <>", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThan(Integer value) {
-            addCriterion("create_by >", value, "createBy");
+            addCriterion("warehouse.create_by >", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("create_by >=", value, "createBy");
+            addCriterion("warehouse.create_by >=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThan(Integer value) {
-            addCriterion("create_by <", value, "createBy");
+            addCriterion("warehouse.create_by <", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThanOrEqualTo(Integer value) {
-            addCriterion("create_by <=", value, "createBy");
+            addCriterion("warehouse.create_by <=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIn(List<Integer> values) {
-            addCriterion("create_by in", values, "createBy");
+            addCriterion("warehouse.create_by in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotIn(List<Integer> values) {
-            addCriterion("create_by not in", values, "createBy");
+            addCriterion("warehouse.create_by not in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByBetween(Integer value1, Integer value2) {
-            addCriterion("create_by between", value1, value2, "createBy");
+            addCriterion("warehouse.create_by between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("create_by not between", value1, value2, "createBy");
+            addCriterion("warehouse.create_by not between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNull() {
-            addCriterion("update_at is null");
+            addCriterion("warehouse.update_at is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNotNull() {
-            addCriterion("update_at is not null");
+            addCriterion("warehouse.update_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtEqualTo(Date value) {
-            addCriterion("update_at =", value, "updateAt");
+            addCriterion("warehouse.update_at =", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotEqualTo(Date value) {
-            addCriterion("update_at <>", value, "updateAt");
+            addCriterion("warehouse.update_at <>", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThan(Date value) {
-            addCriterion("update_at >", value, "updateAt");
+            addCriterion("warehouse.update_at >", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("update_at >=", value, "updateAt");
+            addCriterion("warehouse.update_at >=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThan(Date value) {
-            addCriterion("update_at <", value, "updateAt");
+            addCriterion("warehouse.update_at <", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThanOrEqualTo(Date value) {
-            addCriterion("update_at <=", value, "updateAt");
+            addCriterion("warehouse.update_at <=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIn(List<Date> values) {
-            addCriterion("update_at in", values, "updateAt");
+            addCriterion("warehouse.update_at in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotIn(List<Date> values) {
-            addCriterion("update_at not in", values, "updateAt");
+            addCriterion("warehouse.update_at not in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtBetween(Date value1, Date value2) {
-            addCriterion("update_at between", value1, value2, "updateAt");
+            addCriterion("warehouse.update_at between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
-            addCriterion("update_at not between", value1, value2, "updateAt");
+            addCriterion("warehouse.update_at not between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNull() {
-            addCriterion("update_by is null");
+            addCriterion("warehouse.update_by is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNotNull() {
-            addCriterion("update_by is not null");
+            addCriterion("warehouse.update_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByEqualTo(Integer value) {
-            addCriterion("update_by =", value, "updateBy");
+            addCriterion("warehouse.update_by =", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotEqualTo(Integer value) {
-            addCriterion("update_by <>", value, "updateBy");
+            addCriterion("warehouse.update_by <>", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThan(Integer value) {
-            addCriterion("update_by >", value, "updateBy");
+            addCriterion("warehouse.update_by >", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("update_by >=", value, "updateBy");
+            addCriterion("warehouse.update_by >=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThan(Integer value) {
-            addCriterion("update_by <", value, "updateBy");
+            addCriterion("warehouse.update_by <", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThanOrEqualTo(Integer value) {
-            addCriterion("update_by <=", value, "updateBy");
+            addCriterion("warehouse.update_by <=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIn(List<Integer> values) {
-            addCriterion("update_by in", values, "updateBy");
+            addCriterion("warehouse.update_by in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotIn(List<Integer> values) {
-            addCriterion("update_by not in", values, "updateBy");
+            addCriterion("warehouse.update_by not in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByBetween(Integer value1, Integer value2) {
-            addCriterion("update_by between", value1, value2, "updateBy");
+            addCriterion("warehouse.update_by between", value1, value2, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("update_by not between", value1, value2, "updateBy");
+            addCriterion("warehouse.update_by not between", value1, value2, "updateBy");
             return (Criteria) this;
         }
     }

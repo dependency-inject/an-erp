@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.AdminRoleDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.AdminRole">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.AdminRole">
     <id column="admin_role_id" jdbcType="INTEGER" property="adminRoleId" />
     <result column="admin_id" jdbcType="INTEGER" property="adminId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
@@ -105,14 +105,14 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.AdminRole">
+  <insert id="insert" parameterType="com.springmvc.dto.AdminRole">
     <selectKey keyProperty="adminRoleId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into admin_role (admin_id, role_id)
     values (#{adminId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.AdminRole">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.AdminRole">
     <selectKey keyProperty="adminRoleId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -162,7 +162,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.AdminRole">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.AdminRole">
     update admin_role
     <set>
       <if test="adminId != null">
@@ -174,7 +174,7 @@
     </set>
     where admin_role_id = #{adminRoleId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.AdminRole">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.AdminRole">
     update admin_role
     set admin_id = #{adminId,jdbcType=INTEGER},
       role_id = #{roleId,jdbcType=INTEGER}

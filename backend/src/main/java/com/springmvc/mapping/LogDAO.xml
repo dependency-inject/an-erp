@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.LogDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Log">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.Log">
     <id column="log_id" jdbcType="INTEGER" property="logId" />
     <result column="admin_id" jdbcType="INTEGER" property="adminId" />
     <result column="log_type" jdbcType="VARCHAR" property="logType" />
@@ -12,7 +12,7 @@
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="create_by" jdbcType="INTEGER" property="createBy" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.pojo.Log">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.springmvc.dto.Log">
     <result column="sql" jdbcType="LONGVARCHAR" property="sql" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -135,7 +135,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Log">
+  <insert id="insert" parameterType="com.springmvc.dto.Log">
     <selectKey keyProperty="logId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -148,7 +148,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{sql,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.Log">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.Log">
     <selectKey keyProperty="logId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -282,7 +282,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Log">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.Log">
     update log
     <set>
       <if test="adminId != null">
@@ -315,7 +315,7 @@
     </set>
     where log_id = #{logId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.springmvc.pojo.Log">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.springmvc.dto.Log">
     update log
     set admin_id = #{adminId,jdbcType=INTEGER},
       log_type = #{logType,jdbcType=VARCHAR},
@@ -328,7 +328,7 @@
       sql = #{sql,jdbcType=LONGVARCHAR}
     where log_id = #{logId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Log">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Log">
     update log
     set admin_id = #{adminId,jdbcType=INTEGER},
       log_type = #{logType,jdbcType=VARCHAR},

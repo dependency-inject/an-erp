@@ -186,432 +186,432 @@ public class RoleQuery {
         }
 
         public Criteria andRoleIdIsNull() {
-            addCriterion("role_id is null");
+            addCriterion("role.role_id is null");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdIsNotNull() {
-            addCriterion("role_id is not null");
+            addCriterion("role.role_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdEqualTo(Integer value) {
-            addCriterion("role_id =", value, "roleId");
+            addCriterion("role.role_id =", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdNotEqualTo(Integer value) {
-            addCriterion("role_id <>", value, "roleId");
+            addCriterion("role.role_id <>", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdGreaterThan(Integer value) {
-            addCriterion("role_id >", value, "roleId");
+            addCriterion("role.role_id >", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("role_id >=", value, "roleId");
+            addCriterion("role.role_id >=", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdLessThan(Integer value) {
-            addCriterion("role_id <", value, "roleId");
+            addCriterion("role.role_id <", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("role_id <=", value, "roleId");
+            addCriterion("role.role_id <=", value, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdIn(List<Integer> values) {
-            addCriterion("role_id in", values, "roleId");
+            addCriterion("role.role_id in", values, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdNotIn(List<Integer> values) {
-            addCriterion("role_id not in", values, "roleId");
+            addCriterion("role.role_id not in", values, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdBetween(Integer value1, Integer value2) {
-            addCriterion("role_id between", value1, value2, "roleId");
+            addCriterion("role.role_id between", value1, value2, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("role_id not between", value1, value2, "roleId");
+            addCriterion("role.role_id not between", value1, value2, "roleId");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameIsNull() {
-            addCriterion("role_name is null");
+            addCriterion("role.role_name is null");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameIsNotNull() {
-            addCriterion("role_name is not null");
+            addCriterion("role.role_name is not null");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameEqualTo(String value) {
-            addCriterion("role_name =", value, "roleName");
+            addCriterion("role.role_name =", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameNotEqualTo(String value) {
-            addCriterion("role_name <>", value, "roleName");
+            addCriterion("role.role_name <>", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameGreaterThan(String value) {
-            addCriterion("role_name >", value, "roleName");
+            addCriterion("role.role_name >", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameGreaterThanOrEqualTo(String value) {
-            addCriterion("role_name >=", value, "roleName");
+            addCriterion("role.role_name >=", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameLessThan(String value) {
-            addCriterion("role_name <", value, "roleName");
+            addCriterion("role.role_name <", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameLessThanOrEqualTo(String value) {
-            addCriterion("role_name <=", value, "roleName");
+            addCriterion("role.role_name <=", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameLike(String value) {
-            addCriterion("role_name like", value, "roleName");
+            addCriterion("role.role_name like", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameNotLike(String value) {
-            addCriterion("role_name not like", value, "roleName");
+            addCriterion("role.role_name not like", value, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameIn(List<String> values) {
-            addCriterion("role_name in", values, "roleName");
+            addCriterion("role.role_name in", values, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameNotIn(List<String> values) {
-            addCriterion("role_name not in", values, "roleName");
+            addCriterion("role.role_name not in", values, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameBetween(String value1, String value2) {
-            addCriterion("role_name between", value1, value2, "roleName");
+            addCriterion("role.role_name between", value1, value2, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andRoleNameNotBetween(String value1, String value2) {
-            addCriterion("role_name not between", value1, value2, "roleName");
+            addCriterion("role.role_name not between", value1, value2, "roleName");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultIsNull() {
-            addCriterion("sys_default is null");
+            addCriterion("role.sys_default is null");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultIsNotNull() {
-            addCriterion("sys_default is not null");
+            addCriterion("role.sys_default is not null");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultEqualTo(Boolean value) {
-            addCriterion("sys_default =", value, "sysDefault");
+            addCriterion("role.sys_default =", value, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultNotEqualTo(Boolean value) {
-            addCriterion("sys_default <>", value, "sysDefault");
+            addCriterion("role.sys_default <>", value, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultGreaterThan(Boolean value) {
-            addCriterion("sys_default >", value, "sysDefault");
+            addCriterion("role.sys_default >", value, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("sys_default >=", value, "sysDefault");
+            addCriterion("role.sys_default >=", value, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultLessThan(Boolean value) {
-            addCriterion("sys_default <", value, "sysDefault");
+            addCriterion("role.sys_default <", value, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultLessThanOrEqualTo(Boolean value) {
-            addCriterion("sys_default <=", value, "sysDefault");
+            addCriterion("role.sys_default <=", value, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultIn(List<Boolean> values) {
-            addCriterion("sys_default in", values, "sysDefault");
+            addCriterion("role.sys_default in", values, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultNotIn(List<Boolean> values) {
-            addCriterion("sys_default not in", values, "sysDefault");
+            addCriterion("role.sys_default not in", values, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultBetween(Boolean value1, Boolean value2) {
-            addCriterion("sys_default between", value1, value2, "sysDefault");
+            addCriterion("role.sys_default between", value1, value2, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andSysDefaultNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("sys_default not between", value1, value2, "sysDefault");
+            addCriterion("role.sys_default not between", value1, value2, "sysDefault");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNull() {
-            addCriterion("create_at is null");
+            addCriterion("role.create_at is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNotNull() {
-            addCriterion("create_at is not null");
+            addCriterion("role.create_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtEqualTo(Date value) {
-            addCriterion("create_at =", value, "createAt");
+            addCriterion("role.create_at =", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotEqualTo(Date value) {
-            addCriterion("create_at <>", value, "createAt");
+            addCriterion("role.create_at <>", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThan(Date value) {
-            addCriterion("create_at >", value, "createAt");
+            addCriterion("role.create_at >", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("create_at >=", value, "createAt");
+            addCriterion("role.create_at >=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThan(Date value) {
-            addCriterion("create_at <", value, "createAt");
+            addCriterion("role.create_at <", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThanOrEqualTo(Date value) {
-            addCriterion("create_at <=", value, "createAt");
+            addCriterion("role.create_at <=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIn(List<Date> values) {
-            addCriterion("create_at in", values, "createAt");
+            addCriterion("role.create_at in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotIn(List<Date> values) {
-            addCriterion("create_at not in", values, "createAt");
+            addCriterion("role.create_at not in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtBetween(Date value1, Date value2) {
-            addCriterion("create_at between", value1, value2, "createAt");
+            addCriterion("role.create_at between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotBetween(Date value1, Date value2) {
-            addCriterion("create_at not between", value1, value2, "createAt");
+            addCriterion("role.create_at not between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNull() {
-            addCriterion("create_by is null");
+            addCriterion("role.create_by is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNotNull() {
-            addCriterion("create_by is not null");
+            addCriterion("role.create_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByEqualTo(Integer value) {
-            addCriterion("create_by =", value, "createBy");
+            addCriterion("role.create_by =", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotEqualTo(Integer value) {
-            addCriterion("create_by <>", value, "createBy");
+            addCriterion("role.create_by <>", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThan(Integer value) {
-            addCriterion("create_by >", value, "createBy");
+            addCriterion("role.create_by >", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("create_by >=", value, "createBy");
+            addCriterion("role.create_by >=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThan(Integer value) {
-            addCriterion("create_by <", value, "createBy");
+            addCriterion("role.create_by <", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThanOrEqualTo(Integer value) {
-            addCriterion("create_by <=", value, "createBy");
+            addCriterion("role.create_by <=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIn(List<Integer> values) {
-            addCriterion("create_by in", values, "createBy");
+            addCriterion("role.create_by in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotIn(List<Integer> values) {
-            addCriterion("create_by not in", values, "createBy");
+            addCriterion("role.create_by not in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByBetween(Integer value1, Integer value2) {
-            addCriterion("create_by between", value1, value2, "createBy");
+            addCriterion("role.create_by between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("create_by not between", value1, value2, "createBy");
+            addCriterion("role.create_by not between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNull() {
-            addCriterion("update_at is null");
+            addCriterion("role.update_at is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNotNull() {
-            addCriterion("update_at is not null");
+            addCriterion("role.update_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtEqualTo(Date value) {
-            addCriterion("update_at =", value, "updateAt");
+            addCriterion("role.update_at =", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotEqualTo(Date value) {
-            addCriterion("update_at <>", value, "updateAt");
+            addCriterion("role.update_at <>", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThan(Date value) {
-            addCriterion("update_at >", value, "updateAt");
+            addCriterion("role.update_at >", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("update_at >=", value, "updateAt");
+            addCriterion("role.update_at >=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThan(Date value) {
-            addCriterion("update_at <", value, "updateAt");
+            addCriterion("role.update_at <", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThanOrEqualTo(Date value) {
-            addCriterion("update_at <=", value, "updateAt");
+            addCriterion("role.update_at <=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIn(List<Date> values) {
-            addCriterion("update_at in", values, "updateAt");
+            addCriterion("role.update_at in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotIn(List<Date> values) {
-            addCriterion("update_at not in", values, "updateAt");
+            addCriterion("role.update_at not in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtBetween(Date value1, Date value2) {
-            addCriterion("update_at between", value1, value2, "updateAt");
+            addCriterion("role.update_at between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
-            addCriterion("update_at not between", value1, value2, "updateAt");
+            addCriterion("role.update_at not between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNull() {
-            addCriterion("update_by is null");
+            addCriterion("role.update_by is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNotNull() {
-            addCriterion("update_by is not null");
+            addCriterion("role.update_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByEqualTo(Integer value) {
-            addCriterion("update_by =", value, "updateBy");
+            addCriterion("role.update_by =", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotEqualTo(Integer value) {
-            addCriterion("update_by <>", value, "updateBy");
+            addCriterion("role.update_by <>", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThan(Integer value) {
-            addCriterion("update_by >", value, "updateBy");
+            addCriterion("role.update_by >", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("update_by >=", value, "updateBy");
+            addCriterion("role.update_by >=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThan(Integer value) {
-            addCriterion("update_by <", value, "updateBy");
+            addCriterion("role.update_by <", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThanOrEqualTo(Integer value) {
-            addCriterion("update_by <=", value, "updateBy");
+            addCriterion("role.update_by <=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIn(List<Integer> values) {
-            addCriterion("update_by in", values, "updateBy");
+            addCriterion("role.update_by in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotIn(List<Integer> values) {
-            addCriterion("update_by not in", values, "updateBy");
+            addCriterion("role.update_by not in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByBetween(Integer value1, Integer value2) {
-            addCriterion("update_by between", value1, value2, "updateBy");
+            addCriterion("role.update_by between", value1, value2, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("update_by not between", value1, value2, "updateBy");
+            addCriterion("role.update_by not between", value1, value2, "updateBy");
             return (Criteria) this;
         }
     }

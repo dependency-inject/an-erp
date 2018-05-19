@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.DrawMaterialBillMaterial;
+import com.springmvc.dto.DrawMaterialBillMaterial;
 import com.springmvc.pojo.DrawMaterialBillMaterialQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

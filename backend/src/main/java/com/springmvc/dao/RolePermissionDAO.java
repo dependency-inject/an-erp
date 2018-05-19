@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.RolePermission;
+import com.springmvc.dto.RolePermission;
 import com.springmvc.pojo.RolePermissionQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

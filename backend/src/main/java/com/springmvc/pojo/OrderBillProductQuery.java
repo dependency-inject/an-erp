@@ -186,432 +186,432 @@ public class OrderBillProductQuery {
         }
 
         public Criteria andBillProductIdIsNull() {
-            addCriterion("bill_product_id is null");
+            addCriterion("order_bill_product.bill_product_id is null");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdIsNotNull() {
-            addCriterion("bill_product_id is not null");
+            addCriterion("order_bill_product.bill_product_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdEqualTo(Integer value) {
-            addCriterion("bill_product_id =", value, "billProductId");
+            addCriterion("order_bill_product.bill_product_id =", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdNotEqualTo(Integer value) {
-            addCriterion("bill_product_id <>", value, "billProductId");
+            addCriterion("order_bill_product.bill_product_id <>", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdGreaterThan(Integer value) {
-            addCriterion("bill_product_id >", value, "billProductId");
+            addCriterion("order_bill_product.bill_product_id >", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("bill_product_id >=", value, "billProductId");
+            addCriterion("order_bill_product.bill_product_id >=", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdLessThan(Integer value) {
-            addCriterion("bill_product_id <", value, "billProductId");
+            addCriterion("order_bill_product.bill_product_id <", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdLessThanOrEqualTo(Integer value) {
-            addCriterion("bill_product_id <=", value, "billProductId");
+            addCriterion("order_bill_product.bill_product_id <=", value, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdIn(List<Integer> values) {
-            addCriterion("bill_product_id in", values, "billProductId");
+            addCriterion("order_bill_product.bill_product_id in", values, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdNotIn(List<Integer> values) {
-            addCriterion("bill_product_id not in", values, "billProductId");
+            addCriterion("order_bill_product.bill_product_id not in", values, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdBetween(Integer value1, Integer value2) {
-            addCriterion("bill_product_id between", value1, value2, "billProductId");
+            addCriterion("order_bill_product.bill_product_id between", value1, value2, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillProductIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("bill_product_id not between", value1, value2, "billProductId");
+            addCriterion("order_bill_product.bill_product_id not between", value1, value2, "billProductId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdIsNull() {
-            addCriterion("bill_id is null");
+            addCriterion("order_bill_product.bill_id is null");
             return (Criteria) this;
         }
 
         public Criteria andBillIdIsNotNull() {
-            addCriterion("bill_id is not null");
+            addCriterion("order_bill_product.bill_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andBillIdEqualTo(Integer value) {
-            addCriterion("bill_id =", value, "billId");
+            addCriterion("order_bill_product.bill_id =", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdNotEqualTo(Integer value) {
-            addCriterion("bill_id <>", value, "billId");
+            addCriterion("order_bill_product.bill_id <>", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdGreaterThan(Integer value) {
-            addCriterion("bill_id >", value, "billId");
+            addCriterion("order_bill_product.bill_id >", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("bill_id >=", value, "billId");
+            addCriterion("order_bill_product.bill_id >=", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdLessThan(Integer value) {
-            addCriterion("bill_id <", value, "billId");
+            addCriterion("order_bill_product.bill_id <", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdLessThanOrEqualTo(Integer value) {
-            addCriterion("bill_id <=", value, "billId");
+            addCriterion("order_bill_product.bill_id <=", value, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdIn(List<Integer> values) {
-            addCriterion("bill_id in", values, "billId");
+            addCriterion("order_bill_product.bill_id in", values, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdNotIn(List<Integer> values) {
-            addCriterion("bill_id not in", values, "billId");
+            addCriterion("order_bill_product.bill_id not in", values, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdBetween(Integer value1, Integer value2) {
-            addCriterion("bill_id between", value1, value2, "billId");
+            addCriterion("order_bill_product.bill_id between", value1, value2, "billId");
             return (Criteria) this;
         }
 
         public Criteria andBillIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("bill_id not between", value1, value2, "billId");
+            addCriterion("order_bill_product.bill_id not between", value1, value2, "billId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIsNull() {
-            addCriterion("product_id is null");
+            addCriterion("order_bill_product.product_id is null");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIsNotNull() {
-            addCriterion("product_id is not null");
+            addCriterion("order_bill_product.product_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andProductIdEqualTo(Integer value) {
-            addCriterion("product_id =", value, "productId");
+            addCriterion("order_bill_product.product_id =", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotEqualTo(Integer value) {
-            addCriterion("product_id <>", value, "productId");
+            addCriterion("order_bill_product.product_id <>", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdGreaterThan(Integer value) {
-            addCriterion("product_id >", value, "productId");
+            addCriterion("order_bill_product.product_id >", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("product_id >=", value, "productId");
+            addCriterion("order_bill_product.product_id >=", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdLessThan(Integer value) {
-            addCriterion("product_id <", value, "productId");
+            addCriterion("order_bill_product.product_id <", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdLessThanOrEqualTo(Integer value) {
-            addCriterion("product_id <=", value, "productId");
+            addCriterion("order_bill_product.product_id <=", value, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdIn(List<Integer> values) {
-            addCriterion("product_id in", values, "productId");
+            addCriterion("order_bill_product.product_id in", values, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotIn(List<Integer> values) {
-            addCriterion("product_id not in", values, "productId");
+            addCriterion("order_bill_product.product_id not in", values, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdBetween(Integer value1, Integer value2) {
-            addCriterion("product_id between", value1, value2, "productId");
+            addCriterion("order_bill_product.product_id between", value1, value2, "productId");
             return (Criteria) this;
         }
 
         public Criteria andProductIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("product_id not between", value1, value2, "productId");
+            addCriterion("order_bill_product.product_id not between", value1, value2, "productId");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIsNull() {
-            addCriterion("quantity is null");
+            addCriterion("order_bill_product.quantity is null");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIsNotNull() {
-            addCriterion("quantity is not null");
+            addCriterion("order_bill_product.quantity is not null");
             return (Criteria) this;
         }
 
         public Criteria andQuantityEqualTo(Integer value) {
-            addCriterion("quantity =", value, "quantity");
+            addCriterion("order_bill_product.quantity =", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotEqualTo(Integer value) {
-            addCriterion("quantity <>", value, "quantity");
+            addCriterion("order_bill_product.quantity <>", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityGreaterThan(Integer value) {
-            addCriterion("quantity >", value, "quantity");
+            addCriterion("order_bill_product.quantity >", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityGreaterThanOrEqualTo(Integer value) {
-            addCriterion("quantity >=", value, "quantity");
+            addCriterion("order_bill_product.quantity >=", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityLessThan(Integer value) {
-            addCriterion("quantity <", value, "quantity");
+            addCriterion("order_bill_product.quantity <", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityLessThanOrEqualTo(Integer value) {
-            addCriterion("quantity <=", value, "quantity");
+            addCriterion("order_bill_product.quantity <=", value, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityIn(List<Integer> values) {
-            addCriterion("quantity in", values, "quantity");
+            addCriterion("order_bill_product.quantity in", values, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotIn(List<Integer> values) {
-            addCriterion("quantity not in", values, "quantity");
+            addCriterion("order_bill_product.quantity not in", values, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityBetween(Integer value1, Integer value2) {
-            addCriterion("quantity between", value1, value2, "quantity");
+            addCriterion("order_bill_product.quantity between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andQuantityNotBetween(Integer value1, Integer value2) {
-            addCriterion("quantity not between", value1, value2, "quantity");
+            addCriterion("order_bill_product.quantity not between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
         public Criteria andPriceIsNull() {
-            addCriterion("price is null");
+            addCriterion("order_bill_product.price is null");
             return (Criteria) this;
         }
 
         public Criteria andPriceIsNotNull() {
-            addCriterion("price is not null");
+            addCriterion("order_bill_product.price is not null");
             return (Criteria) this;
         }
 
         public Criteria andPriceEqualTo(BigDecimal value) {
-            addCriterion("price =", value, "price");
+            addCriterion("order_bill_product.price =", value, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceNotEqualTo(BigDecimal value) {
-            addCriterion("price <>", value, "price");
+            addCriterion("order_bill_product.price <>", value, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceGreaterThan(BigDecimal value) {
-            addCriterion("price >", value, "price");
+            addCriterion("order_bill_product.price >", value, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("price >=", value, "price");
+            addCriterion("order_bill_product.price >=", value, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceLessThan(BigDecimal value) {
-            addCriterion("price <", value, "price");
+            addCriterion("order_bill_product.price <", value, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("price <=", value, "price");
+            addCriterion("order_bill_product.price <=", value, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceIn(List<BigDecimal> values) {
-            addCriterion("price in", values, "price");
+            addCriterion("order_bill_product.price in", values, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceNotIn(List<BigDecimal> values) {
-            addCriterion("price not in", values, "price");
+            addCriterion("order_bill_product.price not in", values, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("price between", value1, value2, "price");
+            addCriterion("order_bill_product.price between", value1, value2, "price");
             return (Criteria) this;
         }
 
         public Criteria andPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("price not between", value1, value2, "price");
+            addCriterion("order_bill_product.price not between", value1, value2, "price");
             return (Criteria) this;
         }
 
         public Criteria andTotalIsNull() {
-            addCriterion("total is null");
+            addCriterion("order_bill_product.total is null");
             return (Criteria) this;
         }
 
         public Criteria andTotalIsNotNull() {
-            addCriterion("total is not null");
+            addCriterion("order_bill_product.total is not null");
             return (Criteria) this;
         }
 
         public Criteria andTotalEqualTo(BigDecimal value) {
-            addCriterion("total =", value, "total");
+            addCriterion("order_bill_product.total =", value, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalNotEqualTo(BigDecimal value) {
-            addCriterion("total <>", value, "total");
+            addCriterion("order_bill_product.total <>", value, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalGreaterThan(BigDecimal value) {
-            addCriterion("total >", value, "total");
+            addCriterion("order_bill_product.total >", value, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("total >=", value, "total");
+            addCriterion("order_bill_product.total >=", value, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalLessThan(BigDecimal value) {
-            addCriterion("total <", value, "total");
+            addCriterion("order_bill_product.total <", value, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("total <=", value, "total");
+            addCriterion("order_bill_product.total <=", value, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalIn(List<BigDecimal> values) {
-            addCriterion("total in", values, "total");
+            addCriterion("order_bill_product.total in", values, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalNotIn(List<BigDecimal> values) {
-            addCriterion("total not in", values, "total");
+            addCriterion("order_bill_product.total not in", values, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("total between", value1, value2, "total");
+            addCriterion("order_bill_product.total between", value1, value2, "total");
             return (Criteria) this;
         }
 
         public Criteria andTotalNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("total not between", value1, value2, "total");
+            addCriterion("order_bill_product.total not between", value1, value2, "total");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
+            addCriterion("order_bill_product.remark is null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
+            addCriterion("order_bill_product.remark is not null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
+            addCriterion("order_bill_product.remark =", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
+            addCriterion("order_bill_product.remark <>", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
+            addCriterion("order_bill_product.remark >", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
+            addCriterion("order_bill_product.remark >=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
+            addCriterion("order_bill_product.remark <", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
+            addCriterion("order_bill_product.remark <=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
+            addCriterion("order_bill_product.remark like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
+            addCriterion("order_bill_product.remark not like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
+            addCriterion("order_bill_product.remark in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
+            addCriterion("order_bill_product.remark not in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
+            addCriterion("order_bill_product.remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
+            addCriterion("order_bill_product.remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
     }

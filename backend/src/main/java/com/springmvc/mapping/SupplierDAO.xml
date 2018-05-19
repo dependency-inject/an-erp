@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.SupplierDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Supplier">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.Supplier">
     <id column="supplier_id" jdbcType="INTEGER" property="supplierId" />
     <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
     <result column="contact" jdbcType="VARCHAR" property="contact" />
@@ -113,7 +113,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Supplier">
+  <insert id="insert" parameterType="com.springmvc.dto.Supplier">
     <selectKey keyProperty="supplierId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -126,7 +126,7 @@
       #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.Supplier">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.Supplier">
     <selectKey keyProperty="supplierId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -246,7 +246,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Supplier">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.Supplier">
     update supplier
     <set>
       <if test="supplierName != null">
@@ -279,7 +279,7 @@
     </set>
     where supplier_id = #{supplierId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Supplier">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Supplier">
     update supplier
     set supplier_name = #{supplierName,jdbcType=VARCHAR},
       contact = #{contact,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.MaterialDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Material">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.Material">
     <id column="material_id" jdbcType="INTEGER" property="materialId" />
     <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
     <result column="material_name" jdbcType="VARCHAR" property="materialName" />
@@ -115,7 +115,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Material">
+  <insert id="insert" parameterType="com.springmvc.dto.Material">
     <selectKey keyProperty="materialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -128,7 +128,7 @@
       #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.Material">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.Material">
     <selectKey keyProperty="materialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -268,7 +268,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Material">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.Material">
     update material
     <set>
       <if test="materialNo != null">
@@ -307,7 +307,7 @@
     </set>
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Material">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Material">
     update material
     set material_no = #{materialNo,jdbcType=VARCHAR},
       material_name = #{materialName,jdbcType=VARCHAR},

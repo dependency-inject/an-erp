@@ -187,772 +187,772 @@ public class MaterialQuery {
         }
 
         public Criteria andMaterialIdIsNull() {
-            addCriterion("material_id is null");
+            addCriterion("material.material_id is null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdIsNotNull() {
-            addCriterion("material_id is not null");
+            addCriterion("material.material_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdEqualTo(Integer value) {
-            addCriterion("material_id =", value, "materialId");
+            addCriterion("material.material_id =", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdNotEqualTo(Integer value) {
-            addCriterion("material_id <>", value, "materialId");
+            addCriterion("material.material_id <>", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdGreaterThan(Integer value) {
-            addCriterion("material_id >", value, "materialId");
+            addCriterion("material.material_id >", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("material_id >=", value, "materialId");
+            addCriterion("material.material_id >=", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdLessThan(Integer value) {
-            addCriterion("material_id <", value, "materialId");
+            addCriterion("material.material_id <", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdLessThanOrEqualTo(Integer value) {
-            addCriterion("material_id <=", value, "materialId");
+            addCriterion("material.material_id <=", value, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdIn(List<Integer> values) {
-            addCriterion("material_id in", values, "materialId");
+            addCriterion("material.material_id in", values, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdNotIn(List<Integer> values) {
-            addCriterion("material_id not in", values, "materialId");
+            addCriterion("material.material_id not in", values, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdBetween(Integer value1, Integer value2) {
-            addCriterion("material_id between", value1, value2, "materialId");
+            addCriterion("material.material_id between", value1, value2, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("material_id not between", value1, value2, "materialId");
+            addCriterion("material.material_id not between", value1, value2, "materialId");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoIsNull() {
-            addCriterion("material_no is null");
+            addCriterion("material.material_no is null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoIsNotNull() {
-            addCriterion("material_no is not null");
+            addCriterion("material.material_no is not null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoEqualTo(String value) {
-            addCriterion("material_no =", value, "materialNo");
+            addCriterion("material.material_no =", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoNotEqualTo(String value) {
-            addCriterion("material_no <>", value, "materialNo");
+            addCriterion("material.material_no <>", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoGreaterThan(String value) {
-            addCriterion("material_no >", value, "materialNo");
+            addCriterion("material.material_no >", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoGreaterThanOrEqualTo(String value) {
-            addCriterion("material_no >=", value, "materialNo");
+            addCriterion("material.material_no >=", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoLessThan(String value) {
-            addCriterion("material_no <", value, "materialNo");
+            addCriterion("material.material_no <", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoLessThanOrEqualTo(String value) {
-            addCriterion("material_no <=", value, "materialNo");
+            addCriterion("material.material_no <=", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoLike(String value) {
-            addCriterion("material_no like", value, "materialNo");
+            addCriterion("material.material_no like", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoNotLike(String value) {
-            addCriterion("material_no not like", value, "materialNo");
+            addCriterion("material.material_no not like", value, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoIn(List<String> values) {
-            addCriterion("material_no in", values, "materialNo");
+            addCriterion("material.material_no in", values, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoNotIn(List<String> values) {
-            addCriterion("material_no not in", values, "materialNo");
+            addCriterion("material.material_no not in", values, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoBetween(String value1, String value2) {
-            addCriterion("material_no between", value1, value2, "materialNo");
+            addCriterion("material.material_no between", value1, value2, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNoNotBetween(String value1, String value2) {
-            addCriterion("material_no not between", value1, value2, "materialNo");
+            addCriterion("material.material_no not between", value1, value2, "materialNo");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameIsNull() {
-            addCriterion("material_name is null");
+            addCriterion("material.material_name is null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameIsNotNull() {
-            addCriterion("material_name is not null");
+            addCriterion("material.material_name is not null");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameEqualTo(String value) {
-            addCriterion("material_name =", value, "materialName");
+            addCriterion("material.material_name =", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameNotEqualTo(String value) {
-            addCriterion("material_name <>", value, "materialName");
+            addCriterion("material.material_name <>", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameGreaterThan(String value) {
-            addCriterion("material_name >", value, "materialName");
+            addCriterion("material.material_name >", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameGreaterThanOrEqualTo(String value) {
-            addCriterion("material_name >=", value, "materialName");
+            addCriterion("material.material_name >=", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameLessThan(String value) {
-            addCriterion("material_name <", value, "materialName");
+            addCriterion("material.material_name <", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameLessThanOrEqualTo(String value) {
-            addCriterion("material_name <=", value, "materialName");
+            addCriterion("material.material_name <=", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameLike(String value) {
-            addCriterion("material_name like", value, "materialName");
+            addCriterion("material.material_name like", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameNotLike(String value) {
-            addCriterion("material_name not like", value, "materialName");
+            addCriterion("material.material_name not like", value, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameIn(List<String> values) {
-            addCriterion("material_name in", values, "materialName");
+            addCriterion("material.material_name in", values, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameNotIn(List<String> values) {
-            addCriterion("material_name not in", values, "materialName");
+            addCriterion("material.material_name not in", values, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameBetween(String value1, String value2) {
-            addCriterion("material_name between", value1, value2, "materialName");
+            addCriterion("material.material_name between", value1, value2, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andMaterialNameNotBetween(String value1, String value2) {
-            addCriterion("material_name not between", value1, value2, "materialName");
+            addCriterion("material.material_name not between", value1, value2, "materialName");
             return (Criteria) this;
         }
 
         public Criteria andUnitIsNull() {
-            addCriterion("unit is null");
+            addCriterion("material.unit is null");
             return (Criteria) this;
         }
 
         public Criteria andUnitIsNotNull() {
-            addCriterion("unit is not null");
+            addCriterion("material.unit is not null");
             return (Criteria) this;
         }
 
         public Criteria andUnitEqualTo(String value) {
-            addCriterion("unit =", value, "unit");
+            addCriterion("material.unit =", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitNotEqualTo(String value) {
-            addCriterion("unit <>", value, "unit");
+            addCriterion("material.unit <>", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitGreaterThan(String value) {
-            addCriterion("unit >", value, "unit");
+            addCriterion("material.unit >", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitGreaterThanOrEqualTo(String value) {
-            addCriterion("unit >=", value, "unit");
+            addCriterion("material.unit >=", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitLessThan(String value) {
-            addCriterion("unit <", value, "unit");
+            addCriterion("material.unit <", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitLessThanOrEqualTo(String value) {
-            addCriterion("unit <=", value, "unit");
+            addCriterion("material.unit <=", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitLike(String value) {
-            addCriterion("unit like", value, "unit");
+            addCriterion("material.unit like", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitNotLike(String value) {
-            addCriterion("unit not like", value, "unit");
+            addCriterion("material.unit not like", value, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitIn(List<String> values) {
-            addCriterion("unit in", values, "unit");
+            addCriterion("material.unit in", values, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitNotIn(List<String> values) {
-            addCriterion("unit not in", values, "unit");
+            addCriterion("material.unit not in", values, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitBetween(String value1, String value2) {
-            addCriterion("unit between", value1, value2, "unit");
+            addCriterion("material.unit between", value1, value2, "unit");
             return (Criteria) this;
         }
 
         public Criteria andUnitNotBetween(String value1, String value2) {
-            addCriterion("unit not between", value1, value2, "unit");
+            addCriterion("material.unit not between", value1, value2, "unit");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdIsNull() {
-            addCriterion("category_id is null");
+            addCriterion("material.category_id is null");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdIsNotNull() {
-            addCriterion("category_id is not null");
+            addCriterion("material.category_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdEqualTo(Integer value) {
-            addCriterion("category_id =", value, "categoryId");
+            addCriterion("material.category_id =", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdNotEqualTo(Integer value) {
-            addCriterion("category_id <>", value, "categoryId");
+            addCriterion("material.category_id <>", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdGreaterThan(Integer value) {
-            addCriterion("category_id >", value, "categoryId");
+            addCriterion("material.category_id >", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("category_id >=", value, "categoryId");
+            addCriterion("material.category_id >=", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdLessThan(Integer value) {
-            addCriterion("category_id <", value, "categoryId");
+            addCriterion("material.category_id <", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdLessThanOrEqualTo(Integer value) {
-            addCriterion("category_id <=", value, "categoryId");
+            addCriterion("material.category_id <=", value, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdIn(List<Integer> values) {
-            addCriterion("category_id in", values, "categoryId");
+            addCriterion("material.category_id in", values, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdNotIn(List<Integer> values) {
-            addCriterion("category_id not in", values, "categoryId");
+            addCriterion("material.category_id not in", values, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdBetween(Integer value1, Integer value2) {
-            addCriterion("category_id between", value1, value2, "categoryId");
+            addCriterion("material.category_id between", value1, value2, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andCategoryIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("category_id not between", value1, value2, "categoryId");
+            addCriterion("material.category_id not between", value1, value2, "categoryId");
             return (Criteria) this;
         }
 
         public Criteria andSpecIsNull() {
-            addCriterion("spec is null");
+            addCriterion("material.spec is null");
             return (Criteria) this;
         }
 
         public Criteria andSpecIsNotNull() {
-            addCriterion("spec is not null");
+            addCriterion("material.spec is not null");
             return (Criteria) this;
         }
 
         public Criteria andSpecEqualTo(String value) {
-            addCriterion("spec =", value, "spec");
+            addCriterion("material.spec =", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecNotEqualTo(String value) {
-            addCriterion("spec <>", value, "spec");
+            addCriterion("material.spec <>", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecGreaterThan(String value) {
-            addCriterion("spec >", value, "spec");
+            addCriterion("material.spec >", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecGreaterThanOrEqualTo(String value) {
-            addCriterion("spec >=", value, "spec");
+            addCriterion("material.spec >=", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecLessThan(String value) {
-            addCriterion("spec <", value, "spec");
+            addCriterion("material.spec <", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecLessThanOrEqualTo(String value) {
-            addCriterion("spec <=", value, "spec");
+            addCriterion("material.spec <=", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecLike(String value) {
-            addCriterion("spec like", value, "spec");
+            addCriterion("material.spec like", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecNotLike(String value) {
-            addCriterion("spec not like", value, "spec");
+            addCriterion("material.spec not like", value, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecIn(List<String> values) {
-            addCriterion("spec in", values, "spec");
+            addCriterion("material.spec in", values, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecNotIn(List<String> values) {
-            addCriterion("spec not in", values, "spec");
+            addCriterion("material.spec not in", values, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecBetween(String value1, String value2) {
-            addCriterion("spec between", value1, value2, "spec");
+            addCriterion("material.spec between", value1, value2, "spec");
             return (Criteria) this;
         }
 
         public Criteria andSpecNotBetween(String value1, String value2) {
-            addCriterion("spec not between", value1, value2, "spec");
+            addCriterion("material.spec not between", value1, value2, "spec");
             return (Criteria) this;
         }
 
         public Criteria andCostIsNull() {
-            addCriterion("cost is null");
+            addCriterion("material.cost is null");
             return (Criteria) this;
         }
 
         public Criteria andCostIsNotNull() {
-            addCriterion("cost is not null");
+            addCriterion("material.cost is not null");
             return (Criteria) this;
         }
 
         public Criteria andCostEqualTo(BigDecimal value) {
-            addCriterion("cost =", value, "cost");
+            addCriterion("material.cost =", value, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostNotEqualTo(BigDecimal value) {
-            addCriterion("cost <>", value, "cost");
+            addCriterion("material.cost <>", value, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostGreaterThan(BigDecimal value) {
-            addCriterion("cost >", value, "cost");
+            addCriterion("material.cost >", value, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("cost >=", value, "cost");
+            addCriterion("material.cost >=", value, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostLessThan(BigDecimal value) {
-            addCriterion("cost <", value, "cost");
+            addCriterion("material.cost <", value, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("cost <=", value, "cost");
+            addCriterion("material.cost <=", value, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostIn(List<BigDecimal> values) {
-            addCriterion("cost in", values, "cost");
+            addCriterion("material.cost in", values, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostNotIn(List<BigDecimal> values) {
-            addCriterion("cost not in", values, "cost");
+            addCriterion("material.cost not in", values, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("cost between", value1, value2, "cost");
+            addCriterion("material.cost between", value1, value2, "cost");
             return (Criteria) this;
         }
 
         public Criteria andCostNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("cost not between", value1, value2, "cost");
+            addCriterion("material.cost not between", value1, value2, "cost");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
+            addCriterion("material.remark is null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
+            addCriterion("material.remark is not null");
             return (Criteria) this;
         }
 
         public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
+            addCriterion("material.remark =", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
+            addCriterion("material.remark <>", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
+            addCriterion("material.remark >", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
+            addCriterion("material.remark >=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
+            addCriterion("material.remark <", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
+            addCriterion("material.remark <=", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
+            addCriterion("material.remark like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
+            addCriterion("material.remark not like", value, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
+            addCriterion("material.remark in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
+            addCriterion("material.remark not in", values, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
+            addCriterion("material.remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
+            addCriterion("material.remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNull() {
-            addCriterion("create_at is null");
+            addCriterion("material.create_at is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIsNotNull() {
-            addCriterion("create_at is not null");
+            addCriterion("material.create_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtEqualTo(Date value) {
-            addCriterion("create_at =", value, "createAt");
+            addCriterion("material.create_at =", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotEqualTo(Date value) {
-            addCriterion("create_at <>", value, "createAt");
+            addCriterion("material.create_at <>", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThan(Date value) {
-            addCriterion("create_at >", value, "createAt");
+            addCriterion("material.create_at >", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("create_at >=", value, "createAt");
+            addCriterion("material.create_at >=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThan(Date value) {
-            addCriterion("create_at <", value, "createAt");
+            addCriterion("material.create_at <", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtLessThanOrEqualTo(Date value) {
-            addCriterion("create_at <=", value, "createAt");
+            addCriterion("material.create_at <=", value, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtIn(List<Date> values) {
-            addCriterion("create_at in", values, "createAt");
+            addCriterion("material.create_at in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotIn(List<Date> values) {
-            addCriterion("create_at not in", values, "createAt");
+            addCriterion("material.create_at not in", values, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtBetween(Date value1, Date value2) {
-            addCriterion("create_at between", value1, value2, "createAt");
+            addCriterion("material.create_at between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateAtNotBetween(Date value1, Date value2) {
-            addCriterion("create_at not between", value1, value2, "createAt");
+            addCriterion("material.create_at not between", value1, value2, "createAt");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNull() {
-            addCriterion("create_by is null");
+            addCriterion("material.create_by is null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIsNotNull() {
-            addCriterion("create_by is not null");
+            addCriterion("material.create_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andCreateByEqualTo(Integer value) {
-            addCriterion("create_by =", value, "createBy");
+            addCriterion("material.create_by =", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotEqualTo(Integer value) {
-            addCriterion("create_by <>", value, "createBy");
+            addCriterion("material.create_by <>", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThan(Integer value) {
-            addCriterion("create_by >", value, "createBy");
+            addCriterion("material.create_by >", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("create_by >=", value, "createBy");
+            addCriterion("material.create_by >=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThan(Integer value) {
-            addCriterion("create_by <", value, "createBy");
+            addCriterion("material.create_by <", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByLessThanOrEqualTo(Integer value) {
-            addCriterion("create_by <=", value, "createBy");
+            addCriterion("material.create_by <=", value, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByIn(List<Integer> values) {
-            addCriterion("create_by in", values, "createBy");
+            addCriterion("material.create_by in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotIn(List<Integer> values) {
-            addCriterion("create_by not in", values, "createBy");
+            addCriterion("material.create_by not in", values, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByBetween(Integer value1, Integer value2) {
-            addCriterion("create_by between", value1, value2, "createBy");
+            addCriterion("material.create_by between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andCreateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("create_by not between", value1, value2, "createBy");
+            addCriterion("material.create_by not between", value1, value2, "createBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNull() {
-            addCriterion("update_at is null");
+            addCriterion("material.update_at is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIsNotNull() {
-            addCriterion("update_at is not null");
+            addCriterion("material.update_at is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtEqualTo(Date value) {
-            addCriterion("update_at =", value, "updateAt");
+            addCriterion("material.update_at =", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotEqualTo(Date value) {
-            addCriterion("update_at <>", value, "updateAt");
+            addCriterion("material.update_at <>", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThan(Date value) {
-            addCriterion("update_at >", value, "updateAt");
+            addCriterion("material.update_at >", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtGreaterThanOrEqualTo(Date value) {
-            addCriterion("update_at >=", value, "updateAt");
+            addCriterion("material.update_at >=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThan(Date value) {
-            addCriterion("update_at <", value, "updateAt");
+            addCriterion("material.update_at <", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtLessThanOrEqualTo(Date value) {
-            addCriterion("update_at <=", value, "updateAt");
+            addCriterion("material.update_at <=", value, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtIn(List<Date> values) {
-            addCriterion("update_at in", values, "updateAt");
+            addCriterion("material.update_at in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotIn(List<Date> values) {
-            addCriterion("update_at not in", values, "updateAt");
+            addCriterion("material.update_at not in", values, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtBetween(Date value1, Date value2) {
-            addCriterion("update_at between", value1, value2, "updateAt");
+            addCriterion("material.update_at between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
-            addCriterion("update_at not between", value1, value2, "updateAt");
+            addCriterion("material.update_at not between", value1, value2, "updateAt");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNull() {
-            addCriterion("update_by is null");
+            addCriterion("material.update_by is null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIsNotNull() {
-            addCriterion("update_by is not null");
+            addCriterion("material.update_by is not null");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByEqualTo(Integer value) {
-            addCriterion("update_by =", value, "updateBy");
+            addCriterion("material.update_by =", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotEqualTo(Integer value) {
-            addCriterion("update_by <>", value, "updateBy");
+            addCriterion("material.update_by <>", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThan(Integer value) {
-            addCriterion("update_by >", value, "updateBy");
+            addCriterion("material.update_by >", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByGreaterThanOrEqualTo(Integer value) {
-            addCriterion("update_by >=", value, "updateBy");
+            addCriterion("material.update_by >=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThan(Integer value) {
-            addCriterion("update_by <", value, "updateBy");
+            addCriterion("material.update_by <", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByLessThanOrEqualTo(Integer value) {
-            addCriterion("update_by <=", value, "updateBy");
+            addCriterion("material.update_by <=", value, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByIn(List<Integer> values) {
-            addCriterion("update_by in", values, "updateBy");
+            addCriterion("material.update_by in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotIn(List<Integer> values) {
-            addCriterion("update_by not in", values, "updateBy");
+            addCriterion("material.update_by not in", values, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByBetween(Integer value1, Integer value2) {
-            addCriterion("update_by between", value1, value2, "updateBy");
+            addCriterion("material.update_by between", value1, value2, "updateBy");
             return (Criteria) this;
         }
 
         public Criteria andUpdateByNotBetween(Integer value1, Integer value2) {
-            addCriterion("update_by not between", value1, value2, "updateBy");
+            addCriterion("material.update_by not between", value1, value2, "updateBy");
             return (Criteria) this;
         }
     }

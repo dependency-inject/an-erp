@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.MaterialCategory;
+import com.springmvc.dto.MaterialCategory;
 import com.springmvc.pojo.MaterialCategoryQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

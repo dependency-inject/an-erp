@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springmvc.dao.ClientDAO">
-  <resultMap id="BaseResultMap" type="com.springmvc.pojo.Client">
+  <resultMap id="BaseResultMap" type="com.springmvc.dto.Client">
     <id column="client_id" jdbcType="INTEGER" property="clientId" />
     <result column="client_name" jdbcType="VARCHAR" property="clientName" />
     <result column="contact" jdbcType="VARCHAR" property="contact" />
@@ -111,7 +111,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springmvc.pojo.Client">
+  <insert id="insert" parameterType="com.springmvc.dto.Client">
     <selectKey keyProperty="clientId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -122,7 +122,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.springmvc.pojo.Client">
+  <insert id="insertSelective" parameterType="com.springmvc.dto.Client">
     <selectKey keyProperty="clientId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -222,7 +222,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.pojo.Client">
+  <update id="updateByPrimaryKeySelective" parameterType="com.springmvc.dto.Client">
     update client
     <set>
       <if test="clientName != null">
@@ -249,7 +249,7 @@
     </set>
     where client_id = #{clientId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springmvc.pojo.Client">
+  <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Client">
     update client
     set client_name = #{clientName,jdbcType=VARCHAR},
       contact = #{contact,jdbcType=VARCHAR},

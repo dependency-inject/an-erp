@@ -1,6 +1,6 @@
 package com.springmvc.dao;
 
-import com.springmvc.pojo.AdminRole;
+import com.springmvc.dto.AdminRole;
 import com.springmvc.pojo.AdminRoleQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
