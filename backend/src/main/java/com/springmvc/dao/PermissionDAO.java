@@ -98,4 +98,11 @@ public interface PermissionDAO {
      * @param records
      */
     int updateBatchByPrimaryKeySelective(List<Permission> records);
+
+    /**
+     *  根据指定的条件查询符合条件的数据库记录（关联module表取出moduleName和moduleSort）
+     *
+     * @param example
+     */
+    List<Permission> selectWithModuleByExample(PermissionQuery example);
 }

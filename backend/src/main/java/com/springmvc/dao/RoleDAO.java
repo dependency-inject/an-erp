@@ -98,4 +98,11 @@ public interface RoleDAO {
      * @param records
      */
     int updateBatchByPrimaryKeySelective(List<Role> records);
+
+    /**
+     *  根据指定的条件查询符合条件的数据库记录（关联role_permission表取出permissionIdList）
+     *
+     * @param example
+     */
+    List<Role> selectWithPermissionByExample(RoleQuery example);
 }

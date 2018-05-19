@@ -316,4 +316,40 @@
       role_id = #{item.roleId,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <!-- 关联role_permission表取出permissionIdList -->
+  <resultMap id="ResultMapWithPermission" type="com.springmvc.pojo.Role">
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="sys_default" jdbcType="BIT" property="sysDefault" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="permission_id_list" jdbcType="VARCHAR" property="permissionIdList" />
+  </resultMap>
+  <select id="selectWithPermissionByExample" parameterType="com.springmvc.pojo.RoleQuery" resultMap="ResultMapWithPermission">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    role.role_id, role.role_name, role.sys_default, role.create_at, role.create_by, role.update_at, role.update_by,
+    group_concat(role_permission.permission_id) as permission_id_list
+    from role
+    left join role_permission on role.role_id = role_permission.role_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>

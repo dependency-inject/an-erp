@@ -1,6 +1,7 @@
 package com.springmvc.exception;
 
 import com.springmvc.utils.LogUtils;
+import com.springmvc.utils.RequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
@@ -11,14 +12,9 @@ import java.io.PrintWriter;
 public class CustomExceptionResolver extends SimpleMappingExceptionResolver {
 
     @Override
-    protected ModelAndView doResolveException(HttpServletRequest request,
-                                              HttpServletResponse response, Object handler, Exception ex) {
-
-        // 判断是否 Ajax 请求
-        if ((request.getHeader("accept").contains("application/json") ||
-                (request.getHeader("X-Requested-With") != null &&
-                        request.getHeader("X-Requested-With").contains("XMLHttpRequest")))) {
-
+    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response,
+                                              Object handler, Exception ex) {
+        if (RequestUtils.isAjaxOrWantsJson(request)) {
             try {
                 response.setContentType("text/html;charset=UTF-8");
                 response.setCharacterEncoding("UTF-8");
@@ -29,7 +25,7 @@ public class CustomExceptionResolver extends SimpleMappingExceptionResolver {
                 }
 
                 PrintWriter writer = response.getWriter();
-                writer.write("{\"message\":\"" + ex.getMessage() + "\"}");
+                writer.write(ex.getMessage());
                 writer.flush();
                 writer.close();
             } catch (Exception e) {

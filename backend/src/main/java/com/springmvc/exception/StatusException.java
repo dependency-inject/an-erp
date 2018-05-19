@@ -1,6 +1,6 @@
 package com.springmvc.exception;
 
-public abstract class StatusException extends Exception {
+public abstract class StatusException extends RuntimeException {
 
     private int status;
 

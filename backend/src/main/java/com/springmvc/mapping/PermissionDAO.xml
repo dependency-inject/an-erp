@@ -242,4 +242,38 @@
       permission_id = #{item.permissionId,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <!-- 关联module表取出moduleName和moduleSort -->
+  <resultMap id="ResultMapWithModule" type="com.springmvc.pojo.Permission">
+    <id column="permission_id" jdbcType="INTEGER" property="permissionId" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="module_sort" jdbcType="INTEGER" property="moduleSort" />
+  </resultMap>
+  <select id="selectWithModuleByExample" parameterType="com.springmvc.pojo.PermissionQuery" resultMap="ResultMapWithModule">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    permission.permission_id, permission.permission_name, permission.module_id, permission.sort,
+    module.module_name, module.sort as module_sort
+    from permission
+    left join module on permission.module_id = module.module_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>
