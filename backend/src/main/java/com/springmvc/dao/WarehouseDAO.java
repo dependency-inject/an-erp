@@ -84,18 +84,4 @@ public interface WarehouseDAO {
      * @param record
      */
     int updateByPrimaryKey(Warehouse record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Warehouse> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Warehouse> records);
 }

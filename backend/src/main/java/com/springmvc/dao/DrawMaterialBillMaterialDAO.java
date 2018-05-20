@@ -84,18 +84,4 @@ public interface DrawMaterialBillMaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(DrawMaterialBillMaterial record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<DrawMaterialBillMaterial> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<DrawMaterialBillMaterial> records);
 }

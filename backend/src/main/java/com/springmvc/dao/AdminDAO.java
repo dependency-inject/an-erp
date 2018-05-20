@@ -89,20 +89,6 @@ public interface AdminDAO {
     int updateByPrimaryKey(Admin record);
 
     /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Admin> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Admin> records);
-
-    /**
      *  根据指定的条件查询符合条件的数据库记录（关联admin_role,role表取出roleIdList,roleNameList）
      *
      * @param example

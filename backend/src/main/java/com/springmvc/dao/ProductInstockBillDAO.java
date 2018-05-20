@@ -84,18 +84,4 @@ public interface ProductInstockBillDAO {
      * @param record
      */
     int updateByPrimaryKey(ProductInstockBill record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<ProductInstockBill> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<ProductInstockBill> records);
 }

@@ -84,18 +84,4 @@ public interface ConfigDAO {
      * @param record
      */
     int updateByPrimaryKey(Config record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Config> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Config> records);
 }

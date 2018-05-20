@@ -14,10 +14,6 @@
 
         <!-- 分页 -->
         <plugin type="org.mybatis.generator.plugins.MySQLLimitPlugin" />
-        <!-- 批量新增 -->
-        <plugin type="org.mybatis.generator.plugins.BatchInsertPlugin" />
-        <!-- 批量更新 -->
-        <plugin type="org.mybatis.generator.plugins.BatchUpdatePlugin" />
 
         <!-- 将Example改名为Query -->
         <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">

@@ -106,18 +106,4 @@ public interface LogDAO {
      * @param record
      */
     int updateByPrimaryKey(Log record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Log> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Log> records);
 }

@@ -84,18 +84,4 @@ public interface OrderBillProductDAO {
      * @param record
      */
     int updateByPrimaryKey(OrderBillProduct record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<OrderBillProduct> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<OrderBillProduct> records);
 }

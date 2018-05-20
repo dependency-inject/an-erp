@@ -84,18 +84,4 @@ public interface MaterialInstockBillMaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(MaterialInstockBillMaterial record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<MaterialInstockBillMaterial> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<MaterialInstockBillMaterial> records);
 }

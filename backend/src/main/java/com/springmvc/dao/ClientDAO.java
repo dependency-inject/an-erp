@@ -84,18 +84,4 @@ public interface ClientDAO {
      * @param record
      */
     int updateByPrimaryKey(Client record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Client> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Client> records);
 }

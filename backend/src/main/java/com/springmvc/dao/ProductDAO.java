@@ -84,18 +84,4 @@ public interface ProductDAO {
      * @param record
      */
     int updateByPrimaryKey(Product record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Product> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Product> records);
 }

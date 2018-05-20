@@ -84,18 +84,4 @@ public interface MaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(Material record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Material> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Material> records);
 }

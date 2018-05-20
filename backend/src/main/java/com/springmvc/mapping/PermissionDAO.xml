@@ -197,51 +197,6 @@
       sort = #{sort,jdbcType=INTEGER}
     where permission_id = #{permissionId,jdbcType=INTEGER}
   </update>
-  <insert id="insertBatchSelective" parameterType="java.util.List">
-    <foreach collection="list" index="index" item="item" separator=";">
-      insert into permission
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="item.permissionName != null">
-          permission_name,
-        </if>
-        <if test="item.moduleId != null">
-          module_id,
-        </if>
-        <if test="item.sort != null">
-          sort,
-        </if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="item.permissionName != null">
-          #{item.permissionName,jdbcType=VARCHAR},
-        </if>
-        <if test="item.moduleId != null">
-          #{item.moduleId,jdbcType=INTEGER},
-        </if>
-        <if test="item.sort != null">
-          #{item.sort,jdbcType=INTEGER},
-        </if>
-      </trim>
-    </foreach>
-  </insert>
-  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
-    <foreach collection="list" index="index" item="item" separator=";">
-      update permission
-      <set>
-        <if test="item.permissionName!=null">
-          permission_name=#{item.permissionName,jdbcType=VARCHAR},
-        </if>
-        <if test="item.moduleId!=null">
-          module_id=#{item.moduleId,jdbcType=INTEGER},
-        </if>
-        <if test="item.sort!=null">
-          sort=#{item.sort,jdbcType=INTEGER},
-        </if>
-      </set>
-      where 
-      permission_id = #{item.permissionId,jdbcType=INTEGER}
-    </foreach>
-  </update>
 
   <!-- 关联module表取出moduleName和moduleSort -->
   <resultMap id="ResultMapWithModule" type="com.springmvc.dto.Permission">

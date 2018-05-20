@@ -86,20 +86,6 @@ public interface RoleDAO {
     int updateByPrimaryKey(Role record);
 
     /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Role> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Role> records);
-
-    /**
      *  根据指定的条件查询符合条件的数据库记录（关联role_permission表取出permissionIdList）
      *
      * @param example

@@ -84,18 +84,4 @@ public interface ProductMaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(ProductMaterial record);
-
-    /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<ProductMaterial> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<ProductMaterial> records);
 }

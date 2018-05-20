@@ -86,20 +86,6 @@ public interface PermissionDAO {
     int updateByPrimaryKey(Permission record);
 
     /**
-     *  批量写入数据库记录
-     *
-     * @param records
-     */
-    int insertBatchSelective(List<Permission> records);
-
-    /**
-     *  批量更新数据库记录
-     *
-     * @param records
-     */
-    int updateBatchByPrimaryKeySelective(List<Permission> records);
-
-    /**
      *  根据指定的条件查询符合条件的数据库记录（关联module表取出moduleName和moduleSort）
      *
      * @param example

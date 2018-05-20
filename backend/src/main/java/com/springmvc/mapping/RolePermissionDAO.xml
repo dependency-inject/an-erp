@@ -180,40 +180,4 @@
       permission_id = #{permissionId,jdbcType=INTEGER}
     where role_permission_id = #{rolePermissionId,jdbcType=INTEGER}
   </update>
-  <insert id="insertBatchSelective" parameterType="java.util.List">
-    <foreach collection="list" index="index" item="item" separator=";">
-      insert into role_permission
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="item.roleId != null">
-          role_id,
-        </if>
-        <if test="item.permissionId != null">
-          permission_id,
-        </if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="item.roleId != null">
-          #{item.roleId,jdbcType=INTEGER},
-        </if>
-        <if test="item.permissionId != null">
-          #{item.permissionId,jdbcType=INTEGER},
-        </if>
-      </trim>
-    </foreach>
-  </insert>
-  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
-    <foreach collection="list" index="index" item="item" separator=";">
-      update role_permission
-      <set>
-        <if test="item.roleId!=null">
-          role_id=#{item.roleId,jdbcType=INTEGER},
-        </if>
-        <if test="item.permissionId!=null">
-          permission_id=#{item.permissionId,jdbcType=INTEGER},
-        </if>
-      </set>
-      where 
-      role_permission_id = #{item.rolePermissionId,jdbcType=INTEGER}
-    </foreach>
-  </update>
 </mapper>
