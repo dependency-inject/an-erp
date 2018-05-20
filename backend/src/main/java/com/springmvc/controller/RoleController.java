@@ -1,8 +1,9 @@
 package com.springmvc.controller;
 
-import com.springmvc.pojo.Admin;
-import com.springmvc.pojo.Permission;
-import com.springmvc.pojo.Role;
+import com.springmvc.annotation.AccessPermission;
+import com.springmvc.annotation.PermissionRequired;
+import com.springmvc.dto.Permission;
+import com.springmvc.dto.Role;
 import com.springmvc.service.RoleService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class RoleController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
+    @PermissionRequired(AccessPermission.ADMIN_ROLE)
     public Role add(@RequestParam String roleName) {
         return roleService.addRole(roleName);
     }
@@ -41,21 +43,24 @@ public class RoleController {
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     @ResponseBody
+    @PermissionRequired(AccessPermission.ADMIN_ROLE)
     public String remove(@RequestParam String idList) {
-        roleService.removeRole(ParamUtils.strToIntList(idList));
+        roleService.removeRole(ParamUtils.toIntList(idList));
         return "success";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
+    @PermissionRequired(AccessPermission.ADMIN_ROLE)
     public Role update(@RequestParam Integer roleId, @RequestParam String roleName) {
         return roleService.updateRole(roleId, roleName);
     }
 
     @RequestMapping(value = "/updatePermissions", method = RequestMethod.POST)
     @ResponseBody
+    @PermissionRequired(AccessPermission.ADMIN_ROLE)
     public String updatePermissions(@RequestParam Integer roleId, @RequestParam String permissionIdList) {
-        roleService.updateRolePermissions(roleId, ParamUtils.strToIntList(permissionIdList));
+        roleService.updateRolePermissions(roleId, ParamUtils.toIntList(permissionIdList));
         return "success";
     }
 }

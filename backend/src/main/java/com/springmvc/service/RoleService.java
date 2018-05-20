@@ -1,10 +1,12 @@
 package com.springmvc.service;
 
 import com.springmvc.dao.*;
+import com.springmvc.dto.Admin;
+import com.springmvc.dto.Permission;
+import com.springmvc.dto.Role;
+import com.springmvc.dto.RolePermission;
 import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.*;
-import com.springmvc.utils.MD5Utils;
-import com.springmvc.utils.ParamUtils;
 import com.springmvc.utils.RequestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,20 +103,17 @@ public class RoleService extends BaseService {
     public void updateRolePermissions(Integer roleId, List<Integer> permissionIdList) {
         checkNotSystemDefault(Collections.singletonList(roleId));
 
-        List<RolePermission> permissionList = new ArrayList<RolePermission>();
+        // 先删除原来所有role_permission
+        RolePermissionQuery rolePermissionQuery = new RolePermissionQuery();
+        rolePermissionQuery.or().andRoleIdEqualTo(roleId);
+        rolePermissionDAO.deleteByExample(rolePermissionQuery);
+        // 再新增现有关联role_permission
         for (Integer permissionId : permissionIdList) {
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(roleId);
             rolePermission.setPermissionId(permissionId);
-            permissionList.add(rolePermission);
+            rolePermissionDAO.insertSelective(rolePermission);
         }
-
-        RolePermissionQuery rolePermissionQuery = new RolePermissionQuery();
-        rolePermissionQuery.or().andRoleIdEqualTo(roleId);
-        // 先删除原来所有权限
-        rolePermissionDAO.deleteByExample(rolePermissionQuery);
-        // 再新增现有权限
-        rolePermissionDAO.insertBatchSelective(permissionList);
         // 添加日志
         addLog(LogType.ROLE_PERMISSION, Operate.UPDATE, roleId);
     }

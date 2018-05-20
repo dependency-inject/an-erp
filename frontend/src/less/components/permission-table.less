@@ -1,0 +1,33 @@
+@permission-table-prefix-cls: ~"@{css-prefix}permission-table";
+
+.@{permission-table-prefix-cls} {
+	margin-left: 15px;
+	margin-bottom: 50px;
+	border: 1px solid @border-color-base;
+	border-collapse: collapse;
+	width: 90%;
+
+	tr {
+		th,td {
+			padding: 40px 30px;
+			border-left: 1px solid @border-color-base;
+			border-top: 1px solid @border-color-base;
+		}
+
+		th {
+			background-color: @table-thead-bg;
+			width: 90px;
+		}
+
+		td:hover {
+			background-color: @table-td-hover-bg;
+		}
+	}
+
+	&-checkbox {
+		width: 130px;
+		padding-left: 20px;
+		text-align: left;
+		margin-bottom: 10px;
+	}
+}

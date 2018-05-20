@@ -1,12 +1,11 @@
 package com.springmvc.service;
 
 import com.springmvc.dao.LogDAO;
-import com.springmvc.pojo.Admin;
-import com.springmvc.pojo.Log;
+import com.springmvc.dto.Admin;
+import com.springmvc.dto.Log;
 import com.springmvc.utils.RequestUtils;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;

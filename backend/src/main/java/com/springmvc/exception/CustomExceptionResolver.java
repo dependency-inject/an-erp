@@ -22,6 +22,8 @@ public class CustomExceptionResolver extends SimpleMappingExceptionResolver {
                 // 状态码
                 if (ex instanceof StatusException) {
                     response.setStatus(((StatusException) ex).getStatus());
+                } else {
+                    response.setStatus(400);
                 }
 
                 PrintWriter writer = response.getWriter();

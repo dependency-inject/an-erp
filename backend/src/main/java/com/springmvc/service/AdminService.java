@@ -1,22 +1,20 @@
 package com.springmvc.service;
 
 import com.springmvc.dao.AdminDAO;
-import com.springmvc.dao.LogDAO;
+import com.springmvc.dao.AdminRoleDAO;
+import com.springmvc.dao.PermissionDAO;
 import com.springmvc.dao.RoleDAO;
+import com.springmvc.dto.*;
 import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.*;
-import com.springmvc.utils.LogUtils;
 import com.springmvc.utils.MD5Utils;
 import com.springmvc.utils.ParamUtils;
 import com.springmvc.utils.RequestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.Request;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service("AdminService")
 @Transactional
@@ -24,11 +22,17 @@ public class AdminService extends BaseService {
 
     @Resource
     private AdminDAO adminDAO;
+
+    @Resource
+    private AdminRoleDAO adminRoleDAO;
+
+    @Resource
+    private PermissionDAO permissionDAO;
     
     @Resource
     private RoleDAO roleDAO;
 
-    public Admin addAdmin(String loginName, String trueName, Boolean closed, String mobile) {
+    public Admin addAdmin(String loginName, String trueName, Boolean closed, String mobile, List<Integer> roleIdList) {
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andLoginNameEqualTo(loginName);
         if (adminDAO.countByExample(adminQuery) > 0) {
@@ -49,6 +53,14 @@ public class AdminService extends BaseService {
         admin.setUpdateAt(new Date());
         admin.setUpdateBy(loginAdmin.getAdminId());
         adminDAO.insertSelective(admin);
+
+        // 新增关联role
+        for (Integer roleId : roleIdList) {
+            AdminRole adminRole = new AdminRole();
+            adminRole.setAdminId(admin.getAdminId());
+            adminRole.setRoleId(roleId);
+            adminRoleDAO.insertSelective(adminRole);
+        }
         // 添加日志
         addLog(LogType.ADMIN, Operate.ADD, admin.getAdminId());
         return getAdminById(admin.getAdminId());
@@ -77,6 +89,41 @@ public class AdminService extends BaseService {
         return admin;
     }
 
+    public Admin getAdminWithPermissionById(int adminId) {
+        Admin admin = getAdminWithRoleById(adminId);
+
+        RoleQuery roleQuery = new RoleQuery();
+        roleQuery.or().andRoleIdIn(ParamUtils.toIntList(admin.getRoleIdList()));
+        List<Role> roleList = roleDAO.selectWithPermissionByExample(roleQuery);
+        Set<Integer> permissionIdSet = new HashSet<Integer>();
+        for (Role role : roleList) {
+            permissionIdSet.addAll(ParamUtils.toIntList(role.getPermissionIdList()));
+        }
+
+        PermissionQuery permissionQuery = new PermissionQuery();
+        permissionQuery.or().andPermissionIdIn(new ArrayList<Integer>(permissionIdSet));
+        List<Permission> permissionList = permissionDAO.selectWithModuleByExample(permissionQuery);
+        List<String> permissionNameList = new ArrayList<String>();
+        for (Permission permission : permissionList) {
+            permissionNameList.add(permission.getModuleName() + "@" + permission.getPermissionName());
+        }
+        admin.setPermissionNameList(ParamUtils.toStr(permissionNameList));
+        return admin;
+    }
+
+    public Admin getAdminWithRoleById(int adminId) {
+        AdminQuery adminQuery = new AdminQuery();
+        adminQuery.or().andAdminIdEqualTo(adminId);
+        List<Admin> adminList = adminDAO.selectWithRoleByExample(adminQuery);
+        if (adminList.size() == 0) {
+            return null;
+        }
+        Admin admin = adminList.get(0);
+        // 不返回密码
+        admin.setPassword(null);
+        return admin;
+    }
+
     public Admin login(String loginName, String password) throws Exception {
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andLoginNameEqualTo(loginName);
@@ -96,6 +143,49 @@ public class AdminService extends BaseService {
         return getAdminById(admin.getAdminId());
     }
 
+    public PageMode<Admin> pageAdmin(Integer current, Integer limit, String sortColumn, String sort,
+                                     String searchKey, Integer closed) {
+        AdminQuery adminQuery = new AdminQuery();
+        adminQuery.setOffset((current-1) * limit);
+        adminQuery.setLimit(limit);
+        if (!ParamUtils.isNull(sortColumn)) {
+            adminQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
+        }
+
+        // TODO: 目前对searchKey支持比较机械
+        // 搜索登录名
+        AdminQuery.Criteria criteria = adminQuery.or();
+        if (!ParamUtils.isNull(searchKey)) {
+            criteria.andLoginNameLike("%" + searchKey + "%");
+        }
+        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
+            criteria.andClosedEqualTo(closed > 0);
+        }
+        // 搜索真实姓名
+        criteria = adminQuery.or();
+        if (!ParamUtils.isNull(searchKey)) {
+            criteria.andTrueNameLike("%" + searchKey + "%");
+        }
+        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
+            criteria.andClosedEqualTo(closed > 0);
+        }
+        // 搜索手机
+        criteria = adminQuery.or();
+        if (!ParamUtils.isNull(searchKey)) {
+            criteria.andMobileLike("%" + searchKey + "%");
+        }
+        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
+            criteria.andClosedEqualTo(closed > 0);
+        }
+
+        List<Admin> result = adminDAO.selectWithRoleByExample(adminQuery);
+        // 不返回密码
+        for (Admin admin : result) {
+            admin.setPassword(null);
+        }
+        return new PageMode<Admin>(result, adminDAO.countByExample(adminQuery));
+    }
+
     public void removeAdmin(List<Integer> idList) {
         checkNotSystemDefault(idList);
         // 检查是否被log引用
@@ -110,6 +200,10 @@ public class AdminService extends BaseService {
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andAdminIdIn(idList);
         adminDAO.deleteByExample(adminQuery);
+        // 删除关联 admin_role
+        AdminRoleQuery adminRoleQuery = new AdminRoleQuery();
+        adminRoleQuery.or().andAdminIdIn(idList);
+        adminRoleDAO.deleteByExample(adminRoleQuery);
         // 删除关联 log
         logQuery = new LogQuery();
         logQuery.or().andAdminIdIn(idList);
@@ -118,40 +212,7 @@ public class AdminService extends BaseService {
         addLog(LogType.ADMIN, Operate.REMOVE, idList);
     }
 
-    public List<Admin> searchAdmin(Integer current, Integer limit, String sortColumn, String sort,
-                                   String searchKey, Integer closed) {
-        AdminQuery adminQuery = new AdminQuery();
-        adminQuery.setOffset((current-1) * limit);
-        adminQuery.setLimit(limit);
-        if (!ParamUtils.isNull(sortColumn)) {
-            adminQuery.setOrderByClause(sortColumn + " " + sort);
-        }
-
-        // TODO: 目前对searchKey支持比较机械
-        AdminQuery.Criteria criteria = adminQuery.or();
-        if (!ParamUtils.isNull(searchKey)) {
-            criteria.andLoginNameLike("%" + searchKey + "%");
-        }
-        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
-            criteria.andClosedEqualTo(closed > 0);
-        }
-        criteria = adminQuery.or();
-        if (!ParamUtils.isNull(searchKey)) {
-            criteria.andTrueNameLike("%" + searchKey + "%");
-        }
-        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
-            criteria.andClosedEqualTo(closed > 0);
-        }
-
-        List<Admin> result = adminDAO.selectByExample(adminQuery);
-        // 不返回密码
-        for (Admin admin : result) {
-            admin.setPassword(null);
-        }
-        return result;
-    }
-
-    public Admin updateAdmin(Integer adminId, String trueName, Boolean closed, String mobile) {
+    public Admin updateAdmin(Integer adminId, String trueName, Boolean closed, String mobile, List<Integer> roleIdList) {
         checkNotSystemDefault(Collections.singletonList(adminId));
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
@@ -163,6 +224,18 @@ public class AdminService extends BaseService {
         admin.setUpdateAt(new Date());
         admin.setUpdateBy(loginAdmin.getAdminId());
         adminDAO.updateByPrimaryKeySelective(admin);
+
+        // 先删除原来所有admin_role
+        AdminRoleQuery adminRoleQuery = new AdminRoleQuery();
+        adminRoleQuery.or().andAdminIdEqualTo(admin.getAdminId());
+        adminRoleDAO.deleteByExample(adminRoleQuery);
+        // 再新增现有关联admin_role
+        for (Integer roleId : roleIdList) {
+            AdminRole adminRole = new AdminRole();
+            adminRole.setAdminId(admin.getAdminId());
+            adminRole.setRoleId(roleId);
+            adminRoleDAO.insertSelective(adminRole);
+        }
         // 添加日志
         addLog(LogType.ADMIN, Operate.UPDATE, admin.getAdminId());
         return getAdminById(admin.getAdminId());

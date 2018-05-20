@@ -65,24 +65,24 @@ public class Admin extends AdminEntity {
     /**
      * 权限id列表
      */
-    private String permissionIdList;
+    private String permissionNameList;
 
     /**
      * 获取 权限id列表
      *
      * @return String
      */
-    public String getPermissionIdList() {
-        return permissionIdList;
+    public String getPermissionNameList() {
+        return permissionNameList;
     }
 
     /**
      * 设置 权限id列表
      *
-     * @param permissionIdList
+     * @param permissionNameList
      */
-    public void setPermissionIdList(String permissionIdList) {
-        this.permissionIdList = permissionIdList == null ? null : permissionIdList.trim();
+    public void setPermissionNameList(String permissionNameList) {
+        this.permissionNameList = permissionNameList == null ? null : permissionNameList.trim();
     }
 
     // endregion

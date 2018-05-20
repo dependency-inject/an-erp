@@ -16,7 +16,7 @@
 
     <!-- 配置 url 大小写不敏感 -->
     <bean id="matcher" class="com.springmvc.matcher.CaseInsensitivePathMatcher" />
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="pathMatcher" ref="matcher" />
     </bean>
 
@@ -30,13 +30,12 @@
         </property>
     </bean>
     <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
             <list>
                 <ref bean="mappingJacksonHttpMessageConverter" />	<!-- JSON转换器 -->
             </list>
         </property>
-        <property name="pathMatcher" ref="matcher" />
     </bean>
     <!-- 定义跳转的文件的前后缀 ，视图模式配置-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -65,15 +64,19 @@
     <!-- 配置拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/*"/>
-            <mvc:exclude-mapping path="/login"/>
-            <mvc:exclude-mapping path="/static/*"/>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/static/**"/>
             <bean class="com.springmvc.interceptor.AuthenticateInterceptor" />
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/*"/>
-            <mvc:exclude-mapping path="/static/*" />
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/static/**" />
             <bean class="com.springmvc.interceptor.RedirectIfAuthenticatedInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/static/**" />
+            <bean class="com.springmvc.interceptor.AccessPermissionInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
 </beans>

@@ -1,7 +1,7 @@
 package com.springmvc.utils;
 
 import com.springmvc.exception.UnauthorizedException;
-import com.springmvc.pojo.Admin;
+import com.springmvc.dto.Admin;
 import com.springmvc.service.AdminService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class RequestUtils {
     public static Admin getLoginAdminFromSession(HttpServletRequest request) {
         Object object = request.getSession().getAttribute(LOGIN_ADMIN);
         if (object != null && object instanceof Integer) {
-            Admin admin = adminService.getAdminById((Integer) object);
+            Admin admin = adminService.getAdminWithPermissionById((Integer) object);
             loginAdmin.set(admin);
             return admin;
         }
