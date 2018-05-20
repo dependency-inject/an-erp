@@ -1,0 +1,236 @@
+@main-view-prefix-cls: ~"@{css-prefix}main-view";
+
+.@{main-view-prefix-cls} {
+    
+    .main-panel {
+        background-color: #fff; 
+        width: 100%; 
+        padding: 0 20px;
+
+        .main-panel-content {
+            position: relative;
+            height: 100%;
+        }
+
+        .main-panel-content2 {
+            padding-top: 20px;
+            padding-bottom: 70px;
+        }
+
+        &.no-scroll {
+            position: absolute;
+            top: 5px;
+            bottom: 0;
+            overflow: hidden;
+        }
+    }
+
+    .operate-btn {
+        padding: 7px 28px;
+    }
+
+    .operate-panel {
+        padding: 8px 0;
+    }
+
+    .operate-list {
+        >* {
+            display: inline-block;
+        }
+
+        .fv-dropdown {
+            padding: 2px;
+        }
+
+        .cancel-btn {
+            line-height: 34px; 
+            cursor: pointer; 
+            margin: 0 20px;
+
+            &:hover,&:focus {
+                color: @primary-color;
+            }
+
+            i { 
+                font-size: 16px; 
+            }
+        }
+    }
+
+    .split-bar {
+        padding-right: 30px; 
+        border-right: 1px solid #ddd; 
+        margin-right: 30px;
+    }
+
+    .label-btn {
+        color: #576b7e; 
+        margin-right: 20px; 
+        cursor: pointer;
+
+        &:hover {
+            color: @primary-color; 
+            transition: color 0.5s; 
+            -moz-transition: color 0.5s; 
+            -webkit-transition: color 0.5s; 
+            -o-transition: color 0.5s;
+        }
+
+        >i {
+            font-size: 15px; 
+            margin-right: 6px;
+        }
+    }
+
+    .button-list>* { 
+        margin-left: 5px; 
+    }
+
+    .statistics-panel {
+        margin-bottom: 10px;
+
+        >div {
+            display: inline-block;
+            width: 33%;
+            padding: 0 5px;
+            color: #fff;
+            vertical-align: middle;
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+
+            >div {
+                padding: 17px 0 23px 0;
+                text-align: center;
+
+                h4 {
+                    font-size: 32px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+
+    .list-content {
+        margin-left: 40px;
+
+        .list-item {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+
+            >* {
+                flex-shrink: 0;
+                flex-grow: 0;
+            }
+        }
+
+        .ico {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+    }
+
+    .page-panel {
+        position: absolute; 
+        bottom: 0; 
+        padding-bottom: 15px; 
+        right: 10px;
+    }
+
+    .panel-container {
+        overflow-y: auto;
+        height: 100%;
+
+        .chief-panel {
+            padding: 0 10px;
+
+            .panel-header {
+                padding: 20px 0;
+                font-size: 16px;
+                color: @primary-color;
+
+                .remark {
+                    font-size: 12px;
+
+                    i {
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            .panel-body {
+                
+            }
+        }
+    }
+
+    .panel-bottom {
+        padding: 18px 0;
+        background-color: #fff;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+
+        >button {
+            margin-right: 8px;
+        }
+    }
+
+    .data-item {
+        >* {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .item-start {
+            width: 90px;
+            text-align: right;
+            padding: 0 10px;
+        }
+
+        .item-middle {
+            width: 200px;
+        }
+
+        .item-end {
+
+            >* {
+                margin-left: 30px;
+            }
+        }
+    }
+
+    .product-card {
+        margin: 10px;
+        display: inline-block;
+        min-width: 300px;
+    }
+
+    .info-item {
+        display: inline-block;
+        margin: 0 1% 20px 1%;
+        font-size: 13px;
+        width: 22%;
+
+        label {
+            font-weight: bold;
+        }
+    }
+
+    .flex-content {
+        display: flex;
+        flex-wrap: wrap;
+
+        >* {
+            width: 42%;
+            margin: 0 4% 15px 3%;
+        }
+    }
+}

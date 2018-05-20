@@ -1,4 +1,7 @@
 /backend/out/
 /backend/target/
 /backend/.idea/
+/backend/src/main/webapp/static/
+/frontend/node_modules/
+*.log
 *.iml
