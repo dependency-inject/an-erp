@@ -33,6 +33,7 @@ public class AdminService extends BaseService {
     private RoleDAO roleDAO;
 
     public Admin addAdmin(String loginName, String trueName, Boolean closed, String mobile, List<Integer> roleIdList) {
+        // 进行必要的检查
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andLoginNameEqualTo(loginName);
         if (adminDAO.countByExample(adminQuery) > 0) {
@@ -40,7 +41,7 @@ public class AdminService extends BaseService {
         }
 
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-
+        // 将主表信息保存
         Admin admin = new Admin();
         admin.setLoginName(loginName);
         admin.setPassword(MD5Utils.strToMD5(loginName));
@@ -54,7 +55,7 @@ public class AdminService extends BaseService {
         admin.setUpdateBy(loginAdmin.getAdminId());
         adminDAO.insertSelective(admin);
 
-        // 新增关联role
+        // 新增关联role（将关联的从表信息保存）
         for (Integer roleId : roleIdList) {
             AdminRole adminRole = new AdminRole();
             adminRole.setAdminId(admin.getAdminId());
@@ -187,8 +188,9 @@ public class AdminService extends BaseService {
     }
 
     public void removeAdmin(List<Integer> idList) {
+        // 进行必要的检查
         checkNotSystemDefault(idList);
-        // 检查是否被log引用
+        // 检查是否被log引用（检查要删除的主表信息是否被其他信息引用）
         LogQuery logQuery = new LogQuery();
         logQuery.or().andAdminIdIn(idList).andLogTypeNotEqualTo(LogType.SYSTEM.type);
         logQuery.or().andAdminIdIn(idList).andOperateNotEqualTo(Operate.LOGIN.operate);
@@ -196,15 +198,15 @@ public class AdminService extends BaseService {
             throw new BadRequestException(ADMIN_REFER_BY_LOG);
         }
 
-        // 删除 admin
+        // 删除 admin（删除主表信息）
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andAdminIdIn(idList);
         adminDAO.deleteByExample(adminQuery);
-        // 删除关联 admin_role
+        // 删除关联 admin_role（删除关联的从表信息）
         AdminRoleQuery adminRoleQuery = new AdminRoleQuery();
         adminRoleQuery.or().andAdminIdIn(idList);
         adminRoleDAO.deleteByExample(adminRoleQuery);
-        // 删除关联 log
+        // 删除关联 log（删除关联的从表信息）
         logQuery = new LogQuery();
         logQuery.or().andAdminIdIn(idList);
         logDAO.deleteByExample(logQuery);
@@ -213,9 +215,10 @@ public class AdminService extends BaseService {
     }
 
     public Admin updateAdmin(Integer adminId, String trueName, Boolean closed, String mobile, List<Integer> roleIdList) {
+        // 进行必要的检查
         checkNotSystemDefault(Collections.singletonList(adminId));
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-
+        // 更新主表信息
         Admin admin = new Admin();
         admin.setAdminId(adminId);
         admin.setTrueName(trueName);
@@ -225,7 +228,7 @@ public class AdminService extends BaseService {
         admin.setUpdateBy(loginAdmin.getAdminId());
         adminDAO.updateByPrimaryKeySelective(admin);
 
-        // 先删除原来所有admin_role
+        // 先删除原来所有admin_role（更新关联的从表信息）
         AdminRoleQuery adminRoleQuery = new AdminRoleQuery();
         adminRoleQuery.or().andAdminIdEqualTo(admin.getAdminId());
         adminRoleDAO.deleteByExample(adminRoleQuery);
