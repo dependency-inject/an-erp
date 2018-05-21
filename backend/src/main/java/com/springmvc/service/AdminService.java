@@ -32,8 +32,22 @@ public class AdminService extends BaseService {
     @Resource
     private RoleDAO roleDAO;
 
+    /**
+     * 新增用户信息
+     *
+     * 进行必要的检查：login_name 是否已存在
+     * 将主表信息保存：admin
+     * 将关联的从表信息保存：admin_role
+     * 添加日志信息：LogType.ADMIN, Operate.ADD
+     *
+     * @param loginName
+     * @param trueName
+     * @param closed
+     * @param mobile
+     * @param roleIdList
+     * @return
+     */
     public Admin addAdmin(String loginName, String trueName, Boolean closed, String mobile, List<Integer> roleIdList) {
-        // 进行必要的检查
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andLoginNameEqualTo(loginName);
         if (adminDAO.countByExample(adminQuery) > 0) {
@@ -41,7 +55,7 @@ public class AdminService extends BaseService {
         }
 
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        // 将主表信息保存
+
         Admin admin = new Admin();
         admin.setLoginName(loginName);
         admin.setPassword(MD5Utils.strToMD5(loginName));
@@ -55,7 +69,7 @@ public class AdminService extends BaseService {
         admin.setUpdateBy(loginAdmin.getAdminId());
         adminDAO.insertSelective(admin);
 
-        // 新增关联role（将关联的从表信息保存）
+        // 新增关联role
         for (Integer roleId : roleIdList) {
             AdminRole adminRole = new AdminRole();
             adminRole.setAdminId(admin.getAdminId());
@@ -67,6 +81,16 @@ public class AdminService extends BaseService {
         return getAdminById(admin.getAdminId());
     }
 
+    /**
+     * 修改密码
+     *
+     * 进行必要的检查：两次输入新密码一致、旧密码是否正确
+     * 将主表信息保存：admin.password（MD5加密）
+     *
+     * @param oldPassword
+     * @param newPassword
+     * @param confirmPassword
+     */
     public void changePassword(String oldPassword, String newPassword, String confirmPassword) {
         if (!newPassword.equals(confirmPassword)) {
             throw new BadRequestException(TWO_INPUT_PASSWORDS_NOT_SAME);
@@ -83,6 +107,15 @@ public class AdminService extends BaseService {
         adminDAO.updateByPrimaryKeySelective(admin);
     }
 
+    /**
+     * 查询用户信息（单个）
+     *
+     * 将主表信息取出：admin
+     * 过滤不显示的信息：password
+     *
+     * @param adminId
+     * @return
+     */
     public Admin getAdminById(int adminId) {
         Admin admin = adminDAO.selectByPrimaryKey(adminId);
         // 不返回密码
@@ -90,6 +123,18 @@ public class AdminService extends BaseService {
         return admin;
     }
 
+    /**
+     * 查询用户信息（单个），包含权限信息
+     *
+     * 将主表信息取出：admin left join admin_role
+     * 通过 admin_role.role_id 取出 role left join role_permission
+     * 通过 role_permission.permission_id 取出 permission left join module
+     *
+     * permissionNameList: join(module.module_name + '@' + permission.permission_name, ',')
+     *
+     * @param adminId
+     * @return
+     */
     public Admin getAdminWithPermissionById(int adminId) {
         Admin admin = getAdminWithRoleById(adminId);
 
@@ -112,6 +157,15 @@ public class AdminService extends BaseService {
         return admin;
     }
 
+    /**
+     * 查询用户信息（单个），包含角色信息
+     *
+     * 将主表信息取出：admin left join admin_role
+     * 过滤不显示的信息：password
+     *
+     * @param adminId
+     * @return
+     */
     public Admin getAdminWithRoleById(int adminId) {
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andAdminIdEqualTo(adminId);
@@ -125,6 +179,17 @@ public class AdminService extends BaseService {
         return admin;
     }
 
+    /**
+     * 用户登录
+     *
+     * 进行必要的检查：登录名是否存在、密码是否正确、对应账号状态是否为停用
+     * 添加日志信息：LogType.SYSTEM, Operate.LOGIN
+     *
+     * @param loginName
+     * @param password
+     * @return
+     * @throws Exception
+     */
     public Admin login(String loginName, String password) throws Exception {
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andLoginNameEqualTo(loginName);
@@ -144,6 +209,22 @@ public class AdminService extends BaseService {
         return getAdminById(admin.getAdminId());
     }
 
+    /**
+     * 查询用户信息（分页）
+     *
+     * 将主表信息取出：admin left join admin_role（同时包含总记录数）
+     * 搜索字段：登录名、真实姓名、手机
+     * 筛选字段：账号状态
+     * 过滤不显示的信息：password
+     *
+     * @param current
+     * @param limit
+     * @param sortColumn
+     * @param sort
+     * @param searchKey
+     * @param closed
+     * @return
+     */
     public PageMode<Admin> pageAdmin(Integer current, Integer limit, String sortColumn, String sort,
                                      String searchKey, Integer closed) {
         AdminQuery adminQuery = new AdminQuery();
@@ -187,10 +268,20 @@ public class AdminService extends BaseService {
         return new PageMode<Admin>(result, adminDAO.countByExample(adminQuery));
     }
 
+    /**
+     * 删除用户信息
+     *
+     * 进行必要的检查：是否包含系统默认用户
+     * 检查要删除的主表信息是否被其他信息引用：是否被“登录系统”之外的log信息引用
+     * 删除主表信息：admin
+     * 删除关联的从表信息：admin_role、log
+     * 添加日志信息：LogType.ADMIN, Operate.REMOVE
+     *
+     * @param idList
+     */
     public void removeAdmin(List<Integer> idList) {
-        // 进行必要的检查
         checkNotSystemDefault(idList);
-        // 检查是否被log引用（检查要删除的主表信息是否被其他信息引用）
+        // 检查是否被log引用
         LogQuery logQuery = new LogQuery();
         logQuery.or().andAdminIdIn(idList).andLogTypeNotEqualTo(LogType.SYSTEM.type);
         logQuery.or().andAdminIdIn(idList).andOperateNotEqualTo(Operate.LOGIN.operate);
@@ -198,15 +289,15 @@ public class AdminService extends BaseService {
             throw new BadRequestException(ADMIN_REFER_BY_LOG);
         }
 
-        // 删除 admin（删除主表信息）
+        // 删除 admin
         AdminQuery adminQuery = new AdminQuery();
         adminQuery.or().andAdminIdIn(idList);
         adminDAO.deleteByExample(adminQuery);
-        // 删除关联 admin_role（删除关联的从表信息）
+        // 删除关联 admin_role
         AdminRoleQuery adminRoleQuery = new AdminRoleQuery();
         adminRoleQuery.or().andAdminIdIn(idList);
         adminRoleDAO.deleteByExample(adminRoleQuery);
-        // 删除关联 log（删除关联的从表信息）
+        // 删除关联 log
         logQuery = new LogQuery();
         logQuery.or().andAdminIdIn(idList);
         logDAO.deleteByExample(logQuery);
@@ -214,11 +305,25 @@ public class AdminService extends BaseService {
         addLog(LogType.ADMIN, Operate.REMOVE, idList);
     }
 
+    /**
+     * 更新用户信息
+     *
+     * 进行必要的检查：是否为系统默认用户
+     * 更新主表信息：admin
+     * 更新关联的从表信息：admin_role
+     * 添加日志信息：LogType.ADMIN, Operate.UPDATE
+     *
+     * @param adminId
+     * @param trueName
+     * @param closed
+     * @param mobile
+     * @param roleIdList
+     * @return
+     */
     public Admin updateAdmin(Integer adminId, String trueName, Boolean closed, String mobile, List<Integer> roleIdList) {
-        // 进行必要的检查
         checkNotSystemDefault(Collections.singletonList(adminId));
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        // 更新主表信息
+
         Admin admin = new Admin();
         admin.setAdminId(adminId);
         admin.setTrueName(trueName);
@@ -228,7 +333,7 @@ public class AdminService extends BaseService {
         admin.setUpdateBy(loginAdmin.getAdminId());
         adminDAO.updateByPrimaryKeySelective(admin);
 
-        // 先删除原来所有admin_role（更新关联的从表信息）
+        // 先删除原来所有admin_role
         AdminRoleQuery adminRoleQuery = new AdminRoleQuery();
         adminRoleQuery.or().andAdminIdEqualTo(admin.getAdminId());
         adminRoleDAO.deleteByExample(adminRoleQuery);

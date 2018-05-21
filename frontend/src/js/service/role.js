@@ -1,15 +1,15 @@
-import { http } from '../libs/http'
+import { http } from '../libs/http';
 
 var add = (role) => http.post('role/add', role);
 
-var getList = (roleId) => http.post('role/getList');
+var getList = () => http.post('role/getList');
 
-var getPermissionList = (roleId) => http.post('role/getPermissionList');
+var getPermissionList = () => http.post('role/getPermissionList');
 
 var remove = (idList) => http.post('role/remove', { idList: idList });
 
 var update = (role) => http.post('role/update', role);
 
-var updatePermissions = (roleId, permissionIds) => http.post('role/updatePermissions', { roleId: roleId, permissionIds: permissionIds });
+var updatePermissions = (roleId, permissionIdList) => http.post('role/updatePermissions', { roleId: roleId, permissionIdList: permissionIdList });
 
-export default { add, getList, getPermissionList, remove, update, updatePermissions }
+export default { add, getList, getPermissionList, remove, update, updatePermissions };

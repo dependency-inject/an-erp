@@ -1,7 +1,11 @@
 - **简介**
   - [文档写作](about-docs.md)
   - [快速开始](README.md)
+  - [开发规范](develop-rule.md)
 - **设计**
+  - [系统模块](module.md)
+  - [功能清单](function-list.md)
   - [原形设计](axure-design.md)
 - **代码**
   - [后端架构](backend-framework.md)
+  - [前端架构](frontend-framework.md)
