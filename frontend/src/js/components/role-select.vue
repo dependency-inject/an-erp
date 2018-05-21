@@ -45,7 +45,11 @@ export default {
             }
         },
         updateValue() {
-            this.$emit('input', this.model.join(','));
+            if (this.multiple) {
+                this.$emit('input', this.model.join(','));
+            } else {
+                this.$emit('input', this.model);
+            }
             this.dispatch('FormItem', 'on-form-change');
         },
         emitChange() {
@@ -54,7 +58,7 @@ export default {
                 this.$emit('on-change', items);
             } else {
                 let items = this.data.filter((item) => { return item.roleId == this.model });
-                this.$emit('on-change', items.length == 0? { roleId: '', roleName: '', permissionIds: '' }: items[0]);
+                this.$emit('on-change', items.length == 0? { roleId: '', roleName: '', permissionIdList: '' }: items[0]);
             }
         },
         rebuildValue(value) {

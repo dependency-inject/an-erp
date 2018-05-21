@@ -33,6 +33,17 @@ public class RoleService extends BaseService {
     @Resource
     private RolePermissionDAO rolePermissionDAO;
 
+    /**
+     * 新增角色信息
+     *
+     * 进行必要的检查：暂无
+     * 将主表信息保存：role
+     * 将关联的从表信息保存：暂无
+     * 添加日志信息：LogType.ROLE, Operate.ADD
+     *
+     * @param roleName
+     * @return
+     */
     public Role addRole(String roleName) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
@@ -49,21 +60,54 @@ public class RoleService extends BaseService {
         return getRoleById(role.getRoleId());
     }
 
+    /**
+     * 查询角色信息（全部），包含权限信息
+     *
+     * 将主表信息取出：role left join role_permission
+     *
+     * @return
+     */
     public List<Role> getRoleList() {
         return roleDAO.selectWithPermissionByExample(new RoleQuery());
     }
 
+    /**
+     * 查询权限信息（全部），包含模块信息
+     *
+     * 将主表信息取出：permission left join module
+     *
+     * @return
+     */
     public List<Permission> getPermissionList() {
         PermissionQuery permissionQuery = new PermissionQuery();
         permissionQuery.setOrderByClause("module_sort,sort asc");
         return permissionDAO.selectWithModuleByExample(permissionQuery);
     }
 
+    /**
+     * 查询角色信息（单个）
+     *
+     * 将主表信息取出：role
+     *
+     * @param roleId
+     * @return
+     */
     public Role getRoleById(int roleId) {
         Role role = roleDAO.selectByPrimaryKey(roleId);
         return role;
     }
 
+    /**
+     * 删除角色信息
+     *
+     * 进行必要的检查：是否包含系统默认角色
+     * 检查要删除的主表信息是否被其他信息引用：是否被admin_role信息引用
+     * 删除主表信息：role
+     * 删除关联的从表信息：role_permission
+     * 添加日志信息：LogType.ROLE, Operate.REMOVE
+     *
+     * @param idList
+     */
     public void removeRole(List<Integer> idList) {
         checkNotSystemDefault(idList);
         // 检查是否被admin引用
@@ -85,6 +129,18 @@ public class RoleService extends BaseService {
         addLog(LogType.ROLE, Operate.REMOVE, idList);
     }
 
+    /**
+     * 更新角色信息
+     *
+     * 进行必要的检查：是否为系统默认角色
+     * 更新主表信息：role
+     * 更新关联的从表信息：暂无
+     * 添加日志信息：LogType.ROLE, Operate.UPDATE
+     *
+     * @param roleId
+     * @param roleName
+     * @return
+     */
     public Role updateRole(Integer roleId, String roleName) {
         checkNotSystemDefault(Collections.singletonList(roleId));
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
@@ -100,6 +156,17 @@ public class RoleService extends BaseService {
         return getRoleById(role.getRoleId());
     }
 
+    /**
+     * 更新角色权限信息
+     *
+     * 进行必要的检查：是否为系统默认角色
+     * 更新主表信息：暂无
+     * 更新关联的从表信息：role_permission
+     * 添加日志信息：LogType.ROLE_PERMISSION, Operate.UPDATE
+     *
+     * @param roleId
+     * @param permissionIdList
+     */
     public void updateRolePermissions(Integer roleId, List<Integer> permissionIdList) {
         checkNotSystemDefault(Collections.singletonList(roleId));
 
