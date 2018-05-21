@@ -46,9 +46,9 @@
 ```
 
 !> 正常来说，只是简单的增删改查，不需要修改到 DAO 层文件，里面的接口已经足够。但如果涉及查询结构需要多个表进行关联，有两种解决方案：
-!> 一是增加新的 DAO 接口，并在对应 xml 文件中进行实现，以此得到期望的值（可参考 com.springmvc.dao.AdminDAO#selectWithRoleByExample 接口）；
-!> 二是在 Service 层，通过多个 DAO 层接口获取数据，并由代码逻辑进行拼接得到期望的值（可参考 com.springmvc.service.RoleService#getPermissionList 方法）。
-!> 以上两种方案可能需要其他数据项，可以在 com.springmvc.dto 包下对相应的类进行添加字段以及 Getter、Setter。
+<br>一是增加新的 DAO 接口，并在对应 xml 文件中进行实现，以此得到期望的值（可参考 com.springmvc.dao.AdminDAO#selectWithRoleByExample 接口）；
+<br>二是在 Service 层，通过多个 DAO 层接口获取数据，并由代码逻辑进行拼接得到期望的值（可参考 com.springmvc.service.RoleService#getPermissionList 方法）。
+<br>以上两种方案可能需要其他数据项，可以在 com.springmvc.dto 包下对相应的类进行添加字段以及 Getter、Setter。
 
 #### DTO
 
@@ -206,9 +206,11 @@ public class AdminService extends BaseService {
 * 将关联 admin_role 信息保存到数据库中
 * 添加相应的日志信息
 
+!> 重点需要大家完成的就是 `Controller` 和 `Service` 层的代码，具体需要完成哪个类，参见 [开发规范](develop-rule.md) 中的 **各模块命名规则#后端代码**
+
 ### 几种操作的 Service 层业务逻辑思路
 
-业务数据的基本操作有：新增、查询、删除、更新。其中，查询难点不在于业务逻辑，下面不做讲解。
+业务数据的基本操作有：新增、查询、删除、更新、状态改变。其中，查询难点不在于业务逻辑，下面不做讲解。
 
 #### 新增
 
@@ -236,4 +238,13 @@ public class AdminService extends BaseService {
 * 进行必要的检查（参数检查、系统自定义逻辑检查）
 * 更新主表信息
 * 更新关联的从表信息（如果有的话，先删除，再新增）
+* 添加日志信息
+
+#### 状态改变
+
+暂无参考
+
+* 进行必要的检查（参数检查、系统自定义逻辑检查、状态检查）
+* 更新主表信息（状态、操作者及时间）
+* 其他必要操作（如果有的话，如出库单完成时把对应领料单也至为完成状态）
 * 添加日志信息
