@@ -57,6 +57,10 @@ if (mix.inProduction()) {
 
 ?> 由于打包后的资源文件名是相同的，可能会出现资源文件缓存不更新的情况。出现这种情况时，请打开你的浏览器开发者工具（Chrome 下按 F12 可打开），切换到 Network 标签下，并勾选 Disable cache，再刷新网页即可。
 
+### 数据库配置
+
+数据库连接信息位于 `backend/src/main/resources/jdbc.properties` 文件中。
+
 ### 项目部署
 
 
