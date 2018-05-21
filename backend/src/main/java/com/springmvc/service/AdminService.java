@@ -349,6 +349,17 @@ public class AdminService extends BaseService {
         return getAdminById(admin.getAdminId());
     }
 
+    /**
+     * 更新用户账号状态信息
+     *
+     * 进行必要的检查：是否为系统默认用户
+     * 更新主表信息：admin
+     * 更新关联的从表信息：暂无
+     * 添加日志信息：LogType.ADMIN, Operate.UPDATE
+     *
+     * @param idList
+     * @param closed
+     */
     public void updateAdminClosedState(List<Integer> idList, Boolean closed) {
         checkNotSystemDefault(idList);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
