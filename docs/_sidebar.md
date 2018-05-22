@@ -5,6 +5,7 @@
   - [系统模块](module.md)
   - [功能清单](function-list.md)
   - [原形设计](axure-design.md)
+  - [数据建模](db-design.md)
 - **代码**
   - [开发规范](develop-rule.md)
   - [后端架构](backend-framework.md)
