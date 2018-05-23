@@ -10,3 +10,5 @@
   - [开发规范](develop-rule.md)
   - [后端架构](backend-framework.md)
   - [前端架构](frontend-framework.md)
+- **问题整理**
+  - [环境搭建](problem-environment.md)
