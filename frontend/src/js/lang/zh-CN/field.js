@@ -16,6 +16,15 @@ export default {
         ROLE_NAME: '角色名称',
         SELECT_ROLE: '选择角色',
     },
+    MATERIAL: {
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_NO: '物料编号',
+        UNIT: '单位',
+        SPEC: '规格',
+        CATEGORY: '类别',
+        COST: '定价',
+        REMARK: '备注',
+    },
 
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',
