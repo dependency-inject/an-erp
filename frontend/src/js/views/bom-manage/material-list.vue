@@ -6,16 +6,11 @@
                     <!-- 搜索框 -->
                     <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL.MATERIAL_NO')+'/'+$t('field.MATERIAL.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                 </div>
-                <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
                     <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
-                    <!-- 启用 -->
-                    <!--<span class="label-btn" @click="updateClosedState(selectItems, 0)" v-if="adminUpdatePermission"><icon type="android-open"></icon>{{ $t('common.ENABLE') }}</span>-->
-                    <!-- 停用 -->
-                    <!--<span class="label-btn" @click="updateClosedState(selectItems, 1)" v-if="adminUpdatePermission"><icon type="android-exit"></icon>{{ $t('common.DISABLE') }}</span>-->
                     <!-- 删除 -->
-                    <span class="label-btn" @click="remove(selectItems)" v-if="adminRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+                    <span class="label-btn" @click="remove(selectItems)" v-if="materialRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
                 <!-- 顶部右侧按钮 -->
                 <div class="button-list pull-right">
@@ -25,7 +20,7 @@
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]" @detail="$router.push('/admin/'+arguments[0][vm.identity])" @remove="remove([arguments[0]])"></i-table>
+                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]" @detail="$router.push('/material/'+arguments[0][vm.identity])" @remove="remove([arguments[0]])"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -37,6 +32,8 @@
 
 <script>
 import Permission from '../../mixins/permission';
+import util from '../../libs/util.js';
+import materialService from '../../service/material';
 
 export default {
     mixins: [ Permission ],
@@ -71,33 +68,76 @@ export default {
                 { title: this.$t('field.MATERIAL.UNIT'), key: 'unit' },
                 { title: this.$t('field.MATERIAL.SPEC'), key: 'spec' },
                 { title: this.$t('field.MATERIAL.CATEGORY'), key: 'categoryName', sortable: 'custom' },
-                { title: this.$t('field.MATERIAL.COST'), key: 'cost', sortable: 'custom' },
-                { title: this.$t('field.MATERIAL.REMARK'), key: 'remark' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
-                            this.$router.push('/admin/'+row[this.vm.identity]) 
-                        }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
+                            console.log(row);console.log(this.vm.identity);
+                            this.$router.push('/material/'+row[this.vm.identity])
+                        }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
                             this.remove([row]) 
                         }, 'removePermission')]);
                     } 
                 }
             ];
         },
-        // 账号状态筛选框的当前值
-        closedCn() {
-            for (let i = 0; i < this.closedList.length; ++i) {
-                if (this.closedList[i].value === this.vm.queryParameters.closed)
-                    return this.closedList[i].descript;
+    },
+    methods: {
+        initData() {
+            this.search();
+        },
+        async search() {
+            let idList = _.map(this.selectItems, this.vm.identity).join(",");
+            let result = await materialService.search(this.vm.queryParameters);
+            if (result.status === 200) {
+                var items = result.data.list;
+                this.vm.queryParameters.total = result.data.total;
+                items.forEach((item) => {
+                    item['detailPermission'] = true;
+                    if (this.materialRemovePermission)
+                        item['removePermission'] = true;
+                });
+                this.vm.items = items;
+                this.$nextTick(() => {
+                    for (var i = 0; i < items.length; ++i) {
+                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
+                            this.$refs.table.toggleSelect(i);
+                        }
+                    }
+                });
             }
         },
-        // 账号状态筛选框的列表值
-        closedList() {
-            return [
-                { value: -1, descript: this.$t('field.CLOSED.-1') },
-                { value: 0, descript: this.$t('field.CLOSED.0') },
-                { value: 1, descript: this.$t('field.CLOSED.1') },
-            ]
+        handleSort(data) {
+            if (data.order === 'normal') {
+                this.vm.queryParameters.sortColumn = '';
+                this.vm.queryParameters.sort = '';
+            } else {
+                this.vm.queryParameters.sortColumn = data.key;
+                this.vm.queryParameters.sort = data.order;
+            }
+            this.selectItems = [];
+            this.search();
+        },
+        remove(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",");
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: async () => {
+                    let result = await materialService.remove(idList);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
+                        this.selectItems = [];
+                        this.search();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        clearChecked() {
+            this.$refs.table.selectAll(false);
         }
+    },
+    mounted() {
+        this.initData();
     }
 }
 </script>

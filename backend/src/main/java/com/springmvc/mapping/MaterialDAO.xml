@@ -344,9 +344,9 @@
     <if test="distinct">
       distinct
     </if>
-    material.material_no, material.material_name, material.unit, material.category_id, material.spec,material.cost,
-    material.remark, material.create_at, material.create_by, material.update_at, material.update_by,
-    material_category.category_name as category_name
+    material.material_id, material.material_no, material.material_name, material.unit, material.category_id,
+    material.spec, material.cost, material.remark, material.create_at, material.create_by, material.update_at,
+    material.update_by, material_category.category_name as category_name
     from material
     left join material_category on material.category_id = material_category.category_id
     <if test="_parameter != null">
