@@ -16,7 +16,11 @@ export default {
         ROLE_NAME: '角色名称',
         SELECT_ROLE: '选择角色',
     },
-
+    WAREHOUSE:{
+        WAREHOUSE:'仓库',
+        NO:'仓库编号',
+        NAME:'仓库名称',
+    },
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',
     ELSE_INFO: '其他信息',
