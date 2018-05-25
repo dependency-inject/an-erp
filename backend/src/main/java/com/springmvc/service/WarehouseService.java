@@ -61,7 +61,7 @@ public class WarehouseService extends BaseService {
             warehouseQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
         }
 
-        //搜索序号_模糊查询
+        //搜索编号_模糊查询
         WarehouseQuery.Criteria criteria = warehouseQuery.or();
         if (!ParamUtils.isNull(searchKey)){
             criteria.andWarehouseNoLike("%" + searchKey + "%");
@@ -93,34 +93,20 @@ public class WarehouseService extends BaseService {
     /**
      * 增添仓库信息
      *
-     * 仓库名和仓库序号的查重
      * 将主表信息保存：warehouse
-     * 添加日志信息
+     * 添加日志信息：LogType.WAREHOUSE, Operate.ADD
      *
      * @param warehouseNo       NO
-     * @param warehousename     name
+     * @param warehouseName     name
      * @return
      */
-    public Warehouse addWarehouse(String warehouseNo, String warehousename){
-        //下面两个是仓库名和仓库序号的查重
-        //查询NO是否重复
-        WarehouseQuery warehouseQuery = new WarehouseQuery();
-        warehouseQuery.or().andWarehouseNoEqualTo(warehouseNo);
-        if (warehouseDAO.countByExample(warehouseQuery) > 0){
-            throw new BadRequestException(WAREHOUSE_NO_EXIST);
-        }
-        //查询name是否重复
-        warehouseQuery = new WarehouseQuery();
-        warehouseQuery.or().andWarehouseNameEqualTo(warehousename);
-        if (warehouseDAO.countByExample(warehouseQuery) > 0){
-            throw new BadRequestException(WAREHOUSE_NAME_EXIST);
-        }
+    public Warehouse addWarehouse(String warehouseNo, String warehouseName){
 
         //保存主表信息
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
         Warehouse warehouse = new Warehouse();
         warehouse.setWarehouseNo(warehouseNo);
-        warehouse.setWarehouseName(warehousename);
+        warehouse.setWarehouseName(warehouseName);
         warehouse.setCreateAt(new Date());
         warehouse.setCreateBy(loginAdmin.getAdminId());
         warehouse.setUpdateAt(new Date());
@@ -136,38 +122,14 @@ public class WarehouseService extends BaseService {
     /**
      * 修改仓库信息
      *
-     * 仓库名和仓库序号的查重
-     * 更新信息
-     * 添加日志
+     * 更新主表warehouse
+     * 添加日志:LogType.WAREHOUSE Operate.UPDATE
      *
      * @param warehouseNo
      * @param warehouseName
      * @return
      */
-    public Warehouse updateWarehouse(Integer warehouseId, String warehouseNo,String warehouseName){
-        //下面检查两个信息
-//        //查询NO是否重复
-//        WarehouseQuery warehouseQuery = new WarehouseQuery();
-//        warehouseQuery.or().andWarehouseNoEqualTo(warehouseNo);
-//        if (warehouseDAO.countByExample(warehouseQuery) > 0 ){
-//            List<Warehouse> temp = warehouseDAO.selectByExample(warehouseQuery);
-//            for (Warehouse a:temp) {
-//                if(a.getWarehouseName() != warehouseName){
-//                    throw new BadRequestException(WAREHOUSE_NO_EXIST);
-//                }
-//            }
-//        }
-//        //查询name是否重复
-//        warehouseQuery = new WarehouseQuery();
-//        warehouseQuery.or().andWarehouseNameEqualTo(warehouseName);
-//        if (warehouseDAO.countByExample(warehouseQuery) > 0){
-//            List<Warehouse> temp = warehouseDAO.selectByExample(warehouseQuery);
-//            for (Warehouse a:temp) {
-//                if(a.getWarehouseNo() != warehouseNo){
-//                    throw new BadRequestException(WAREHOUSE_NAME_EXIST);
-//                }
-//            }
-//        }
+    public Warehouse updateWarehouse(Integer warehouseId, String warehouseNo, String warehouseName){
 
         //更新信息
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
@@ -191,7 +153,7 @@ public class WarehouseService extends BaseService {
      * 删除的主表信息：warehouse
      * 查看有没有被别的表所引用：material_instock_bill_material / material_outstock_bill_material
      *                product_instock_bill_product / product_outstock_bill_prpduct
-     * 添加日志信息
+     * 添加日志信息：LogType.WAREHOUSE，Operate.REMOVE
      *
      * @param idList 我们从idList的string格式转换成的数列格式
      */
@@ -200,28 +162,28 @@ public class WarehouseService extends BaseService {
         MaterialInstockBillMaterialQuery materialInstockBillMaterialQuery = new MaterialInstockBillMaterialQuery();
         materialInstockBillMaterialQuery.or().andWarehouseIn(idList);
         if (materialInstockBillMaterialDAO.countByExample(materialInstockBillMaterialQuery) > 0){
-            throw new BadRequestException(WAREHOUSE_REFER_BY_material_instock_bill_material);
+            throw new BadRequestException(WAREHOUSE_REFER_BY_MATERIAL_INSTOCK_BILL_MATERIAL);
         }
 
         //检查是否被material_outstock_bill_material引用
         MaterialOutstockBillMaterialQuery materialOutstockBillMaterialQuery = new MaterialOutstockBillMaterialQuery();
         materialOutstockBillMaterialQuery.or().andWarehouseIn(idList);
         if (materialOutstockBillMaterialDAO.countByExample(materialOutstockBillMaterialQuery) > 0){
-            throw new BadRequestException(WAREHOUSE_REFER_BY_material_outstock_bill_material);
+            throw new BadRequestException(WAREHOUSE_REFER_BY_MATERIAL_OUTSTOCK_BILL_MATERIAL);
         }
 
         //检查是否被product_instock_bill_product引用
         ProductInstockBillProductQuery productInstockBillProductQuery = new ProductInstockBillProductQuery();
         productInstockBillProductQuery.or().andWarehouseIn(idList);
         if (productInstockBillProductDAO.countByExample(productInstockBillProductQuery) > 0){
-            throw new BadRequestException(WAREHOUSE_REFER_BY_product_instock_bill_product);
+            throw new BadRequestException(WAREHOUSE_REFER_BY_PRODUCT_INSTOCK_BILL_PRODUCT);
         }
 
         //检查是否被product_outstock_bill_prpduct引用
         ProductOutstockBillProductQuery productOutstockBillProductQuery = new ProductOutstockBillProductQuery();
         productOutstockBillProductQuery.or().andWarehouseIn(idList);
         if(productOutstockBillProductDAO.countByExample(productOutstockBillProductQuery)> 0 ){
-            throw new BadRequestException(WAREHOUSE_REFER_BY_product_outstock_bill_prpduct);
+            throw new BadRequestException(WAREHOUSE_REFER_BY_PRODUCT_OUTSTOCK_BILL_PRPDUCT);
         }
 
         //删除主表Warehouse
@@ -234,9 +196,9 @@ public class WarehouseService extends BaseService {
     }
 
     private static final String WAREHOUSE_NAME_EXIST = "该仓库名已存在";
-    private static final String WAREHOUSE_NO_EXIST = "该仓库序号已存在";
-    private static final String WAREHOUSE_REFER_BY_material_instock_bill_material = "仓库被物料入库单所引用";
-    private static final String WAREHOUSE_REFER_BY_material_outstock_bill_material = "仓库被物料出库单所引用";
-    private static final String WAREHOUSE_REFER_BY_product_instock_bill_product = "仓库被产品入库单所引用";
-    private static final String WAREHOUSE_REFER_BY_product_outstock_bill_prpduct = "仓库被产品出库单所引用";
+    private static final String WAREHOUSE_NO_EXIST = "该仓库编号已存在";
+    private static final String WAREHOUSE_REFER_BY_MATERIAL_INSTOCK_BILL_MATERIAL = "仓库被物料入库单所引用";
+    private static final String WAREHOUSE_REFER_BY_MATERIAL_OUTSTOCK_BILL_MATERIAL = "仓库被物料出库单所引用";
+    private static final String WAREHOUSE_REFER_BY_PRODUCT_INSTOCK_BILL_PRODUCT = "仓库被产品入库单所引用";
+    private static final String WAREHOUSE_REFER_BY_PRODUCT_OUTSTOCK_BILL_PRPDUCT = "仓库被产品出库单所引用";
 }

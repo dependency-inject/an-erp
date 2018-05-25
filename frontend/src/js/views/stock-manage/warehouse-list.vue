@@ -4,7 +4,7 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.WAREHOUSE.NO')+'/'+$t('field.WAREHOUSE.NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.WAREHOUSE.WAREHOUSE_NO')+'/'+$t('field.WAREHOUSE.WAREHOUSE_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                 </div>
                 <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -30,8 +30,8 @@
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true">
             <i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
-                <form-item :label="$t('field.WAREHOUSE.NO')" prop="warehouseNo"><i-input v-model="modal.item.warehouseNo"></i-input></form-item>
-                <form-item :label="$t('field.WAREHOUSE.NAME')" prop="warehouseName"><i-input v-model="modal.item.warehouseName"></i-input></form-item>
+                <form-item :label="$t('field.WAREHOUSE.WAREHOUSE_NO')" prop="warehouseNo"><i-input v-model="modal.item.warehouseNo"></i-input></form-item>
+                <form-item :label="$t('field.WAREHOUSE.WAREHOUSE_NAME')" prop="warehouseName"><i-input v-model="modal.item.warehouseName"></i-input></form-item>
             </i-form>
         </modal>
     </div>
@@ -72,10 +72,10 @@ export default {
         rules(){
             return {
                 warehouseName:[
-                    { required: true, message: this.$t('field.WAREHOUSE.NAME')+this.$t('field.NOT_BE_NULL'), trigger: 'blur'}
+                    { required: true, message: this.$t('field.WAREHOUSE.WAREHOUSE_NAME')+this.$t('field.NOT_BE_NULL'), trigger: 'blur'}
                 ],
                 warehouseNo:[
-                    { required: true, message: this.$t('field.WAREHOUSE.NO')+this.$t('field.NOT_BE_NULL'), trigger: 'blur'}
+                    { required: true, message: this.$t('field.WAREHOUSE.WAREHOUSE_NO')+this.$t('field.NOT_BE_NULL'), trigger: 'blur'}
                 ],
             }
         },
@@ -86,12 +86,12 @@ export default {
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.WAREHOUSE.NO'), key: 'warehouseNo', sortable: 'custom' },
-                { title: this.$t('field.WAREHOUSE.NAME'), key: 'warehouseName', sortable: 'custom' },
+                { title: this.$t('field.WAREHOUSE.WAREHOUSE_NO'), key: 'warehouseNo', sortable: 'custom' },
+                { title: this.$t('field.WAREHOUSE.WAREHOUSE_NAME'), key: 'warehouseName', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
-                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.EDIT'), (row) => {
                             this.update(row)
-                        }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
+                        }, 'updatePermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
                             this.remove([row])
                         }, 'removePermission')]);
                     }
@@ -110,7 +110,8 @@ export default {
                 var items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
-                    item['detailPermission'] = true;
+                    if (this.warehouseUpdatePermission)
+                        item['updatePermission'] = true;
                     if (this.warehouseRemovePermission)
                         item['removePermission'] = true;
                 });
@@ -152,7 +153,7 @@ export default {
             });
         },
         add() {
-            this.modal.title = this.$t('common.ADD') + this.$t('field.WAREHOUSE.WAREHOUSE');
+            this.modal.title = this.$t('common.ADD') + this.$t('navigate.WAREHOUSE');
             this.$refs.formValidate.resetFields();
             this.modal.item.warehouseId = 0;
             this.modal.item.warehouseNo = '';
@@ -160,7 +161,7 @@ export default {
             this.modal.visible = true;
         },
         update(item){
-            this.modal.title = this.$t('common.EDIT') + this.$t('field.WAREHOUSE.WAREHOUSE');
+            this.modal.title = this.$t('common.EDIT') + this.$t('navigate.WAREHOUSE');
             this.$refs.formValidate.resetFields();
             this.modal.item.warehouseId = item.warehouseId;
             this.modal.item.warehouseNo = item.warehouseNo;

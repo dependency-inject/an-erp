@@ -17,9 +17,8 @@ export default {
         SELECT_ROLE: '选择角色',
     },
     WAREHOUSE:{
-        WAREHOUSE:'仓库',
-        NO:'仓库编号',
-        NAME:'仓库名称',
+        WAREHOUSE_NO:'仓库编号',
+        WAREHOUSE_NAME:'仓库名称',
     },
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',
