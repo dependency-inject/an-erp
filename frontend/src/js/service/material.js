@@ -2,9 +2,9 @@ import { http } from '../libs/http';
 
 var add = (material) => http.post('material/add', material);
 
-var getById = (material) => http.post('admin/getById', { materialId: materialId });
+var getById = (material) => http.post('material/getById', { materialId: materialId });
 
-var remove = (idList) => http.post('admin/remove', { idList: idList });
+var remove = (idList) => http.post('material/remove', { idList: idList });
 
 var search = (queryParameters) => http.post('material/search', queryParameters);
 
