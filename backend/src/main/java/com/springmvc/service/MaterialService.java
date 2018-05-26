@@ -32,8 +32,8 @@ public class MaterialService extends BaseService {
      * @param closed
      * @return
      */
-    public PageMode<Material> pageAdmin(Integer current, Integer limit, String sortColumn, String sort,
-                                        String searchKey, Integer closed) {
+    public PageMode<Material> pageMaterial(Integer current, Integer limit, String sortColumn, String sort,
+                                           String searchKey, Integer closed) {
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.setOffset((current-1) * limit);
         materialQuery.setLimit(limit);
@@ -55,4 +55,10 @@ public class MaterialService extends BaseService {
         return new PageMode<Material>(result, materialDAO.countByExample(materialQuery));
     }
 
+    public void removeMaterial(List<Integer> integers) {
+        MaterialQuery materialQuery = new MaterialQuery();
+        materialQuery.or().andMaterialIdIn(integers);
+        materialDAO.deleteByExample(materialQuery);
+        addLog(LogType.MATERIAL, Operate.REMOVE, integers);
+    }
 }
