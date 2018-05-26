@@ -1,14 +1,19 @@
 package com.springmvc.service;
 
 import com.springmvc.dao.MaterialDAO;
+import com.springmvc.dto.Admin;
 import com.springmvc.dto.Material;
 import com.springmvc.dto.PageMode;
+import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.MaterialQuery;
 import com.springmvc.utils.ParamUtils;
+import com.springmvc.utils.RequestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service("MaterialService")
@@ -60,5 +65,69 @@ public class MaterialService extends BaseService {
         materialQuery.or().andMaterialIdIn(integers);
         materialDAO.deleteByExample(materialQuery);
         addLog(LogType.MATERIAL, Operate.REMOVE, integers);
+    }
+
+    public Material getMaterialWithCategoryById(Integer materialId) {
+        MaterialQuery adminQuery = new MaterialQuery();
+        adminQuery.or().andMaterialIdEqualTo(materialId);
+        List<Material> materialList = materialDAO.selectWithCategoryNameByExample(adminQuery);
+        if (materialList.size() == 0) {
+            return null;
+        }
+        Material material = materialList.get(0);
+        return material;
+    }
+
+    public Material addMaterial(String materialNo, String materialName, String unit, int categoryId, String spec,
+                                BigDecimal cost, String remark) {
+        MaterialQuery materialQuery = new MaterialQuery();
+        materialQuery.or().andMaterialNameEqualTo(materialNo);
+        if (materialDAO.countByExample(materialQuery) > 0) {
+            throw new BadRequestException(MATERIAL_NO_EXIST);
+        }
+
+        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
+        Material material = new Material();
+        material.setMaterialNo(materialNo);
+        material.setMaterialName(materialName);
+        material.setUnit(unit);
+        material.setCategoryId(categoryId);
+        material.setSpec(spec);
+        material.setCost(cost);
+        material.setRemark(remark);
+        material.setCreateAt(new Date());
+        material.setCreateBy(loginAdmin.getAdminId());
+        material.setUpdateAt(new Date());
+        material.setUpdateBy(loginAdmin.getAdminId());
+        materialDAO.insertSelective(material);
+
+        addLog(LogType.MATERIAL, Operate.ADD, material.getMaterialId());
+        return getMaterialWithCategoryById(material.getMaterialId());
+    }
+
+
+
+    private static final String MATERIAL_NO_EXIST = "物料编号已存在";
+
+    public Material updateMaterial(Integer materialId, String materialNo, String materialName, String unit,
+                                   int categoryId, String spec, BigDecimal cost, String remark) {
+        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
+        Material material = new Material();
+        material.setMaterialId(materialId);
+        material.setMaterialNo(materialNo);
+        material.setMaterialName(materialName);
+        material.setUnit(unit);
+        material.setCategoryId(categoryId);
+        material.setSpec(spec);
+        material.setCost(cost);
+        material.setRemark(remark);
+        material.setUpdateAt(new Date());
+        material.setUpdateBy(loginAdmin.getAdminId());
+        materialDAO.updateByPrimaryKeySelective(material);
+
+        addLog(LogType.MATERIAL, Operate.UPDATE, material.getMaterialId());
+        return getMaterialWithCategoryById(materialId);
     }
 }

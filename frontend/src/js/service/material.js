@@ -2,7 +2,7 @@ import { http } from '../libs/http';
 
 var add = (material) => http.post('material/add', material);
 
-var getById = (material) => http.post('material/getById', { materialId: materialId });
+var getById = (materialId) => http.post('material/getById', { materialId: materialId });
 
 var remove = (idList) => http.post('material/remove', { idList: idList });
 

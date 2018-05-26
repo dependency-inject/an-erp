@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/material")
@@ -34,5 +35,30 @@ public class MaterialController {
     public String remove(@RequestParam String idList){
         materialService.removeMaterial(ParamUtils.toIntList(idList));
         return "success";
+    }
+
+    @RequestMapping(value = "/getById", method = RequestMethod.POST)
+    @ResponseBody
+    public Material getById(@RequestParam Integer materialId) {
+        return materialService.getMaterialWithCategoryById(materialId);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.MATERIAL_ADD)
+    public Material add(@RequestParam String materialNo, @RequestParam String materialName,
+                        @RequestParam String unit, @RequestParam int categoryId, @RequestParam String spec,
+                        @RequestParam BigDecimal cost, @RequestParam String remark) {
+        return materialService.addMaterial(materialNo, materialName, unit, categoryId, spec, cost, remark);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.MATERIAL_UPDATE)
+    public Material update(@RequestParam Integer materialId,
+                           @RequestParam String materialNo, @RequestParam String materialName,
+                           @RequestParam String unit, @RequestParam int categoryId, @RequestParam String spec,
+                           @RequestParam BigDecimal cost, @RequestParam String remark) {
+        return materialService.updateMaterial(materialId, materialNo, materialName, unit, categoryId, spec, cost, remark);
     }
 }
