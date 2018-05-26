@@ -23,11 +23,10 @@ public class MaterialService extends BaseService {
     MaterialDAO materialDAO;
 
     /**
-     * 查询物料信息（分页）.
+     * 查询物料信息（分页），包括分类名称.
      *
-     * 信息来自：material（同时包含总记录数）
+     * 信息来自：material left join material_category（同时包含总记录数）
      * 搜索字段：物料编号、物料名称
-     * (未完成)筛选：分类id
      *
      * @param current
      * @param limit
@@ -60,6 +59,15 @@ public class MaterialService extends BaseService {
         return new PageMode<Material>(result, materialDAO.countByExample(materialQuery));
     }
 
+    /**
+     * 删除物料信息.
+     *
+     * 传入要删除的物料id
+     * 从表中删除：material
+     * 添加日志信息：LogType.MATERIAL, Operate.REMOVE
+     *
+     * @param integers
+     */
     public void removeMaterial(List<Integer> integers) {
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.or().andMaterialIdIn(integers);
@@ -67,6 +75,14 @@ public class MaterialService extends BaseService {
         addLog(LogType.MATERIAL, Operate.REMOVE, integers);
     }
 
+    /**
+     * 查询物料信息（单个），包括分类名称.
+     *
+     * 查询表：material left join material_category
+     *
+     * @param materialId
+     * @return
+     */
     public Material getMaterialWithCategoryById(Integer materialId) {
         MaterialQuery adminQuery = new MaterialQuery();
         adminQuery.or().andMaterialIdEqualTo(materialId);
@@ -78,6 +94,22 @@ public class MaterialService extends BaseService {
         return material;
     }
 
+    /**
+     * 新增物料记录.
+     *
+     * 进行必要的检查：material_no 是否已存在
+     * 将表信息保存：material
+     * 添加日志信息：LogType.MATERIAL, Operate.ADD
+     *
+     * @param materialNo
+     * @param materialName
+     * @param unit
+     * @param categoryId
+     * @param spec
+     * @param cost
+     * @param remark
+     * @return
+     */
     public Material addMaterial(String materialNo, String materialName, String unit, int categoryId, String spec,
                                 BigDecimal cost, String remark) {
         MaterialQuery materialQuery = new MaterialQuery();
@@ -106,10 +138,22 @@ public class MaterialService extends BaseService {
         return getMaterialWithCategoryById(material.getMaterialId());
     }
 
-
-
-    private static final String MATERIAL_NO_EXIST = "物料编号已存在";
-
+    /**
+     * 更新物料信息.
+     *
+     * 更新表：material
+     * 添加日志信息：LogType.MATERIAL, Operate.UPDATE
+     *
+     * @param materialId
+     * @param materialNo
+     * @param materialName
+     * @param unit
+     * @param categoryId
+     * @param spec
+     * @param cost
+     * @param remark
+     * @return
+     */
     public Material updateMaterial(Integer materialId, String materialNo, String materialName, String unit,
                                    int categoryId, String spec, BigDecimal cost, String remark) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
@@ -130,4 +174,6 @@ public class MaterialService extends BaseService {
         addLog(LogType.MATERIAL, Operate.UPDATE, material.getMaterialId());
         return getMaterialWithCategoryById(materialId);
     }
+
+    private static final String MATERIAL_NO_EXIST = "物料编号已存在";
 }
