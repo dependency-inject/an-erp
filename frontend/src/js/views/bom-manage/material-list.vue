@@ -67,7 +67,7 @@ export default {
                 { title: this.$t('field.MATERIAL.MATERIAL_NAME'), key: 'materialName', sortable: 'custom' },
                 { title: this.$t('field.MATERIAL.UNIT'), key: 'unit' },
                 { title: this.$t('field.MATERIAL.SPEC'), key: 'spec' },
-                { title: this.$t('field.MATERIAL.CATEGORY'), key: 'categoryName', sortable: 'custom' },
+                { title: this.$t('field.MATERIAL.CATEGORY_NAME'), key: 'categoryName', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
                             console.log(row);console.log(this.vm.identity);

@@ -21,7 +21,7 @@ export default {
         MATERIAL_NO: '物料编号',
         UNIT: '单位',
         SPEC: '规格',
-        CATEGORY: '类别',
+        CATEGORY_NAME: '类别',
         COST: '定价',
         REMARK: '备注',
     },
@@ -38,6 +38,9 @@ export default {
     ROLE_PERMISSION2: '角色与权限',
     PERMISSION_DETAIL: '角色权限明细',
     SYSTEM_SETTING: '系统设置',
+
+    MATERIAL_INFO: '物料信息',
+    MATERIAL_CATEGORY_INFO2: '类别信息',
 
     NOT_BE_NULL: '不能为空',
     PLEASE_SELECT: '请选择',
