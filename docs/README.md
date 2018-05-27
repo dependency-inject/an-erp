@@ -10,11 +10,17 @@
 └── frontend	———— 项目前端代码
 ```
 
+### 基础环境依赖
+
+* jdk7 或 jdk8
+* tomcat7 或 tomcat8
+* npm <= 5.8
+
 ### 搭建开发环境
 
 **后端部分：**
 
-在 IntelliJ IDEA 中 Open Project，选择项目 `backend` 目录。
+在 **IntelliJ IDEA 专业版** 中 Open Project，选择项目 `backend` 目录。
 
 打开成功后（pom 包导入完成），对项目目录 `src/main/resources` 点击右键，选择 `Mark Directory as` > `Resources Root`。
 
