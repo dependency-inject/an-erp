@@ -110,7 +110,7 @@ public class SupplierService extends BaseService {
         // 搜索登录名
         SupplierQuery.Criteria criteria = supplierQuery.or();
         if (!ParamUtils.isNull(searchKey)) {
-            criteria.andSupplierNameEqualTo("%" + searchKey + "%");
+            criteria.andSupplierNameEqualTo(searchKey);
         }
 
 
@@ -152,14 +152,14 @@ public class SupplierService extends BaseService {
      * @return
      */
 
-    public Supplier updatesupplier( String supplierName, String contact,String contactPhone,String region,String address) {
-         SupplierQuery supplierQuery = new SupplierQuery();
-         supplierQuery.or().andSupplierNameEqualTo(supplierName);
-         if (supplierDAO.countByExample(supplierQuery) > 0) {
-             throw new BadRequestException(SUPPLIER_NAME_EXIST);
-         }                                                                            
+    public Supplier updatesupplier( Integer supplierId,String supplierName, String contact,String contactPhone,String region,String address) {
+         //supplierQuery.or().andSupplierNameEqualTo(supplierName);
+         //if (supplierDAO.countByExample(supplierQuery) > 0) {
+         //    throw new BadRequestException(SUPPLIER_NAME_EXIST);
+         //}
          Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
          Supplier supplier = new Supplier();
+         supplier.setSupplierId(supplierId);
          supplier.setAddress(address);
          supplier.setContact(contact);
          supplier.setContactPhone(contactPhone);
@@ -169,9 +169,10 @@ public class SupplierService extends BaseService {
          supplier.setUpdateBy(loginAdmin.getAdminId());
          supplierDAO.updateByPrimaryKeySelective(supplier);
          // 添加日志
-         addLog(LogType.ADMIN, Operate.UPDATE, supplier.getSupplierId());
-         supplierDAO.insertSelective(supplier);
-         return getSupplierById(supplier.getSupplierId());
+         addLog(LogType.SUPPLIER, Operate.UPDATE, supplier.getSupplierId());
+         int temp=supplier.getSupplierId();
+         Supplier st=getSupplierById(temp);
+         return st;
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -254,9 +255,16 @@ public class SupplierService extends BaseService {
         criteria.andSupplierIdEqualTo(suppierId);
 
         //根据materialid进行查询，但实际输入的是编号
-//        if (!ParamUtils.isNull(searchKey)) {
-//            criteria.andMaterialIdEqualTo("%" + searchKey + "%");
-//        }
+        if (!ParamUtils.isNull(searchKey)) {
+            MaterialQuery materialQuery = new MaterialQuery();
+            materialQuery.or().andMaterialNoEqualTo(searchKey);
+            List<Material> materialList = materialDAO.selectByExample(materialQuery);
+            if (materialList.size() == 0) {
+                return null;
+            }
+            Material material = materialList.get(0);
+            criteria.andMaterialIdEqualTo(material.getMaterialId());
+        }
 
 
         List<SupplierMaterial> result = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
@@ -295,7 +303,7 @@ public class SupplierService extends BaseService {
      * @return
      */
 
-    public SupplierMaterial updatesupplierMaterial(Integer supplierId,String materialNo, BigDecimal price, String remark) {
+    public SupplierMaterial updatesupplierMaterial(Integer supplierMaterialId,Integer supplierId,String materialNo, BigDecimal price, String remark) {
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.or().andMaterialNoEqualTo(materialNo);
         if (materialDAO.countByExample(materialQuery) == 0) {
@@ -309,13 +317,14 @@ public class SupplierService extends BaseService {
         Material material = materialList.get(0);
 
         SupplierMaterial suppliermaterial = new SupplierMaterial();
+        suppliermaterial.setSupplierMaterialId(supplierMaterialId);
         suppliermaterial.setPrice(price);
         suppliermaterial.setRemark(remark);
         suppliermaterial.setSupplierId(supplierId);
         suppliermaterial.setMaterialId(material.getMaterialId());
         // 添加日志
         addLog(LogType.SUPPLIER_MATERIAL, Operate.UPDATE, suppliermaterial.getSupplierMaterialId());
-        suppliermaterialDAO.insertSelective(suppliermaterial);
+        suppliermaterialDAO.updateByPrimaryKeySelective(suppliermaterial);
         return getSupplierMaterialById(suppliermaterial.getSupplierMaterialId());
     }
 }

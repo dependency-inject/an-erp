@@ -56,10 +56,10 @@ public class SupplierController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.SUPPLIER_UPDATE)
-    public Supplier update(@RequestParam String supplierName, @RequestParam String contact,
+    public Supplier update(@RequestParam Integer supplierId,@RequestParam String supplierName, @RequestParam String contact,
                            @RequestParam String contactPhone, @RequestParam String region,
                            @RequestParam String address ) {
-        return supplierService.updatesupplier(supplierName, contact, contactPhone, region, address);
+        return supplierService.updatesupplier(supplierId,supplierName, contact, contactPhone, region, address);
     }
 
 
@@ -96,9 +96,9 @@ public class SupplierController {
     @RequestMapping(value = "/updatematerial", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.SUPPLIER_UPDATE)
-    public SupplierMaterial updateMaterial(@RequestParam Integer supplierId, @RequestParam String materialNo,
+    public SupplierMaterial updateMaterial(@RequestParam Integer supplierMaterialId,@RequestParam Integer supplierId, @RequestParam String materialNo,
                                            @RequestParam BigDecimal price, @RequestParam String remark ) {
-        return supplierService.updatesupplierMaterial(supplierId, materialNo, price, remark);
+        return supplierService.updatesupplierMaterial(supplierMaterialId,supplierId, materialNo, price, remark);
     }
 
 

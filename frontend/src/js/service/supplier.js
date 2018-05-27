@@ -1,17 +1,13 @@
 import { http } from '../libs/http';
 
-var add = (admin) => http.post('admin/add', admin);
+var add = (supplier) => http.post('supplier/add', supplier);
 
-var changePassword = (admin) => http.post('admin/changePassword', admin);
+var getById = (supplierId) => http.post('supplier/getById', { supplierId: supplierId });
 
-var getById = (adminId) => http.post('admin/getById', { adminId: adminId });
+var remove = (idList) => http.post('supplier/remove', { idList: idList });
 
-var remove = (idList) => http.post('admin/remove', { idList: idList });
+var search = (queryParameters) => http.post('supplier/search', queryParameters);
 
-var search = (queryParameters) => http.post('admin/search', queryParameters);
+var update = (supplier) => http.post('supplier/update', supplier);
 
-var update = (admin) => http.post('admin/update', admin);
-
-var updateClosedState = (idList, closed) => http.post('admin/updateClosedState', { idList: idList, closed: closed });
-
-export default { add, changePassword, getById, remove, search, update, updateClosedState };
+export default { add, getById, remove, search, update};
