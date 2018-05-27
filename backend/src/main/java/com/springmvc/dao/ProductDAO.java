@@ -1,6 +1,7 @@
 package com.springmvc.dao;
 
 import com.springmvc.dto.Product;
+import com.springmvc.dto.ProductStockRecord;
 import com.springmvc.pojo.ProductQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -84,4 +85,10 @@ public interface ProductDAO {
      * @param record
      */
     int updateByPrimaryKey(Product record);
+
+
+    /**
+     *
+     */
+    List<ProductStockRecord> selectProductStockByExample(ProductQuery query);
 }

@@ -1,6 +1,9 @@
 package com.springmvc.dao;
 
+import com.springmvc.dto.Admin;
 import com.springmvc.dto.Material;
+import com.springmvc.dto.MaterialStockRecord;
+import com.springmvc.pojo.AdminQuery;
 import com.springmvc.pojo.MaterialQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -84,4 +87,11 @@ public interface MaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(Material record);
+
+    /**
+     *
+     *
+     * @param example
+     */
+    List<MaterialStockRecord> selectWithStockByExample(MaterialQuery example);
 }
