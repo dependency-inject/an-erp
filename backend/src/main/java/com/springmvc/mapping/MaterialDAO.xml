@@ -322,4 +322,52 @@
       update_by = #{updateBy,jdbcType=INTEGER}
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
+
+  <!--  -->
+  <resultMap id="ResultMapWithStockCost" type="com.springmvc.dto.Material">
+    <id column="material_id" jdbcType="INTEGER" property="materialId" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="VARCHAR" property="materialName" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="real_stock" jdbcType="INTEGER" property="realStock"/>
+
+  </resultMap>
+  <select id="selectWithStockCostByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStockCost">
+    SELECT material.*,IFNULL(C.real_stock,0) AS real_stock FROM material
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS real_stock FROM (
+    SELECT material_id, -quantity as quantity FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state=3
+    UNION ALL
+    SELECT material_id, quantity FROM material_instock_bill_material LEFT JOIN material_instock_bill
+    on material_instock_bill_material.bill_id=material_instock_bill.bill_id
+    where material_instock_bill.bill_state=3
+    ) B
+    GROUP BY material_id
+    ) C ON material.material_id=C.material_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>

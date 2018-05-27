@@ -84,4 +84,11 @@ public interface MaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(Material record);
+
+    /**
+     *
+     *  搜索物料的数量
+     * @param example
+     */
+    List<Material> selectWithStockCostByExample(MaterialQuery example);
 }
