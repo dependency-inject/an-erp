@@ -71,3 +71,13 @@ IntelliJ IDEA 下如果 `maven` 包导入失败，pom.xml 文件会出现一堆*
 * 切换 maven 版本。切换方式为：点击菜单栏 File > Setting 打开窗口，在该窗口下找到 Build,Execution,Deployment > Build Tools > Maven，将 Maven home directory 这一项由 Bundled(Maven 3) 切换为 Bundled(Maven 2)。最后点击“OK”关闭窗口，等待重新导入依赖包。
 
 ![](media/problem-env-maven.png)
+
+### IntelliJ IDEA 中找不到 tomcat 配置选项
+
+IntelliJ IDEA 配置运行设置时，在 Edit Configuration 窗口中找不到 tomcat 配置选项，可能是由于你本地 IntelliJ IDEA 版本是社区版，功能不全。
+
+**解决方案：**
+
+* 到 IntelliJ IDEA 官网下载专业版软件，学生账号申请链接：[https://www.jetbrains.com/shop/eform/students](https://www.jetbrains.com/shop/eform/students)。
+
+!> 如果你之前用 IntelliJ IDEA 社区版打开过项目，在使用专业版打开项目之前，请先删除 backend 目录下的 .idea 以及 target 目录（如果有的话）。
