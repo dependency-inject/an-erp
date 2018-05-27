@@ -25,6 +25,10 @@ export default {
         COST: '定价',
         REMARK: '备注',
     },
+    MATERIAL_CATEGORY: {
+        CATEGORY_NAME: '类别名称',
+        PARENT_ID: '上级分类',
+    },
 
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',

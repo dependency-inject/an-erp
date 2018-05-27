@@ -10,4 +10,6 @@ export default {
     START_TIME: '开始时间',
     END_TIME: '结束时间',
     DATETIME: '日期和时间',
+
+    ROOT_CATEGORY: '顶级分类'
 };
