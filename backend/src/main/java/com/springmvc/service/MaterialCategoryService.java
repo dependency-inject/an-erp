@@ -28,41 +28,34 @@ public class MaterialCategoryService extends BaseService {
 
     /**
      * 获取物料类别表的所有信息
-     * @param getAll 一个获取的信号
      * @return 返回一个List
      */
-    public List<MaterialCategory> getAll(@RequestParam Integer getAll){
-
-        MaterialCategoryQuery materialCategoryQuery = new MaterialCategoryQuery();
-        MaterialCategoryQuery.Criteria criteria = materialCategoryQuery.or();
-        //选取所有记录
-        criteria.andCategoryIdGreaterThanOrEqualTo(1);
-        List<MaterialCategory> materialCategories = materialCategoryDAO.selectByExample(materialCategoryQuery);
-        return materialCategories;
+    public List<MaterialCategory> getAll(){
+        return materialCategoryDAO.selectByExample(new MaterialCategoryQuery());
     }
 
     /**
      * 根据id获取一个分类记录
-     * @param materialCategoryId 分类id
+     * @param categoryId 分类id
      * @return返回一条记录
      */
-    public MaterialCategory getMaterialCategoryById(int materialCategoryId){
-        MaterialCategory materialCategory = materialCategoryDAO.selectByPrimaryKey(materialCategoryId);
+    public MaterialCategory getMaterialCategoryById(int categoryId){
+        MaterialCategory materialCategory = materialCategoryDAO.selectByPrimaryKey(categoryId);
         return materialCategory;
     }
     /**
      * 添加物料类别
-     * @param category_name 类别名称
-     * @param parent_id     父类id
+     * @param categoryName 类别名称
+     * @param parentId     父类id
      * @return
      */
-    public MaterialCategory addMaterialCategory(String category_name, Integer parent_id){
+    public MaterialCategory addMaterialCategory(String categoryName, Integer parentId){
 
         //保存主表信息
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
         MaterialCategory materialCategory = new MaterialCategory();
-        materialCategory.setCategoryName(category_name);
-        materialCategory.setParentId(parent_id);
+        materialCategory.setCategoryName(categoryName);
+        materialCategory.setParentId(parentId);
 
         materialCategory.setCreateAt(new Date());
         materialCategory.setCreateBy(loginAdmin.getAdminId());
@@ -78,19 +71,19 @@ public class MaterialCategoryService extends BaseService {
 
     /**
      * 修改物料类别的信息
-     * @param materialCategoryId 分类id
-     * @param category_name      分类名称
-     * @param parent_id          父类id
+     * @param categoryId 分类id
+     * @param categoryName      分类名称
+     * @param parentId          父类id
      * @return  返回一个修改过的记录
      */
-    public MaterialCategory updateMaterialCategory(Integer materialCategoryId, String category_name, Integer parent_id){
+    public MaterialCategory updateMaterialCategory(Integer categoryId, String categoryName, Integer parentId){
 
         //更新数据
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
         MaterialCategory materialCategory = new MaterialCategory();
-        materialCategory.setCategoryId(materialCategoryId);
-        materialCategory.setCategoryName(category_name);
-        materialCategory.setParentId(parent_id);
+        materialCategory.setCategoryId(categoryId);
+        materialCategory.setCategoryName(categoryName);
+        materialCategory.setParentId(parentId);
 
 
         materialCategory.setUpdateAt(new Date());
@@ -121,8 +114,22 @@ public class MaterialCategoryService extends BaseService {
             throw new BadRequestException(MATERIALCATEGORY_REFEREF_BY_MATERIAL);
         }
 
-        //未完待续
+        //检查是否拥有子类
+        MaterialCategoryQuery materialCategoryQuery = new MaterialCategoryQuery();
+        materialCategoryQuery.or().andParentIdIn(idList);
+        if(materialCategoryDAO.countByExample(materialCategoryQuery) > 0){
+            throw new BadRequestException(CANNOT_REMOVE_CATEGORY_NOT_EMPTY);
+        }
+
+        //正常删除
+        MaterialCategoryQuery materialCategoryQuery1 = new MaterialCategoryQuery();
+        materialCategoryQuery1.or().andCategoryIdIn(idList);
+        materialCategoryDAO.deleteByExample(materialCategoryQuery1);
+
+        //添加日志
+        addLog(LogType.MATERIAL_CATEGORY, Operate.REMOVE, idList);
     }
 
     private static final String MATERIALCATEGORY_REFEREF_BY_MATERIAL = "物料分类被物料表引用";
+    private static final String CANNOT_REMOVE_CATEGORY_NOT_EMPTY = "不能删除含有子类的分类";
 }
