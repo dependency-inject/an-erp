@@ -5,6 +5,24 @@ export default {
 	    NEW_PASSWORD: '新密码',
 	    CONFIRM_PASSWORD: '确认密码',
     },
+    SUPPLIER: {
+        SUPPLIER_NAME: '供应商名',
+        CONTACT: '联系人',
+        CONTACT_PHONE: '联系方式',
+        REGION: '地区',
+        ADDRESS: '地址',
+        MATERIAL_NO: '物料编号',
+        MATERIAL_NAME: '物料名称' ,
+        UNIT: '单位' ,
+        PRICE: '物料报价',
+        INVENTORY: '实际库存' ,
+        DRAW_MATERIAL_QUANTITY: '待领料' ,
+        PRODUCT_OUTSTOCK_QUANTITY: '待出库',
+        SEARCH_MATERIAL_PRICE: '反查物料报价',
+        SUPPLIER_INFO: '供应商信息',
+        PRICE_INFO: '物料报价信息'
+        
+    },
     ADMIN: {
         TRUE_NAME: '真实姓名',
         MOBILE: '手机',
