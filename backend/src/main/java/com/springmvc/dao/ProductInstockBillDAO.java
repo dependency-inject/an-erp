@@ -84,4 +84,11 @@ public interface ProductInstockBillDAO {
      * @param record
      */
     int updateByPrimaryKey(ProductInstockBill record);
+
+    /**
+     * 获取一个带有时间的数据库记录
+     *
+     * @param example
+     */
+    List<ProductInstockBill> selectWithTimeByExample(ProductInstockBillQuery example);
 }
