@@ -656,52 +656,52 @@ public class ProductQuery {
             return (Criteria) this;
         }
 
-        public Criteria andClosedEqualTo(Byte value) {
+        public Criteria andClosedEqualTo(Boolean value) {
             addCriterion("product.closed =", value, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedNotEqualTo(Byte value) {
+        public Criteria andClosedNotEqualTo(Boolean value) {
             addCriterion("product.closed <>", value, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedGreaterThan(Byte value) {
+        public Criteria andClosedGreaterThan(Boolean value) {
             addCriterion("product.closed >", value, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedGreaterThanOrEqualTo(Byte value) {
+        public Criteria andClosedGreaterThanOrEqualTo(Boolean value) {
             addCriterion("product.closed >=", value, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedLessThan(Byte value) {
+        public Criteria andClosedLessThan(Boolean value) {
             addCriterion("product.closed <", value, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedLessThanOrEqualTo(Byte value) {
+        public Criteria andClosedLessThanOrEqualTo(Boolean value) {
             addCriterion("product.closed <=", value, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedIn(List<Byte> values) {
+        public Criteria andClosedIn(List<Boolean> values) {
             addCriterion("product.closed in", values, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedNotIn(List<Byte> values) {
+        public Criteria andClosedNotIn(List<Boolean> values) {
             addCriterion("product.closed not in", values, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedBetween(Byte value1, Byte value2) {
+        public Criteria andClosedBetween(Boolean value1, Boolean value2) {
             addCriterion("product.closed between", value1, value2, "closed");
             return (Criteria) this;
         }
 
-        public Criteria andClosedNotBetween(Byte value1, Byte value2) {
+        public Criteria andClosedNotBetween(Boolean value1, Boolean value2) {
             addCriterion("product.closed not between", value1, value2, "closed");
             return (Criteria) this;
         }

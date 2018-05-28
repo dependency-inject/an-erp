@@ -16,7 +16,21 @@ export default {
         ROLE_NAME: '角色名称',
         SELECT_ROLE: '选择角色',
     },
-
+    PRODUCT: {
+        ALL_CATEGORY: '所有类别',
+        NO: '货品编号',
+        NAME: '货品名称',
+        UNIT: '计量单位',
+        CATEGORY_ID: '分类',
+        SPEC: '规格',
+        PRICE: '价格',
+        STATE: '状态',
+        REMARK: '备注',
+        CREATE_AT: '创建时间',
+        CREATE_BY: '创建人',
+        UPDATE_AT: '修改时间',
+        UPDATE_BY: '修改人'
+    },
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',
     ELSE_INFO: '其他信息',
