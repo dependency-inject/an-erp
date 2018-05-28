@@ -325,14 +325,14 @@
         WHERE material_id = #{materialId,jdbcType=INTEGER}
     </update>
 
-    <!-- -->
+    <!--List<MaterialStockRecord> selectWithStockByExample 方法的实现 -->
     <resultMap id="ResultMapWithStock" type="com.springmvc.dto.MaterialStockRecord">
         <id column="material_id" jdbcType="INTEGER" property="materialId"/>
         <result column="material_no" jdbcType="VARCHAR" property="materialNo"/>
         <result column="material_name" jdbcType="VARCHAR" property="materialName"/>
-        <result column="leftp" jdbcType="INTEGER" property="leftAmount"/>
-        <result column="total" jdbcType="INTEGER" property="totalAmount"/>
-        <result column="ordered" jdbcType="INTEGER" property="orderedAmount"/>
+        <result column="left_amount" jdbcType="INTEGER" property="leftAmount"/>
+        <result column="total_amount" jdbcType="INTEGER" property="totalAmount"/>
+        <result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount"/>
         <result column="unit" jdbcType="VARCHAR" property="unit"/>
         <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
         <result column="spec" jdbcType="VARCHAR" property="spec"/>
@@ -345,7 +345,7 @@
 
     </resultMap>
     <select id="selectWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
-        SELECT d.*, IFNULL((total- d.ordered), 0) AS leftp , IFNULL(b.total, 0) AS total FROM
+        SELECT material.*, IFNULL((total- material.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
         ((SELECT a.material_id, sum(a.quantity) AS total FROM (
         SELECT material_id, -quantity AS quantity
         FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
@@ -355,11 +355,11 @@
         FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
         WHERE bill_state = 3
         ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
-        SELECT material.*, IFNULL(c.ordered, 0) AS ordered FROM material LEFT JOIN (
+        SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
         SELECT material_id, sum(quantity) AS ordered FROM
         material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
         GROUP BY material_id) AS c ON c.material_id = material.material_id)
-        AS d ON d.material_id = b.material_id)
+        AS material ON material.material_id = b.material_id)
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
