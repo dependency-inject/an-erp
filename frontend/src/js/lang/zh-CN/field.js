@@ -15,13 +15,14 @@ export default {
         MATERIAL_NAME: '物料名称' ,
         UNIT: '单位' ,
         PRICE: '物料报价',
+        REMARK: '备注',
         INVENTORY: '实际库存' ,
         DRAW_MATERIAL_QUANTITY: '待领料' ,
         PRODUCT_OUTSTOCK_QUANTITY: '待出库',
         SEARCH_MATERIAL_PRICE: '反查物料报价',
         SUPPLIER_INFO: '供应商信息',
-        PRICE_INFO: '物料报价信息'
-        
+        PRICE_INFO: '物料报价信息',
+        ERROR_INFO: '请先添加供应商信息并保存'
     },
     ADMIN: {
         TRUE_NAME: '真实姓名',

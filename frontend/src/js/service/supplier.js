@@ -10,4 +10,14 @@ var search = (queryParameters) => http.post('supplier/search', queryParameters);
 
 var update = (supplier) => http.post('supplier/update', supplier);
 
-export default { add, getById, remove, search, update};
+var addPrice = (materialPrice) => http.post('supplier/addmaterial', materialPrice);
+
+var removePrice = (idList) => http.post('supplier/removematerial', { idList: idList });
+
+var searchPrice = (queryParameters) => http.post('supplier/searchmaterial', queryParameters);
+
+var updatePrice = (supplier) => http.post('supplier/updatematerial', supplier);
+
+var searchLackMaterial = (queryParameters) => http.post('supplier/searchlackmaterial', queryParameters);
+
+export default {add, getById, remove, search, update, addPrice, removePrice, searchPrice, updatePrice, searchLackMaterial};

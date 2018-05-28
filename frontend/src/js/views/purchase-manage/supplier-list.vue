@@ -21,7 +21,7 @@
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]" @detail="$router.push('/spplier/'+arguments[0][vm.identity])" @remove="remove([arguments[0]])"></i-table>
+                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
