@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service("SupplierService")
@@ -191,13 +193,10 @@ public class SupplierService extends BaseService {
     public SupplierMaterial addSupplierMaterial(Integer supplierId,String materialNo, BigDecimal price, String remark ){
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.or().andMaterialNoEqualTo(materialNo);
-        if (materialDAO.countByExample(materialQuery) == 0) {
-            throw new BadRequestException(MATERIAL_NO_EXIST);
-        }
         //no转id，获取material对象
         List<Material> materialList = materialDAO.selectByExample(materialQuery);
         if (materialList.size() == 0) {
-            return null;
+            throw new BadRequestException(MATERIAL_NO_EXIST);
         }
         Material material = materialList.get(0);
 
@@ -211,9 +210,12 @@ public class SupplierService extends BaseService {
         suppliermaterial.setMaterialId(material.getMaterialId());
         suppliermaterialDAO.insertSelective(suppliermaterial);
 
+        suppliermaterial.setMaterialName(material.getMaterialName());
+        suppliermaterial.setMaterialNo(materialNo);
         // 添加日志
         addLog(LogType.SUPPLIER_MATERIAL, Operate.ADD, suppliermaterial.getSupplierMaterialId());
-        return getSupplierMaterialById(suppliermaterial.getSupplierMaterialId());
+        //return getSupplierMaterialById(suppliermaterial.getSupplierMaterialId());
+        return suppliermaterial;
     }
 
     /**
@@ -225,6 +227,16 @@ public class SupplierService extends BaseService {
      */
     public SupplierMaterial getSupplierMaterialById(int supplierMaterialId) {
         SupplierMaterial suppliermaterial = suppliermaterialDAO.selectByPrimaryKey(supplierMaterialId);
+        MaterialQuery materialQuery = new MaterialQuery();
+        materialQuery.or().andMaterialIdEqualTo(suppliermaterial.getMaterialId());
+        //no转id，获取material对象
+        List<Material> materialList = materialDAO.selectByExample(materialQuery);
+        if (materialList.size() == 0) {
+            throw new BadRequestException(MATERIAL_NO_EXIST);
+        }
+        Material material = materialList.get(0);
+        suppliermaterial.setMaterialName(material.getMaterialName());
+        suppliermaterial.setMaterialNo(material.getMaterialNo());
         return suppliermaterial;
     }
 
@@ -267,9 +279,13 @@ public class SupplierService extends BaseService {
         }
 
 
-        List<SupplierMaterial> result = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
-
-        return new PageMode<SupplierMaterial>(result, suppliermaterialDAO.countByExample(suppliermaterialQuery));
+        List<SupplierMaterial> resultSM = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
+        List<SupplierMaterial> resultms=new ArrayList<SupplierMaterial>();
+        for(SupplierMaterial sm:resultSM){
+            SupplierMaterial ms=getSupplierMaterialById(sm.getSupplierMaterialId());
+            resultms.add(ms);
+        }
+        return new PageMode<SupplierMaterial>(resultms, resultms.size());
     }
 
     /**
@@ -322,9 +338,54 @@ public class SupplierService extends BaseService {
         suppliermaterial.setRemark(remark);
         suppliermaterial.setSupplierId(supplierId);
         suppliermaterial.setMaterialId(material.getMaterialId());
+
+        suppliermaterial.setMaterialName(material.getMaterialName());
+        suppliermaterial.setMaterialNo(materialNo);
+
         // 添加日志
         addLog(LogType.SUPPLIER_MATERIAL, Operate.UPDATE, suppliermaterial.getSupplierMaterialId());
         suppliermaterialDAO.updateByPrimaryKeySelective(suppliermaterial);
-        return getSupplierMaterialById(suppliermaterial.getSupplierMaterialId());
+        return suppliermaterial;
+    }
+
+    /**
+     * 反查物料报价信息
+     * @param materialId
+     * @param current
+     * @param limit
+     * @param sortColumn
+     * @param sort
+     * @return
+     */
+    public PageMode<SupplierMaterial> findsupplierPrie(Integer materialId,Integer current, Integer limit, String sortColumn,String sort) {
+        SupplierMaterialQuery suppliermaterialQuery = new SupplierMaterialQuery();
+        suppliermaterialQuery.setOffset((current-1) * limit);
+        suppliermaterialQuery.setLimit(limit);
+        if (!ParamUtils.isNull(sortColumn))
+            suppliermaterialQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
+
+        SupplierMaterialQuery.Criteria criteria = suppliermaterialQuery.or();
+        criteria.andMaterialIdEqualTo(materialId);
+
+
+        List<SupplierMaterial> resultSM = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
+
+        //获取supplier
+        SupplierQuery supplierQuery = new SupplierQuery();
+        List<Supplier> resultsup = supplierDAO.selectByExample(supplierQuery)  ;
+
+        HashMap<Integer,Supplier> suppliers=new HashMap<Integer, Supplier>();
+        for(Supplier s:resultsup){
+            suppliers.put(s.getSupplierId(),s);
+        }
+
+        //完善suppliMaterial信息
+        List<SupplierMaterial> resultms=new ArrayList<SupplierMaterial>();
+        for(SupplierMaterial sm:resultSM){
+            SupplierMaterial ms=getSupplierMaterialById(sm.getSupplierMaterialId());
+            ms.setSupplierName(suppliers.get(sm.getSupplierId()).getSupplierName());
+            resultms.add(ms);
+        }
+        return new PageMode<SupplierMaterial>(resultms, resultms.size());
     }
 }
