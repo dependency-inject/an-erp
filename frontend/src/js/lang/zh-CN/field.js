@@ -21,6 +21,7 @@ export default {
         MATERIAL_NO: '物料编号',
         UNIT: '单位',
         SPEC: '规格',
+        CATEGORY_ID: '类别',
         CATEGORY_NAME: '类别',
         COST: '定价',
         REMARK: '备注',

@@ -40,7 +40,7 @@ public class MaterialController {
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
     @ResponseBody
     public Material getById(@RequestParam Integer materialId) {
-        return materialService.getMaterialWithCategoryById(materialId);
+        return materialService.getMaterialById(materialId);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

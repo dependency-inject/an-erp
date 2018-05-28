@@ -22,8 +22,8 @@
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.MATERIAL_CATEGORY_INFO2') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.MATERIAL.CATEGORY_NAME')" prop="categoryName">
-                                <!-- TODO 等待叶大佬的控件ing -->
+                            <form-item :label="$t('field.MATERIAL.CATEGORY_ID')" prop="categoryId">
+                                <material-category-select v-model="item.categoryId"></material-category-select>
                             </form-item>
                         </div>
                     </div>
@@ -39,6 +39,7 @@
 <script>
 import Permission from '../../mixins/permission'
 import materialService from '../../service/material';
+import materialCategorySelect from '../../components/material-category-select';
 
 export default {
     mixins: [Permission],
@@ -51,22 +52,18 @@ export default {
         rules() {
             return {
                 materialName: [
-                    {
-                        required: true,
-                        message: this.$t('field.MATERIAL.MATERIAL_NAME') + this.$t('field.NOT_BE_NULL'),
-                        trigger: 'blur'
-                    }
+                    { required: true, message: this.$t('field.MATERIAL.MATERIAL_NAME') + this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ],
                 materialNo: [
-                    {
-                        required: true,
-                        message: this.$t('field.MATERIAL.MATERIAL_NO') + this.$t('field.NOT_BE_NULL'),
-                        trigger: 'blur'
-                    }
+                    { required: true, message: this.$t('field.MATERIAL.MATERIAL_NO') + this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ],
+                categoryId: [
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT') + this.$t('field.MATERIAL.CATEGORY_ID'), trigger: 'blur' }
                 ]
             }
         },
     },
+    components: { materialCategorySelect },
     methods: {
         initData() {
             // 路由检查
@@ -87,9 +84,8 @@ export default {
                 unit: '',
                 cost: 0,
                 spec: '',
-                remark: 0,
-                categoryId: 0,
-                categoryName: ''
+                remark: '',
+                categoryId: undefined,
             }
         },
         async getById() {

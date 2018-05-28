@@ -76,6 +76,21 @@ public class MaterialService extends BaseService {
     }
 
     /**
+     * 查询物料信息（单个）.
+     *
+     * 查询表：material
+     *
+     * @param materialId
+     * @return
+     */
+    public Material getMaterialById(Integer materialId) {
+        MaterialQuery materialQuery = new MaterialQuery();
+        materialQuery.or().andMaterialIdEqualTo(materialId);
+        Material material = materialDAO.selectByPrimaryKey(materialId);
+        return material;
+    }
+
+    /**
      * 查询物料信息（单个），包括分类名称.
      *
      * 查询表：material left join material_category
