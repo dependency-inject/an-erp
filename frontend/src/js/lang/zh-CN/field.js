@@ -17,6 +17,11 @@ export default {
         SELECT_ROLE: '选择角色',
     },
 
+    PRODUCT_CATEGORY: {
+        CATEGORY_NAME: '类别名称',
+        PARENT_ID: '上级分类',
+    },
+
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',
     ELSE_INFO: '其他信息',
