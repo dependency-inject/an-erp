@@ -1,5 +1,5 @@
 <template>
-    <i-select v-model="model" :disabled="disabled">
+    <i-select v-model="model" :disabled="disabled" transfer>
         <i-option v-for="item in treeData" :key="item.categoryId" :value="item.categoryId" :style="optionStyles(item)">{{ item.categoryName }}</i-option>
     </i-select>
 </template>

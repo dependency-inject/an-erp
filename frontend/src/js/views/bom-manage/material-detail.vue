@@ -6,8 +6,8 @@
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.MATERIAL.MATERIAL_NAME')" prop="materialName"><i-input v-model="item.materialName"></i-input></form-item>
                             <form-item :label="$t('field.MATERIAL.MATERIAL_NO')" prop="materialNo"><i-input v-model="item.materialNo"></i-input></form-item>
+                            <form-item :label="$t('field.MATERIAL.MATERIAL_NAME')" prop="materialName"><i-input v-model="item.materialName"></i-input></form-item>
                         </div>
                     </div>
                     <div class="chief-panel">
@@ -15,7 +15,6 @@
                         <div class="panel-body">
                             <form-item :label="$t('field.MATERIAL.UNIT')" prop="unit"><i-input v-model="item.unit"></i-input></form-item>
                             <form-item :label="$t('field.MATERIAL.SPEC')" prop="spec"><i-input v-model="item.spec"></i-input></form-item>
-                            <form-item :label="$t('field.MATERIAL.COST')" prop="cost"><i-input v-model="item.cost"></i-input></form-item>
                             <form-item :label="$t('field.MATERIAL.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
                         </div>
                     </div>
@@ -38,8 +37,10 @@
 
 <script>
 import Permission from '../../mixins/permission'
-import materialService from '../../service/material';
+
 import materialCategorySelect from '../../components/material-category-select';
+
+import materialService from '../../service/material';
 
 export default {
     mixins: [Permission],
@@ -82,10 +83,9 @@ export default {
                 materialName: '',
                 materialNo: '',
                 unit: '',
-                cost: 0,
                 spec: '',
                 remark: '',
-                categoryId: undefined,
+                categoryId: '',
             }
         },
         async getById() {

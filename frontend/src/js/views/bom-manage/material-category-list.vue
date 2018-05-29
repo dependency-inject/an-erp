@@ -10,7 +10,7 @@
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <tree-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" :operates="tableOperates" @add="add(arguments[0][vm.identity])" @edit="edit" @remove="remove([arguments[0]])"></tree-table>
+                <tree-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" :operates="tableOperates" :identity="vm.identity" @add="add(arguments[0][vm.identity])" @edit="edit" @remove="remove([arguments[0]])"></tree-table>
             </div>
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true">

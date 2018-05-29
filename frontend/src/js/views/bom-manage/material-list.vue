@@ -19,8 +19,9 @@
                 <div class="clearfix"></div>
             </div>
             <!-- 表格 -->
-            <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]" @detail="$router.push('/material/'+arguments[0][vm.identity])" @remove="remove([arguments[0]])"></i-table>
+            <div class="main-content" style="display:flex">
+                <div style="border: 1px solid #dddee1; padding: 15px; margin-right: 10px; min-width: 200px;"><tree :data="categoryList" @on-select-change="selectChange" ref="tree"></tree></div>
+                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -32,8 +33,11 @@
 
 <script>
 import Permission from '../../mixins/permission';
+
 import util from '../../libs/util.js';
+
 import materialService from '../../service/material';
+import materialCategoryService from '../../service/material-category';
 
 export default {
     mixins: [ Permission ],
@@ -41,7 +45,7 @@ export default {
         return {
             vm: {
                 queryParameters: {
-                    closed: -1,
+                    categoryId: -1,
                     searchKey: '',
                     total: 0,
                     limit: 10,
@@ -53,6 +57,7 @@ export default {
                 identity: 'materialId',
             },
             selectItems: [],
+            categoryList: []
         }
     },
     computed: {
@@ -70,7 +75,6 @@ export default {
                 { title: this.$t('field.MATERIAL.CATEGORY_NAME'), key: 'categoryName', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
-                            console.log(row);console.log(this.vm.identity);
                             this.$router.push('/material/'+row[this.vm.identity])
                         }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
                             this.remove([row]) 
@@ -83,6 +87,7 @@ export default {
     methods: {
         initData() {
             this.search();
+            this.initCategoryList();
         },
         async search() {
             let idList = _.map(this.selectItems, this.vm.identity).join(",");
@@ -104,6 +109,24 @@ export default {
                     }
                 });
             }
+        },
+        async initCategoryList(){
+            let result = await materialCategoryService.getAll();
+            if (result.status === 200) {
+                var items = result.data;
+                this.categoryList = [{ categoryId: -1, title: this.$t('component.ALL_CATEGORY'), children: this.generateCategoryList(0, items) }];
+            }
+        },
+        generateCategoryList(parent, list){
+            let result = [];
+            list.forEach((item) => {
+                if (item.parentId == parent) {
+                    item.title = item.categoryName;
+                    item.children = this.generateCategoryList(item.categoryId, list);
+                    result.push(item);
+                }
+            });
+            return result;
         },
         handleSort(data) {
             if (data.order === 'normal') {
@@ -134,6 +157,10 @@ export default {
         },
         clearChecked() {
             this.$refs.table.selectAll(false);
+        },
+        selectChange(items) {
+            this.vm.queryParameters.categoryId = items[0].categoryId;
+            this.search();
         }
     },
     mounted() {

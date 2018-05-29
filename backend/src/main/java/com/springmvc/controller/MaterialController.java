@@ -25,8 +25,8 @@ public class MaterialController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public PageMode<Material> search(@RequestParam Integer current, @RequestParam Integer limit,
-                                     String sortColumn, String sort, String searchKey, Integer closed) {
-        return materialService.pageMaterial(current, limit, sortColumn, sort, searchKey, closed);
+                                     String sortColumn, String sort, String searchKey, Integer categoryId) {
+        return materialService.pageMaterial(current, limit, sortColumn, sort, searchKey, categoryId);
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
@@ -47,9 +47,9 @@ public class MaterialController {
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_ADD)
     public Material add(@RequestParam String materialNo, @RequestParam String materialName,
-                        @RequestParam String unit, @RequestParam int categoryId, @RequestParam String spec,
-                        @RequestParam BigDecimal cost, @RequestParam String remark) {
-        return materialService.addMaterial(materialNo, materialName, unit, categoryId, spec, cost, remark);
+                        @RequestParam String unit, @RequestParam int categoryId,
+                        @RequestParam String spec, @RequestParam String remark) {
+        return materialService.addMaterial(materialNo, materialName, unit, categoryId, spec, remark);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -57,8 +57,8 @@ public class MaterialController {
     @PermissionRequired(AccessPermission.MATERIAL_UPDATE)
     public Material update(@RequestParam Integer materialId,
                            @RequestParam String materialNo, @RequestParam String materialName,
-                           @RequestParam String unit, @RequestParam int categoryId, @RequestParam String spec,
-                           @RequestParam BigDecimal cost, @RequestParam String remark) {
-        return materialService.updateMaterial(materialId, materialNo, materialName, unit, categoryId, spec, cost, remark);
+                           @RequestParam String unit, @RequestParam int categoryId,
+                           @RequestParam String spec, @RequestParam String remark) {
+        return materialService.updateMaterial(materialId, materialNo, materialName, unit, categoryId, spec, remark);
     }
 }
