@@ -146,11 +146,12 @@ export default {
         removeFromCart(){},
         generateMaterialList(){}
         // TODO: 购物车功能
-        // 上方提供模板，第一个为select框，选择materialId，第二三四为输入框，数量属性备注 其中第一第二不能为空
+        // 上方提供模板，第一个为select框，选择materialId，第二三四为输入框，数量quantity.属性property.备注remark 其中第一第二不能为空
         // 点击加号添加至列表中，点击保存将数据保存
         // 数据库price默认为0
         // 备注remark
-        
+        //  上方： form
+        // 下方： table
     },
     created() {
         this.setDefault();
