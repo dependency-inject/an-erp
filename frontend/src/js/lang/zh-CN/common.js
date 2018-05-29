@@ -43,6 +43,4 @@ export default {
 	RESET_CONFIRM: '确定要重置密码吗？',
 	RESET_SUCCESS: '操作成功，重置后密码与登录名一致',
 	INITIAL_PASSWORD: '初始密码与登录名一致',
-
-	CATEGORY_NAME: '类别名称',
 };

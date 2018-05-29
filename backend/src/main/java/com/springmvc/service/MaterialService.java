@@ -42,6 +42,7 @@ public class MaterialService extends BaseService {
         if (!ParamUtils.isNull(sortColumn)) {
             materialQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
         }
+        // 类别筛选
         if (!ParamUtils.isNull(categoryId) && !categoryId.equals(-1)) {
             materialQuery.setCategoryId(categoryId);
         }
@@ -85,8 +86,6 @@ public class MaterialService extends BaseService {
      * @return
      */
     public Material getMaterialById(Integer materialId) {
-        MaterialQuery materialQuery = new MaterialQuery();
-        materialQuery.or().andMaterialIdEqualTo(materialId);
         Material material = materialDAO.selectByPrimaryKey(materialId);
         return material;
     }
@@ -100,9 +99,9 @@ public class MaterialService extends BaseService {
      * @return
      */
     public Material getMaterialWithCategoryById(Integer materialId) {
-        MaterialQuery adminQuery = new MaterialQuery();
-        adminQuery.or().andMaterialIdEqualTo(materialId);
-        List<Material> materialList = materialDAO.selectWithCategoryNameByExample(adminQuery);
+        MaterialQuery materialQuery = new MaterialQuery();
+        materialQuery.or().andMaterialIdEqualTo(materialId);
+        List<Material> materialList = materialDAO.selectWithCategoryNameByExample(materialQuery);
         if (materialList.size() == 0) {
             return null;
         }

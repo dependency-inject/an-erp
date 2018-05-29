@@ -64,7 +64,7 @@ export default {
         // 控制表格显示哪些列
         columnList() {
             return [
-                { title: this.$t('common.CATEGORY_NAME'), key: 'categoryName', width: 400 }
+                { title: this.$t('field.MATERIAL_CATEGORY.CATEGORY_NAME'), key: 'categoryName', width: 400 }
             ];
         },
         // 控制表格有哪些操作

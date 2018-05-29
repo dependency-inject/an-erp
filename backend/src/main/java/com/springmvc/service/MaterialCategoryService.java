@@ -83,7 +83,8 @@ public class MaterialCategoryService extends BaseService {
         MaterialCategory materialCategory = new MaterialCategory();
         materialCategory.setCategoryId(categoryId);
         materialCategory.setCategoryName(categoryName);
-        materialCategory.setParentId(parentId);
+        // 不更新上级类别信息
+//        materialCategory.setParentId(parentId);
 
 
         materialCategory.setUpdateAt(new Date());
