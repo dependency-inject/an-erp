@@ -1,0 +1,80 @@
+@tree-table-prefix-cls: ~"@{css-prefix}tree-table";
+
+.@{tree-table-prefix-cls} {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    color: @text-color;
+    font-size: @font-size-small;
+    background-color: #fff;
+    border-collapse: collapse;
+
+    &-wrapper{
+        position: relative;
+        overflow-y: auto;
+    }
+
+    tr {
+        border-bottom: 1px solid #eef1f9;
+
+        td {
+            height: 48px; 
+            line-height: 48px;
+        }
+
+        &:hover {
+            td {
+                background-color: @table-td-hover-bg;
+            }
+        }
+    }
+
+    &-node {
+        >span {
+            position: absolute; 
+            cursor: pointer;
+
+            i {
+                font-size: 30px;
+                line-height: 48px;
+            }
+
+            .sign-vertical {
+                position: absolute; 
+                left: 11px; 
+                top: 22px; 
+                height: 7px; 
+                border-right: 1px solid #fff;
+            }
+
+            .sign-horizontal {
+                position: absolute; 
+                left: 8px; 
+                top: 25px; 
+                width: 7px; 
+                border-bottom: 1px solid #fff;
+            }
+        }
+    }
+
+    &-operate {
+        text-align: right;
+
+        >span {
+            margin-right: 20px; cursor: pointer; display: none;
+
+            &:hover {
+                color: @primary-color;
+            }
+
+            &.disabled {
+                color: #b1b9c6!important;
+                cursor: not-allowed;
+            }
+        }
+
+        &.active>span {
+            display: inline;
+        }
+    }
+}
