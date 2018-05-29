@@ -4,4 +4,5 @@
 /backend/src/main/webapp/static/
 /frontend/node_modules/
 *.log
+*-lock.*
 *.iml

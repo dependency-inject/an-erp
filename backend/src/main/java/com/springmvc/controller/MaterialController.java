@@ -29,10 +29,10 @@ public class MaterialController {
         return materialService.pageMaterial(current, limit, sortColumn, sort, searchKey);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateCost", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_UPDATE)
-    public Material update(@RequestParam Integer materialId, @RequestParam BigDecimal cost) {
+    public Material updateCost(@RequestParam Integer materialId, @RequestParam BigDecimal cost) {
         return materialService.updateCost(materialId, cost);
     }
 }

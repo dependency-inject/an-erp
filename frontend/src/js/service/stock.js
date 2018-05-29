@@ -1,5 +1,5 @@
 import { http } from '../libs/http';
 
-var search = (queryParameters) => http.post('stock/search', queryParameters);
+var searchMaterialCost = (queryParameters) => http.post('stock/searchMaterialCost', queryParameters);
 
-export default { search };
+export default { searchMaterialCost };

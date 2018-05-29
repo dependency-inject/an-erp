@@ -2,6 +2,6 @@ import { http } from '../libs/http';
 
 var search = (queryParameters) => http.post('material/search', queryParameters);
 
-var update = (material) => http.post('material/update', material);
+var updateCost = (material) => http.post('material/updateCost', material);
 
-export default { search, update };
+export default { search, updateCost };

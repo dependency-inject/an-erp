@@ -30,9 +30,9 @@ public class MaterialService extends BaseService {
     /**
      * 查询物料信息（分页）
      *
-     * 将主表信息取出：admin left join admin_role（同时包含总记录数）
-     * 搜索字段：物料名
-     * 筛选字段：账号状态
+     * 将主表信息取出：material（同时包含总记录数）
+     * 搜索字段：物料编号、物料名称
+     * 筛选字段：暂无
      *
      *
      * @param current
@@ -51,8 +51,13 @@ public class MaterialService extends BaseService {
         if(!ParamUtils.isNull(sortColumn)) {
             materialQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn)+" "+sort);
         }
-        //搜索物料名
+        //搜索物料编号
         MaterialQuery.Criteria criteria = materialQuery.or();
+        if(!ParamUtils.isNull(searchKey)) {
+            criteria.andMaterialNoLike("%"+searchKey+"%");
+        }
+        //搜索物料名称
+        criteria = materialQuery.or();
         if(!ParamUtils.isNull(searchKey)) {
             criteria.andMaterialNameLike("%"+searchKey+"%");
         }
@@ -61,10 +66,11 @@ public class MaterialService extends BaseService {
 
         return new PageMode<Material>(result, materialDAO.countByExample(materialQuery));
     }
+
     /**
      * 查询物料信息（单个）
      *
-     * 将主表信息取出：role
+     * 将主表信息取出：material
      *
      * @param materialId
      * @return
@@ -77,10 +83,9 @@ public class MaterialService extends BaseService {
     /**
      * 更新物料成本信息
      *
-     * 进行必要的检查：是否为系统默认角色
      * 更新主表信息：material
      * 更新关联的从表信息：暂无
-     * 添加日志信息：LogType.ROLE, Operate.UPDATE
+     * 添加日志信息：LogType.MATERIAL, Operate.UPDATE
      *
      * @param materialId
      * @param cost
@@ -100,7 +105,6 @@ public class MaterialService extends BaseService {
         // 添加日志
         addLog(LogType.MATERIAL, Operate.UPDATE, material.getMaterialId());
         return getMaterialById(material.getMaterialId());
-
     }
 
 }

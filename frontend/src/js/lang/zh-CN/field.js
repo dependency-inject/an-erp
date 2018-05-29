@@ -16,12 +16,13 @@ export default {
         ROLE_NAME: '角色名称',
         SELECT_ROLE: '选择角色',
     },
-    MATERIAL: {
-        MATERIAL_ID: '物料编号',
+    MATERIAL_COST: {
+        MATERIAL_NO: '物料编号',
         MATERIAL_NAME: '物料名称',
+        MATERIAL_COUNT: '物料数量',
         MATERIAL_COST: '物料成本',
-        QUANTITY: '物料数量',
-        TOTAL_COST: '物料总成本'
+        TOTAL_AMOUNT: '实际库存数量',
+        TOTAL_COST: '库存成本'
     },
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',

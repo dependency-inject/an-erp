@@ -1,6 +1,6 @@
 package com.springmvc.controller;
 
-import com.springmvc.dto.Material;
+import com.springmvc.dto.MaterialStockCostRecord;
 import com.springmvc.dto.PageMode;
 import com.springmvc.service.StockService;
 import org.springframework.stereotype.Controller;
@@ -18,10 +18,10 @@ public class StockController {
     @Resource
     StockService stockService;
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/searchMaterialCost", method = RequestMethod.POST)
     @ResponseBody
-    public PageMode<Material> search(@RequestParam Integer current, @RequestParam Integer limit,
-                                     String sortColumn, String sort, String searchKey) {
-        return stockService.pageRealStock(current, limit, sortColumn, sort, searchKey);
+    public PageMode<MaterialStockCostRecord> searchMaterialCost(@RequestParam Integer current, @RequestParam Integer limit,
+                                                                String sortColumn, String sort, String searchKey) {
+        return stockService.pageMaterialCost(current, limit, sortColumn, sort, searchKey);
     }
 }
