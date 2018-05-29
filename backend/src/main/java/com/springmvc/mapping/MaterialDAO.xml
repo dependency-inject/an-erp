@@ -323,54 +323,85 @@
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
 
-	<!--List<MaterialStockRecord> selectWithStockByExample 方法的实现 -->
-	<resultMap id="ResultMapWithStock" type="com.springmvc.dto.MaterialStockRecord">
-			<id column="material_id" jdbcType="INTEGER" property="materialId"/>
-			<result column="material_no" jdbcType="VARCHAR" property="materialNo"/>
-			<result column="material_name" jdbcType="VARCHAR" property="materialName"/>
-			<result column="left_amount" jdbcType="INTEGER" property="leftAmount"/>
-			<result column="total_amount" jdbcType="INTEGER" property="totalAmount"/>
-			<result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount"/>
-			<result column="unit" jdbcType="VARCHAR" property="unit"/>
-			<result column="category_id" jdbcType="INTEGER" property="categoryId"/>
-			<result column="spec" jdbcType="VARCHAR" property="spec"/>
-			<result column="cost" jdbcType="DECIMAL" property="cost"/>
-			<result column="remark" jdbcType="VARCHAR" property="remark"/>
-			<result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
-			<result column="create_by" jdbcType="INTEGER" property="createBy"/>
-			<result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
-			<result column="update_by" jdbcType="INTEGER" property="updateBy"/>
-
-	</resultMap>
-	<select id="selectWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
-			SELECT material.*, IFNULL((total- material.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
-			((SELECT a.material_id, sum(a.quantity) AS total FROM (
-			SELECT material_id, -quantity AS quantity
-			FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-			WHERE bill_state = 3
-			UNION ALL
-			SELECT material_id, quantity
-			FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
-			WHERE bill_state = 3
-			) AS a GROUP BY material_id) AS b RIGHT JOIN  (
-			SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
-			SELECT material_id, sum(quantity) AS ordered FROM
-			material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-			GROUP BY material_id) AS c ON c.material_id = material.material_id)
-			AS material ON material.material_id = b.material_id)
-			<if test="_parameter != null">
-					<include refid="Example_Where_Clause"/>
-			</if>
-			<if test="orderByClause != null">
-					order by ${orderByClause}
-			</if>
-			<if test="limit != null">
-					<if test="offset != null">
-							limit ${offset}, ${limit}
-					</if>
-					<if test="offset == null">
-							limit ${limit}
-					</if>
-			</if>
-	</select>
+  <!-- List<MaterialStockRecord> selectWithStockByExample 方法的实现 -->
+  <resultMap id="ResultMapWithStock" type="com.springmvc.dto.MaterialStockRecord">
+    <id column="material_id" jdbcType="INTEGER" property="materialId"/>
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo"/>
+    <result column="material_name" jdbcType="VARCHAR" property="materialName"/>
+    <result column="unit" jdbcType="VARCHAR" property="unit"/>
+    <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    <result column="spec" jdbcType="VARCHAR" property="spec"/>
+    <result column="cost" jdbcType="DECIMAL" property="cost"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+    <result column="create_by" jdbcType="INTEGER" property="createBy"/>
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    <result column="update_by" jdbcType="INTEGER" property="updateBy"/>
+    <result column="left_amount" jdbcType="INTEGER" property="leftAmount"/>
+    <result column="total_amount" jdbcType="INTEGER" property="totalAmount"/>
+    <result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount"/>
+  </resultMap>
+  <select id="selectWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
+    SELECT material.*, IFNULL((total- material.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
+    ((SELECT a.material_id, sum(a.quantity) AS total FROM (
+    SELECT material_id, -quantity AS quantity
+    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    WHERE bill_state = 3
+    UNION ALL
+    SELECT material_id, quantity
+    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
+    WHERE bill_state = 3
+    ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
+    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
+    SELECT material_id, sum(quantity) AS ordered FROM
+    material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    GROUP BY material_id) AS c ON c.material_id = material.material_id)
+    AS material ON material.material_id = b.material_id)
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <!-- MaterialStockRecord statisticsWithStockByExample 方法的实现 -->
+  <select id="statisticsWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
+    SELECT SUM(IFNULL((total- material.ordered_amount), 0)) AS left_amount , SUM(IFNULL(b.total, 0)) AS total_amount FROM
+    ((SELECT a.material_id, sum(a.quantity) AS total FROM (
+    SELECT material_id, -quantity AS quantity
+    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    WHERE bill_state = 3
+    UNION ALL
+    SELECT material_id, quantity
+    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
+    WHERE bill_state = 3
+    ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
+    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
+    SELECT material_id, sum(quantity) AS ordered FROM
+    material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    GROUP BY material_id) AS c ON c.material_id = material.material_id)
+    AS material ON material.material_id = b.material_id)
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>

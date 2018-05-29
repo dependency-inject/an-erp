@@ -95,4 +95,12 @@ public interface MaterialDAO {
      * @return 一页记录
      */
     List<MaterialStockRecord> selectWithStockByExample(MaterialQuery example);
+
+    /**
+     *   根据指定的条件统计符合条件的数据库记录（物料库存）
+     *
+     * @param example 查询条件
+     * @return 一页记录
+     */
+    MaterialStockRecord statisticsWithStockByExample(MaterialQuery example);
 }

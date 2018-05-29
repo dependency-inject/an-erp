@@ -1,20 +1,27 @@
 <template>
-    <div class="main-panel no-scroll">
-        <div class="main-panel-content">
+    <div class="main-panel">
+        <div class="main-panel-content" style="padding-bottom:65px">
             <div class="operate-panel">
                 <div class="pull-left operate-list">
                     <i-input icon="search"
                              :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL_STOCK.MATERIAL_NO')+
                                            '/'+$t('field.MATERIAL_STOCK.MATERIAL_NAME')"
                              v-model="vm.queryParameters.searchKey"
-                             @on-enter="search()"
+                             @on-enter="search();chartQueryParameters.searchKey=vm.queryParameters.searchKey"
                              style="width:300px"></i-input>
+                </div>
+                <div class="button-list pull-right">
+                    <!-- <i-button class="operate-btn" type="ghost" shape="circle" @click="">{{ $t('common.EXPORT') }}</i-button> -->
                 </div>
                 <div class="clearfix"></div>
             </div>
+            <div class="statistics-panel">
+                <div><div style="background-color:#fb7884"><h4>{{ vm.queryParameters.total || 0 }}</h4>{{ $t('field.MATERIAL_STOCK.MATERIAL_COUNT') }}</div></div>
+                <div><div style="background-color:#03a9f3"><h4>{{ vm.statistics.totalAmount || 0 }}</h4>{{ $t('field.MATERIAL_STOCK.MATERIAL_AMOUNT') }}</div></div>
+                <div><div style="background-color:#9675ce"><h4>{{ vm.statistics.leftAmount || 0 }}</h4>{{ $t('field.MATERIAL_STOCK.MATERIAL_LEFT') }}</div></div>
+            </div>
             <div class="main-content">
-                <i-table :height="tableHeight"
-                         ref="table"
+                <i-table ref="table"
                          :columns="columnList"
                          :data="vm.items"
                          @on-sort-change="handleSort"></i-table>
@@ -28,18 +35,18 @@
                       @on-page-size-change="vm.queryParameters.limit=arguments[0];search()"></page>
             </div>
         </div>
+        <material-stock-chart :query-parameters="chartQueryParameters" show-total-amount show-ordered-amount show-left-amount></material-stock-chart>
     </div>
 </template>
 
 <script>
-import Permission from '../../mixins/permission';
-
 import util from '../../libs/util.js';
+
+import materialStockChart from '../../components/material-stock-chart';
 
 import stockService from '../../service/stock';
 
 export default {
-    mixins: [Permission],
     data() {
         return {
             vm: {
@@ -52,29 +59,27 @@ export default {
                     sort: ''
                 },
                 items: [],
+                statistics: {},
                 identity: 'materialId',
             },
-            modal: {
-                title: 'title',
-                item: {},
-                visible: false
+            chartQueryParameters: {
+                searchKey: ''
             }
         }
     },
+    components: { materialStockChart },
     computed: {
         columnList() {
             return [
-                {width: 80, align: 'center'},
+                {width: 50, align: 'center'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_NO'), key: 'materialNo', sortable: 'custom'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_NAME'), key: 'materialName', sortable: 'custom'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_AMOUNT'), key: 'totalAmount', sortable: 'custom'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_ORDERED'), key: 'orderedAmount', sortable: 'custom'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_LEFT'), key: 'leftAmount', sortable: 'custom'},
+                // TODO: 流水明细
             ];
-        },
-        tableHeight() {
-            return document.documentElement.clientHeight - 220;
-        },
+        }
     },
     methods: {
         initData() {
@@ -95,14 +100,8 @@ export default {
             if (result.status === 200) {
                 let items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
-                items.forEach((item) => {
-                    if (!item.sysDefault) {
-                        item['detailPermission'] = true;
-                        if (this.adminRemovePermission)
-                            item['removePermission'] = true;
-                    }
-                });
                 this.vm.items = items;
+                this.vm.statistics = result.data.statistics;
             }
         }
     },

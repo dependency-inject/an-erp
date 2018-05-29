@@ -59,7 +59,8 @@ public class StockService extends BaseService {
             criteria.andProductNameLike("%" + searchKey + "%");
         }
         List<ProductStockRecord> result = productDAO.selectProductStockByExample(productQuery);
-        return new PageMode<ProductStockRecord>(result, productDAO.countByExample(productQuery));
+        return new PageMode<ProductStockRecord>(result, productDAO.statisticsProductStockByExample(productQuery),
+                productDAO.countByExample(productQuery));
     }
 
 
@@ -92,6 +93,7 @@ public class StockService extends BaseService {
             criteria.andMaterialNoLike("%" + searchKey + "%");
         }
         List<MaterialStockRecord> result = materialDAO.selectWithStockByExample(materialQuery);
-        return new PageMode<MaterialStockRecord>(result, materialDAO.countByExample(materialQuery));
+        return new PageMode<MaterialStockRecord>(result, materialDAO.statisticsWithStockByExample(materialQuery),
+                materialDAO.countByExample(materialQuery));
     }
 }

@@ -340,55 +340,86 @@
     where product_id = #{productId,jdbcType=INTEGER}
   </update>
 
-	<!--List<ProductStockRecord> selectProductStockByExample 方法的实现-->
-	<resultMap id="ProductStockResultMap" type="com.springmvc.dto.ProductStockRecord">
-			<id column="product_id" jdbcType="INTEGER" property="productId" />
-			<id column="total_amount" jdbcType="INTEGER" property="totalAmount" />
-			<id column="ordered_amount" jdbcType="INTEGER" property="orderedAmount" />
-			<id column="product_no" jdbcType="VARCHAR" property="productNo" />
-			<id column="left_amount" jdbcType="INTEGER" property="leftAmount" />
-			<result column="product_no" jdbcType="VARCHAR" property="productNo" />
-			<result column="product_name" jdbcType="VARCHAR" property="productName" />
-			<result column="unit" jdbcType="VARCHAR" property="unit" />
-			<result column="category_id" jdbcType="INTEGER" property="categoryId" />
-			<result column="spec" jdbcType="VARCHAR" property="spec" />
-			<result column="price" jdbcType="DECIMAL" property="price" />
-			<result column="closed" jdbcType="TINYINT" property="closed" />
-			<result column="remark" jdbcType="VARCHAR" property="remark" />
-			<result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
-			<result column="create_by" jdbcType="INTEGER" property="createBy" />
-			<result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
-			<result column="update_by" jdbcType="INTEGER" property="updateBy" />
-	</resultMap>
-	<select id="selectProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
-			SELECT product.*, IFNULL((total- product.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
-			((SELECT a.product_id, sum(a.quantity) AS total FROM (
-			SELECT product_id, -quantity AS quantity
-			FROM product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
-			WHERE bill_state = 3
-			UNION ALL
-			SELECT product_id, quantity
-			FROM product_instock_bill LEFT JOIN product_instock_bill_product ON product_instock_bill.bill_id = product_instock_bill_product.bill_id
-			WHERE bill_state = 3
-			) AS a GROUP BY product_id) AS b RIGHT JOIN  (
-			SELECT product.*, IFNULL(c.ordered, 0) AS ordered_amount FROM product LEFT JOIN (
-			SELECT product_id, sum(quantity) AS ordered FROM
-			product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
-			GROUP BY product_id) AS c ON c.product_id = product.product_id)
-			AS product ON product.product_id = b.product_id)
-			<if test="_parameter != null">
-					<include refid="Example_Where_Clause" />
-			</if>
-			<if test="orderByClause != null">
-					order by ${orderByClause}
-			</if>
-			<if test="limit != null">
-					<if test="offset != null">
-							limit ${offset}, ${limit}
-					</if>
-					<if test="offset == null">
-							limit ${limit}
-					</if>
-			</if>
-	</select>
+  <!-- List<ProductStockRecord> selectProductStockByExample 方法的实现-->
+  <resultMap id="ProductStockResultMap" type="com.springmvc.dto.ProductStockRecord">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="closed" jdbcType="TINYINT" property="closed" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="total_amount" jdbcType="INTEGER" property="totalAmount" />
+    <result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount" />
+    <result column="left_amount" jdbcType="INTEGER" property="leftAmount" />
+  </resultMap>
+  <select id="selectProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
+    SELECT product.*, IFNULL((total- product.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
+    ((SELECT a.product_id, sum(a.quantity) AS total FROM (
+    SELECT product_id, -quantity AS quantity
+    FROM product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
+    WHERE bill_state = 3
+    UNION ALL
+    SELECT product_id, quantity
+    FROM product_instock_bill LEFT JOIN product_instock_bill_product ON product_instock_bill.bill_id = product_instock_bill_product.bill_id
+    WHERE bill_state = 3
+    ) AS a GROUP BY product_id) AS b RIGHT JOIN  (
+    SELECT product.*, IFNULL(c.ordered, 0) AS ordered_amount FROM product LEFT JOIN (
+    SELECT product_id, sum(quantity) AS ordered FROM
+    product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
+    GROUP BY product_id) AS c ON c.product_id = product.product_id)
+    AS product ON product.product_id = b.product_id)
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <!-- ProductStockRecord statisticsProductStockByExample 方法的实现 -->
+  <select id="statisticsProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
+    SELECT SUM(IFNULL((total- product.ordered_amount), 0)) AS left_amount , SUM(IFNULL(b.total, 0)) AS total_amount FROM
+    ((SELECT a.product_id, sum(a.quantity) AS total FROM (
+    SELECT product_id, -quantity AS quantity
+    FROM product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
+    WHERE bill_state = 3
+    UNION ALL
+    SELECT product_id, quantity
+    FROM product_instock_bill LEFT JOIN product_instock_bill_product ON product_instock_bill.bill_id = product_instock_bill_product.bill_id
+    WHERE bill_state = 3
+    ) AS a GROUP BY product_id) AS b RIGHT JOIN  (
+    SELECT product.*, IFNULL(c.ordered, 0) AS ordered_amount FROM product LEFT JOIN (
+    SELECT product_id, sum(quantity) AS ordered FROM
+    product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
+    GROUP BY product_id) AS c ON c.product_id = product.product_id)
+    AS product ON product.product_id = b.product_id)
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>

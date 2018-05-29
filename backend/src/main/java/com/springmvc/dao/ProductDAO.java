@@ -94,4 +94,12 @@ public interface ProductDAO {
      * @return 一页记录
      */
     List<ProductStockRecord> selectProductStockByExample(ProductQuery query);
+
+    /**
+     *  根据指定的条件统计符合条件的数据库记录（产品库存）
+     *
+     * @param query 查询条件
+     * @return 一页记录
+     */
+    ProductStockRecord statisticsProductStockByExample(ProductQuery query);
 }
