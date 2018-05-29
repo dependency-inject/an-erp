@@ -374,7 +374,7 @@
   </select>
   <!-- MaterialStockRecord statisticsWithStockByExample 方法的实现 -->
   <select id="statisticsWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
-    SELECT SUM(IFNULL((total- material.ordered_amount), 0)) AS left_amount , SUM(IFNULL(b.total, 0)) AS total_amount FROM
+    SELECT IFNULL(SUM(IFNULL((total- material.ordered_amount), 0)), 0) AS left_amount , IFNULL(SUM(IFNULL(b.total, 0)), 0) AS total_amount FROM
     ((SELECT a.material_id, sum(a.quantity) AS total FROM (
     SELECT material_id, -quantity AS quantity
     FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
