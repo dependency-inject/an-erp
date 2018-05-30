@@ -17,7 +17,7 @@
                         <div class="panel-header">{{ $t('field.SUPPLIER.PRICE_INFO') }}</div>
                         <div class="pull-left operate-list" v-show="selectItems==''">
                             <!-- 搜索框 -->
-                            <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.MATERIAL_NO')+'/'+$t('field.SUPPLIER.MATERIAL_NAME')" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                            <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.MATERIAL_NO')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                         </div>
                         <!-- 选中表项后的批量处理按钮 -->
                         <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="chief-panel">
                         <div class="panel-body">
-                            <i-table :height="tableHeight" ref="table" :columns="columnList" @on-selection-change="selectItems=arguments[0]" :data="vm.items" ></i-table>
+                            <i-table :height="tableHeight" ref="table" :columns="columnList" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]" :data="vm.items" ></i-table>
                         </div>
                     </div>
                     <div class="chief-panel">
@@ -48,7 +48,10 @@
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="savePrice" :loading="true">
         	<i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
-            	<form-item :label="$t('field.SUPPLIER.MATERIAL_NO')" prop="materialNo"><i-input v-model="modal.item.materialNo"></i-input></form-item>
+            	<!-- <form-item :label="$t('field.SUPPLIER.MATERIAL_NO')" prop="materialNo"><i-input v-model="modal.item.materialNo"></i-input></form-item> -->
+                <i-select v-model="modal.materialId" style="width:200px">
+                    <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' ' +item.materialName}}</i-option>
+                </i-select>
                 <form-item :label="$t('field.SUPPLIER.PRICE')" prop="price"><i-input v-model="modal.item.price"></i-input></form-item>
                 <form-item :label="$t('field.SUPPLIER.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
         	</i-form>
@@ -58,6 +61,8 @@
 
 <script>
 import Permission from '../../mixins/permission';
+
+import util from '../../libs/util.js';
 
 import supplierService from '../../service/supplier';
 
@@ -73,10 +78,11 @@ export default {
                     limit: 10,
                     current: 1,
                     sortColumn: '',
-                    sort: ''
+                    sort: '',
+                    supplierId: ''
                 },
                 items: [],
-                identity: 'materialNo'
+                identity: 'supplierMaterialId'
             },
             modal: {
                 title: 'title',
@@ -84,7 +90,10 @@ export default {
                 visible: false
             },
             selectItems: [],
-            identity: 'id'        
+            // identity: 'id',
+            updateItem: [],  
+            ispriceupdate: false,
+            materialList: []
         }
     },
     computed: {
@@ -99,9 +108,6 @@ export default {
             return {
                 materialNo: [
                     { required: true, message: this.$t('field.SUPPLIER.MATERIAL_NO')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
-                ],
-                price: [
-                    { required: true, message: this.$t('field.SUPPLIER.PRICE')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ]
             }
         },
@@ -112,14 +118,14 @@ export default {
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.SUPPLIER.MATERIAL_NO'), key: 'materialNo', sortable: 'custom' },
-                { title: this.$t('field.SUPPLIER.MATERIAL_NAME'), key: 'materialName', sortable: 'custom' },
+                { title: this.$t('field.SUPPLIER.MATERIAL_NO'), key: 'materialNo' },
+                { title: this.$t('field.SUPPLIER.MATERIAL_NAME'), key: 'materialName' },
                 { title: this.$t('field.SUPPLIER.PRICE'), key: 'price', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
                             this.updatePrice(row);
                         }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
-                            this.removePrice([row]) 
+                            this.remove([row]) 
                         }, 'removePermission')]);
                     } 
                 }
@@ -131,9 +137,13 @@ export default {
             // 路由检查
             if (!isNaN(Number(this.$route.params.id))) {
                 this.item.supplierId = Number(this.$route.params.id);
+                this.vm.queryParameters.supplierId = this.item.supplierId;
                 this.getById();
+                this.getMaterialList();
+                this.search();
             } else if (this.$route.params.id === 'add') {
                 this.setDefault();
+                this.getMaterialList();
             } else {
                 this.$router.replace('/supplier');
             }
@@ -149,37 +159,55 @@ export default {
             };
             this.modal = {
                 title: 'title',
-                item: {},
+                item: {
+                    materialId: ''
+                },
                 visible: false
             }
         },
         addPrice() {
             this.modal.title = this.$t('common.ADD') + this.$t('field.SUPPLIER.PRICE_INFO');
             this.$refs.formValidate2.resetFields();
-            this.modal.item.materialNo = '';
+            // this.modal.item.materialNo = '';
             this.modal.item.price = '';
             this.modal.item.remark = '';
             this.modal.visible = true;
         },
         updatePrice(selectItem) {
-            this.modal.title = this.$t('common.UPDATE') + this.$t('field.SUPPLIER.PRICE_INFO');
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.SUPPLIER.PRICE_INFO');
             this.$refs.formValidate2.resetFields();
-            this.modal.item.materialNo = selectItem.materialNo;
+            // this.modal.item.materialNo = selectItem.materialNo;
+            this.modal.item.materialId  = selectItem.materialId;
             this.modal.item.price = selectItem.price;
             this.modal.item.remark = selectItem.remark;
             this.modal.visible = true;
+            this.ispriceupdate = true;
+            this.updateItem = [selectItem]
         },
         savePrice() {
             this.$refs.formValidate2.validate(async (valid) => {
                 if (valid) {
                     if (this.$route.params.id === 'add' && this.item.supplierId === 0) {
                         this.$Message.error('field.SUPPLIER.ERROR_INFO');
+                    } else if (this.ispriceupdate === true) {
+                        let idList = _.map(this.updateItem, this.vm.identity).join(",");
+                        this.modal.item.supplierMaterialId = idList[0];
+                        this.modal.item.supplierId = this.item.supplierId;
+                        let result = await supplierService.updatePrice(this.modal.item);
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                            this.search();
+                        } else {
+                            this.$Message.error(result.data);
+                        }
+                        this.updateItem = [];
+                        this.ispriceupdate = false;
                     } else {
-                        this.modal.supplierId = this.item.supplierId;
+                        this.modal.item.supplierId = this.item.supplierId;
                         let result = await supplierService.addPrice(this.modal.item);
                         if (result.status === 200) {
                             this.$Message.success(this.$t('common.SAVE_SUCCESS'));
-                            this.initData();
+                            this.search();
                         } else {
                             this.$Message.error(result.data);
                         }
@@ -187,6 +215,9 @@ export default {
                 } else {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
                 }
+                setTimeout(() => {
+                    this.modal.visible = false;
+                }, 2000);
             });
         },
         async getById() {
@@ -225,7 +256,6 @@ export default {
             });
         },
         async search() {
-            let idList = _.map(this.selectItems, this.vm.identity).join(",");
             let result = await supplierService.searchPrice(this.vm.queryParameters);
             if (result.status === 200) {
                 var items = result.data.list;
@@ -236,13 +266,6 @@ export default {
                         item['removePermission'] = true;
                 });
                 this.vm.items = items;
-                this.$nextTick(() => {
-                    for (var i = 0; i < items.length; ++i) {
-                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
-                            this.$refs.table.toggleSelect(i);
-                        }
-                    }
-                });
             }
         },
         handleSort(data) {
@@ -276,6 +299,14 @@ export default {
                 }
             });
         },
+        async getMaterialList() {
+            let result = await supplierService.getMaterialList();
+            if (result.status === 200) {
+                this.materialList = result.data;
+            } else {
+                this.$router.replace('/supplier');
+            }
+        }
     },
     created() {
         this.setDefault();

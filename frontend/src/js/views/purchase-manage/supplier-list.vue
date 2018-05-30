@@ -86,7 +86,6 @@ export default {
             this.search();
         },
         async search() {
-            let idList = _.map(this.selectItems, this.vm.identity).join(",");
             let result = await supplierService.search(this.vm.queryParameters);
             if (result.status === 200) {
                 var items = result.data.list;
@@ -97,13 +96,6 @@ export default {
                         item['removePermission'] = true;
                 });
                 this.vm.items = items;
-                this.$nextTick(() => {
-                    for (var i = 0; i < items.length; ++i) {
-                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
-                            this.$refs.table.toggleSelect(i);
-                        }
-                    }
-                });
             }
         },
         handleSort(data) {

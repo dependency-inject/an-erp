@@ -77,7 +77,7 @@ public class SupplierController {
     }
 
     /**
-     * 添加供货商物料
+     * 添加供货商物料  传进来的materialNo改成materialId
      */
     @RequestMapping(value = "/addmaterial", method = RequestMethod.POST)
     @ResponseBody
@@ -128,15 +128,5 @@ public class SupplierController {
         return supplierService.updatesupplierMaterial(supplierMaterialId,supplierId, materialNo, price, remark);
     }
 
-    /**
-     * 反查物料报价
-     */
 
-    @RequestMapping(value = "/materialtosupplier", method = RequestMethod.POST)
-    @ResponseBody
-    @PermissionRequired(AccessPermission.SUPPLIER_UPDATE)
-    public PageMode<SupplierMaterial> findsupplierPrie(@RequestParam Integer materialId,@RequestParam Integer current, @RequestParam Integer limit,
-                                                       String sortColumn, String sort) {
-        return supplierService.findsupplierPrie(materialId,current,limit,sortColumn,sort);
-    }
 }

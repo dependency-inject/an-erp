@@ -179,7 +179,7 @@ public class SupplierService extends BaseService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 新增供应商物料信息
+     * 新增供应商物料信息,需要改成按materialId来查的格式
      *
      * 根据供应商提供的no.检查供应商物料是否存在BOM表，检查现有供应商物料表中是否存咋
      * 供应商信息保存：SupplierMaterial
@@ -191,6 +191,8 @@ public class SupplierService extends BaseService {
      * @return
      */
     public SupplierMaterial addSupplierMaterial(Integer supplierId,String materialNo, BigDecimal price, String remark ){
+        //如果按materialId查下面这部分可以删掉
+        // 原本是为了通过MaterialNO获取Material对象
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.or().andMaterialNoEqualTo(materialNo);
         //no转id，获取material对象
@@ -199,14 +201,12 @@ public class SupplierService extends BaseService {
             throw new BadRequestException(MATERIAL_NO_EXIST);
         }
         Material material = materialList.get(0);
-
-        //SupplierMaterialQuery suppliermaterialQueryQ=new SupplierMaterialQuery();
-        //suppliermaterialQueryQ.or().andMaterialIdEqualTo(material.getMaterialId());
-
+        //删除到此为止
         SupplierMaterial suppliermaterial = new SupplierMaterial();
         suppliermaterial.setPrice(price);
         suppliermaterial.setRemark(remark);
         suppliermaterial.setSupplierId(supplierId);
+        //下面这句话参数直接改成ID
         suppliermaterial.setMaterialId(material.getMaterialId());
         suppliermaterialDAO.insertSelective(suppliermaterial);
 
@@ -225,7 +225,7 @@ public class SupplierService extends BaseService {
      * @param supplierMaterialId
      * @return
      */
-    public SupplierMaterial getSupplierMaterialById(int supplierMaterialId) {
+    public  SupplierMaterial getSupplierMaterialById(int supplierMaterialId) {
         SupplierMaterial suppliermaterial = suppliermaterialDAO.selectByPrimaryKey(supplierMaterialId);
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.or().andMaterialIdEqualTo(suppliermaterial.getMaterialId());
@@ -285,7 +285,7 @@ public class SupplierService extends BaseService {
             SupplierMaterial ms=getSupplierMaterialById(sm.getSupplierMaterialId());
             resultms.add(ms);
         }
-        return new PageMode<SupplierMaterial>(resultms, resultms.size());
+        return new PageMode<SupplierMaterial>(resultms, suppliermaterialDAO.countByExample(suppliermaterialQuery));
     }
 
     /**
@@ -348,44 +348,4 @@ public class SupplierService extends BaseService {
         return suppliermaterial;
     }
 
-    /**
-     * 反查物料报价信息
-     * @param materialId
-     * @param current
-     * @param limit
-     * @param sortColumn
-     * @param sort
-     * @return
-     */
-    public PageMode<SupplierMaterial> findsupplierPrie(Integer materialId,Integer current, Integer limit, String sortColumn,String sort) {
-        SupplierMaterialQuery suppliermaterialQuery = new SupplierMaterialQuery();
-        suppliermaterialQuery.setOffset((current-1) * limit);
-        suppliermaterialQuery.setLimit(limit);
-        if (!ParamUtils.isNull(sortColumn))
-            suppliermaterialQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
-
-        SupplierMaterialQuery.Criteria criteria = suppliermaterialQuery.or();
-        criteria.andMaterialIdEqualTo(materialId);
-
-
-        List<SupplierMaterial> resultSM = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
-
-        //获取supplier
-        SupplierQuery supplierQuery = new SupplierQuery();
-        List<Supplier> resultsup = supplierDAO.selectByExample(supplierQuery)  ;
-
-        HashMap<Integer,Supplier> suppliers=new HashMap<Integer, Supplier>();
-        for(Supplier s:resultsup){
-            suppliers.put(s.getSupplierId(),s);
-        }
-
-        //完善suppliMaterial信息
-        List<SupplierMaterial> resultms=new ArrayList<SupplierMaterial>();
-        for(SupplierMaterial sm:resultSM){
-            SupplierMaterial ms=getSupplierMaterialById(sm.getSupplierMaterialId());
-            ms.setSupplierName(suppliers.get(sm.getSupplierId()).getSupplierName());
-            resultms.add(ms);
-        }
-        return new PageMode<SupplierMaterial>(resultms, resultms.size());
-    }
 }
