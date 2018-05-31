@@ -35,5 +35,37 @@ export default {
     MAN: '男',
     WOMAN: '女',
 
-    CLOSED: { '-1': '全部状态', '0': '启用', '1': '停用' }
+    CLOSED: { '-1': '全部状态', '0': '启用', '1': '停用' },
+    ORDERSTATE: {'-1': '全部状态', '1': '待审核', '2': '已审核', '3': '生产中', '4': '已发货', '5': '已取消'},
+    ORDER: {
+        ID: '编号',
+        AMOUNT: '金额',
+        STATE: '状态',
+        SALES_MAN: '销售人',
+        CLIENT: '客户',
+        TIME: '下单时间',
+        INFO: '订单信息',
+        AUDIT_INFO: '审核信息',
+        AUDIT_TIME: '审核时间',
+        AUDIT_MAN: '审核人',
+        PRODUCE: '启动生产',
+        PRODUCE_INFO: '生产信息',
+        PRODUCE_TIME: '生产时间',
+        PRODUCE_MAN: '生产负责人',
+        DELIVER: '发货',
+        DELIVER_INFO: '发货信息',
+        DELIVER_TIME: '发货时间',
+        DELIVER_MAN: '发货人',
+        CANCEL: '取消',
+        PRODUCT_INFO: '货品信息',
+        PRODUCT_NAME: '货品名称',
+        PRODUCT_COUNT: '货品数量',
+        PRODUCT_PRICE: '单价',
+        REMARK: '备注',
+    },
+    CLIENT: {
+        ID: '编号',
+        NAME: '姓名',
+        PHONE: '电话号码',
+    }
 };
