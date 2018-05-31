@@ -11,5 +11,5 @@ var searchBill = (search) => http.post('development-draw/searchbill', {search:se
 var changematerials= (bill_id,material,quantity,remark)=> http.post('development-draw/changematerials', {bill_id:bill_id,material:material,quantity:quantity,remark:remark});
 var deletematerials= (bill_id,material)=>http.post('development-draw/deletematerials', {bill_id:bill_id,material:material});
 var changestatus=(bill_id,status)=>http.post('development-draw/cahngestate', {bill_id:bill_id,status:status});
-
-export default { addmaterial, allBills,getBill,addBill,deletebills,getAllBillMaterials,deleteitem,searchBill,changematerials,deletematerials,changestatus};
+var updatedetail=(bill_id,remark)=>http.post('development-draw/updatedetail', {bill_id:bill_id,remark:remark});
+export default { addmaterial, allBills,getBill,addBill,deletebills,getAllBillMaterials,deleteitem,searchBill,changematerials,deletematerials,changestatus,updatedetail};

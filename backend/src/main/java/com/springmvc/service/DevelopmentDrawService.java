@@ -144,6 +144,12 @@ public class DevelopmentDrawService extends BaseService {
      */
     public void changeMaterial(int bill_id,int material_id,int quantity,String remark){
         DrawMaterialBillMaterial tmp=new DrawMaterialBillMaterial();
+        System.out.println("********************************");
+        System.out.println(bill_id);
+        System.out.println(material_id);
+        System.out.println(quantity);
+        System.out.println(remark);
+        System.out.println("********************************");
         tmp.setBillId(bill_id);
         tmp.setMaterialId(material_id);
         tmp.setQuantity((quantity));

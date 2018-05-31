@@ -31,7 +31,8 @@ export default {
         CREATE_AT: '创建时间',
         CREATE_BY: '创建者',
         UPDATE_AT: '更新时间',
-        UPDATE_BY: '更新者'
+        UPDATE_BY: '更新者',
+        BILL_REASON:'领料原因'
     },
     RETURN_MATERIAL: {
         BILL_NO: '退料单编号',

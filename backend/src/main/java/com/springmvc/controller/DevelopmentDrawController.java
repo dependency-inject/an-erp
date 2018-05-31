@@ -66,6 +66,19 @@ public class DevelopmentDrawController {
         this.developmentDrawService.deleteMaterial(bill_id,ParamUtils.toIntList(material));
         return "success";
     }
+    @RequestMapping(value = "/changematerials",method =RequestMethod.POST)
+    @ResponseBody
+    public String changematerials(int bill_id,int material,int quantity,String remark){
+        System.out.println("********************************");
+        System.out.println(bill_id);
+        System.out.println(material);
+        System.out.println(quantity);
+        System.out.println(remark);
+        System.out.println("********************************");
+        this.developmentDrawService.changeMaterial(bill_id,material,quantity,remark);
+        return "success";
+    }
+
     @RequestMapping(value="/billstate",method = RequestMethod.POST)
     @ResponseBody
     public boolean getstate(int bill_id){
@@ -78,9 +91,9 @@ public class DevelopmentDrawController {
         this.developmentDrawService.setStatus(bill_id,status);
         return "success";
     }
-    @RequestMapping(value="/updateremark",method = RequestMethod.POST)
+    @RequestMapping(value="/updatedetail",method = RequestMethod.POST)
     @ResponseBody
-    public String updateRemark(int bill_id,String remark){
+    public String updatedetail(int bill_id,String remark){
 
         this.developmentDrawService.update(bill_id,remark);
         return "success";
