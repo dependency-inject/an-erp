@@ -4,7 +4,7 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.SUPPLIER_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.SUPPLIER_NAME')+'/'+$t('field.SUPPLIER.CONTACT')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                 </div>
                 <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -69,13 +69,14 @@ export default {
                 { title: this.$t('field.SUPPLIER.CONTACT'), key: 'contact', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.CONTACT_PHONE'), key: 'contactPhone', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.REGION'), key: 'region' },
-                { title: this.$t('field.SUPPLIER.ADDRESS'), key: 'address' },
-                { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                { title: this.$t('field.OPERATE'), key: 'action', width: 250, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
                             this.$router.push('/supplier/'+row[this.vm.identity]) 
                         }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
                             this.remove([row]) 
-                        }, 'removePermission')]);
+                        }, 'removePermission'), util.tableButton(h, params, 'success', this.$t('field.SUPPLIER.MATERIAL_INFO'), (row) => { 
+                            this.$router.push('/supplier-material/'+row[this.vm.identity]) 
+                        }, 'detailPermission')]);
                     } 
                 }
             ];
@@ -86,6 +87,7 @@ export default {
             this.search();
         },
         async search() {
+            let idList = _.map(this.selectItems, this.vm.identity).join(",");
             let result = await supplierService.search(this.vm.queryParameters);
             if (result.status === 200) {
                 var items = result.data.list;
@@ -96,14 +98,20 @@ export default {
                         item['removePermission'] = true;
                 });
                 this.vm.items = items;
+                this.$nextTick(() => {
+                    for (var i = 0; i < items.length; ++i) {
+                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
+                            this.$refs.table.toggleSelect(i);
+                        }
+                    }
+                });
             }
         },
         handleSort(data) {
             if (data.order === 'normal') {
                 this.vm.queryParameters.sortColumn = '';
                 this.vm.queryParameters.sort = '';
-            }
-            else {
+            } else {
                 this.vm.queryParameters.sortColumn = data.key;
                 this.vm.queryParameters.sort = data.order;
             }

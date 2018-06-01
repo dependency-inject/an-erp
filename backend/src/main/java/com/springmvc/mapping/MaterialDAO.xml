@@ -322,6 +322,7 @@
       update_by = #{updateBy,jdbcType=INTEGER}
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
+
   <!-- 从material+material_category中获得内容 -->
   <resultMap id="ResultMapWithCName" type="com.springmvc.dto.Material">
     <id column="material_id" jdbcType="INTEGER" property="materialId" />
@@ -363,6 +364,7 @@
       </if>
     </if>
   </select>
+
   <!--List<MaterialLack> selectWithLackByExample(MaterialQuery example); 方法的实现 -->
   <resultMap id="ResultMapWithLack" type="com.springmvc.dto.MaterialLack">
     <id column="material_id" jdbcType="INTEGER" property="materialId"/>
@@ -372,7 +374,6 @@
     <result column="total_amount" jdbcType="INTEGER" property="totalstock"/>
     <result column="stock_use_amount" jdbcType="INTEGER" property="useoutstock"/>
     <result column="unit" jdbcType="VARCHAR" property="unit"/>
-
   </resultMap>
   <select id="selectWithLackByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithLack">
     SELECT 	material.material_id,material.material_no,material.material_name,material.unit,IFNULL((total- material.ordered_amount), 0) AS stock_use_amount , IFNULL((total- d.get_amount), 0) AS draw_use_amount , IFNULL(b.total, 0) AS total_amount

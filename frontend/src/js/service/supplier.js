@@ -10,18 +10,14 @@ var search = (queryParameters) => http.post('supplier/search', queryParameters);
 
 var update = (supplier) => http.post('supplier/update', supplier);
 
-var addPrice = (materialPrice) => http.post('supplier/addmaterial', materialPrice);
+var addMaterial = (materialPrice) => http.post('supplier/addMaterial', materialPrice);
 
-var removePrice = (idList) => http.post('supplier/removematerial', { idList: idList });
+var removeMaterial = (idList) => http.post('supplier/removeMaterial', { idList: idList });
 
-var searchPrice = (queryParameters) => http.post('supplier/searchmaterial', queryParameters);
+var searchMaterial = (queryParameters) => http.post('supplier/searchMaterial', queryParameters);
 
-var updatePrice = (supplier) => http.post('supplier/updatematerial', supplier);
+var updateMaterial = (materialPrice) => http.post('supplier/updateMaterial', materialPrice);
 
-var searchLackMaterial = (queryParameters) => http.post('stock/getlack', queryParameters);
+var getMaterialList = () => http.post('supplier/getMaterialList');
 
-var searchPriceReverse = (queryParameters) => http.post('stock/materialtosupplier', queryParameters);
-
-var getMaterialList = () => http.post('stock/getmateriallist');
-
-export default {add, getById, remove, search, update, addPrice, removePrice, searchPrice, updatePrice, searchLackMaterial, searchPriceReverse, getMaterialList};
+export default {add, getById, remove, search, update, addMaterial, removeMaterial, searchMaterial, updateMaterial, getMaterialList };

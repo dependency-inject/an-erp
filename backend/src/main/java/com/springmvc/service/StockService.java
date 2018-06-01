@@ -4,7 +4,6 @@ import com.springmvc.dao.MaterialDAO;
 import com.springmvc.dao.SupplierDAO;
 import com.springmvc.dao.SupplierMaterialDAO;
 import com.springmvc.dto.*;
-import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.MaterialQuery;
 import com.springmvc.pojo.SupplierMaterialQuery;
 import com.springmvc.pojo.SupplierQuery;
@@ -22,13 +21,14 @@ import java.util.List;
 public class StockService extends BaseService {
 
     @Resource
-    private SupplierMaterialDAO suppliermaterialDAO;
+    private SupplierMaterialDAO supplierMaterialDAO;
 
     @Resource
     private MaterialDAO materialDAO;
 
     @Resource
     private SupplierDAO supplierDAO;
+
     /**
      * 反查物料报价信息
      * @param materialId
@@ -38,7 +38,7 @@ public class StockService extends BaseService {
      * @param sort
      * @return
      */
-    public PageMode<SupplierMaterial> findsupplierPrice(Integer materialId, Integer current, Integer limit, String sortColumn, String sort) {
+    public PageMode<SupplierMaterial> findSupplierPrice(Integer materialId, Integer current, Integer limit, String sortColumn, String sort) {
         SupplierMaterialQuery suppliermaterialQuery = new SupplierMaterialQuery();
         suppliermaterialQuery.setOffset((current-1) * limit);
         suppliermaterialQuery.setLimit(limit);
@@ -48,33 +48,21 @@ public class StockService extends BaseService {
         SupplierMaterialQuery.Criteria criteria = suppliermaterialQuery.or();
         criteria.andMaterialIdEqualTo(materialId);
 
+        List<SupplierMaterial> result = supplierMaterialDAO.selectByExample(suppliermaterialQuery);
 
-        List<SupplierMaterial> resultSM = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
-
-        //获取supplier
-        SupplierQuery supplierQuery = new SupplierQuery();
-        List<Supplier> resultsup = supplierDAO.selectByExample(supplierQuery)  ;
-
-        HashMap<Integer,Supplier> suppliers=new HashMap<Integer, Supplier>();
-        for(Supplier s:resultsup){
-            suppliers.put(s.getSupplierId(),s);
+        // 完善supplierMaterial信息
+        for (SupplierMaterial supplierMaterial: result) {
+            Material material = materialDAO.selectByPrimaryKey(supplierMaterial.getMaterialId());
+            if (material != null) {
+                supplierMaterial.setMaterialNo(material.getMaterialNo());
+                supplierMaterial.setMaterialName(material.getMaterialName());
+            }
+            Supplier supplier = supplierDAO.selectByPrimaryKey(supplierMaterial.getSupplierId());
+            if (supplier != null) {
+                supplierMaterial.setSupplierName(supplier.getSupplierName());
+            }
         }
-
-        //
-
-        //完善suppliMaterial信息
-        List<SupplierMaterial> resultms=new ArrayList<SupplierMaterial>();
-        for(SupplierMaterial sm:resultSM){
-            MaterialQuery materialQuery = new MaterialQuery();
-            materialQuery.or().andMaterialIdEqualTo(sm.getMaterialId());
-            List<Material> materialList = materialDAO.selectByExample(materialQuery);
-            Material material = materialList.get(0);
-            sm.setMaterialName(material.getMaterialName());
-            sm.setMaterialNo(material.getMaterialNo());
-            sm.setSupplierName(suppliers.get(sm.getSupplierId()).getSupplierName());
-            resultms.add(sm);
-        }
-        return new PageMode<SupplierMaterial>(resultms, suppliermaterialDAO.countByExample(suppliermaterialQuery));
+        return new PageMode<SupplierMaterial>(result, supplierMaterialDAO.countByExample(suppliermaterialQuery));
     }
 
     /**
@@ -83,22 +71,27 @@ public class StockService extends BaseService {
      * @param limit
      * @param sortColumn
      * @param sort
-     * @param searchkey 只允许通过materialNO进行查询
+     * @param searchKey
      * @return
      */
 
-    public PageMode<MaterialLack> getMaterialLack(Integer current, Integer limit, String sortColumn, String sort,String searchkey) {
+    public PageMode<MaterialLack> getMaterialLack(Integer current, Integer limit, String sortColumn, String sort,String searchKey) {
         MaterialQuery materialQuery = new MaterialQuery();
         materialQuery.setOffset((current-1) * limit);
         materialQuery.setLimit(limit);
         if (!ParamUtils.isNull(sortColumn))
             materialQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
 
+        // 搜物料编号
         MaterialQuery.Criteria criteria = materialQuery.or();
-        if (!ParamUtils.isNull(searchkey)) {
-            criteria.andMaterialNoEqualTo(searchkey);
+        if (!ParamUtils.isNull(searchKey)) {
+            criteria.andMaterialNoLike("%" + searchKey + "%");
         }
-
+        // 搜物料名称
+        criteria = materialQuery.or();
+        if (!ParamUtils.isNull(searchKey)) {
+            criteria.andMaterialNameEqualTo("%" + searchKey + "%");
+        }
 
         List<MaterialLack> resultML = materialDAO.selectWithLackByExample(materialQuery)  ;
         return new PageMode<MaterialLack>(resultML, materialDAO.countByExample(materialQuery));

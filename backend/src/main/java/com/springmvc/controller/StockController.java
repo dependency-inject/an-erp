@@ -1,7 +1,5 @@
 package com.springmvc.controller;
 
-import com.springmvc.annotation.AccessPermission;
-import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.MaterialLack;
 import com.springmvc.dto.PageMode;
 import com.springmvc.dto.SupplierMaterial;
@@ -24,23 +22,20 @@ public class StockController {
     /**
      * 反查物料报价
      */
-
-    @RequestMapping(value = "/materialtosupplier", method = RequestMethod.POST)
+    @RequestMapping(value = "/findSupplierPrice", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.STOCK_COST)
-    public PageMode<SupplierMaterial> findsupplierPrice(@RequestParam Integer materialId, @RequestParam Integer current, @RequestParam Integer limit,
-                                                       String sortColumn, String sort) {
-        return stockService.findsupplierPrice(materialId,current,limit,sortColumn,sort);
+    public PageMode<SupplierMaterial> findSupplierPrice(@RequestParam Integer materialId, @RequestParam Integer current, @RequestParam Integer limit,
+                                                        String sortColumn, String sort) {
+        return stockService.findSupplierPrice(materialId, current, limit, sortColumn, sort);
     }
 
     /**
      * 获取缺料情况
      */
-    @RequestMapping(value = "/getlack", method = RequestMethod.POST)
+    @RequestMapping(value = "/getMaterialLack", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.STOCK_COST)
     public PageMode<MaterialLack> getMaterialLack( @RequestParam Integer current, @RequestParam Integer limit,
-                                                   String sortColumn, String sort,String searchKey) {
-        return stockService.getMaterialLack(current,limit,sortColumn,sort,searchKey);
+                                                   String sortColumn, String sort, String searchKey) {
+        return stockService.getMaterialLack(current, limit, sortColumn, sort, searchKey);
     }
 }

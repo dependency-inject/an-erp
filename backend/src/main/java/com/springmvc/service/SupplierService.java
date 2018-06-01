@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service("SupplierService")
 @Transactional
@@ -27,40 +24,35 @@ public class SupplierService extends BaseService {
     private SupplierDAO supplierDAO;
 
     @Resource
-    private SupplierMaterialDAO suppliermaterialDAO;
+    private SupplierMaterialDAO supplierMaterialDAO;
 
     @Resource
     private MaterialDAO materialDAO;
 
-    private static final String SUPPLIER_NAME_EXIST = "供应商已存在";
-    private static final String SUPPLIERMATERIAL_NAME_EXIST = "商品已存在";
-    private static final String MATERIAL_NO_EXIST = "BOM表中无当前商品";
+    private static final String SUPPLIER_MATERIAL_EXIST = "货品已在供料信息中，不可重复";
+
     /**
      * 新增供应商信息
      *
      * 检查供应商是否存在
      * 供应商信息保存：Supplier
      * 添加日志信息  LogType.SUPPLIER, Operate.ADD
+     *
      * @param supplierName
      * @param contact
      * @param contactPhone
      * @param region
      * @param address
-     * @return
      */
     public Supplier addSupplier( String supplierName, String contact,String contactPhone,String region,String address) {
-        SupplierQuery supplierQuery = new SupplierQuery();
-        supplierQuery.or().andSupplierNameEqualTo(supplierName);
-        if (supplierDAO.countByExample(supplierQuery) > 0) {
-            throw new BadRequestException(SUPPLIER_NAME_EXIST);
-        }
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
         Supplier supplier = new Supplier();
-        supplier.setAddress(address);
+        supplier.setSupplierName(supplierName);
         supplier.setContact(contact);
         supplier.setContactPhone(contactPhone);
         supplier.setRegion(region);
-        supplier.setSupplierName(supplierName);
+        supplier.setAddress(address);
         supplier.setCreateAt(new Date());
         supplier.setCreateBy(loginAdmin.getAdminId());
         supplier.setUpdateAt(new Date());
@@ -78,12 +70,11 @@ public class SupplierService extends BaseService {
      * 查询供应商信息
      *
      * 将主表信息取出：Supplier
+     *
      * @param supplierId
-     * @return
      */
     public Supplier getSupplierById(int supplierId) {
-        Supplier supplier = supplierDAO.selectByPrimaryKey(supplierId);
-        return supplier;
+        return supplierDAO.selectByPrimaryKey(supplierId);
     }
 
 
@@ -91,13 +82,13 @@ public class SupplierService extends BaseService {
      * 查询供应商信息（分页）
      *
      * 将主表信息取出：supplier（同时包含总记录数）
-     * 搜索字段：公司姓名
+     * 搜索字段：供应商名称、联系人
+     *
      * @param current  当前页数
      * @param limit   每页限制
      * @param sortColumn   排序字段
      * @param sort           升降序
      * @param searchKey
-     * @return
      */
     public PageMode<Supplier> pageSupplier(Integer current, Integer limit, String sortColumn,String sort,
                                      String searchKey) {
@@ -109,12 +100,16 @@ public class SupplierService extends BaseService {
         }
 
         // TODO: 目前对searchKey支持比较机械
-        // 搜索登录名
+        // 搜索供应商名称
         SupplierQuery.Criteria criteria = supplierQuery.or();
         if (!ParamUtils.isNull(searchKey)) {
-            criteria.andSupplierNameEqualTo(searchKey);
+            criteria.andSupplierNameLike("%" + searchKey + "%");
         }
-
+        // 搜索联系人
+        criteria = supplierQuery.or();
+        if (!ParamUtils.isNull(searchKey)) {
+            criteria.andContactLike("%" + searchKey + "%");
+        }
 
         List<Supplier> result = supplierDAO.selectByExample(supplierQuery)  ;
 
@@ -126,16 +121,20 @@ public class SupplierService extends BaseService {
      * 删除供应商信息
      *
      * 删除主表信息：supplier
-     * 删除关联的从表信息：admin_role、log
-     * 添加日志信息：SUPPLIER, Operate.REMOVE
+     * 删除关联的从表信息：supplier_material
+     * 添加日志信息：LogType.SUPPLIER, Operate.REMOVE
      *
      * @param idList
      */
     public void removeSupplier(List<Integer> idList) {
-        // 删除 admin
+        // 删除 supplier
         SupplierQuery supplierQuery = new SupplierQuery();
         supplierQuery.or().andSupplierIdIn(idList);
         supplierDAO.deleteByExample(supplierQuery);
+        // 关联 supplier_material
+        SupplierMaterialQuery supplierMaterialQuery = new SupplierMaterialQuery();
+        supplierMaterialQuery.or().andSupplierIdIn(idList);
+        supplierMaterialDAO.deleteByExample(supplierMaterialQuery);
         // 添加日志
         addLog(LogType.SUPPLIER, Operate.REMOVE, idList);
     }
@@ -143,109 +142,93 @@ public class SupplierService extends BaseService {
     /**
      * 更新供应商信息
      *
-     * 进行必要的检查：供应商名称是存在
      * 更新主表信息：supplier
-     * 添加日志信息：LogType.ADMIN, Operate.UPDATE
+     * 添加日志信息：LogType.SUPPLIER, Operate.UPDATE
+     *
      * @param supplierName
      * @param contact
      * @param contactPhone
      * @param region
      * @param address
-     * @return
      */
+    public Supplier updateSupplier(Integer supplierId, String supplierName, String contact, String contactPhone, String region, String address) {
+        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
-    public Supplier updatesupplier( Integer supplierId,String supplierName, String contact,String contactPhone,String region,String address) {
-         //supplierQuery.or().andSupplierNameEqualTo(supplierName);
-         //if (supplierDAO.countByExample(supplierQuery) > 0) {
-         //    throw new BadRequestException(SUPPLIER_NAME_EXIST);
-         //}
-         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-         Supplier supplier = new Supplier();
-         supplier.setSupplierId(supplierId);
-         supplier.setAddress(address);
-         supplier.setContact(contact);
-         supplier.setContactPhone(contactPhone);
-         supplier.setRegion(region);
-         supplier.setSupplierName(supplierName);
-         supplier.setUpdateAt(new Date());
-         supplier.setUpdateBy(loginAdmin.getAdminId());
-         supplierDAO.updateByPrimaryKeySelective(supplier);
-         // 添加日志
-         addLog(LogType.SUPPLIER, Operate.UPDATE, supplier.getSupplierId());
-         int temp=supplier.getSupplierId();
-         Supplier st=getSupplierById(temp);
-         return st;
+        Supplier supplier = new Supplier();
+        supplier.setSupplierId(supplierId);
+        supplier.setSupplierName(supplierName);
+        supplier.setContact(contact);
+        supplier.setContactPhone(contactPhone);
+        supplier.setRegion(region);
+        supplier.setAddress(address);
+        supplier.setUpdateAt(new Date());
+        supplier.setUpdateBy(loginAdmin.getAdminId());
+        supplierDAO.updateByPrimaryKeySelective(supplier);
+
+        // 添加日志
+        addLog(LogType.SUPPLIER, Operate.UPDATE, supplier.getSupplierId());
+        return getSupplierById(supplier.getSupplierId());
     }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * 新增供应商物料信息,需要改成按materialId来查的格式
      *
-     * 根据供应商提供的no.检查供应商物料是否存在BOM表，检查现有供应商物料表中是否存咋
+     * 检查现有供应商物料表中是否存在
      * 供应商信息保存：SupplierMaterial
      * 添加日志信息  LogType.SUPPLIER, Operate.ADD
+     *
      * @param supplierId
-     * @param materialNo
+     * @param materialId
      * @param price
      * @param remark
-     * @return
      */
-    public SupplierMaterial addSupplierMaterial(Integer supplierId,String materialNo, BigDecimal price, String remark ){
-        //如果按materialId查下面这部分可以删掉
-        // 原本是为了通过MaterialNO获取Material对象
-        MaterialQuery materialQuery = new MaterialQuery();
-        materialQuery.or().andMaterialNoEqualTo(materialNo);
-        //no转id，获取material对象
-        List<Material> materialList = materialDAO.selectByExample(materialQuery);
-        if (materialList.size() == 0) {
-            throw new BadRequestException(MATERIAL_NO_EXIST);
+    public SupplierMaterial addSupplierMaterial(Integer supplierId, Integer materialId, BigDecimal price, String remark ){
+        SupplierMaterialQuery supplierMaterialQuery = new SupplierMaterialQuery();
+        supplierMaterialQuery.or().andSupplierIdEqualTo(supplierId)
+                .andMaterialIdEqualTo(materialId);
+        if (supplierMaterialDAO.countByExample(supplierMaterialQuery) > 0) {
+            throw new BadRequestException(SUPPLIER_MATERIAL_EXIST);
         }
-        Material material = materialList.get(0);
-        //删除到此为止
-        SupplierMaterial suppliermaterial = new SupplierMaterial();
-        suppliermaterial.setPrice(price);
-        suppliermaterial.setRemark(remark);
-        suppliermaterial.setSupplierId(supplierId);
-        //下面这句话参数直接改成ID
-        suppliermaterial.setMaterialId(material.getMaterialId());
-        suppliermaterialDAO.insertSelective(suppliermaterial);
 
-        suppliermaterial.setMaterialName(material.getMaterialName());
-        suppliermaterial.setMaterialNo(materialNo);
+        SupplierMaterial supplierMaterial = new SupplierMaterial();
+        supplierMaterial.setSupplierId(supplierId);
+        supplierMaterial.setMaterialId(materialId);
+        supplierMaterial.setPrice(price);
+        supplierMaterial.setRemark(remark);
+        supplierMaterialDAO.insertSelective(supplierMaterial);
+
         // 添加日志
-        addLog(LogType.SUPPLIER_MATERIAL, Operate.ADD, suppliermaterial.getSupplierMaterialId());
-        //return getSupplierMaterialById(suppliermaterial.getSupplierMaterialId());
-        return suppliermaterial;
+        addLog(LogType.SUPPLIER_MATERIAL, Operate.ADD, supplierMaterial.getSupplierMaterialId());
+        return getSupplierMaterialById(supplierMaterial.getSupplierMaterialId());
     }
 
     /**
      * 查询供应商物料信息查询 单个
      *
-     * 将主表信息取出：SupplierMaterial
+     * 将主表信息取出：supplier_material
+     *
      * @param supplierMaterialId
      * @return
      */
     public  SupplierMaterial getSupplierMaterialById(int supplierMaterialId) {
-        SupplierMaterial suppliermaterial = suppliermaterialDAO.selectByPrimaryKey(supplierMaterialId);
-        MaterialQuery materialQuery = new MaterialQuery();
-        materialQuery.or().andMaterialIdEqualTo(suppliermaterial.getMaterialId());
-        //no转id，获取material对象
-        List<Material> materialList = materialDAO.selectByExample(materialQuery);
-        if (materialList.size() == 0) {
-            throw new BadRequestException(MATERIAL_NO_EXIST);
+        SupplierMaterial supplierMaterial = supplierMaterialDAO.selectByPrimaryKey(supplierMaterialId);
+        Material material = materialDAO.selectByPrimaryKey(supplierMaterial.getMaterialId());
+        if (material != null) {
+            supplierMaterial.setMaterialName(material.getMaterialName());
+            supplierMaterial.setMaterialNo(material.getMaterialNo());
         }
-        Material material = materialList.get(0);
-        suppliermaterial.setMaterialName(material.getMaterialName());
-        suppliermaterial.setMaterialNo(material.getMaterialNo());
-        return suppliermaterial;
+        return supplierMaterial;
     }
 
     /**
      * 查询供应商物料信息（分页）
      *
-     * 将主表信息取出：suppliermaterial（同时包含总记录数）
-     * 搜索字段：编号
-     * @param suppierId  所属supperID
+     * 将主表信息取出：supplier_material（同时包含总记录数）
+     * 搜索字段：物料编号、物料名称
+     *
+     * @param supplierId  所属supperID
      * @param current  当前页数
      * @param limit   每页限制
      * @param sortColumn   排序字段
@@ -253,7 +236,8 @@ public class SupplierService extends BaseService {
      * @param searchKey
      * @return
      */
-    public PageMode<SupplierMaterial> pageSupplierMaterial(Integer suppierId,Integer current, Integer limit, String sortColumn,String sort, String searchKey) {
+    public PageMode<SupplierMaterial> pageSupplierMaterial(Integer supplierId, Integer current, Integer limit,
+                                                           String sortColumn, String sort, String searchKey) {
         SupplierMaterialQuery suppliermaterialQuery = new SupplierMaterialQuery();
         suppliermaterialQuery.setOffset((current-1) * limit);
         suppliermaterialQuery.setLimit(limit);
@@ -262,37 +246,38 @@ public class SupplierService extends BaseService {
         }
 
         // TODO: 目前对searchKey支持比较机械
-        // 搜索登录名
         SupplierMaterialQuery.Criteria criteria = suppliermaterialQuery.or();
-        criteria.andSupplierIdEqualTo(suppierId);
+        criteria.andSupplierIdEqualTo(supplierId);
 
-        //根据materialid进行查询，但实际输入的是编号
+        // 搜索物料编号和物料名称
         if (!ParamUtils.isNull(searchKey)) {
             MaterialQuery materialQuery = new MaterialQuery();
-            materialQuery.or().andMaterialNoEqualTo(searchKey);
+            materialQuery.or().andMaterialNoLike("%" + searchKey + "%");
+            materialQuery.or().andMaterialNameLike("%" + searchKey + "%");
             List<Material> materialList = materialDAO.selectByExample(materialQuery);
             if (materialList.size() == 0) {
-                return null;
+                criteria.andMaterialIdEqualTo(0);
+            } else {
+                Set<Integer> materialIdSet = new HashSet<Integer>();
+                for (Material material: materialList) {
+                    materialIdSet.add(material.getMaterialId());
+                }
+                criteria.andMaterialIdIn(new ArrayList<Integer>(materialIdSet));
             }
-            Material material = materialList.get(0);
-            criteria.andMaterialIdEqualTo(material.getMaterialId());
         }
 
-
-        List<SupplierMaterial> resultSM = suppliermaterialDAO.selectByExample(suppliermaterialQuery)  ;
-        List<SupplierMaterial> resultms=new ArrayList<SupplierMaterial>();
-        for(SupplierMaterial sm:resultSM){
-            SupplierMaterial ms=getSupplierMaterialById(sm.getSupplierMaterialId());
-            resultms.add(ms);
+        List<SupplierMaterial> result = supplierMaterialDAO.selectByExample(suppliermaterialQuery);
+        for (int i = 0; i < result.size(); ++i) {
+            SupplierMaterial supplierMaterial = getSupplierMaterialById(result.get(i).getSupplierMaterialId());
+            result.set(i, supplierMaterial);
         }
-        return new PageMode<SupplierMaterial>(resultms, suppliermaterialDAO.countByExample(suppliermaterialQuery));
+        return new PageMode<SupplierMaterial>(result, supplierMaterialDAO.countByExample(suppliermaterialQuery));
     }
 
     /**
      * 删除供应商物料信息
      *
-     * 删除主表信息：supplier
-     * 删除关联的从表信息：admin_role、log
+     * 删除主表信息：supplier_material
      * 添加日志信息：LogType.SUPPLIER_MATERIAL, Operate.REMOVE
      *
      * @param idList
@@ -301,7 +286,7 @@ public class SupplierService extends BaseService {
         // 删除 admin
         SupplierMaterialQuery supplierMaterialQuery = new SupplierMaterialQuery();
         supplierMaterialQuery.or().andSupplierIdIn(idList);
-        suppliermaterialDAO.deleteByExample(supplierMaterialQuery);
+        supplierMaterialDAO.deleteByExample(supplierMaterialQuery);
         // 添加日志
         addLog(LogType.SUPPLIER_MATERIAL, Operate.REMOVE, idList);
     }
@@ -310,42 +295,41 @@ public class SupplierService extends BaseService {
      * 更新供应商物料信息
      *
      * 进行必要的检查：当前物料是存在
-     * 更新主表信息：suppliermaterial
+     * 更新主表信息：supplier_material
      * 添加日志信息：LogType.SUPPLIER_MATERIAL, Operate.UPDATE
+     *
      * @param supplierId
-     * @param materialNo
+     * @param materialId
      * @param price
      * @param remark
-     * @return
      */
-
-    public SupplierMaterial updatesupplierMaterial(Integer supplierMaterialId,Integer supplierId,String materialNo, BigDecimal price, String remark) {
-        MaterialQuery materialQuery = new MaterialQuery();
-        materialQuery.or().andMaterialNoEqualTo(materialNo);
-        if (materialDAO.countByExample(materialQuery) == 0) {
-            throw new BadRequestException(MATERIAL_NO_EXIST);
+    public SupplierMaterial updateSupplierMaterial(Integer supplierMaterialId, Integer supplierId, Integer materialId,
+                                                   BigDecimal price, String remark) {
+        SupplierMaterialQuery supplierMaterialQuery = new SupplierMaterialQuery();
+        supplierMaterialQuery.or().andSupplierIdEqualTo(supplierId)
+                .andMaterialIdEqualTo(materialId)
+                .andSupplierMaterialIdNotEqualTo(supplierMaterialId);
+        if (supplierMaterialDAO.countByExample(supplierMaterialQuery) > 0) {
+            throw new BadRequestException(SUPPLIER_MATERIAL_EXIST);
         }
-        //no转id，获取material对象
-        List<Material> materialList = materialDAO.selectByExample(materialQuery);
-        if (materialList.size() == 0) {
-            return null;
-        }
-        Material material = materialList.get(0);
 
-        SupplierMaterial suppliermaterial = new SupplierMaterial();
-        suppliermaterial.setSupplierMaterialId(supplierMaterialId);
-        suppliermaterial.setPrice(price);
-        suppliermaterial.setRemark(remark);
-        suppliermaterial.setSupplierId(supplierId);
-        suppliermaterial.setMaterialId(material.getMaterialId());
-
-        suppliermaterial.setMaterialName(material.getMaterialName());
-        suppliermaterial.setMaterialNo(materialNo);
+        SupplierMaterial supplierMaterial = new SupplierMaterial();
+        supplierMaterial.setSupplierMaterialId(supplierMaterialId);
+        supplierMaterial.setSupplierId(supplierId);
+        supplierMaterial.setMaterialId(materialId);
+        supplierMaterial.setPrice(price);
+        supplierMaterial.setRemark(remark);
+        supplierMaterialDAO.updateByPrimaryKeySelective(supplierMaterial);
 
         // 添加日志
-        addLog(LogType.SUPPLIER_MATERIAL, Operate.UPDATE, suppliermaterial.getSupplierMaterialId());
-        suppliermaterialDAO.updateByPrimaryKeySelective(suppliermaterial);
-        return suppliermaterial;
+        addLog(LogType.SUPPLIER_MATERIAL, Operate.UPDATE, supplierMaterial.getSupplierMaterialId());
+        return getSupplierMaterialById(supplierMaterial.getSupplierMaterialId());
     }
 
+    /**
+     * 查询所有物料
+     */
+    public List<Material> getMaterialList() {
+        return materialDAO.selectByExample(new MaterialQuery());
+    }
 }
