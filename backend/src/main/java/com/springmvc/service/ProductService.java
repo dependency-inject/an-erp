@@ -263,7 +263,7 @@ public class ProductService extends BaseService {
         productMaterialDAO.deleteByExample(productMaterialQuery);
 
         // 再新增现有关联product_material
-        for (ProductMaterial productMaterial : productMaterialList) {   
+        for (ProductMaterial productMaterial : productMaterialList) {
             productMaterial.setProductId(product.getProductId());
             productMaterialDAO.insertSelective(productMaterial);
         }
