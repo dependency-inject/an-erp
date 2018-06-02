@@ -20,12 +20,30 @@
                             <form-item :label="$t('field.PRODUCT.UPDATE_BY')" prop="updateBy"><i-input v-model="item.updateBy" :disabled="true"></i-input></form-item>
                         </div>
                     </div>
+                    <div class="chief-panel">
+                        <div class="panel-header">{{ $t('field.PRODUCT.MATERIAL_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addMaterial"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.PRODUCT.MATERIAL') }}</a>）</span></div>
+                        <div class="panel-body">
+                            <i-table border :columns="columnList" :data="this.item.productMaterialList"></i-table>
+                        </div>
+                    </div>
                 </i-form>
             </div>
         </div>
         <div class="panel-bottom">
             <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="(productAddPermission&&$route.params.id==='add'&&item.productId===0)||(productUpdatePermission&&item.productId!==0)">{{ $t('common.SAVE') }}</i-button>
         </div>
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveMaterial" :loading="true">
+            <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
+                <form-item :label="$t('field.PRODUCT.MATERIAL')" prop="materialId">
+                    <i-select v-model="modal.item.materialId">
+                        <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
+                    </i-select>
+                </form-item>
+                <form-item :label="$t('field.MATERIAL.QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
+                <form-item :label="$t('field.PRODUCT.MATERIAL_PROPERTY')" prop="materialProperty"><i-input v-model="modal.item.materialProperty" type="textarea"></i-input></form-item>
+                <form-item :label="$t('field.MATERIAL.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
+            </i-form>
+        </modal>
     </div>
 </template>
 
@@ -36,11 +54,21 @@ import permissionTable from '../../components/permission-table';
 
 import productService from '../../service/product';
 
+import util from '../../libs/util.js';
+
+import developmentDrawService from '../../service/development-draw';
+
 export default {
     mixins: [ Permission ],
     data() {
         return {
             item: {},
+            modal: {
+                title: 'title',
+                item: {},
+                visible: false
+            },
+            materialList: [],
             permissionIdList: ''
         }
     },
@@ -58,7 +86,7 @@ export default {
                     { required: true, message: this.$t('field.PRODUCT.UNIT')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ],
                 categoryId: [
-                    { required: true, message: this.$t('field.PRODUCT.CATEGORT_ID')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                    { required: true, message: this.$t('field.PRODUCT.CATEGORY_ID')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ],
                 spec: [
                     { required: true, message: this.$t('field.PRODUCT.SPEC')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
@@ -68,11 +96,45 @@ export default {
                 ]
             }
         },
+        rules2() {
+            return {
+                materialId: [
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT.MATERIAL'), trigger: 'change' }
+                ],
+                quantity: [
+                    { type: 'number', required: true, message: this.$t('field.PRODUCT.QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ]
+            }
+        },
         closedList() {
             return [
                 { value: 0, descript: this.$t('field.CLOSED.0') },
                 { value: 1, descript: this.$t('field.CLOSED.1') },
             ]
+        },
+        editable() {
+            return (this.productAddPermission && this.$route.params.id === 'add' && this.item.productId === 0) || (this.productUpdatePermission && this.item.productId !==0);
+        },
+        columnList() {
+            let result = [
+                { title: this.$t('field.MATERIAL.MATERIAL_NO'), key: 'materialNo' },
+                { title: this.$t('field.MATERIAL.MATERIAL_NAME'), key: 'materialName' },
+                { title: this.$t('field.MATERIAL.QUANTITY'), key: 'quantity' },
+                { title: this.$t('field.PRODUCT.MATERIAL_PROPERTY'), key: 'materialProperty' },
+                { title: this.$t('field.MATERIAL.REMARK'), key: 'remark' }
+            ];
+            if (this.editable) {
+                result.push({ 
+                    title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                            this.editMaterial(row) 
+                        }), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
+                            this.removeMaterial(params.index) 
+                        })]);
+                    } 
+                });
+            }
+            return result;
         }
     },
     methods: {
@@ -95,7 +157,9 @@ export default {
                 categoryId: 0,
                 spec: '',
                 price: 0,
-                closed: 0
+                closed: 0,
+                remark: '',
+                productMaterialList: []
             }
         },
         async getById() {
@@ -112,10 +176,13 @@ export default {
             }
         },
         save() {
+            console.log(this.item.productMaterialList);
             this.$refs.formValidate.validate(async (valid) => {
                 if (valid) {
+                    let obj = Object.assign({}, this.item, { productMaterialList: JSON.stringify(this.item.productMaterialList) });
                     if (this.$route.params.id === 'add' && this.item.productId === 0) {
-                        let result = await productService.add(this.item);
+                        console.log(this.item);
+                        let result = await productService.add(obj);
                         if (result.status === 200) {
                             this.$Message.success(this.$t('common.SAVE_SUCCESS'));
                             var item = result.data;
@@ -124,7 +191,9 @@ export default {
                             this.$Message.error(result.data);
                         }
                     } else {
-                        let result = await productService.update(this.item);
+                        console.log(this.item);
+                        let result = await productService.update(obj);
+                        console.log(result);
                         if (result.status === 200) {
                             this.$Message.success(this.$t('common.SAVE_SUCCESS'));
                             this.initData();
@@ -142,20 +211,79 @@ export default {
                 return item.permissionIdList.split(',');
             })).join(',');
         },
-        addToCart(){},
-        removeFromCart(){},
-        generateMaterialList(){}
-        // TODO: 购物车功能
-        // 上方提供模板，第一个为select框，选择materialId，第二三四为输入框，数量quantity.属性property.备注remark 其中第一第二不能为空
-        // 点击加号添加至列表中，点击保存将数据保存
-        // 数据库price默认为0
-        // 备注remark
-        //  上方： form
-        // 下方： table
+        async getMaterialList() {
+            let result = await developmentDrawService.getMaterialList();
+            if (result.status === 200) {
+                this.materialList = result.data;
+            }
+        },
+        addMaterial() {
+            this.modal.title = this.$t('common.ADD') + this.$t('field.PRODUCT.MATERIAL_INFO');
+            this.$refs.formValidate2.resetFields();
+            this.modal.item._index = -1;
+            this.modal.item.materialId = '';
+            this.modal.item.quantity = 1;
+            this.modal.item.materialProperty = '';
+            this.modal.item.remark = '';
+            this.modal.visible = true;
+        },
+        editMaterial(item) {
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.PRODUCT.MATERIAL_INFO');
+            this.$refs.formValidate2.resetFields();
+            this.modal.item._index = item._index;
+            this.modal.item.materialId = item.materialId;
+            this.modal.item.quantity = item.quantity;
+            this.modal.item.materialProperty = item.materialProperty;
+            this.modal.item.remark = item.remark;
+            this.modal.visible = true;
+        },
+        saveMaterial() {
+            this.$refs.formValidate2.validate(async (valid) => {
+                if (valid) {
+                    this.materialList.forEach((item) => {
+                        if (item.materialId === this.modal.item.materialId) {
+                            this.modal.item.materialNo = item.materialNo;
+                            this.modal.item.materialName = item.materialName;
+                        }
+                    });
+                    if (this.modal.item._index === -1) {
+                        this.item.productMaterialList.push({
+                            materialId: this.modal.item.materialId,
+                            materialNo: this.modal.item.materialNo,
+                            materialName: this.modal.item.materialName,
+                            quantity: this.modal.item.quantity,
+                            materialProperty: this.modal.item.materialProperty,
+                            remark: this.modal.item.remark
+                        });
+                    } else {
+                        this.item.productMaterialList[this.modal.item._index].materialId = this.modal.item.materialId;
+                        this.item.productMaterialList[this.modal.item._index].materialNo = this.modal.item.materialNo;
+                        this.item.productMaterialList[this.modal.item._index].materialName = this.modal.item.materialName;
+                        this.item.productMaterialList[this.modal.item._index].quantity = this.modal.item.quantity;
+                        this.item.productMaterialList[this.modal.item._index].materialProperty = this.modal.item.materialProperty;
+                        this.item.productMaterialList[this.modal.item._index].remark = this.modal.item.remark;
+                    }
+                    this.modal.visible = false;
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
+                    this.$refs.modal.abortLoading();
+                }
+            });
+        },
+        removeMaterial(index) {
+            if (!this.editable) return;
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: () => {
+                    this.item.productMaterialList.splice(index, 1);
+                }
+            });
+        }
     },
     created() {
         this.setDefault();
         this.initData();
+        this.getMaterialList();
     },
     watch: {
         '$route'(to, from) {

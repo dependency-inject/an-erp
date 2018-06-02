@@ -115,7 +115,6 @@ public class ProductService extends BaseService {
         // 新增关联 product_material
         for(ProductMaterial productMaterial:productMaterialList) {
             productMaterial.setProductId(product.getProductId());
-            // TODO: 与前端传入参数对应
             productMaterialDAO.insertSelective(productMaterial);
         }
 
@@ -264,8 +263,8 @@ public class ProductService extends BaseService {
         productMaterialDAO.deleteByExample(productMaterialQuery);
 
         // 再新增现有关联product_material
-        for (ProductMaterial productMaterial : productMaterialList) {
-            // TODO: 前端参数对应
+        for (ProductMaterial productMaterial : productMaterialList) {   
+            productMaterial.setProductId(product.getProductId());
             productMaterialDAO.insertSelective(productMaterial);
         }
 
