@@ -6,14 +6,18 @@ import com.springmvc.annotation.AccessPermission;
 import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.DrawMaterialBill;
 import com.springmvc.dto.DrawMaterialBillMaterial;
+import com.springmvc.dto.Material;
+import com.springmvc.dto.PageMode;
 import com.springmvc.service.DevelopmentDrawService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,99 +29,62 @@ public class DevelopmentDrawController {
     @Resource
     DevelopmentDrawService developmentDrawService;
 
-
-    @RequestMapping(value = "/addmaterial", method = RequestMethod.POST)
+    @RequestMapping(value = "/billDetail",method = RequestMethod.POST)
     @ResponseBody
-    public String addMaterial(int material_id,int quantity,String remark){
-        this.developmentDrawService.addMaterial(material_id,quantity,remark);
-        return "success";
+    public DrawMaterialBill getBill(int billId){
+        return developmentDrawService.getBillById(billId);
     }
 
-    @RequestMapping(value = "/addbill",method =RequestMethod.POST)
+    @RequestMapping(value = "/searchBill",method =RequestMethod.POST)
     @ResponseBody
-    public DrawMaterialBill addBill(String billno,String remark,int reason){
-        DrawMaterialBill re=this.developmentDrawService.add2Database(billno,remark,reason);
-        this.developmentDrawService.cancelBill();
-        return re;
+    public PageMode<DrawMaterialBill> searchBill(@RequestParam Integer current, @RequestParam Integer limit,
+                                                 String sortColumn, String sort, String searchKey, Integer state,
+                                                 Long beginTime, Long endTime){
+        return developmentDrawService.pageBill(current, limit, sortColumn, sort, searchKey, state,
+                ParamUtils.toDate(beginTime), ParamUtils.toDate(endTime));
     }
-    @RequestMapping(value = "/canceladd",method =RequestMethod.POST)
+
+    @RequestMapping(value="/auditBill",method = RequestMethod.POST)
     @ResponseBody
-    public String cancelBill(String billno,int toPrincipal,int warehousePrincipal,int reason){
-        this.developmentDrawService.cancelBill();
-        return "success";
-    }
-    @RequestMapping(value = "/deletematerial",method =RequestMethod.POST)
-    @ResponseBody
-    public String deleteitem(int material_id){
-        this.developmentDrawService.remove(material_id);
-        return "success";
-    }
-    @RequestMapping(value = "/deletebills",method =RequestMethod.POST)
-    @ResponseBody
-    public String deletebills(String bill_id){
-        System.out.println("_______deletebill___________");
-        System.out.print(bill_id);
-        this.developmentDrawService.deleteBILL(ParamUtils.toIntList(bill_id));
-        return "success";
-    }
-    @RequestMapping(value = "/deletematerials",method =RequestMethod.POST)
-    @ResponseBody
-    public String deletematerials(int bill_id,String material){
-        this.developmentDrawService.deleteMaterial(bill_id,ParamUtils.toIntList(material));
-        return "success";
-    }
-    @RequestMapping(value = "/changematerials",method =RequestMethod.POST)
-    @ResponseBody
-    public String changematerials(int bill_id,int material,int quantity,String remark){
-        System.out.println("********************************");
-        System.out.println(bill_id);
-        System.out.println(material);
-        System.out.println(quantity);
-        System.out.println(remark);
-        System.out.println("********************************");
-        this.developmentDrawService.changeMaterial(bill_id,material,quantity,remark);
+    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_AUDIT)
+    public String audit(String idList){
+        developmentDrawService.auditBill(ParamUtils.toIntList(idList));
         return "success";
     }
 
-    @RequestMapping(value="/billstate",method = RequestMethod.POST)
+    @RequestMapping(value="/unauditBill",method = RequestMethod.POST)
     @ResponseBody
-    public boolean getstate(int bill_id){
-        return this.developmentDrawService.changeMaterialItem(bill_id);
-    }
-    @RequestMapping(value="/cahngestate",method = RequestMethod.POST)
-    @ResponseBody
-    public String changestatus(int bill_id,int status){
-
-        this.developmentDrawService.setStatus(bill_id,status);
+    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_AUDIT)
+    public String unaudit(String idList){
+        developmentDrawService.unauditBill(ParamUtils.toIntList(idList));
         return "success";
     }
-    @RequestMapping(value="/updatedetail",method = RequestMethod.POST)
-    @ResponseBody
-    public String updatedetail(int bill_id,String remark){
 
-        this.developmentDrawService.update(bill_id,remark);
+    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Material> getMaterialList() {
+        return developmentDrawService.getMaterialList();
+    }
+
+    @RequestMapping(value = "/addBill",method =RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_ADD)
+    public DrawMaterialBill addBill(String remark, String materialList){
+        return developmentDrawService.addBill(remark, ParamUtils.jsonToList(materialList, DrawMaterialBillMaterial.class));
+    }
+
+    @RequestMapping(value = "/updateBill",method =RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_UPDATE)
+    public DrawMaterialBill updateBill(Integer billId, String remark, String materialList){
+        return developmentDrawService.updateBill(billId, remark, ParamUtils.jsonToList(materialList, DrawMaterialBillMaterial.class));
+    }
+
+    @RequestMapping(value = "/deleteBill",method =RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_REMOVE)
+    public String deleteBill(String idList){
+        developmentDrawService.removeBill(ParamUtils.toIntList(idList));
         return "success";
-    }
-    @RequestMapping(value="/allBills",method = RequestMethod.POST)
-    @ResponseBody
-    public List<DrawMaterialBill> getAllBills(){
-        List<DrawMaterialBill> all=this.developmentDrawService.getAll();
-        return all;
-    }
-    @RequestMapping(value="/allMaterial",method = RequestMethod.POST)
-    @ResponseBody
-    public List<DrawMaterialBillMaterial> getAllBillMaterials(int bill_id){
-        return this.developmentDrawService.getAllByID(bill_id);
-    }
-    @RequestMapping(value = "/billdetail",method = RequestMethod.POST)
-    @ResponseBody
-    public DrawMaterialBill getBill(int bill_id){
-        return this.developmentDrawService.getById(bill_id);
-    }
-    @RequestMapping(value = "/searchbill",method =RequestMethod.POST)
-    @ResponseBody
-    public List<DrawMaterialBill> searchBill(String search){
-        System.out.println(search);
-        return this.developmentDrawService.getByMap(search);
     }
 }

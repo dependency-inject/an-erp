@@ -32,7 +32,10 @@ export default {
         CREATE_BY: '创建者',
         UPDATE_AT: '更新时间',
         UPDATE_BY: '更新者',
-        BILL_REASON:'领料原因'
+        MATERIAL_INFO:'物料信息',
+        MATERIAL: '物料',
+        QUANTITY: '数量',
+        REMARK: '备注'
     },
     RETURN_MATERIAL: {
         BILL_NO: '退料单编号',
@@ -52,7 +55,8 @@ export default {
         UPDATE_BY: '更新者'
     },
     MATERIAL: {
-        MATERIAL_ID: '物料ID',
+        MATERIAL_NO: '物料编号',
+        MATERIAL_NAME: '物料名称',
         QUANTITY: '数量',
         REMARK: '备注'
     },
@@ -71,6 +75,7 @@ export default {
         MATE_NAME:'材料名称'
     },
     BILL_STATE: {
+        ALL_STATE: '全部状态',
         STATE1: '待审核',
         STATE2: '已审核',
         STATE3: '已完成'

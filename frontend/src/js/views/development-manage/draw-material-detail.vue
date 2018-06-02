@@ -1,325 +1,278 @@
 <template>
-<div class="main-panel no-scroll">
-    <div class="main-panel-content2">
-        <div class="panel-container">
-            <i-form ref="formValidate" :model="bill" :rules="rules" :label-width="90" inline>
-                <div class="chief-panel">
-                    <div class="panel-body">
-                        <form-item :label="$t('field.DRAW_MATERIAL.BILL_NO')"><i-input v-model="bill.billNo" :disabled="status == 0"></i-input></form-item>
-                        <form-item :label="$t('field.DRAW_MATERIAL.TO_PRINCIPAL')"><i-input v-model="bill.toPrincipal" disabled></i-input></form-item>
+    <div class="main-panel">
+        <div class="main-panel-content2">
+            <div class="panel-container">
+                <i-form ref="formValidate" :model="item" :rules="rules" :label-width="90" inline>
+                    <div class="chief-panel">
+                        <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
+                        <div class="panel-body">
+                            <div>
+                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.BILL_NO') }}： </label>{{ item.billNo }}</div>
+                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.TO_PRINCIPAL') }}： </label>{{ item.toPrincipalName }}</div>
+                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL') }}： </label>{{ item.warehousePrincipalName }}</div>
+                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.BILL_TIME') }}： </label>{{ item.billTimeLocal }}</div>
+                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.DRAW_REASON') }}： </label>{{ item.drawReasonCn }}</div>
+                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.BILL_STATE') }}： </label>{{ item.billStateCn }}</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="chief-panel">
-                    <div class="panel-body">
-                        <form-item :label="$t('field.DRAW_MATERIAL.CREATE_BY')"><i-input v-model="bill.createBy" disabled></i-input></form-item>
-                        <form-item :label="$t('field.DRAW_MATERIAL.BILL_TIME')"><i-input type="date" v-model="bill.billTime" disabled></i-input></form-item>
+                    <div class="chief-panel">
+                        <div class="panel-header">{{ $t('field.ELSE_INFO') }}</div>
+                        <div class="panel-body">
+                            <form-item :label="$t('field.DRAW_MATERIAL.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
+                        </div>
                     </div>
-                </div>
-                <div class="chief-panel">
-                    <div class="panel-body">
-                        <form-item :label="$t('field.DRAW_MATERIAL.BILL_REASON')"><i-input v-model="bill.billresason" disabled></i-input></form-item>
-                        <form-item :label="$t('field.MATERIAL.REMARK')"><i-input v-model="bill.remark" :disabled="status == 0"></i-input></form-item>
+                    <div class="chief-panel">
+                        <div class="panel-header">{{ $t('field.DRAW_MATERIAL.MATERIAL_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addMaterial"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.DRAW_MATERIAL.MATERIAL_INFO') }}</a>）</span></div>
+                        <div class="panel-body">
+                            <i-table border :columns="columnList" :data="this.item.materialList"></i-table>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <i-button class="operate-btn" type="success" @click="modal2 = true" :disabled="status == 0">{{ $t('common.ADD') }}</i-button>
-                    <i-button class="operate-btn" type="error" @click="remove(selectItems)" :disabled="status == 0">{{ $t('common.REMOVE') }}</i-button>
-                    <br><br>
-                    <div class="main-content" style="overflow:scroll;height:230px">
-                        <Table border ref="selection" :columns="columns8" :data="all_mate_data" @on-selection-change="selectItems=arguments[0]"></Table>
-                    </div>
-                </div>
-            </i-form>
+                </i-form>
+            </div>
         </div>
+        <div class="panel-bottom">
+            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
+            <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="developmentDrawAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
+            <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="developmentDrawAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
+        </div>
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveMaterial" :loading="true">
+            <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
+                <form-item :label="$t('field.DRAW_MATERIAL.MATERIAL')" prop="materialId">
+                    <i-select v-model="modal.item.materialId">
+                        <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
+                    </i-select>
+                </form-item>
+                <form-item :label="$t('field.DRAW_MATERIAL.QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
+                <form-item :label="$t('field.DRAW_MATERIAL.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
+            </i-form>
+        </modal>
     </div>
-    <div class="panel-bottom">
-        <i-button class="operate-btn" type="primary" shape="circle" @click="savebill" :disabled="status == 0">{{$t('common.SAVE')}}</i-button>
-        <i-button class="operate-btn" type="primary" shape="circle" @click="statusto0" v-show="status===1">{{$t('common.AUDIT')}}</i-button>
-        <i-button class="operate-btn" type="primary" shape="circle" @click="statusto1" v-show="status===0">{{$t('common.UNAUDIT')}}</i-button>
-    </div>
-    <Modal v-model="modal2" title="添加物品" @on-ok="savemeta" @on-cancel="cancel" width="400px">
-            <div class="add_goods">
-                <div width="60px" class="add_goods_title"><div style="color:red;width:5px"></div>物品编号</div>
-                <div><Select style="width:200px" v-model="meta.id">  
-                    <Option v-for="(item,index) in allmetainfo" :value="index" :key="item.materialId">{{ item.materialNo }}</Option>
-                </Select></div>
-            </div>
-            <div class="add_goods">
-                <div width="60px" class="add_goods_title"><div style="color:red;width:5px">*</div>数量</div>
-                <Input type="text" style="width:200px" v-model="meta.count"></Input>
-            </div>
-            <div class="add_goods">
-                <div width="60px" class="add_goods_title"><div style="color:red;width:5px">*</div>计划供料日期</div>
-                <DatePicker type="date" placeholder="年/月/日" style="width:200px"></DatePicker>
-            </div>
-            <div class="add_goods">
-                <div width="60px" class="add_goods_title"><div style="color:red;width:5px"></div>备注</div>
-                <Input type="text" style="width:200px" v-model="meta.remark"></Input>
-            </div>
-        </Modal>
-</div>
 </template>
 
 <script>
 import Permission from '../../mixins/permission';
 
-import permissionTable from '../../components/permission-table';
+import util from '../../libs/util.js';
+
 import developmentDrawService from '../../service/development-draw';
-import materialService from '../../service/material';
 
 export default {
+    mixins: [ Permission ],
     data() {
         return {
-            bill: {},
-            meta:{},
-            status:1,
-            allmetainfo: [],
-            goodssize: [
-                {
-                    value: '默认',
-                    label: '默认'
-                },
-                {
-                    value: '较大',
-                    label: '较大'
-                },{
-                    value: '中等',
-                    label: '中等'
-                }
-            ],
-            modal2: false,
-            columns8: [
-                    {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
-                    {
-                        title: '材料编号',
-                        key: 'materialId'
-                    },
-                    {
-                        title: '材料名称',
-                        key:'name'
-                    },
-                    {
-                        title: '数量',
-                        key: 'quantity'
-                    },
-                    {
-                        title: '备注',
-                        key: 'remark'
-                    }
-            ],
-            all_mate_data:[]
+            item: {
+                materialList: []
+            },
+            modal: {
+                title: 'title',
+                item: {},
+                visible: false
+            },
+            materialList: []
         }
     },
     computed: {
         rules() {
             return {
-                
             }
         },
-        loginAdmin(){
+        rules2() {
+            return {
+                materialId: [
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.DRAW_MATERIAL.MATERIAL'), trigger: 'change' }
+                ],
+                quantity: [
+                    { type: 'number', required: true, message: this.$t('field.DRAW_MATERIAL.QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ]
+            }
+        },
+        loginAdmin() {
             return this.$store.state.app.loginAdmin;
+        },
+        editable() {
+            return (this.developmentDrawAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.developmentDrawUpdatePermission && this.item.billId !==0 && this.item.billState === 1);
+        },
+        columnList() {
+            let result = [
+                { title: this.$t('field.MATERIAL.MATERIAL_NO'), key: 'materialNo' },
+                { title: this.$t('field.MATERIAL.MATERIAL_NAME'), key: 'materialName' },
+                { title: this.$t('field.MATERIAL.QUANTITY'), key: 'quantity' },
+                { title: this.$t('field.MATERIAL.REMARK'), key: 'remark' }
+            ];
+            if (this.editable) {
+                result.push({ 
+                    title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                            this.editMaterial(row) 
+                        }), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
+                            this.removeMaterial(params.index) 
+                        })]);
+                    } 
+                });
+            }
+            return result;
         }
     },
     methods: {
         initData() {
-            // 路由检查
-            console.log("init")            
+            // 路由检查           
             if (!isNaN(Number(this.$route.params.id))) {
-                this.bill.billId = Number(this.$route.params.id);
-                this.searchAllMaterials();
-                console.log(this.bill.billId);
+                this.item.billId = Number(this.$route.params.id);
                 this.getById();
-                console.log(this.bill.billId);
-                this.searchAllBillMaterials();
             } else if (this.$route.params.id === 'add') {
                 this.setDefault();
-                this.searchAllMaterials();
             } else {
                 this.$router.replace('/development-draw');
             }
         },
-        async getById() {
-            let result = await developmentDrawService.getBill(this.bill.billId);
-            console.log(result)
-            if (result.status === 200) {
-                let data = result.data;
-                if (data.billState === 1) {
-                    data.billState = this.$t('field.BILL_STATE.STATE1')
-                } else if (data.billState === 2) {
-                    data.billState = this.$t('field.BILL_STATE.STATE2')
-                } else if (data.billState === 3) {
-                    data.billState = this.$t('field.BILL_STATE.STATE3')
-                }
-                let date = new Date(data.billTime)
-                data.billTime = date.getFullYear() + '-' + (date.getMonth() < 9 ? '0' + (date.getMonth() + 1): date.getMonth() + 1) + '-' + date.getDate()
-                this.bill = data
-                this.bill.billresason='研发领料'
-                if(result.data.billState=="待审核"){
-                    this.status=1;
-                }else{
-                    this.status=0;
-                }
-            }
-        },
         setDefault() {
-            this.bill = {
-                toPrincipal:'admin',
-                createBy:'admin',
-                billTime:'',
-                billresason:'研发领料',
-                remark:''
-            },
-            this.meta = {
-                id:'',
-                remark:''
+            this.item = {
+                billId: 0,
+                toPrincipalName: this.loginAdmin.trueName,
+                drawReasonCn: this.$t('field.DRAW_REASON.REASON2'),
+                remark: '',
+                materialList: []
             }
-            console.log(this.bill.createBy)
         },
-        async remove(selectItems) {
-                console.log(selectItems);
-                let idList = _.map(selectItems, 'materialId');
-                console.log(idList);
-                this.$Modal.confirm({
-                    content: this.$t('common.REMOVE_CONFIRM'),
-                    onOk: async () => {
-                        //console.log(idList);
-                        if (!isNaN(Number(this.$route.params.id))) {
-                            var tmpidList=idList.join(",")
-                            let result = await developmentDrawService.deletematerials(this.bill.billId,tmpidList)
-                            if (result.status != 200) {
-                                this.$Message.error("error")
-                            }
-                        } 
-                        var i;
-                        for( i in this.all_mate_data){
-                            console.log("i:"+i);
-                            console.log("materialId"+this.all_mate_data[i].materialId);
-                            var j;
-                            for(j in idList){
-                                if(this.all_mate_data[i].materialId==idList[j]){
-                                    if (this.$route.params.id === 'add') {
-                                        var tmpj=idList[j];
-                                        console.log(tmpj);
-                                        let result = await developmentDrawService.deleteitem(tmpj);
-                                        if (result.status != 200) {
-                                            this.$Message.error("error")
-                                        }
-                                    }
-                                    this.all_mate_data.splice(i,1);
-                                }
-                            }
+        async getById() {
+            let result = await developmentDrawService.getBill(this.item.billId);
+            if (result.status === 200) {
+                this.item = result.data;
+                this.item.billStateCn = this.$t('field.BILL_STATE.STATE' + Number(this.item.billState));
+                this.item.billTimeLocal = util.formatTimestamp(this.item.billTime, "yyyy-MM-dd hh:mm:ss");
+                this.item.drawReasonCn = this.$t('field.DRAW_REASON.REASON' + Number(this.item.drawReason));
+            }
+        },
+        save() {
+            this.$refs.formValidate.validate(async (valid) => {
+                if (valid) {
+                    let obj = Object.assign({}, this.item, { materialList: JSON.stringify(this.item.materialList) });
+                    if (this.$route.params.id === 'add' && this.item.billId === 0) {
+                        let result = await developmentDrawService.addBill(obj);
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                            var item = result.data;
+                            this.$router.replace('/development-draw/' + item.billId);
+                        } else {
+                            this.$Message.error(result.data);
+                        }
+                    } else {
+                        let result = await developmentDrawService.updateBill(obj);
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                            this.initData();
+                        } else {
+                            this.$Message.error(result.data);
                         }
                     }
-                });
-        },
-        ok () {
-            this.$Message.info('Clicked ok');
-        },
-        cancel () {
-            this.$Message.info('Clicked cancel');
-        },
-        async savemeta() {
-            if (!isNaN(Number(this.$route.params.id))) {
-                //addmaterial = (material_id,quantity,remark)
-                console.log('savemeta');
-                console.log(this.bill.billId,this.allmetainfo[this.meta.id].materialId,this.meta.count,this.meta.remark);
-                console.log("************")
-                var count=parseInt(this.meta.count)
-                console.log(typeof count)
-                console.log("************")
-                let result = await developmentDrawService.changematerials(this.bill.billId,this.allmetainfo[this.meta.id].materialId,count,this.meta.remark);
-                console.log(result);
-                if(result.data=="success"){
-                    var new_data=[{}];
-                    new_data[0].materialId=this.allmetainfo[this.meta.id].materialId;
-                    new_data[0].quantity=this.meta.count;
-                    new_data[0].remark=this.meta.remark;
-                    new_data[0].name=this.allmetainfo[this.meta.id].materialName;
-                    var new_all_mate_data = this.all_mate_data.concat(new_data);
-                    this.all_mate_data=new_all_mate_data;
-                }else {
-                    this.$Message.error("error")
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
                 }
-            } else if (this.$route.params.id === 'add') {
-                console.log(this.allmetainfo[this.meta.id].materialId,this.meta.count,this.meta.remark);
-                let result = await developmentDrawService.addmaterial(this.allmetainfo[this.meta.id].materialId,this.meta.count,this.meta.remark);
-                if(result.data=="success"){
-                    console.log(result);
-                    var new_data=[{}];
-                    new_data[0].materialId=this.allmetainfo[this.meta.id].materialId;
-                    new_data[0].quantity=this.meta.count;
-                    new_data[0].remark=this.meta.remark;
-                    new_data[0].name=this.allmetainfo[this.meta.id].materialName;
-                    var new_all_mate_data = this.all_mate_data.concat(new_data);
-                    this.all_mate_data=new_all_mate_data;
-                }else {
-                    this.$Message.error("error")
-                }
-            } 
+            });
         },
-        async savebill(){
-            if (this.$route.params.id === 'add') {
-                console.log(this.bill.billNo,this.bill.toPrincipal,this.bill.createBy,2);
-                let result = await developmentDrawService.addBill(this.bill.billNo,this.bill.remark,2);
-                if (result.status != 200) {
-                    this.$Message.error("error")
+        audit() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await developmentDrawService.auditBill(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
                 }
-            }else{
-                console.log('savebill')
-                console.log(this.bill.billId,this.bill.remark);
-                let result = await developmentDrawService.updatedetail(this.bill.billId,this.bill.remark);
-                if (result.status != 200) {
-                    this.$Message.error("error")
+            });
+        },
+        unaudit() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await developmentDrawService.unauditBill(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
                 }
-            }
+            });
         },
-        async searchAllBillMaterials() {
-            console.log('searchAllBillMaterials');
-            let result = await developmentDrawService.getAllBillMaterials(this.bill.billId);
-            console.log('searchAllBillMaterials');
-            console.log(result.data);
-            this.all_mate_data = result.data;
-        },
-        async searchAllMaterials() {
-            let result = await materialService.getAllMaterials();
-            console.log('searchAllMaterials');
+        async getMaterialList() {
+            let result = await developmentDrawService.getMaterialList();
             if (result.status === 200) {
-                this.allmetainfo=result.data;
+                this.materialList = result.data;
             }
-            console.log(result.data);
         },
-        statusto0(){
-            this.status=0;
-            let result = developmentDrawService.changestatus(this.bill.billId,0);
-            console.log(result);
+        addMaterial() {
+            this.modal.title = this.$t('common.ADD') + this.$t('field.DRAW_MATERIAL.MATERIAL_INFO');
+            this.$refs.formValidate2.resetFields();
+            this.modal.item._index = -1;
+            this.modal.item.materialId = '';
+            this.modal.item.quantity = 1;
+            this.modal.item.remark = '';
+            this.modal.visible = true;
         },
-        statusto1(){
-            this.status=1;
-            let result = developmentDrawService.changestatus(this.bill.billId,1);
-            console.log(result);
+        editMaterial(item) {
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.DRAW_MATERIAL.MATERIAL_INFO');
+            this.$refs.formValidate2.resetFields();
+            this.modal.item._index = item._index;
+            this.modal.item.materialId = item.materialId;
+            this.modal.item.quantity = item.quantity;
+            this.modal.item.remark = item.remark;
+            this.modal.visible = true;
+        },
+        saveMaterial() {
+            this.$refs.formValidate2.validate(async (valid) => {
+                if (valid) {
+                    this.materialList.forEach((item) => {
+                        if (item.materialId === this.modal.item.materialId) {
+                            this.modal.item.materialNo = item.materialNo;
+                            this.modal.item.materialName = item.materialName;
+                        }
+                    });
+                    if (this.modal.item._index === -1) {
+                        this.item.materialList.push({
+                            materialId: this.modal.item.materialId,
+                            materialNo: this.modal.item.materialNo,
+                            materialName: this.modal.item.materialName,
+                            quantity: this.modal.item.quantity,
+                            remark: this.modal.item.remark
+                        });
+                    } else {
+                        this.item.materialList[this.modal.item._index].materialId = this.modal.item.materialId;
+                        this.item.materialList[this.modal.item._index].materialNo = this.modal.item.materialNo;
+                        this.item.materialList[this.modal.item._index].materialName = this.modal.item.materialName;
+                        this.item.materialList[this.modal.item._index].quantity = this.modal.item.quantity;
+                        this.item.materialList[this.modal.item._index].remark = this.modal.item.remark;
+                    }
+                    this.modal.visible = false;
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
+                    this.$refs.modal.abortLoading();
+                }
+            });
+        },
+        removeMaterial(index) {
+            if (!this.editable) return;
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: () => {
+                    this.item.materialList.splice(index, 1);
+                }
+            });
         }
     },
     created() {
-        this.searchAllMaterials();
         this.setDefault();
         this.initData();
+        this.getMaterialList();
+    },
+    watch: {
+        '$route'(to, from) {
+            this.initData();
+        }
     }
 }
 </script>
-<style>
-    .add_goods{
-        display: flex;
-        flex-flow: wrap;
-        justify-content: space-between;
-        height: 45px;
-    }
-    .add_goods_title{
-        display: flex;
-        flex-flow: wrap;
-        justify-content: space-between;
-    }
-</style>

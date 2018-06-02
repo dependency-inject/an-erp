@@ -1,15 +1,19 @@
 import { http } from '../libs/http';
 
-var addmaterial = (material_id,quantity,remark)=> http.post('development-draw/addmaterial', {material_id:material_id,quantity:quantity,remark:remark});
-var allBills = () => http.post('development-draw/allBills',);
-var getBill = (id) => http.post('development-draw/billdetail', {bill_id:id});
-var addBill=(billno,remark,reason) => http.post('development-draw/addbill',{billno:billno,remark:remark,reason:reason})
-var deletebills= (bill_id) => http.post('development-draw/deletebills', {bill_id:bill_id});
-var getAllBillMaterials=(id) => http.post('development-draw/allMaterial', {bill_id:id});
-var deleteitem=(id) => http.post('development-draw/deletematerial', {material_id:id});
-var searchBill = (search) => http.post('development-draw/searchbill', {search:search});
-var changematerials= (bill_id,material,quantity,remark)=> http.post('development-draw/changematerials', {bill_id:bill_id,material:material,quantity:quantity,remark:remark});
-var deletematerials= (bill_id,material)=>http.post('development-draw/deletematerials', {bill_id:bill_id,material:material});
-var changestatus=(bill_id,status)=>http.post('development-draw/cahngestate', {bill_id:bill_id,status:status});
-var updatedetail=(bill_id,remark)=>http.post('development-draw/updatedetail', {bill_id:bill_id,remark:remark});
-export default { addmaterial, allBills,getBill,addBill,deletebills,getAllBillMaterials,deleteitem,searchBill,changematerials,deletematerials,changestatus,updatedetail};
+var getBill = (billId) => http.post('development-draw/billDetail', { billId: billId });
+
+var searchBill = (queryParameters) => http.post('development-draw/searchBill', queryParameters);
+
+var auditBill = (idList) => http.post('development-draw/auditBill', { idList: idList });
+
+var unauditBill = (idList) => http.post('development-draw/unauditBill', { idList: idList });
+
+var getMaterialList = () => http.post('development-draw/getMaterialList');
+
+var addBill = (bill) => http.post('development-draw/addBill', bill)
+
+var updateBill = (bill) => http.post('development-draw/updateBill', bill)
+
+var deleteBill = (idList) => http.post('development-draw/deleteBill', { idList: idList });
+
+export default { getBill, searchBill, auditBill, unauditBill, getMaterialList, addBill, updateBill, deleteBill };
