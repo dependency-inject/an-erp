@@ -12,4 +12,18 @@ var update = (materialOutstockBill) => http.post('material-outstock/update', mat
 
 var updateAuditState = (idList, materialOutstockState) => http.post('material-outstock/updateAuditState', { idList: idList, materialOutstockState: materialOutstockState });
 
-export default {add, getById, remove, search, update, updateAuditState};
+var getMaterial = (billId) => http.post('material-outstock/getMaterial', { billId: billId });
+
+var getMaterials = () => http.post('material-outstock/getMaterials');
+
+var getWarehouses = () => http.post('material-outstock/getWarehouses');
+
+var getAdmins = () => http.post('material-outstock/getAdmins');
+
+var audit = (idList) => http.post('material-outstock/audit', { idList: idList });
+
+var unaudit = (idList) => http.post('material-outstock/unaudit', { idList: idList });
+
+var finish = (idList) => http.post('material-outstock/finish', { idList: idList });
+
+export default {add, getById, remove, search, update, updateAuditState, getMaterial, getMaterials, getWarehouses, getAdmins, audit, unaudit, finish};

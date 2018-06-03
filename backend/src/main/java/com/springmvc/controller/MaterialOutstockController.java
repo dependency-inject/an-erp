@@ -2,8 +2,7 @@ package com.springmvc.controller;
 
 import com.springmvc.annotation.AccessPermission;
 import com.springmvc.annotation.PermissionRequired;
-import com.springmvc.dto.MaterialOutstockBill;
-import com.springmvc.dto.PageMode;
+import com.springmvc.dto.*;
 import com.springmvc.service.MaterialOutstockService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/material-outstock")
@@ -24,22 +24,21 @@ public class MaterialOutstockController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_ADD)
-    public MaterialOutstockBill add(@RequestParam String billNo, @RequestParam Integer toPrincipal,
+    public MaterialOutstockBill add(@RequestParam String billNo, @RequestParam Integer selectedPrincipal,
                                     @RequestParam Integer warehousePrincipal, @RequestParam Integer relatedBill, @RequestParam String remark,
-                                    @RequestParam Integer materialOutstockState, @RequestParam String materialIdList) {
-        System.out.println("control");
-        return materialOutstockService.addMaterialOutstockBill(billNo, toPrincipal, warehousePrincipal, relatedBill,
-                remark, materialOutstockState, ParamUtils.toIntList(materialIdList));
+                                    @RequestParam Integer materialOutstockState, @RequestParam String materials, @RequestParam Integer selectedSource) {
+        return materialOutstockService.addMaterialOutstockBill(billNo, selectedPrincipal, warehousePrincipal, relatedBill,
+                remark, materialOutstockState, materials, selectedSource);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_UPDATE)
-    public MaterialOutstockBill update(@RequestParam Integer billId, @RequestParam String billNo, @RequestParam Integer toPrincipal,
+    public MaterialOutstockBill update(@RequestParam Integer billId, @RequestParam String billNo, @RequestParam Integer selectedPrincipal,
                                       @RequestParam Integer warehousePrincipal, @RequestParam Integer relatedBill, @RequestParam Integer materialOutstockState,
-                                      @RequestParam String remark,  @RequestParam String materialIdList) {
-        return materialOutstockService.updateMaterialOutstockBill(billId, billNo, toPrincipal, warehousePrincipal,
-                relatedBill, materialOutstockState, remark, ParamUtils.toIntList(materialIdList));
+                                      @RequestParam String remark, @RequestParam Integer selectedSource) {
+        return materialOutstockService.updateMaterialOutstockBill(billId, billNo, selectedPrincipal, warehousePrincipal,
+                relatedBill, materialOutstockState, remark, selectedSource);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -63,5 +62,52 @@ public class MaterialOutstockController {
         return materialOutstockService.getMaterialOutstockBillById(billId);
     }
 
+    @RequestMapping(value = "getMaterials", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Material> getMaterials() {
+        return materialOutstockService.getMaterials();
+    }
+
+    @RequestMapping(value = "getMaterial", method = RequestMethod.POST)
+    @ResponseBody
+    public List<MaterialOutstockBillMaterial> getMaterial(@RequestParam Integer billId) {
+        return materialOutstockService.getMaterial(billId);
+    }
+
+    @RequestMapping(value = "getWarehouses", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Warehouse> getWarehouses() {
+        return materialOutstockService.getWarehouses();
+    }
+
+    @RequestMapping(value = "getAdmins", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Admin> getAdmins() {
+        return materialOutstockService.getAdmins();
+    }
+
+    @RequestMapping(value = "audit", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_AUDIT)
+    public String audit(@RequestParam String idList) {
+        materialOutstockService.audit(ParamUtils.toIntList(idList));
+        return "success";
+    }
+
+    @RequestMapping(value = "unaudit", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_AUDIT)
+    public String unaudit(@RequestParam String idList) {
+        materialOutstockService.unaudit(ParamUtils.toIntList(idList));
+        return "success";
+    }
+
+    @RequestMapping(value = "finish", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_FINISH)
+    public String finish(@RequestParam String idList) {
+        materialOutstockService.finish(ParamUtils.toIntList(idList));
+        return "success";
+    }
 
 }
