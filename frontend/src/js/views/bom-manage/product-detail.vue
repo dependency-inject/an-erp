@@ -176,12 +176,10 @@ export default {
             }
         },
         save() {
-            console.log(this.item.productMaterialList);
             this.$refs.formValidate.validate(async (valid) => {
                 if (valid) {
                     let obj = Object.assign({}, this.item, { productMaterialList: JSON.stringify(this.item.productMaterialList) });
                     if (this.$route.params.id === 'add' && this.item.productId === 0) {
-                        console.log(this.item);
                         let result = await productService.add(obj);
                         if (result.status === 200) {
                             this.$Message.success(this.$t('common.SAVE_SUCCESS'));
@@ -191,9 +189,7 @@ export default {
                             this.$Message.error(result.data);
                         }
                     } else {
-                        console.log(this.item);
                         let result = await productService.update(obj);
-                        console.log(result);
                         if (result.status === 200) {
                             this.$Message.success(this.$t('common.SAVE_SUCCESS'));
                             this.initData();
