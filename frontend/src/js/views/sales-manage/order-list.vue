@@ -3,15 +3,27 @@
         <div class="main-panel-content">
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
-                     <!-- 账号状态筛选框 -->
-                    <dropdown trigger="click" placement="bottom-start" style="margin:0 10px" @on-click="queryParameters.state=arguments[0];selectItems=[];search()">
-                        <a href="javascript:void(0)"><span class="main-user-name">{{ allState }}</span><icon type="arrow-down-b"></icon></a>
+                    <!-- 状态筛选框 -->
+                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];selectItems=[];search()" style="margin:0 10px">
+                        <a href="javascript:void(0)"><span class="main-user-name">{{ stateCn }} </span><icon type="arrow-down-b"></icon></a>
                         <dropdown-menu slot="list">
                             <dropdown-item v-for="item in stateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
                         </dropdown-menu>
                     </dropdown>
                     <!-- 搜索框 -->
-                    <i-input icon="search" v-model="queryParameters.searchKey" :placeholder="$t('component.PLEASE_INPUT')+$t('field.ORDER.ID')+'/'+$t('field.ORDER.SALES_MAN')+'/'+$t('field.ORDER.CLIENT')"  style="width:300px" @on-click="selectItems=[];search()"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.ORDER.BILL_NO')+'/'+$t('field.ORDER.SALES_MAN')+'/'+$t('field.ORDER.CLIENT')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <!-- 日期选择框 -->
+                    <date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
+                </div>
+                <div class="pull-left operate-list" v-show="selectItems!=''">
+                    <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
+                    <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
+                    <!-- 审核 -->
+                    <span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
+                    <!-- 反审核 -->
+                    <span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
+                    <!-- 删除 -->
+                    <span class="label-btn" @click="remove(selectItems)" ><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
                 <!--新增订单按钮-->
                 <div class="button-list pull-right">
@@ -19,13 +31,11 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <!--显示订单表格-->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
-            <!-- 翻页控制器 -->
             <div class="page-panel">
-                <page :total="queryParameters.total" :current="queryParameters.current" :page-size="queryParameters.limit" @on-change="queryParameters.current=arguments[0];search();" page-size-place="top" show-elevator show-sizer show-total @on-page-size-change="queryParameters.limit=arguments[0];search();"></page>
+                <page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
             </div>
         </div>
     </div>
@@ -41,17 +51,22 @@ export default {
     mixins: [ Permission ],
     data() {
         return {
+            vm: {
+                queryParameters: {
+                    searchKey: '',
+                    total: 0,
+                    limit: 10,
+                    current: 1,
+                    sortColumn: '',
+                    sort: '',
+                    state: -1,
+                    beginTime: '',
+                    endTime: ''
+                },
+                items: [],
+                identity: 'billId',
+            },
             selectItems: [],
-            items: [],
-            queryParameters: {
-                current: 1,
-                limit: 10,
-                total: 10,
-                sortColumn: '',
-                sort: '',
-                searchKey: '',
-                state: -1,
-            }
         }
     },
     computed: {
@@ -61,37 +76,37 @@ export default {
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.ORDER.ID'), key: 'billNo', sortable: 'custom' },
-                { title: this.$t('field.ORDER.SALES_MAN'), key: 'salesName'},
-                { title: this.$t('field.ORDER.CLIENT'), key: 'contact'},
-                { title: this.$t('field.ORDER.AMOUNT'), key: 'billAmount', sortable: 'custom'},
-                { title: this.$t('field.ORDER.TIME'), key: 'billTime', sortable: 'custom'},
-                { title: this.$t('field.ORDER.STATE'), key: 'billState'},
+                { title: this.$t('field.ORDER.BILL_NO'), key: 'billNo', sortable: 'custom' },
+                { title: this.$t('field.ORDER.SALES_MAN'), key: 'salesName', sortable: 'custom' },
+                { title: this.$t('field.ORDER.CLIENT'), key: 'clientName', sortable: 'custom' },
+                { title: this.$t('field.ORDER.BILL_AMOUNT'), key: 'billAmount', sortable: 'custom' },
+                { title: this.$t('field.ORDER.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
+                { title: this.$t('field.ORDER.BILL_STATE'), key: 'billStateCn', sortable: 'custom'  },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
-                            this.$router.push('/order/'+row['billId']) 
+                            this.$router.push('/order/'+row[this.vm.identity]) 
                         }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
-                            this.remove(row)
+                            this.remove([row])
                         }, 'removePermission')]);
                     } 
                 }
             ];
         },
-        allState() {
-            for(let i = 0; i < this.stateList.length; ++i){
-                if(this.stateList[i].value == this.queryParameters.state){
+        stateCn() {
+            for (let i = 0; i < this.stateList.length; ++i) {
+                if (this.stateList[i].value == this.vm.queryParameters.state) {
                     return this.stateList[i].descript
                 }
             }
         },
         stateList() {
             return [
-                { value: -1, descript: this.$t('field.ORDERSTATE.-1') },
-                { value: 1, descript: this.$t('field.ORDERSTATE.1') },
-                { value: 2, descript: this.$t('field.ORDERSTATE.2') },
-                { value: 3, descript: this.$t('field.ORDERSTATE.3') },
-                { value: 4, descript: this.$t('field.ORDERSTATE.4') },
-                { value: 5, descript: this.$t('field.ORDERSTATE.5') },
+                { value: -1, descript: this.$t('field.ORDER_STATE.-1') },
+                { value: 1, descript: this.$t('field.ORDER_STATE.1') },
+                { value: 2, descript: this.$t('field.ORDER_STATE.2') },
+                { value: 3, descript: this.$t('field.ORDER_STATE.3') },
+                { value: 4, descript: this.$t('field.ORDER_STATE.4') },
+                { value: 5, descript: this.$t('field.ORDER_STATE.5') },
             ]
         }
     },
@@ -99,45 +114,106 @@ export default {
         initData() {
             this.search()
         },
-        handleSort(data) {
-            if (data.order === 'normal') {
-                this.queryParameters.sortColumn = ''
-                this.queryParameters.sort = ''
-            } else {
-                this.queryParameters.sortColumn = data.key
-                this.queryParameters.sort = data.order
-            }
-            this.search()
-        },
-        toast(content) {
-            this.$Message.info({
-                content: content,
-                duration: 2,
-            })
-        },
-        async remove(row) {
-            let result = await orderService.remove(row)
-            if (result.status === 200) {
-                this.toast(this.$t('common.OPERATE_SUCCESS'))
-                this.search()
-            }
-        },
         async search() {
-            let result = await orderService.search(this.queryParameters)
+            let idList = _.map(this.selectItems, this.vm.identity).join(",");
+            let beginTime = -1;
+            if (this.vm.queryParameters.beginTime != '')
+                beginTime = this.vm.queryParameters.beginTime.getTime();
+            let endTime = -1;
+            if (this.vm.queryParameters.endTime != '')
+                endTime = this.vm.queryParameters.endTime.getTime();
+            let result = await orderService.search(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }));
             if (result.status === 200) {
-                this.items = result.data.list
-                this.queryParameters.total = result.data.total
-                this.items.forEach((item) => {
-                    item['detailPermission'] = true
-                    if (item['billState'] == 1) {
-                        if(this.orderRemovePermission) {
-                            item['removePermission'] = true
+                var items = result.data.list;
+                this.vm.queryParameters.total = result.data.total;
+                items.forEach((item) => {
+                    item.billStateCn = this.$t('field.ORDER_STATE.' + Number(item.billState));
+                    item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
+                    item['detailPermission'] = true;
+                    if (item.billState === 1 && this.orderRemovePermission)
+                        item['removePermission'] = true;
+                });
+                this.vm.items = items;
+                this.$nextTick(() => {
+                    for (var i = 0; i < items.length; ++i) {
+                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
+                            this.$refs.table.toggleSelect(i);
                         }
                     }
-                    item['billTime'] = util.formatTimestamp(item['billTime'], 'yyyy-MM-dd')
-                    item['billState'] = this.stateList[item['billState']].descript
-            })
+                });
             }
+        },
+        handleSort(data) {
+            if (data.order === 'normal') {
+                this.vm.queryParameters.sortColumn = '';
+                this.vm.queryParameters.sort = '';
+            } else if (data.key === 'salesName') {
+                this.vm.queryParameters.sortColumn = 'salesman';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'clientName') {
+                this.vm.queryParameters.sortColumn = 'clientId';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'billTimeLocal') {
+                this.vm.queryParameters.sortColumn = 'billTime';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'billStateCn') {
+                this.vm.queryParameters.sortColumn = 'billState';
+                this.vm.queryParameters.sort = data.order;
+            } else {
+                this.vm.queryParameters.sortColumn = data.key;
+                this.vm.queryParameters.sort = data.order;
+            }
+            this.selectItems = [];
+            this.search();
+        },
+        audit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.audit(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        unaudit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.unaudit(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        remove(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.remove(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.REMOVE_SUCCESS'))
+                        this.selectItems = []
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        clearChecked() {
+            this.$refs.table.selectAll(false)
         }
     },
     mounted() {

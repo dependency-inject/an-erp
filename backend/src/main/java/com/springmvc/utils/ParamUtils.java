@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +29,18 @@ public class ParamUtils {
         } catch (IOException e) {
             return new ArrayList<T>();
         }
+    }
+
+    /**
+     * 字符串转date
+     * @param time
+     * @return
+     */
+    public static Date toDate(Long time) {
+        if (time == -1) {
+            return null;
+        }
+        return new Date(time);
     }
 
     /**
@@ -122,5 +136,13 @@ public class ParamUtils {
             return true;
         }
         return object instanceof String && ((String) object).trim().equals("");
+    }
+
+    /**
+     * 日期时间格式化
+     */
+    public static String dateConvert(Date date, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        return format.format(date);
     }
 }

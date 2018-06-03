@@ -1,8 +1,11 @@
 package com.springmvc.controller;
 
+import com.springmvc.annotation.AccessPermission;
+import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.Client;
 import com.springmvc.dto.PageMode;
 import com.springmvc.service.ClientService;
+import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,22 +29,23 @@ public class ClientController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public String addClient(@RequestParam String clientName, @RequestParam String contactPhone) {
-        clientService.addClient(clientName, contactPhone);
-        return "success";
+    @PermissionRequired(AccessPermission.CLIENT_ADD)
+    public Client addClient(@RequestParam String clientName, String contact, String contactPhone) {
+        return clientService.addClient(clientName, contact, contactPhone);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public String updateClient(@RequestParam Integer clientId, String clientName, String contactPhone) {
-        clientService.updateClient(clientId, clientName, contactPhone);
-        return "success";
+    @PermissionRequired(AccessPermission.CLIENT_UPDATE)
+    public Client updateClient(@RequestParam Integer clientId, @RequestParam String clientName, String contact, String contactPhone) {
+        return clientService.updateClient(clientId, clientName, contact, contactPhone);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteClient(@RequestParam Integer clientId) {
-        clientService.deleteClient(clientId);
+    @PermissionRequired(AccessPermission.CLIENT_REMOVE)
+    public String deleteClient(@RequestParam String idList) {
+        clientService.deleteClient(ParamUtils.toIntList(idList));
         return "success";
     }
 }

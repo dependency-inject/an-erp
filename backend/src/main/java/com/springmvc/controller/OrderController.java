@@ -1,10 +1,10 @@
 package com.springmvc.controller;
 
-import com.springmvc.dto.OrderBill;
-import com.springmvc.dto.OrderBillProduct;
-import com.springmvc.dto.PageMode;
-import com.springmvc.dto.Product;
+import com.springmvc.annotation.AccessPermission;
+import com.springmvc.annotation.PermissionRequired;
+import com.springmvc.dto.*;
 import com.springmvc.service.OrderService;
+import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,70 +24,100 @@ public class OrderController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
-    public PageMode<OrderBill> search(@RequestParam Integer current, @RequestParam Integer limit, String sortColumn, String sort, String searchKey, Integer state) {
-        return orderService.pageOrder(current, limit, sortColumn, sort, searchKey, state);
+    public PageMode<OrderBill> search(@RequestParam Integer current, @RequestParam Integer limit,
+                                      String sortColumn, String sort, String searchKey, Integer state,
+                                      Long beginTime, Long endTime) {
+        return orderService.pageOrder(current, limit, sortColumn, sort, searchKey, state,
+                ParamUtils.toDate(beginTime), ParamUtils.toDate(endTime));
     }
 
-    @RequestMapping(value = "getById", method = RequestMethod.POST)
+    @RequestMapping(value = "/getById", method = RequestMethod.POST)
     @ResponseBody
     public OrderBill getById(@RequestParam Integer billId) {
         return orderService.getOrderById(billId);
     }
 
-    @RequestMapping(value = "getProduct", method = RequestMethod.POST)
+    @RequestMapping(value = "audit", method = RequestMethod.POST)
     @ResponseBody
-    public List<OrderBillProduct> getProduct(@RequestParam Integer billId) { return orderService.getProduct(billId);}
-
-
-    @RequestMapping(value = "shenhe", method = RequestMethod.POST)
-    @ResponseBody
-    public String shenhe(@RequestParam Integer adminId, @RequestParam Integer billId) {
-        return orderService.shenhe(adminId, billId);
+    @PermissionRequired(AccessPermission.ORDER_AUDIT)
+    public String audit(@RequestParam String idList) {
+        orderService.audit(ParamUtils.toIntList(idList));
+        return "success";
     }
 
-
-    @RequestMapping(value = "fanshenhe", method = RequestMethod.POST)
+    @RequestMapping(value = "/unaudit", method = RequestMethod.POST)
     @ResponseBody
-    public String fanshenhe(@RequestParam Integer adminId, @RequestParam Integer billId) {
-        return orderService.fanshenhe(adminId, billId);
+    @PermissionRequired(AccessPermission.ORDER_AUDIT)
+    public String unaudit(@RequestParam String idList) {
+        orderService.unaudit(ParamUtils.toIntList(idList));
+        return "success";
     }
 
-    @RequestMapping(value = "produce", method = RequestMethod.POST)
+    @RequestMapping(value = "/produce", method = RequestMethod.POST)
     @ResponseBody
-    public String produce(@RequestParam Integer adminId, @RequestParam Integer billId) {
-        return orderService.produce(adminId, billId);
+    @PermissionRequired(AccessPermission.ORDER_PRODUCE)
+    public String produce(@RequestParam Integer billId) {
+        orderService.produce(billId);
+        return "success";
     }
 
-    @RequestMapping(value = "deliver", method = RequestMethod.POST)
+    @RequestMapping(value = "/delivery", method = RequestMethod.POST)
     @ResponseBody
-    public String deliver(@RequestParam Integer adminId, @RequestParam Integer billId) {
-        return orderService.deliver(adminId, billId);
+    @PermissionRequired(AccessPermission.ORDER_DELIVERY)
+    public String deliver(@RequestParam Integer billId) {
+        orderService.delivery(billId);
+        return "success";
     }
 
-    @RequestMapping(value = "cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     @ResponseBody
-    public String cancel(@RequestParam Integer adminId, @RequestParam Integer billId) {
-        return orderService.cancel(adminId, billId);
+    @PermissionRequired(AccessPermission.ORDER_CANCEL)
+    public String cancel(@RequestParam Integer billId) {
+        orderService.cancel(billId);
+        return "success";
     }
 
-    @RequestMapping(value = "getProducts", method = RequestMethod.POST)
+    @RequestMapping(value = "/getClientList", method = RequestMethod.POST)
     @ResponseBody
-    public List<Product> getProducts() {
-        return orderService.getProducts();
+    public List<Client> getClientList() {
+        return orderService.getClientList();
     }
 
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
     @ResponseBody
-    public Integer add(@RequestParam Integer adminId, @RequestParam String contact, @RequestParam String contactPhone, @RequestParam BigDecimal billAmount,
-                       String remark, @RequestParam String products) {
-        return orderService.add(adminId, contact, contactPhone, billAmount, remark, products);
+    public List<Product> getProductList() {
+        return orderService.getProductList();
     }
 
-
-    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public String remove(@RequestParam Integer billId) {
-        return orderService.remove(billId);
+    @PermissionRequired(AccessPermission.ORDER_ADD)
+    public OrderBill add(@RequestParam Integer clientId, @RequestParam String contact, @RequestParam String contactPhone,
+                         @RequestParam BigDecimal billAmount, String remark, @RequestParam String productList) {
+        return orderService.add(clientId, contact, contactPhone, billAmount,
+                remark, ParamUtils.jsonToList(productList, OrderBillProduct.class));
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.ORDER_ADD)
+    public OrderBill update(@RequestParam Integer billId, @RequestParam String contact, @RequestParam String contactPhone,
+                            @RequestParam BigDecimal billAmount, String remark, @RequestParam String productList) {
+        return orderService.update(billId, contact, contactPhone, billAmount,
+                remark, ParamUtils.jsonToList(productList, OrderBillProduct.class));
+    }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.ORDER_REMOVE)
+    public String remove(@RequestParam String idList) {
+        orderService.remove(ParamUtils.toIntList(idList));
+        return "success";
+    }
+
+    @RequestMapping(value = "/getMaterialRequired", method = RequestMethod.POST)
+    @ResponseBody
+    public List<OrderBillMaterial> getMaterialRequired(@RequestParam Integer billId) {
+        return orderService.getMaterialRequired(billId);
+    }
 }

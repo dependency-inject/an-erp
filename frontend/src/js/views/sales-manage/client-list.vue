@@ -4,42 +4,35 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" v-model="queryParameters.searchKey" :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.ID')+'/'+$t('field.CLIENT.NAME')+'/'+$t('field.CLIENT.PHONE')"  style="width:300px" @on-click="selectItems=[];search()"></i-input>
+                    <i-input icon="search" v-model="vm.queryParameters.searchKey" :placeholder="$t('component.PLEASE_INPUT')+'/'+$t('field.CLIENT.CLIENT_NAME')+'/'+$t('field.CLIENT.CONTACT')+'/'+$t('field.CLIENT.CONTACT_PHONE')"  style="width:300px" @on-enter="selectItems=[];search()"></i-input>
                 </div>
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
                     <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
-                    <span class="label-btn" @click="allremove(selectItems)" v-if="adminRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+                    <span class="label-btn" @click="remove(selectItems)" v-if="clientRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
                 <!--新增客户按钮-->
                 <div class="button-list pull-right">
-                    <i-button class="operate-btn" type="primary" shape="circle" @click="add" v-if="adminAddPermission">{{ $t('common.ADD') }}</i-button>
+                    <i-button class="operate-btn" type="primary" shape="circle" @click="add" v-if="clientAddPermission">{{ $t('common.ADD') }}</i-button>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <!--显示订单表格-->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
-                <page :total="queryParameters.total" :current="queryParameters.current" :page-size="queryParameters.limit" @on-change="queryParameters.current=arguments[0];search();" page-size-place="top" show-elevator show-sizer show-total @on-page-size-change="queryParameters.limit=arguments[0];search();"></page>
+                <page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
             </div>
-            <Modal v-model="modal" :title="title" @on-ok="ok" @on-cancel="cancel">
-                <div v-if="modalState==1">
-                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.NAME')" v-model="edited.clientName"></i-input>
-                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.PHONE')" v-model="edited.contactPhone"></i-input>
-                </div>
-                <div v-else-if="modalState==2">
-                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.NAME')" v-model="edited.clientName"></i-input>
-                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.PHONE')" v-model="edited.contactPhone"></i-input>
-                </div>
-                <div v-else>
-                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.NAME')" v-model="edited.clientName" disabled></i-input>
-                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.PHONE')" v-model="edited.contactPhone" disabled></i-input>
-                </div>
-            </Modal>
         </div>
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true">
+            <i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
+                <form-item :label="$t('field.CLIENT.CLIENT_NAME')" prop="clientName"><i-input v-model="modal.item.clientName"></i-input></form-item>
+                <form-item :label="$t('field.CLIENT.CONTACT')" prop="contact"><i-input v-model="modal.item.contact"></i-input></form-item>
+                <form-item :label="$t('field.CLIENT.CONTACT_PHONE')" prop="contactPhone"><i-input v-model="modal.item.contactPhone"></i-input></form-item>
+            </i-form>
+        </modal>
     </div>
 </template>
 
@@ -49,131 +42,158 @@ import Permission from '../../mixins/permission';
 import util from '../../libs/util.js';
 
 import clientService from '../../service/client';
+
 export default {
     mixins: [ Permission ],
     data() {
         return {
-            items: [],
-            selectItems: [],
-            queryParameters: {
-                current: 1,
-                limit: 10,
-                total: 10,
-                sortColumn: '',
-                sort: '',
-                searchKey: '',
+            vm: {
+                queryParameters: {
+                    closed: -1,
+                    searchKey: '',
+                    total: 0,
+                    limit: 10,
+                    current: 1,
+                    sortColumn: '',
+                    sort: ''
+                },
+                items: [],
+                identity: 'clientId',
             },
-            modal: false,
-            modalState: 0,
-            edited: {},
+            selectItems: [],
+            modal: {
+                title: 'title',
+                item: {},
+                visible: false
+            }
         }
     },
     computed: {
+        rules() {
+            return {
+                clientName: [
+                    { required: true, message: this.$t('field.CLIENT.CLIENT_NAME')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ]
+            }
+        },
         tableHeight() {
             return document.documentElement.clientHeight - 220;
         },
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.CLIENT.ID'), key: 'clientId', sortable: 'custom' },
-                { title: this.$t('field.CLIENT.NAME'), key: 'clientName', sortable: 'custom'},
-                { title: this.$t('field.CLIENT.PHONE'), key: 'contactPhone'},
+                { title: this.$t('field.CLIENT.CLIENT_NAME'), key: 'clientName', sortable: 'custom' },
+                { title: this.$t('field.CLIENT.CONTACT'), key: 'contact', sortable: 'custom' },
+                { title: this.$t('field.CLIENT.CONTACT_PHONE'), key: 'contactPhone', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.EDIT'), (row) => {
                             this.edit(row)
                         }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
-                            this.remove(row) 
+                            this.remove([row]) 
                         }, 'removePermission')]);
                     } 
                 }
             ];
-        },
-        title() {
-            if (this.modalState == 1) {
-                return '新增客户信息'
-            } else if (this.modalState == 2) {
-                return '修改客户信息'
-            } else {
-                return '确定要删除吗'
-            }
         }
     },
     methods: {
         initData() {
-            this.search()
-        },
-        add() {
-            this.modal = true
-            this.modalState = 1
-        },
-        edit(row) {
-            this.modal = true
-            this.modalState = 2
-            //进行深拷贝
-            this.edited = row
-        },
-        remove(row) {
-            this.modal = true
-            this.modalState = 3
-            this.edited = row
-        },
-        async allremove(selectItems) {
-            for (let i=0; i <selectItems.length; ++i) {
-                await clientService.shanchu(selectItems[i])
-            }
-            this.toast()
-            this.selectItems = []
-            this.search()
-        },
-        async ok() {
-            let result
-            if (this.modalState == 1) {
-                result = await clientService.add(this.edited)
-            } else if (this.modalState == 2) {
-                result = await clientService.update(this.edited)
-            } else {
-                result = await clientService.shanchu(this.edited) 
-            }
-            this.search()
-            this.edited = {}
-            this.toast()
-        },
-        toast() {
-            this.$Message.info({
-                content: this.$t('common.OPERATE_SUCCESS'),
-                duration: 2,
-            })
-        },
-        cancel() {
-            this.edited = {}
+            this.search();
         },
         async search() {
-            let result = await clientService.search(this.queryParameters)
+            let idList = _.map(this.selectItems, this.vm.identity).join(",");
+            let result = await clientService.search(this.vm.queryParameters)
             if (result.status === 200) {
-                this.items = result.data.list
-                this.queryParameters.total = result.data.total
-                this.items.forEach((item) => {
-                    item['detailPermission'] = true
-                    item['removePermission'] = true
-            })
+                var items = result.data.list;
+                this.vm.queryParameters.total = result.data.total;
+                items.forEach((item) => {
+                    item['detailPermission'] = true;
+                    if (this.clientRemovePermission)
+                        item['removePermission'] = true;
+                });
+                this.vm.items = items;
+                this.$nextTick(() => {
+                    for (var i = 0; i < items.length; ++i) {
+                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
+                            this.$refs.table.toggleSelect(i);
+                        }
+                    }
+                });
             }
         },
         handleSort(data) {
             if (data.order === 'normal') {
-                this.queryParameters.sortColumn = ''
-                this.queryParameters.sort = ''
+                this.vm.queryParameters.sortColumn = '';
+                this.vm.queryParameters.sort = '';
             } else {
-                this.queryParameters.sortColumn = data.key
-                this.queryParameters.sort = data.order
+                this.vm.queryParameters.sortColumn = data.key;
+                this.vm.queryParameters.sort = data.order;
             }
-            this.search()
+            this.selectItems = [];
+            this.search();
+        },
+        remove(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",");
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: async () => {
+                    let result = await clientService.remove(idList);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
+                        this.selectItems = [];
+                        this.search();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        add() {
+            this.modal.title = this.$t('common.ADD') + this.$t('navigate.CLIENT');
+            this.$refs.formValidate.resetFields();
+            this.modal.item.clientId = 0;
+            this.modal.item.clientName = '';
+            this.modal.item.contact = '';
+            this.modal.item.contactPhone = '';
+            this.modal.visible = true;
+        },
+        edit(item) {
+            this.modal.title = this.$t('common.EDIT') + this.$t('navigate.CLIENT');
+            this.$refs.formValidate.resetFields();
+            this.modal.item.clientId = item.clientId;
+            this.modal.item.clientName = item.clientName;
+            this.modal.item.contact = item.contact;
+            this.modal.item.contactPhone = item.contactPhone;
+            this.modal.visible = true;
         },
         clearChecked() {
-            this.$refs.table.selectAll(false)
+            this.$refs.table.selectAll(false);
+        },
+        save() {
+            this.$refs.formValidate.validate(async (valid) => {
+                if (valid) {
+                    let result = {}
+                    if (this.modal.item.clientId === 0)
+                        result = await clientService.add(this.modal.item);
+                    else
+                        result = await clientService.update(this.modal.item);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                        this.modal.visible = false;
+                        this.search();
+                    } else {
+                        this.$Message.error(result.data);
+                        this.$refs.modal.abortLoading();
+                    }
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
+                    this.$refs.modal.abortLoading();
+                }
+            });
         }
     },
     mounted() {
-        this.initData()
+        this.initData();
     }
 }
 </script>

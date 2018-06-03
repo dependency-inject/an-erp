@@ -2,78 +2,66 @@
     <div class="main-panel">
         <div class="main-panel-content2">
             <div class="panel-container">
-                <i-form ref="formValidate" :model="item" :label-width="90" inline>
+                <i-form ref="formValidate" :model="item" :rules="rules" :label-width="90" inline>
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.ORDER.ID')" prop="id"><i-input v-model="item.billNo" disabled></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.SALES_MAN')" prop="salesMan"><i-input v-model="item.salesName" disabled></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.CLIENT')" prop="client"><i-input v-model="item.contact" :disabled="disabled"></i-input></form-item>
-                            <form-item :label="$t('field.CLIENT.PHONE')" prop="phone"><i-input v-model="item.contactPhone" :disabled="disabled"></i-input></form-item>
+                            <div>
+                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_NO') }}： </label>{{ item.billNo }}</div>
+                                <div class="info-item"><label>{{ $t('field.ORDER.SALES_MAN') }}： </label>{{ item.salesName }}</div>
+                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_TIME') }}： </label>{{ item.billTimeLocal }}</div>
+                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_AMOUNT') }}： </label>{{ billAmount }}</div>
+                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_STATE') }}： </label>{{ item.billStateCn }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.ORDER.INFO') }}</div>
+                        <div class="panel-header">{{ $t('field.ELSE_INFO') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.ORDER.TIME')" prop="time"><i-input v-model="item.billTime" disabled></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.AMOUNT')" prop="amount"><i-input v-model="item.billAmount" :disabled="disabled"></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.STATE')" prop="state"><i-input v-model="getState" disabled></i-input></form-item>
-                        </div>
-                    </div>
-                    <div class="chief-panel" v-if="checkaudit">
-                        <div class="panel-header">{{ $t('field.ORDER.AUDIT_INFO') }}</div>
-                        <div class="panel-body">
-                            <form-item :label="$t('field.ORDER.AUDIT_TIME')" prop="audittime"><i-input v-model="item.auditAt" disabled></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.AUDIT_MAN')" prop="auditman"><i-input v-model="item.auditName" disabled></i-input></form-item>
-                        </div>
-                    </div>
-                    <div class="chief-panel" v-if="checkproduce">
-                        <div class="panel-header">{{ $t('field.ORDER.PRODUCE_INFO') }}</div>
-                        <div class="panel-body">
-                            <form-item :label="$t('field.ORDER.PRODUCE_TIME')" prop="producetime"><i-input v-model="item.produceAt" disabled></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.PRODUCE_MAN')" prop="producetman"><i-input v-model="item.produceName" disabled></i-input></form-item>
-                        </div>
-                    </div>
-                    <div class="chief-panel" v-if="checkdeliver">
-                        <div class="panel-header">{{ $t('field.ORDER.DELIVER_INFO') }}</div>
-                        <div class="panel-body">
-                            <form-item :label="$t('field.ORDER.DELIVER_TIME')" prop="delivertime"><i-input v-model="item.deliveryAt" disabled></i-input></form-item>
-                            <form-item :label="$t('field.ORDER.DELIVER_MAN')" prop="delivertman"><i-input v-model="item.deliverName" disabled></i-input></form-item>
+                            <form-item :label="$t('field.ORDER.CLIENT')" prop="clientId">
+                                 <i-select v-model="item.clientId" :disabled="item.billId!==0">
+                                    <i-option v-for="item in clientList" :value="item.clientId" :key="item.clientId">{{ item.clientName }}</i-option>
+                                </i-select>
+                            </form-item>
+                            <form-item :label="$t('field.ORDER.CONTACT')" prop="contact"><i-input v-model="item.contact"></i-input></form-item>
+                            <form-item :label="$t('field.ORDER.CONTACT_PHONE')" prop="contactPhone"><i-input v-model="item.contactPhone"></i-input></form-item>
+                            <form-item :label="$t('field.ORDER.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
                         </div>
                     </div>
                     <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.ORDER.PRODUCT_INFO') }}
-                            <i-button class="operate-btn" type="primary" shape="circle" @click="addProduct" v-if="$route.params.id === 'add'">{{ $t('common.ADD') }}</i-button>
-                        </div>
+                        <div class="panel-header">{{ $t('field.ORDER.PRODUCT_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addProduct"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.ORDER.PRODUCT_INFO') }}</a>）</span></div>
                         <div class="panel-body">
-                            <i-table :height="tableHeight" ref="table" :columns="columnList" :data="products"></i-table>
+                            <i-table border :columns="columnList" :data="item.productList"></i-table>
                         </div>
                     </div>
-                    <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.ORDER.REMARK') }}</div>
+                    <div class="chief-panel" v-if="item.billState===3||item.billState===4">
+                        <div class="panel-header">{{ $t('field.ORDER.MATERIAL_REQUIRED_INFO') }}</div>
                         <div class="panel-body">
-                            <i-input v-model="item.remark" :disabled="disabled"></i-input>
+                            <i-table border :columns="columnList2" :data="materialList"></i-table>
                         </div>
                     </div>
                 </i-form>
             </div>
         </div>
         <div class="panel-bottom">
-            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="$route.params.id === 'add'">{{ $t('common.SAVE') }}</i-button>
-            <i-button class="operate-btn" type="primary" shape="circle" @click="shenhe" v-if="item.billState==1 && orderAuditPermission">{{ $t('common.AUDIT') }}</i-button>
-            <i-button class="operate-btn" type="primary" shape="circle" @click="fanshenhe" v-if="item.billState==2 && orderAuditPermission">{{ $t('common.UNAUDIT') }}</i-button>
-            <i-button class="operate-btn" type="primary" shape="circle" @click="produce" v-if="item.billState==2 && orderProducePermission">{{ $t('field.ORDER.PRODUCE') }}</i-button>
-            <i-button class="operate-btn" type="primary" shape="circle" @click="deliver" v-if="item.billState==3 && orderDeliveryPermission">{{ $t('field.ORDER.DELIVER') }}</i-button>
-            <i-button class="operate-btn" type="error" shape="circle" @click="cancel" v-if="item.billState==3 && orderCancelPermission">{{ $t('field.ORDER.CANCEL') }}</i-button>
+            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
+            <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="orderAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
+            <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="orderAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
+            <i-button class="operate-btn" type="success" shape="circle" @click="produce" v-if="orderProducePermission&&item.billId!==0&&item.billState===2">{{ $t('common.PRODUCE') }}</i-button>
+            <i-button class="operate-btn" type="success" shape="circle" @click="delivery" v-if="orderDeliveryPermission&&item.billId!==0&&item.billState===3">{{ $t('common.DELIVERY') }}</i-button>
+            <i-button class="operate-btn" type="error" shape="circle" @click="cancel" v-if="orderCancelPermission&&item.billId!==0&&item.billState===3">{{ $t('common.CANCEL') }}</i-button>
         </div>
-        <Modal v-model="modal" :title="title" @on-ok="ok" @on-cancel="cancel">
-            <!--selected等于option里的value-->
-            <Select v-model="selected" style="width:200px">
-                <Option v-for="item in allProducts" :value="item.productId" :key="item.productId">{{ item.productName }}</Option>
-            </Select>
-            <i-input v-model="itemCount" :placeholder="$t('field.ORDER.PRODUCT_COUNT')"></i-input>
-            <i-input v-model="itemPrice" :placeholder="$t('field.ORDER.PRODUCT_PRICE')"></i-input>
-        </Modal>
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
+            <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
+                <form-item :label="$t('field.ORDER.PRODUCT')" prop="productId">
+                    <i-select v-model="modal.item.productId">
+                        <i-option v-for="item in productList" :value="item.productId" :key="item.productId">{{ item.productNo + ' - ' +item.productName }}</i-option>
+                    </i-select>
+                </form-item>
+                <form-item :label="$t('field.ORDER.QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
+                <form-item :label="$t('field.ORDER.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
+            </i-form>
+        </modal>
     </div>
 </template>
 
@@ -83,174 +71,314 @@ import Permission from '../../mixins/permission';
 import util from '../../libs/util.js';
 
 import orderService from '../../service/order';
+
 export default {
     mixins: [ Permission ],
     data() {
         return {
-            item: {},
-            disabled: true,
-            products: [],
-            allProducts: [],
-            modal: false,
-            title: '添加商品',
-            selected: '',
-            itemCount: '',
-            itemPrice: '',
+            item: {
+                productList: []
+            },
+            modal: {
+                title: 'title',
+                item: {},
+                visible: false
+            },
+            clientList: [],
+            productList: [],
+            materialList: []
         }
     },
     computed: {
-        stateList() {
-            return [
-                { value: 1, descript: this.$t('field.ORDERSTATE.1') },
-                { value: 2, descript: this.$t('field.ORDERSTATE.2') },
-                { value: 3, descript: this.$t('field.ORDERSTATE.3') },
-                { value: 4, descript: this.$t('field.ORDERSTATE.4') },
-                { value: 5, descript: this.$t('field.ORDERSTATE.5') },
-            ]
+        rules() {
+            return {
+                clientId: [
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.ORDER.CLIENT'), trigger: 'change' }
+                ]
+            }
+        },
+        rules2() {
+            return {
+                productId: [
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.ORDER.PRODUCT'), trigger: 'change' }
+                ],
+                quantity: [
+                    { type: 'number', required: true, message: this.$t('field.ORDER.QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ]
+            }
+        },
+        loginAdmin() {
+            return this.$store.state.app.loginAdmin;
+        },
+        editable() {
+            return (this.orderAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.orderUpdatePermission && this.item.billId !==0 && this.item.billState === 1);
         },
         columnList() {
-            return [
+            let result = [
+                { title: this.$t('field.ORDER.PRODUCT_NO'), key: 'productNo'},
                 { title: this.$t('field.ORDER.PRODUCT_NAME'), key: 'productName'},
-                { title: this.$t('field.ORDER.PRODUCT_COUNT'), key: 'quantity'},
-                { title: this.$t('field.ORDER.PRODUCT_PRICE'), key: 'price'},
-            ]
-        },
-        checkaudit() {
-            return this.item['billState'] > 1 && this.item['billState'] < 5
-        },
-        checkproduce() {
-            return this.item['billState'] > 2 && this.item['billState'] < 5
-        },
-        checkdeliver() {
-            return this.item['billState'] > 3 && this.item['billState'] < 5
-        },
-        getState() {
-            if(this.item['billState'] !== undefined) {
-                return this.stateList[this.item['billState']-1].descript
+                { title: this.$t('field.ORDER.QUANTITY'), key: 'quantity'},
+                { title: this.$t('field.ORDER.PRICE'), key: 'price'},
+                { title: this.$t('field.ORDER.TOTAL'), key: 'total'},
+                { title: this.$t('field.ORDER.REMARK'), key: 'remark'},
+            ];
+            if (this.editable) {
+                result.push({ 
+                    title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                            this.editProduct(row) 
+                        }), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
+                            this.removeProduct(params.index) 
+                        })]);
+                    } 
+                });
             }
-            else {
-                return null
-            }
+            return result;
         },
-        tableHeight() {
-            return document.documentElement.clientHeight - 400
+        columnList2() {
+            return [
+                { title: this.$t('field.ORDER.MATERIAL_NO'), key: 'materialNo'},
+                { title: this.$t('field.ORDER.MATERIAL_NAME'), key: 'materialName'},
+                { title: this.$t('field.ORDER.MATERIAL_QUANTITY'), key: 'quantity'},
+                { title: this.$t('field.ORDER.MATERIAL_PRODUCT'), key: 'product'},
+                { title: this.$t('field.ORDER.MATERIAL_PROPERTY'), key: 'materialProperty'},
+                { title: this.$t('field.ORDER.REMARK'), key: 'productMaterialRemark'},
+            ];
         },
+        billAmount() {
+            let result = 0;
+            this.item.productList.forEach((item) => {
+                result += (item.price * item.quantity);
+            });
+            return result;
+        }
     },
     methods: {
         initData() {
+            // 路由检查           
             if (!isNaN(Number(this.$route.params.id))) {
-                this.item.billId = Number(this.$route.params.id)
-                this.getById()
-                this.getProduct()
+                this.item.billId = Number(this.$route.params.id);
+                this.getById();
             } else if (this.$route.params.id === 'add') {
-                this.disabled = false
-                this.item['salesName'] = this.$store.state.app.loginAdmin.trueName
-                this.getProducts()
+                this.setDefault();
+            } else {
+                this.$router.replace('/order');
+            }
+        },
+        setDefault() {
+            this.item = {
+                billId: 0,
+                salesName: this.loginAdmin.trueName,
+                clientId: '',
+                contact: '',
+                contactPhone: '',
+                remark: '',
+                productList: []
             }
         },
         async getById() {
-            let result = await orderService.getById(this.item.billId)
+            let result = await orderService.getById(this.item.billId);
             if (result.status === 200) {
                 this.item = result.data
-                this.item['billTime'] = util.formatTimestamp(this.item['billTime'], 'yyyy-MM-dd')
-                this.item['auditAt'] = util.formatTimestamp(this.item['auditAt'], 'yyyy-MM-dd')
-                this.item['produceAt'] = util.formatTimestamp(this.item['produceAt'], 'yyyy-MM-dd')
-                this.item['deliveryAt'] = util.formatTimestamp(this.item['deliveryAt'], 'yyyy-MM-dd')
+                this.item.billStateCn = this.$t('field.ORDER_STATE.' + Number(this.item.billState));
+                this.item.billTimeLocal = util.formatTimestamp(this.item.billTime, "yyyy-MM-dd hh:mm:ss");
+                if (this.item.billState === 3 || this.item.billState === 4)
+                    this.getMaterialRequired();
             }
         },
-        async getProduct() {
-            //对于一张订单获取这张订单的所有商品
-            let result = await orderService.getProduct(this.item.billId)
+        async getMaterialRequired() {
+            let result = await orderService.getMaterialRequired(this.item.billId);
             if (result.status === 200) {
-                this.products = result.data
+                var items = result.data;
+                items.forEach((item) => {
+                    item.product = item.productNo + ' - ' + item.productName;
+                });
+                this.materialList = items;
             }
         },
-        async getProducts() {
-            //获得所有的商品供选择
-            let result = await orderService.getProducts()
-            if (result.status === 200) {
-                this.allProducts = result.data
-            }
-        },
-        toast(content) {
-            this.$Message.info({
-                content: content,
-                duration: 2,
-            })
-        },
-        async save() {
-            if (this.item.contact == undefined || this.item.contactPhone == undefined || this.item.billAmount == undefined || this.products.length == 0) {
-                this.toast('信息尚未填写完毕')
-            } else {
-                let order = {}
-                order.adminId = this.$store.state.app.loginAdmin.adminId
-                order.contact = this.item.contact
-                order.contactPhone = this.item.contactPhone
-                order.billAmount = this.item.billAmount
-                order.remark = this.item.remark
-                order.products = JSON.stringify(this.products)
-                let result = await orderService.add(order)
-                if (result.status === 200) {
-                    this.$router.push('/order/'+result.data)
+        save() {
+            this.$refs.formValidate.validate(async (valid) => {
+                if (valid) {
+                    let obj = Object.assign({}, this.item, { billAmount: this.billAmount, productList: JSON.stringify(this.item.productList) });
+                    if (this.$route.params.id === 'add' && this.item.billId === 0) {
+                        let result = await orderService.add(obj);
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                            var item = result.data;
+                            this.$router.replace('/order/' + item.billId);
+                        } else {
+                            this.$Message.error(result.data);
+                        }
+                    } else {
+                        let result = await orderService.update(obj);
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                            this.initData();
+                        } else {
+                            this.$Message.error(result.data);
+                        }
+                    }
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
                 }
-            }
+            });
         },
-        async shenhe() {
-            let result = await orderService.shenhe(this.$store.state.app.loginAdmin.adminId, this.item.billId)
-            this.checkResult(result)
-        },
-        async fanshenhe() {
-            let result = await orderService.fanshenhe(this.$store.state.app.loginAdmin.adminId, this.item.billId)
-            this.checkResult(result)
-        },
-        async produce() {
-            let result = await orderService.produce(this.$store.state.app.loginAdmin.adminId, this.item.billId)
-            this.checkResult(result)
-        },
-        async deliver() {
-            let result = await orderService.deliver(this.$store.state.app.loginAdmin.adminId, this.item.billId)
-            this.checkResult(result)
-        },
-        async cancel() {
-            let result = await orderService.cancel(this.$store.state.app.loginAdmin.adminId, this.item.billId)
-            this.checkResult(result)
-        },
-        checkResult(result) {
-            if (result.status === 200) {
-                this.toast(this.$t('common.OPERATE_SUCCESS'))
-                this.getById()
-                this.getProduct()
-            }
-        },
-        ok() {
-            let temp = {}
-            if (this.selected != '' && this.itemCount != '' && this.itemPrice != '') {
-                temp['productId'] = this.selected
-                for (let i = 0; i < this.allProducts.length; ++i) {
-                    if (this.allProducts[i]['productId'] == this.selected) {
-                        temp['productName'] = this.allProducts[i]['productName']
+        audit() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.audit(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
                     }
                 }
-                temp['quantity'] = parseInt(this.itemCount)
-                temp['price'] = parseInt(this.itemPrice)
-            }
-            console.log(temp)
-            this.products.push(temp)
-            this.selected = ''
-            this.itemCount = ''
-            this.itemPrice = ''
+            });
+        },
+        unaudit() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.unaudit(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        produce() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.produce(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        delivery() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.delivery(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
         },
         cancel() {
-            this.selected = ''
-            this.itemCount = ''
-            this.itemPrice = ''
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await orderService.cancel(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        async getClientList() {
+            let result = await orderService.getClientList();
+            if (result.status === 200) {
+                this.clientList = result.data;
+            }
+        },
+        async getProductList() {
+            let result = await orderService.getProductList();
+            if (result.status === 200) {
+                this.productList = result.data;
+            }
         },
         addProduct() {
-            this.modal = true
+            this.modal.title = this.$t('common.ADD') + this.$t('field.ORDER.PRODUCT_INFO');
+            this.$refs.formValidate2.resetFields();
+            this.modal.item._index = -1;
+            this.modal.item.productId = '';
+            this.modal.item.quantity = 1;
+            this.modal.item.remark = '';
+            this.modal.visible = true;
+        },
+        editProduct(item) {
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.ORDER.PRODUCT_INFO');
+            this.$refs.formValidate2.resetFields();
+            this.modal.item._index = item._index;
+            this.modal.item.productId = item.productId;
+            this.modal.item.quantity = item.quantity;
+            this.modal.item.remark = item.remark;
+            this.modal.visible = true;
+        },
+        saveProduct() {
+            this.$refs.formValidate2.validate(async (valid) => {
+                if (valid) {
+                    this.productList.forEach((item) => {
+                        if (item.productId === this.modal.item.productId) {
+                            this.modal.item.productNo = item.productNo;
+                            this.modal.item.productName = item.productName;
+                            this.modal.item.price = item.price;
+                        }
+                    });
+                    if (this.modal.item._index === -1) {
+                        this.item.productList.push({
+                            productId: this.modal.item.productId,
+                            productNo: this.modal.item.productNo,
+                            productName: this.modal.item.productName,
+                            quantity: this.modal.item.quantity,
+                            price: this.modal.item.price,
+                            total: this.modal.item.price * this.modal.item.quantity,
+                            remark: this.modal.item.remark
+                        });
+                    } else {
+                        this.item.productList[this.modal.item._index].productId = this.modal.item.productId;
+                        this.item.productList[this.modal.item._index].productNo = this.modal.item.productNo;
+                        this.item.productList[this.modal.item._index].productName = this.modal.item.productName;
+                        this.item.productList[this.modal.item._index].quantity = this.modal.item.quantity;
+                        this.item.productList[this.modal.item._index].price = this.modal.item.price;
+                        this.item.productList[this.modal.item._index].total = this.modal.item.price * this.modal.item.quantity;
+                        this.item.productList[this.modal.item._index].remark = this.modal.item.remark;
+                    }
+                    this.modal.visible = false;
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
+                    this.$refs.modal.abortLoading();
+                }
+            });
+        },
+        removeProduct(index) {
+            if (!this.editable) return;
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: () => {
+                    this.item.productList.splice(index, 1);
+                }
+            });
         }
     },
-    mounted() {
-        this.initData()
+    created() {
+        this.setDefault();
+        this.getClientList();
+        this.getProductList();
+        this.initData();
+    },
+    watch: {
+        '$route'(to, from) {
+            this.initData();
+        }
     }
 }
 </script>

@@ -2,10 +2,10 @@ import { http } from '../libs/http';
 
 var search = (queryParameters) => http.post('client/search', queryParameters);
 
-var add = (item) => http.post('client/add', item);
+var add = (client) => http.post('client/add', client);
 
-var update = (item) => http.post('client/update', item);
+var update = (client) => http.post('client/update', client);
 
-var shanchu = (item) => http.post('client/delete', item);
+var remove = (idList) => http.post('client/remove', { idList: idList });
 
-export default { search, update, shanchu, add };
+export default { search, add, update, remove };

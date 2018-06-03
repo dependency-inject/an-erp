@@ -77,7 +77,7 @@ public abstract class BaseService {
 
     public enum Operate {
         ADD("新增"), UPDATE("更新"), REMOVE("删除"),
-        AUDIT("审核"), UNAUDIT("反审核"), PRODUCE("启动生产"), FINISH("完成"), CANCEL("取消"), LOGIN("登录");
+        AUDIT("审核"), UNAUDIT("反审核"), PRODUCE("启动生产"), DELIVERY("发货"), FINISH("完成"), CANCEL("取消"), LOGIN("登录");
 
         public final String operate;
 
