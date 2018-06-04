@@ -1,7 +1,9 @@
 package com.springmvc.controller;
 
-import com.springmvc.dto.MaterialStockCostRecord;
+import com.springmvc.dto.MaterialLack;
 import com.springmvc.dto.PageMode;
+import com.springmvc.dto.SupplierMaterial;
+import com.springmvc.dto.MaterialStockCostRecord;
 import com.springmvc.dto.MaterialStockRecord;
 import com.springmvc.dto.ProductStockRecord;
 import com.springmvc.service.StockService;
@@ -20,7 +22,7 @@ public class StockController {
     @Resource
     StockService stockService;
 
-    /**
+    /*
      * 统计货品仓储
      *
      * @param current    当前页面
@@ -52,6 +54,26 @@ public class StockController {
     public PageMode<MaterialStockRecord> materialSearch(@RequestParam Integer current, @RequestParam Integer limit,
                                                         String sortColumn, String sort, String searchKey) {
         return stockService.pageMaterial(current, limit, sortColumn, sort, searchKey);
+    }
+
+    /**
+     * 反查物料报价
+     */
+    @RequestMapping(value = "/findSupplierPrice", method = RequestMethod.POST)
+    @ResponseBody
+    public PageMode<SupplierMaterial> findSupplierPrice(@RequestParam Integer materialId, @RequestParam Integer current, @RequestParam Integer limit,
+                                                        String sortColumn, String sort) {
+        return stockService.findSupplierPrice(materialId, current, limit, sortColumn, sort);
+    }
+
+    /**
+     * 获取缺料情况
+     */
+    @RequestMapping(value = "/getMaterialLack", method = RequestMethod.POST)
+    @ResponseBody
+    public PageMode<MaterialLack> getMaterialLack( @RequestParam Integer current, @RequestParam Integer limit,
+                                                   String sortColumn, String sort, String searchKey) {
+        return stockService.getMaterialLack(current, limit, sortColumn, sort, searchKey);
     }
 
     @RequestMapping(value = "/searchMaterialCost", method = RequestMethod.POST)

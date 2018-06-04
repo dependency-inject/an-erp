@@ -1,6 +1,7 @@
 package com.springmvc.dao;
 
 import com.springmvc.dto.Material;
+import com.springmvc.dto.MaterialLack;
 import com.springmvc.dto.MaterialStockCostRecord;
 import com.springmvc.dto.MaterialStockRecord;
 import com.springmvc.pojo.MaterialQuery;
@@ -116,6 +117,14 @@ public interface MaterialDAO {
      * @param example
      */
     List<MaterialStockCostRecord> selectWithStockCostByExample(MaterialQuery example);
+
+    /**
+     *   根据指定的条件查询符合条件的数据库记录（物料缺料情况）
+     *   库存，待领料，带出库
+     * @param example 查询条件
+     * @return 一页记录
+     */
+    List<MaterialLack> selectWithLackByExample(MaterialQuery example);
 
     /**
      *

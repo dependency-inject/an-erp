@@ -1,10 +1,9 @@
 package com.springmvc.service;
 
-import com.springmvc.dao.MaterialDAO;
-import com.springmvc.dto.Admin;
-import com.springmvc.dto.Material;
-import com.springmvc.dto.PageMode;
-import com.springmvc.pojo.MaterialQuery;
+import com.springmvc.dao.*;
+import com.springmvc.dto.*;
+import com.springmvc.exception.BadRequestException;
+import com.springmvc.pojo.*;
 import com.springmvc.utils.ParamUtils;
 import com.springmvc.utils.RequestUtils;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,24 @@ import java.util.List;
 public class MaterialService extends BaseService {
     @Resource
     MaterialDAO materialDAO;
+
+    @Resource
+    ProductMaterialDAO productMaterialDAO;
+
+    @Resource
+    DrawMaterialBillMaterialDAO drawMaterialBillMaterialDAO;
+
+    @Resource
+    ReturnMaterialBillMaterialDAO returnMaterialBillMaterialDAO;
+
+    @Resource
+    MaterialInstockBillMaterialDAO materialInstockBillMaterialDAO;
+
+    @Resource
+    MaterialOutstockBillMaterialDAO materialOutstockBillMaterialDAO;
+
+    @Resource
+    SupplierMaterialDAO supplierMaterialDAO;
 
     /**
      * 查询物料信息（分页），包括分类名称.
@@ -66,16 +83,55 @@ public class MaterialService extends BaseService {
      * 删除物料信息.
      *
      * 传入要删除的物料id
-     * 从表中删除：material
+     * 删除主表信息：material
+     * 删除关联的从表信息：supplier_material
      * 添加日志信息：LogType.MATERIAL, Operate.REMOVE
      *
-     * @param integers
+     * @param materialIdList
      */
-    public void removeMaterial(List<Integer> integers) {
+    public void removeMaterial(List<Integer> materialIdList) {
+        // 检查引用
+        ProductMaterialQuery productMaterialQuery = new ProductMaterialQuery();
+        productMaterialQuery.or().andMaterialIdIn(materialIdList);
+        if (productMaterialDAO.countByExample(productMaterialQuery) > 0) {
+            throw new BadRequestException(MATERIAL_REFER_BY_PRODUCT);
+        }
+
+        DrawMaterialBillMaterialQuery drawMaterialBillMaterialQuery = new DrawMaterialBillMaterialQuery();
+        drawMaterialBillMaterialQuery.or().andMaterialIdIn(materialIdList);
+        if (drawMaterialBillMaterialDAO.countByExample(drawMaterialBillMaterialQuery) > 0) {
+            throw new BadRequestException(MATERIAL_REFER_BY_DRAW);
+        }
+
+        ReturnMaterialBillMaterialQuery returnMaterialBillMaterialQuery = new ReturnMaterialBillMaterialQuery();
+        returnMaterialBillMaterialQuery.or().andMaterialIdIn(materialIdList);
+        if (returnMaterialBillMaterialDAO.countByExample(returnMaterialBillMaterialQuery) > 0) {
+            throw new BadRequestException(MATERIAL_REFER_BY_RETURN);
+        }
+
+        MaterialInstockBillMaterialQuery materialInstockBillMaterialQuery = new MaterialInstockBillMaterialQuery();
+        materialInstockBillMaterialQuery.or().andMaterialIdIn(materialIdList);
+        if (materialInstockBillMaterialDAO.countByExample(materialInstockBillMaterialQuery) > 0) {
+            throw new BadRequestException(MATERIAL_REFER_BY_INSTOCK);
+        }
+
+        MaterialOutstockBillMaterialQuery materialOutstockBillMaterialQuery = new MaterialOutstockBillMaterialQuery();
+        materialOutstockBillMaterialQuery.or().andMaterialIdIn(materialIdList);
+        if (materialOutstockBillMaterialDAO.countByExample(materialOutstockBillMaterialQuery) > 0) {
+            throw new BadRequestException(MATERIAL_REFER_BY_OUTSTOCK);
+        }
+
+        //删除主表
         MaterialQuery materialQuery = new MaterialQuery();
-        materialQuery.or().andMaterialIdIn(integers);
+        materialQuery.or().andMaterialIdIn(materialIdList);
         materialDAO.deleteByExample(materialQuery);
-        addLog(LogType.MATERIAL, Operate.REMOVE, integers);
+        //删除从表
+        SupplierMaterialQuery supplierMaterialQuery = new SupplierMaterialQuery();
+        supplierMaterialQuery.or().andMaterialIdIn(materialIdList);
+        supplierMaterialDAO.deleteByExample(supplierMaterialQuery);
+
+        // 添加日志
+        addLog(LogType.MATERIAL, Operate.REMOVE, materialIdList);
     }
 
     /**
@@ -206,4 +262,10 @@ public class MaterialService extends BaseService {
         addLog(LogType.MATERIAL_COST, Operate.UPDATE, material.getMaterialId());
         return getMaterialById(material.getMaterialId());
     }
+
+    private static final String MATERIAL_REFER_BY_PRODUCT = "物料被货品组成引用";
+    private static final String MATERIAL_REFER_BY_DRAW = "物料被领料单引用";
+    private static final String MATERIAL_REFER_BY_RETURN = "物料被退料单引用";
+    private static final String MATERIAL_REFER_BY_INSTOCK = "物料被物料入库单引用";
+    private static final String MATERIAL_REFER_BY_OUTSTOCK = "物料被物料出库单引用";
 }

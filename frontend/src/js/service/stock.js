@@ -4,6 +4,12 @@ var productSearch = (queryParameters) => http.post('stock/product-search', query
 
 var materialSearch = (queryParameters) => http.post('stock/material-search', queryParameters);
 
+var searchLackMaterial = (queryParameters) => http.post('stock/getMaterialLack', queryParameters);
+
+var searchPriceReverse = (queryParameters) => http.post('stock/findSupplierPrice', queryParameters);
+
+var getMaterialList = () => http.post('stock/getMaterialList');
+
 var searchMaterialCost = (queryParameters) => http.post('stock/searchMaterialCost', queryParameters);
 
-export default { productSearch, materialSearch, searchMaterialCost };
+export default { productSearch, materialSearch, searchLackMaterial, searchPriceReverse, getMaterialList, searchMaterialCost };
