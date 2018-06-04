@@ -1,6 +1,6 @@
 <template>
-    <div class="main-panel no-scroll">
-    </div>
+	<div class="main-panel no-scroll">
+	</div>
 </template>
 
 <script>
