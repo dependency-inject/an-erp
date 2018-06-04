@@ -12,6 +12,8 @@ var update = (product) => http.post('product/update', product);
 
 var updateClosedState = (productIdList, closed) => http.post('product/updateClosedState', { productIdList: productIdList, closed: closed });
 
-var getCategoryList = () => http.post('product/getCategoryList', {});
+var getCategoryList = () => http.post('product/getCategoryList');
 
-export default { add, getById, remove, search, update, updateClosedState, getCategoryList };
+var getMaterialList = () => http.post('product/getMaterialList');
+
+export default { add, getById, remove, search, update, updateClosedState, getCategoryList, getMaterialList };

@@ -11,7 +11,7 @@
                         </dropdown-menu>
                     </dropdown>
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.PRODUCT.NO')+'/'+$t('field.PRODUCT.NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.PRODUCT.PRODUCT_NO')+'/'+$t('field.PRODUCT.PRODUCT_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                 </div>
                 <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -80,11 +80,9 @@ export default {
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.PRODUCT.NO'), key: 'productNo', sortable: 'custom' },
-                { title: this.$t('field.PRODUCT.NAME'), key: 'productName', sortable: 'custom' },
-                { title: this.$t('field.PRODUCT.UNIT'), key: 'unit', },
-                { title: this.$t('field.PRODUCT.CATEGORY_ID'), key: 'categoryId' },
-                { title: this.$t('field.PRODUCT.SPEC'), key: 'spec', },
+                { title: this.$t('field.PRODUCT.PRODUCT_NO'), key: 'productNo', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT.PRODUCT_NAME'), key: 'productName', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT.CATEGORY_NAME'), key: 'categoryName', sortable: 'custom' },
                 { title: this.$t('field.PRODUCT.PRICE'), key: 'price', sortable: 'custom' },
                 { title: this.$t('field.PRODUCT.STATE'), key: 'state', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
@@ -116,8 +114,6 @@ export default {
     methods: {
         initData() {
             this.search();
-            this.initCategoryList();
-            this.$refs.tree.on-select-change
         },
         generateCategoryList(parent, list){
             let result = [];
@@ -145,11 +141,9 @@ export default {
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
                     item.state = this.$t('field.CLOSED.' + Number(item.closed));
-                    if (!item.sysDefault) {
-                        item['detailPermission'] = true;
-                        if (this.productRemovePermission)
-                            item['removePermission'] = true;
-                    }
+                    item['detailPermission'] = true;
+                    if (this.productRemovePermission)
+                        item['removePermission'] = true;
                 });
                 this.vm.items = items;
                 this.$nextTick(() => {
@@ -216,6 +210,7 @@ export default {
     },
     mounted() {
         this.initData();
+        this.initCategoryList();
     }
 }
 </script>

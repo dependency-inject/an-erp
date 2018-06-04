@@ -2,10 +2,7 @@ package com.springmvc.controller;
 
 import com.springmvc.annotation.AccessPermission;
 import com.springmvc.annotation.PermissionRequired;
-import com.springmvc.dto.PageMode;
-import com.springmvc.dto.Product;
-import com.springmvc.dto.ProductCategory;
-import com.springmvc.dto.ProductMaterial;
+import com.springmvc.dto.*;
 import com.springmvc.service.ProductService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
@@ -81,5 +78,11 @@ public class ProductController {
     @ResponseBody
     public List<ProductCategory> getCategoryList() {
         return productService.getCategoryList();
+    }
+
+    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Material> getMaterialList() {
+        return productService.getMaterialList();
     }
 }

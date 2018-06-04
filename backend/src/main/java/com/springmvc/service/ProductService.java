@@ -45,11 +45,11 @@ public class ProductService extends BaseService {
      * 查询单个货品物料组成信息
      *
      * 将物料信息补全：
-     *      *       material.material_no
-     *      *       material.material_name
-     *      *       material.unit
-     *      *       material.category_id
-     *      *       material.spec
+     * material.material_no
+     * material.material_name
+     * material.unit
+     * material.category_id
+     * material.spec
      *
      * @param productId
      * @return productMaterialList
@@ -78,10 +78,9 @@ public class ProductService extends BaseService {
     /**
      * 新增货品
      *
-     * 进行必要的检查：productNo 是否已存在
-     *      * 将主表信息保存：product
-     *      * 将关联的从表信息保存：product_material
-     *      * 添加日志信息：LogType.PRODUCT, Operate.ADD
+     * 将主表信息保存：product
+     * 将关联的从表信息保存：product_material
+     * 添加日志信息：LogType.PRODUCT, Operate.ADD
      *
      * @param productNo
      * @param productName
@@ -119,7 +118,7 @@ public class ProductService extends BaseService {
         }
 
         // 添加日志
-        addLog(PRODUCT, Operate.ADD, product.getProductId());
+        addLog(LogType.PRODUCT, Operate.ADD, product.getProductId());
 
         return getProductWithMaterialById(product.getProductId());
     }
@@ -139,17 +138,20 @@ public class ProductService extends BaseService {
         // 检查引用
         OrderBillProductQuery orderBillProductQuery = new OrderBillProductQuery();
         orderBillProductQuery.or().andProductIdIn(productIdList);
+        if (orderBillProductDAO.countByExample(orderBillProductQuery) > 0) {
+            throw new BadRequestException(PRODUCT_REFER_BY_ORDER);
+        }
 
         ProductInstockBillProductQuery productInstockBillProductQuery = new ProductInstockBillProductQuery();
         productInstockBillProductQuery.or().andProductIdIn(productIdList);
+        if (productInstockBillProductDAO.countByExample(productInstockBillProductQuery) > 0) {
+            throw new BadRequestException(PRODUCT_REFER_BY_INSTOCK);
+        }
 
         ProductOutstockBillProductQuery productOutstockBillProductQuery = new ProductOutstockBillProductQuery();
         productOutstockBillProductQuery.or().andProductIdIn(productIdList);
-
-        if ( orderBillProductDAO.countByExample(orderBillProductQuery) > 0 ||
-                productInstockBillProductDAO.countByExample(productInstockBillProductQuery) > 0 ||
-                productOutstockBillProductDAO.countByExample(productOutstockBillProductQuery) > 0 ) {
-            throw new BadRequestException(PRODUCT_REFER);
+        if (productOutstockBillProductDAO.countByExample(productOutstockBillProductQuery) > 0) {
+            throw new BadRequestException(PRODUCT_REFER_BY_OUTSTOCK);
         }
 
         //删除主表
@@ -163,7 +165,7 @@ public class ProductService extends BaseService {
         productMaterialDAO.deleteByExample(productMaterialQuery);
 
         // 添加日志
-        addLog(PRODUCT, Operate.REMOVE, productIdList);
+        addLog(LogType.PRODUCT, Operate.REMOVE, productIdList);
     }
 
     /**
@@ -190,6 +192,10 @@ public class ProductService extends BaseService {
         if (!ParamUtils.isNull(sortColumn)) {
             productQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
         }
+        // 类别筛选
+        if (!ParamUtils.isNull(categoryId) && !categoryId.equals(-1)) {
+            productQuery.setCategoryId(categoryId);
+        }
 
         // TODO: 目前对searchKey支持比较机械
         // 搜索货品编号
@@ -200,9 +206,6 @@ public class ProductService extends BaseService {
         if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
             criteria.andClosedEqualTo(closed > 0);
         }
-        if (!ParamUtils.isNull(categoryId) && !categoryId.equals(-1)) {
-            criteria.andCategoryIdEqualTo(categoryId);
-        }
         // 搜索货品名称
         criteria = productQuery.or();
         if (!ParamUtils.isNull(searchKey)) {
@@ -211,11 +214,8 @@ public class ProductService extends BaseService {
         if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
             criteria.andClosedEqualTo(closed > 0);
         }
-        if (!ParamUtils.isNull(categoryId) && !categoryId.equals(-1)) {
-            criteria.andCategoryIdEqualTo(categoryId);
-        }
 
-        List<Product> result = productDAO.selectByExample(productQuery);
+        List<Product> result = productDAO.selectWithCategoryNameByExample(productQuery);
 
         return new PageMode<Product>(result, productDAO.countByExample(productQuery));
     }
@@ -306,6 +306,15 @@ public class ProductService extends BaseService {
      */
     public List<ProductCategory> getCategoryList() { return productCategoryDAO.selectByExample(new ProductCategoryQuery()); }
 
-    private static final String PRODUCT_REFER = "货品被引用";
+    /**
+     * 获取所有可选的物料
+     */
+    public List<Material> getMaterialList() {
+        return materialDAO.selectByExample(new MaterialQuery());
+    }
+
+    private static final String PRODUCT_REFER_BY_ORDER = "货品被订单引用";
+    private static final String PRODUCT_REFER_BY_INSTOCK = "货品被货品入库单引用";
+    private static final String PRODUCT_REFER_BY_OUTSTOCK = "货品被货品出库单引用";
 }
 
