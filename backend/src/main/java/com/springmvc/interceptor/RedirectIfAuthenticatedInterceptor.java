@@ -19,7 +19,7 @@ public class RedirectIfAuthenticatedInterceptor extends HandlerInterceptorAdapte
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object o) throws Exception {
         // 只拦截登录页面
-        if (!request.getServletPath().equals("/login") || RequestUtils.isAjaxOrWantsJson(request)) {
+        if (!RequestUtils.isLoginPath(request.getServletPath()) || RequestUtils.isAjaxOrWantsJson(request)) {
             return true;
         }
 

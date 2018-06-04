@@ -31,7 +31,7 @@ public class AuthenticateInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object o) throws Exception {
         // 不拦截登录
-        if (request.getServletPath().equals("/login")) {
+        if (RequestUtils.isLoginPath(request.getServletPath())) {
             return true;
         }
 
