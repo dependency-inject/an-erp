@@ -84,4 +84,11 @@ public interface MaterialDAO {
      * @param record
      */
     int updateByPrimaryKey(Material record);
+
+    /**
+     * 获取一个带有类别名称的数据库记录
+     *
+     * @param example
+     */
+    List<Material> selectWithCategoryNameByExample(MaterialQuery example);
 }

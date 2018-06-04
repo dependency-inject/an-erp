@@ -32,16 +32,27 @@ export default {
         UPDATE_AT: '修改时间',
         UPDATE_BY: '修改人',
         MATERIAL: '物料',
-        MATERIAL_PROPERTY: '配料属性',
-        MATERIAL_INFO: '物料信息',
-    },
-    MATERIAL: {
         MATERIAL_NO: '物料编号',
         MATERIAL_NAME: '物料名称',
-        QUANTITY: '数量',
-        REMARK: '备注'
+        MATERIAL_QUANTITY: '数量',
+        MATERIAL_REMARK: '备注',
+        MATERIAL_PROPERTY: '配料属性',
     },
-    
+    MATERIAL: {
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_NO: '物料编号',
+        UNIT: '单位',
+        SPEC: '规格',
+        CATEGORY_ID: '类别',
+        CATEGORY_NAME: '类别',
+        COST: '定价',
+        REMARK: '备注',
+    },
+    MATERIAL_CATEGORY: {
+        CATEGORY_NAME: '类别名称',
+        PARENT_ID: '上级分类',
+    },
+
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',
     ELSE_INFO: '其他信息',
@@ -50,6 +61,9 @@ export default {
     ROLE_PERMISSION2: '角色与权限',
     PERMISSION_DETAIL: '角色权限明细',
     SYSTEM_SETTING: '系统设置',
+
+    MATERIAL_INFO: '物料信息',
+    CATEGORY_INFO: '类别信息',
 
     NOT_BE_NULL: '不能为空',
     PLEASE_SELECT: '请选择',

@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.PRODUCT.MATERIAL_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addMaterial"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.PRODUCT.MATERIAL') }}</a>）</span></div>
+                        <div class="panel-header">{{ $t('field.MATERIAL_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addMaterial"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.MATERIAL_INFO') }}</a>）</span></div>
                         <div class="panel-body">
                             <i-table border :columns="columnList" :data="this.item.productMaterialList"></i-table>
                         </div>
@@ -35,9 +35,9 @@
                         <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
                     </i-select>
                 </form-item>
-                <form-item :label="$t('field.MATERIAL.QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
+                <form-item :label="$t('field.PRODUCT.MATERIAL_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
                 <form-item :label="$t('field.PRODUCT.MATERIAL_PROPERTY')" prop="materialProperty"><i-input v-model="modal.item.materialProperty" type="textarea"></i-input></form-item>
-                <form-item :label="$t('field.MATERIAL.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
+                <form-item :label="$t('field.PRODUCT.MATERIAL_REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
             </i-form>
         </modal>
     </div>
@@ -86,7 +86,7 @@ export default {
                     { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT.MATERIAL'), trigger: 'change' }
                 ],
                 quantity: [
-                    { type: 'number', required: true, message: this.$t('field.MATERIAL.QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                    { type: 'number', required: true, message: this.$t('field.PRODUCT.MATERIAL_QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ]
             }
         },
@@ -101,11 +101,11 @@ export default {
         },
         columnList() {
             let result = [
-                { title: this.$t('field.MATERIAL.MATERIAL_NO'), key: 'materialNo' },
-                { title: this.$t('field.MATERIAL.MATERIAL_NAME'), key: 'materialName' },
-                { title: this.$t('field.MATERIAL.QUANTITY'), key: 'quantity' },
+                { title: this.$t('field.PRODUCT.MATERIAL_NO'), key: 'materialNo' },
+                { title: this.$t('field.PRODUCT.MATERIAL_NAME'), key: 'materialName' },
+                { title: this.$t('field.PRODUCT.MATERIAL_QUANTITY'), key: 'quantity' },
                 { title: this.$t('field.PRODUCT.MATERIAL_PROPERTY'), key: 'materialProperty' },
-                { title: this.$t('field.MATERIAL.REMARK'), key: 'remark' }
+                { title: this.$t('field.PRODUCT.MATERIAL_REMARK'), key: 'remark' }
             ];
             if (this.editable) {
                 result.push({ 
@@ -195,7 +195,7 @@ export default {
             }
         },
         addMaterial() {
-            this.modal.title = this.$t('common.ADD') + this.$t('field.PRODUCT.MATERIAL_INFO');
+            this.modal.title = this.$t('common.ADD') + this.$t('field.MATERIAL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = -1;
             this.modal.item.materialId = '';
@@ -205,7 +205,7 @@ export default {
             this.modal.visible = true;
         },
         editMaterial(item) {
-            this.modal.title = this.$t('common.EDIT') + this.$t('field.PRODUCT.MATERIAL_INFO');
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.MATERIAL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = item._index;
             this.modal.item.materialId = item.materialId;
