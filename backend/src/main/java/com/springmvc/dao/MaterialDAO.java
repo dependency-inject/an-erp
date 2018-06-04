@@ -89,6 +89,13 @@ public interface MaterialDAO {
     int updateByPrimaryKey(Material record);
 
     /**
+     * 获取一个带有类别名称的数据库记录
+     *
+     * @param example
+     */
+    List<Material> selectWithCategoryNameByExample(MaterialQuery example);
+
+    /*
      *   根据指定的条件查询符合条件的数据库记录（物料库存）
      *
      * @param example 查询条件

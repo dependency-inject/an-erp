@@ -86,6 +86,12 @@ public interface ProductDAO {
      */
     int updateByPrimaryKey(Product record);
 
+    /**
+     * 获取一个带有类别名称的数据库记录
+     *
+     * @param example
+     */
+    List<Product> selectWithCategoryNameByExample(ProductQuery example);
 
     /**
      *  根据指定的条件查询符合条件的数据库记录（产品库存）

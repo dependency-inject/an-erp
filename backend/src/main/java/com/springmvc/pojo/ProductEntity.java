@@ -50,7 +50,7 @@ public class ProductEntity {
      * 是否停用（0启用，1停用）
      * 表字段 : product.closed
      */
-    private Byte closed;
+    private Boolean closed;
 
     /**
      * 备注
@@ -226,9 +226,9 @@ public class ProductEntity {
      * 获取 是否停用（0启用，1停用）
      * 表字段 : product.closed
      *
-     * @return Byte
+     * @return Boolean
      */
-    public Byte getClosed() {
+    public Boolean getClosed() {
         return closed;
     }
 
@@ -238,7 +238,7 @@ public class ProductEntity {
      *
      * @param closed
      */
-    public void setClosed(Byte closed) {
+    public void setClosed(Boolean closed) {
         this.closed = closed;
     }
 
