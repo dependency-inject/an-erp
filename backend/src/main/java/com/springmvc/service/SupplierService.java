@@ -99,7 +99,6 @@ public class SupplierService extends BaseService {
             supplierQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
         }
 
-        // TODO: 目前对searchKey支持比较机械
         // 搜索供应商名称
         SupplierQuery.Criteria criteria = supplierQuery.or();
         if (!ParamUtils.isNull(searchKey)) {
@@ -245,7 +244,6 @@ public class SupplierService extends BaseService {
             suppliermaterialQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
         }
 
-        // TODO: 目前对searchKey支持比较机械
         SupplierMaterialQuery.Criteria criteria = suppliermaterialQuery.or();
         criteria.andSupplierIdEqualTo(supplierId);
 

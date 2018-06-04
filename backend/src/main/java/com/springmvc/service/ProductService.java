@@ -197,7 +197,6 @@ public class ProductService extends BaseService {
             productQuery.setCategoryId(categoryId);
         }
 
-        // TODO: 目前对searchKey支持比较机械
         // 搜索货品编号
         ProductQuery.Criteria criteria = productQuery.or();
         if (!ParamUtils.isNull(searchKey)) {
