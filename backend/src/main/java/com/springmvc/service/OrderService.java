@@ -283,10 +283,12 @@ public class OrderService extends BaseService {
     }
 
     /**
-     * 获取所有可选的商品
+     * 获取所有可选的货品（过滤已停用的货品）
      */
     public List<Product> getProductList() {
-        return productDAO.selectByExample(new ProductQuery());
+        ProductQuery productQuery = new ProductQuery();
+        productQuery.or().andClosedEqualTo(false);
+        return productDAO.selectByExample(productQuery);
     }
 
 

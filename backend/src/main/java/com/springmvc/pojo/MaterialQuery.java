@@ -34,6 +34,8 @@ public class MaterialQuery {
 
     private Integer offset;
 
+    private Integer categoryId;
+
     /**
      *  构造查询条件
      */
@@ -140,6 +142,14 @@ public class MaterialQuery {
 
     public Integer getOffset() {
         return offset;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     /**

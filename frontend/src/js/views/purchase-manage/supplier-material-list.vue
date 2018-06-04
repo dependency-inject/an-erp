@@ -1,21 +1,27 @@
 <template>
     <div class="main-panel no-scroll">
         <div class="main-panel-content">
+            <div style="padding:12px;border-bottom:1px solid #ddd;font-size:16px">
+                <span class="text-primary">{{ $t('field.SUPPLIER.SUPPLIER_NAME')+'：' }}</span>
+                <span>{{ item.supplierName }}</span>
+                <span class="text-primary" style="margin-left:30px">{{ $t('field.SUPPLIER.CONTACT')+'：' }}</span>
+                <span>{{ item.contact }}</span>
+            </div>
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.WAREHOUSE.WAREHOUSE_NO')+'/'+$t('field.WAREHOUSE.WAREHOUSE_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.MATERIAL_NO')+'/'+$t('field.SUPPLIER.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                 </div>
                 <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
                     <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
                     <!-- 删除 -->
-                    <span class="label-btn" @click="remove(selectItems)" v-if="warehouseRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+                    <span class="label-btn" @click="remove(selectItems)" v-if="supplierUpdatePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
                 <!-- 顶部右侧按钮 -->
                 <div class="button-list pull-right">
-                    <i-button class="operate-btn" type="primary" shape="circle" @click="add" v-if="warehouseAddPermission">{{ $t('common.ADD') }}</i-button>
+                    <i-button class="operate-btn" type="primary" shape="circle" @click="addPrice" v-if="supplierUpdatePermission">{{ $t('common.ADD') }}</i-button>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -28,10 +34,15 @@
                 <page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
             </div>
         </div>
-        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true">
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="savePrice" :loading="true">
             <i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
-                <form-item :label="$t('field.WAREHOUSE.WAREHOUSE_NO')" prop="warehouseNo"><i-input v-model="modal.item.warehouseNo"></i-input></form-item>
-                <form-item :label="$t('field.WAREHOUSE.WAREHOUSE_NAME')" prop="warehouseName"><i-input v-model="modal.item.warehouseName"></i-input></form-item>
+                <form-item :label="$t('field.SUPPLIER.MATERIAL')" prop="materialId">
+                    <i-select v-model="modal.item.materialId">
+                        <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
+                    </i-select>
+                </form-item>
+                <form-item :label="$t('field.SUPPLIER.PRICE')" prop="price"><input-number v-model="modal.item.price" :min="0" style="width:100%"></input-number></form-item>
+                <form-item :label="$t('field.SUPPLIER.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
             </i-form>
         </modal>
     </div>
@@ -42,12 +53,15 @@ import Permission from '../../mixins/permission';
 
 import util from '../../libs/util.js';
 
-import warehouseService from '../../service/warehouse';
+import supplierService from '../../service/supplier';
 
 export default {
     mixins: [ Permission ],
     data() {
         return {
+            item: {
+                supplierId: 0
+            },
             vm: {
                 queryParameters: {
                     searchKey: '',
@@ -58,61 +72,80 @@ export default {
                     sort: ''
                 },
                 items: [],
-                identity: 'warehouseId',
-            },
-            modal: {
-                title: 'title',
-                item: {},
-                visible: false
+                identity: 'supplierMaterialId'
             },
             selectItems: [],
+            modal: {
+                title: 'title',
+                item: {
+                    materialId: ''
+                },
+                visible: false
+            },
+            materialList: []
         }
     },
     computed: {
-        rules(){
+        rules() {
             return {
-                warehouseName:[
-                    { required: true, message: this.$t('field.WAREHOUSE.WAREHOUSE_NAME')+this.$t('field.NOT_BE_NULL'), trigger: 'blur'}
+                materialId: [
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.SUPPLIER.MATERIAL'), trigger: 'change' }
                 ],
-                warehouseNo:[
-                    { required: true, message: this.$t('field.WAREHOUSE.WAREHOUSE_NO')+this.$t('field.NOT_BE_NULL'), trigger: 'blur'}
-                ],
+                price: [
+                    { type: 'number', required: true, message: this.$t('field.SUPPLIER.PRICE')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ]
             }
         },
         tableHeight() {
-            return document.documentElement.clientHeight - 220;
+            return document.documentElement.clientHeight - 270;
         },
         // 控制表格显示哪些列
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.WAREHOUSE.WAREHOUSE_NO'), key: 'warehouseNo', sortable: 'custom' },
-                { title: this.$t('field.WAREHOUSE.WAREHOUSE_NAME'), key: 'warehouseName', sortable: 'custom' },
+                { title: this.$t('field.SUPPLIER.MATERIAL_NO'), key: 'materialNo' },
+                { title: this.$t('field.SUPPLIER.MATERIAL_NAME'), key: 'materialName' },
+                { title: this.$t('field.SUPPLIER.PRICE'), key: 'price', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
-                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.EDIT'), (row) => {
-                            this.update(row)
-                        }, 'updatePermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
-                            this.remove([row])
+                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                            this.updatePrice(row);
+                        }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
+                            this.remove([row]) 
                         }, 'removePermission')]);
-                    }
+                    } 
                 }
             ];
         }
     },
     methods: {
         initData() {
-            this.search();
+            // 路由检查
+            if (!isNaN(Number(this.$route.params.id))) {
+                this.item.supplierId = Number(this.$route.params.id);
+                this.getById();
+                this.search();
+            } else {
+                this.$router.replace('/supplier');
+            }
+        },
+        async getById() {
+            if (this.item.supplierId === 0) return;
+            let result = await supplierService.getById(this.item.supplierId);
+            if (result.status === 200) {
+                this.item = result.data;
+            } else {
+                this.$router.replace('/supplier');
+            }
         },
         async search() {
             let idList = _.map(this.selectItems, this.vm.identity).join(",");
-            let result = await warehouseService.search(this.vm.queryParameters);
+            let result = await supplierService.searchMaterial(Object.assign({ supplierId: this.item.supplierId }, this.vm.queryParameters));
             if (result.status === 200) {
                 var items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
-                    if (this.warehouseUpdatePermission)
-                        item['updatePermission'] = true;
-                    if (this.warehouseRemovePermission)
+                    item['detailPermission'] = true;
+                    if (this.supplierUpdatePermission)
                         item['removePermission'] = true;
                 });
                 this.vm.items = items;
@@ -141,7 +174,7 @@ export default {
             this.$Modal.confirm({
                 content: this.$t('common.REMOVE_CONFIRM'),
                 onOk: async () => {
-                    let result = await warehouseService.remove(idList);
+                    let result = await supplierService.removeMaterial(idList);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
                         this.selectItems = [];
@@ -152,33 +185,37 @@ export default {
                 }
             });
         },
-        add() {
-            this.modal.title = this.$t('common.ADD') + this.$t('navigate.WAREHOUSE');
-            this.$refs.formValidate.resetFields();
-            this.modal.item.warehouseId = 0;
-            this.modal.item.warehouseNo = '';
-            this.modal.item.warehouseName = '';
-            this.modal.visible = true;
-        },
-        update(item){
-            this.modal.title = this.$t('common.EDIT') + this.$t('navigate.WAREHOUSE');
-            this.$refs.formValidate.resetFields();
-            this.modal.item.warehouseId = item.warehouseId;
-            this.modal.item.warehouseNo = item.warehouseNo;
-            this.modal.item.warehouseName = item.warehouseName;
-            this.modal.visible = true;
-        },
         clearChecked() {
             this.$refs.table.selectAll(false);
         },
-        save() {
+        addPrice() {
+            this.modal.title = this.$t('common.ADD') + this.$t('field.SUPPLIER.MATERIAL_INFO');
+            this.$refs.formValidate.resetFields();
+            this.modal.item.supplierMaterialId = 0;
+            this.modal.item.supplierId = this.item.supplierId;
+            this.modal.item.materialId = '';
+            this.modal.item.price = 0;
+            this.modal.item.remark = '';
+            this.modal.visible = true;
+        },
+        updatePrice(item) {
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.SUPPLIER.MATERIAL_INFO');
+            this.$refs.formValidate.resetFields();
+            this.modal.item.supplierMaterialId = item.supplierMaterialId;
+            this.modal.item.supplierId = item.supplierId;
+            this.modal.item.materialId  = item.materialId;
+            this.modal.item.price = item.price;
+            this.modal.item.remark = item.remark;
+            this.modal.visible = true;
+        },
+        savePrice() {
             this.$refs.formValidate.validate(async (valid) => {
                 if (valid) {
                     let result = {}
-                    if (this.modal.item.warehouseId === 0)
-                        result = await warehouseService.add(this.modal.item);
+                    if (this.modal.item.supplierMaterialId === 0)
+                        result = await supplierService.addMaterial(this.modal.item);
                     else
-                        result = await warehouseService.update(this.modal.item);
+                        result = await supplierService.updateMaterial(this.modal.item);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.SAVE_SUCCESS'));
                         this.modal.visible = false;
@@ -193,9 +230,21 @@ export default {
                 }
             });
         },
+        async getMaterialList() {
+            let result = await supplierService.getMaterialList();
+            if (result.status === 200) {
+                this.materialList = result.data;
+            }
+        }
     },
-    mounted() {
+    created() {
         this.initData();
+        this.getMaterialList();
+    },
+    watch: {
+        '$route'(to, from) {
+            this.initData();
+        }
     }
 }
 </script>

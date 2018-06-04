@@ -2,6 +2,7 @@ export default {
 	APP_NAME: '电子光电码盘生产管理系统',
 
 	ADD: '新增',
+	ADD_CHILD: '新增子类',
 	EDIT: '修改',
 	DETAIL: '详情',
 	REMOVE: '删除',
@@ -21,6 +22,7 @@ export default {
 	IMPORT: '导入',
 	EXPORT: '导出',
 	RESET_PASSWORD: '重置密码',
+	CHART: '图表',
 
 	DOT: '，',
 

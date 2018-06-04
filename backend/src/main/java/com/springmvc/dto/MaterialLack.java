@@ -1,37 +1,69 @@
 package com.springmvc.dto;
 
-import com.springmvc.pojo.ProductMaterialEntity;
-
-public class ProductMaterial extends ProductMaterialEntity {
+public class MaterialLack {
     /**
-     * 货品物料列表：物料编号
+     * 物料ID
+     * 表字段 : material.material_id
+     */
+    private Integer materialId;
+
+    /**
+     * 物料编号
      * 表字段 : material.material_no
      */
     private String materialNo;
 
     /**
-     * 货品物料列表：物料名称
+     * 物料名称
      * 表字段 : material.material_name
      */
     private String materialName;
 
     /**
-     * 货品物料列表：计量单位
+     * 计量单位
      * 表字段 : material.unit
      */
     private String unit;
 
     /**
-     * 货品物料列表：类别ID
-     * 表字段 : material.category_id
+     *总库存
      */
-    private Integer categoryId;
+    private Integer totalStock;
+    /**
+     * 出库可用库存
+     */
+    private Integer useOutstock;
 
     /**
-     * 货品物料列表：规格
-     * 表字段 : material.spec
+     * 领料可用库存
      */
-    private String spec;
+    private Integer useDraw;
+
+    public Integer getTotalStock(){return totalStock; }
+    public void setTotalStock(Integer totalStock){this.totalStock = totalStock;}
+    public Integer getUseOutstock(){return useOutstock; }
+    public void setUseOutstock(Integer useOutstock){this.useOutstock = useOutstock;}
+    public Integer getUseDraw(){return useDraw; }
+    public void setUseDraw(Integer useDraw){this.useDraw = useDraw;}
+    /**
+     * 获取 物料ID
+     * 表字段 : material.material_id
+     *
+     * @return Integer
+     */
+    public Integer getMaterialId() {
+        return materialId;
+    }
+
+    /**
+     * 设置 物料ID
+     * 表字段 : material.material_id
+     *
+     * @param materialId
+     */
+    public void setMaterialId(Integer materialId) {
+        this.materialId = materialId;
+    }
 
     /**
      * 获取 物料编号
@@ -93,50 +125,5 @@ public class ProductMaterial extends ProductMaterialEntity {
         this.unit = unit == null ? null : unit.trim();
     }
 
-    /**
-     * 获取 类别ID
-     * 表字段 : material.category_id
-     *
-     * @return Integer
-     */
-    public Integer getCategoryId() {
-        return categoryId;
-    }
 
-    /**
-     * 设置 类别ID
-     * 表字段 : material.category_id
-     *
-     * @param categoryId
-     */
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    /**
-     * 获取 规格
-     * 表字段 : material.spec
-     *
-     * @return String
-     */
-    public String getSpec() {
-        return spec;
-    }
-
-    /**
-     * 设置 规格
-     * 表字段 : material.spec
-     *
-     * @param spec
-     */
-    public void setSpec(String spec) {
-        this.spec = spec == null ? null : spec.trim();
-    }
-
-    /**
-     * 获取
-     * 表字段 : material.cost
-     *
-     * @return BigDecimal
-     */
 }

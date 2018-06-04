@@ -140,7 +140,7 @@ export default {
                 { title: this.$t('field.ORDER.MATERIAL_NO'), key: 'materialNo'},
                 { title: this.$t('field.ORDER.MATERIAL_NAME'), key: 'materialName'},
                 { title: this.$t('field.ORDER.MATERIAL_QUANTITY'), key: 'quantity'},
-                { title: this.$t('field.ORDER.MATERIAL_PRODUCT'), key: 'product'},
+                { title: this.$t('field.ORDER.PRODUCT_NO'), key: 'productNo'},
                 { title: this.$t('field.ORDER.MATERIAL_PROPERTY'), key: 'materialProperty'},
                 { title: this.$t('field.ORDER.REMARK'), key: 'productMaterialRemark'},
             ];
@@ -189,11 +189,7 @@ export default {
         async getMaterialRequired() {
             let result = await orderService.getMaterialRequired(this.item.billId);
             if (result.status === 200) {
-                var items = result.data;
-                items.forEach((item) => {
-                    item.product = item.productNo + ' - ' + item.productName;
-                });
-                this.materialList = items;
+                this.materialList = result.data;
             }
         },
         save() {
