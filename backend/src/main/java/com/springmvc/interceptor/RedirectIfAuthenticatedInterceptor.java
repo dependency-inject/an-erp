@@ -1,6 +1,7 @@
 package com.springmvc.interceptor;
 
 import com.springmvc.dto.Admin;
+import com.springmvc.utils.LogUtils;
 import com.springmvc.utils.RequestUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
