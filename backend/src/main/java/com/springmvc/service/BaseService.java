@@ -66,6 +66,7 @@ public abstract class BaseService {
         DRAW_MATERIAL_BILL("领料单"), RETURN_MATERIAL_BILL("退料单"),
         WAREHOUSE("仓库"), PRODUCT_OUTSTOCK("货品出库单"), PRODUCT_INSTOCK("货品入库单"), MATERIAL_OUTSTOCK("物料出库单"), MATERIAL_INSTOCK("物料入库单"),
         SUPPLIER("供应商"), SUPPLIER_MATERIAL("供应商供料"),
+        MATERIAL_COST("物料成本"),
         ADMIN("用户"), ROLE("角色"), ROLE_PERMISSION("角色权限"), SYSTEM("系统");
 
         public final String type;
