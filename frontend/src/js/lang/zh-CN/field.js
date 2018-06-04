@@ -52,7 +52,10 @@ export default {
         CREATE_AT: '创建时间',
         CREATE_BY: '创建者',
         UPDATE_AT: '更新时间',
-        UPDATE_BY: '更新者'
+        UPDATE_BY: '更新者',
+        MATERIAL_INFO:'物料信息',
+        MATERIAL: '物料',
+        QUANTITY: '数量',
     },
     MATERIAL: {
         MATERIAL_NO: '物料编号',
