@@ -38,6 +38,10 @@ export default {
         MATERIAL_REMARK: '备注',
         MATERIAL_PROPERTY: '配料属性',
     },
+    PRODUCT_CATEGORY: {
+        CATEGORY_NAME: '类别名称',
+        PARENT_ID: '上级分类',
+    },
     MATERIAL: {
         MATERIAL_NAME: '物料名称',
         MATERIAL_NO: '物料编号',
