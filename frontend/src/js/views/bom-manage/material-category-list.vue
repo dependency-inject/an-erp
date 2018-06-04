@@ -39,7 +39,7 @@ export default {
             modal:{
             	title: 'title',
             	item: {
-            		parentId: 0
+            		parentId: ''
             	},
             	visible: false
             },
