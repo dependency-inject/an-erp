@@ -19,9 +19,7 @@
                         <div class="panel-header">{{ $t('field.ELSE_INFO') }}</div>
                         <div class="panel-body">
                             <form-item :label="$t('field.ORDER.CLIENT')" prop="clientId">
-                                 <i-select v-model="item.clientId" :disabled="item.billId!==0">
-                                    <i-option v-for="item in clientList" :value="item.clientId" :key="item.clientId">{{ item.clientName }}</i-option>
-                                </i-select>
+                                <common-select type="client" v-model="item.clientId" :disabled="item.billId!==0"></common-select>
                             </form-item>
                             <form-item :label="$t('field.ORDER.CONTACT')" prop="contact"><i-input v-model="item.contact"></i-input></form-item>
                             <form-item :label="$t('field.ORDER.CONTACT_PHONE')" prop="contactPhone"><i-input v-model="item.contactPhone"></i-input></form-item>
@@ -54,9 +52,7 @@
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.ORDER.PRODUCT')" prop="productId">
-                    <i-select v-model="modal.item.productId">
-                        <i-option v-for="item in productList" :value="item.productId" :key="item.productId">{{ item.productNo + ' - ' +item.productName }}</i-option>
-                    </i-select>
+                    <common-select type="product" v-model="modal.item.productId" :query-parameters="{closed:0}" @on-change="productSelectChange"></common-select>
                 </form-item>
                 <form-item :label="$t('field.ORDER.QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
                 <form-item :label="$t('field.ORDER.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
@@ -70,6 +66,8 @@ import Permission from '../../mixins/permission';
 
 import util from '../../libs/util.js';
 
+import commonSelect from '../../components/common-select';
+
 import orderService from '../../service/order';
 
 export default {
@@ -81,11 +79,12 @@ export default {
             },
             modal: {
                 title: 'title',
-                item: {},
+                item: {
+                    productId: ''
+                },
                 visible: false
             },
             clientList: [],
-            productList: [],
             materialList: []
         }
     },
@@ -153,6 +152,7 @@ export default {
             return result;
         }
     },
+    components: { commonSelect },
     methods: {
         initData() {
             // 路由检查           
@@ -295,12 +295,6 @@ export default {
                 this.clientList = result.data;
             }
         },
-        async getProductList() {
-            let result = await orderService.getProductList();
-            if (result.status === 200) {
-                this.productList = result.data;
-            }
-        },
         addProduct() {
             this.modal.title = this.$t('common.ADD') + this.$t('field.ORDER.PRODUCT_INFO');
             this.$refs.formValidate2.resetFields();
@@ -317,18 +311,14 @@ export default {
             this.modal.item.productId = item.productId;
             this.modal.item.quantity = item.quantity;
             this.modal.item.remark = item.remark;
+            this.modal.item.productNo = item.productNo;
+            this.modal.item.productName = item.productName;
+            this.modal.item.price = item.price;
             this.modal.visible = true;
         },
         saveProduct() {
             this.$refs.formValidate2.validate(async (valid) => {
                 if (valid) {
-                    this.productList.forEach((item) => {
-                        if (item.productId === this.modal.item.productId) {
-                            this.modal.item.productNo = item.productNo;
-                            this.modal.item.productName = item.productName;
-                            this.modal.item.price = item.price;
-                        }
-                    });
                     if (this.modal.item._index === -1) {
                         this.item.productList.push({
                             productId: this.modal.item.productId,
@@ -363,12 +353,22 @@ export default {
                     this.item.productList.splice(index, 1);
                 }
             });
+        },
+        productSelectChange(item) {
+            if (item === null) {
+                this.modal.item.productNo = ''
+                this.modal.item.productName = '';
+                this.modal.item.price = 0;
+            } else {
+                this.modal.item.productNo = item.productNo;
+                this.modal.item.productName = item.productName;
+                this.modal.item.price = item.price;
+            }
         }
     },
     created() {
         this.setDefault();
         this.getClientList();
-        this.getProductList();
         this.initData();
     },
     watch: {

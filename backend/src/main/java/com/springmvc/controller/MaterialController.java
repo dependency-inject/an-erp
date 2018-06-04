@@ -4,6 +4,7 @@ import com.springmvc.annotation.AccessPermission;
 import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.Material;
 import com.springmvc.dto.PageMode;
+import com.springmvc.dto.Product;
 import com.springmvc.service.MaterialService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/material")
@@ -21,6 +23,12 @@ public class MaterialController {
 
     @Resource
     MaterialService materialService;
+
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Material> getList() {
+        return materialService.getList();
+    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody

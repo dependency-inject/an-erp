@@ -23,6 +23,12 @@ public class ProductController {
     @Resource
     ProductService productService;
 
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Product> getList(Integer closed) {
+        return productService.getList(closed);
+    }
+
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
     @ResponseBody
     public Product getById(@RequestParam Integer productId) {
@@ -72,12 +78,6 @@ public class ProductController {
     public String updateClosedState(@RequestParam String productIdList, @RequestParam Boolean closed) {
         productService.updateProductClosedState(ParamUtils.toIntList(productIdList), closed);
         return "success";
-    }
-
-    @RequestMapping(value = "/getCategoryList", method = RequestMethod.POST)
-    @ResponseBody
-    public List<ProductCategory> getCategoryList() {
-        return productService.getCategoryList();
     }
 
     @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)

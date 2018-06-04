@@ -20,7 +20,7 @@
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.ROLE_PERMISSION2') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.ADMIN.ROLE')" prop="roleId"><role-select ref="role" v-model="item.roleIdList" multiple @on-change="handleRoleChange"></role-select></form-item>
+                            <form-item :label="$t('field.ADMIN.ROLE')" prop="roleId"><common-select ref="role" type="role" v-model="item.roleIdList" multiple @on-change="handleRoleChange"></common-select></form-item>
                             <permission-table v-model="permissionIdList" :disabled="true" style="margin-top:20px"></permission-table>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
 import Permission from '../../mixins/permission';
 
 import permissionTable from '../../components/permission-table';
-import roleSelect from '../../components/role-select';
+import commonSelect from '../../components/common-select';
 
 import adminService from '../../service/admin';
 
@@ -49,7 +49,7 @@ export default {
             permissionIdList: ''
         }
     },
-    components: { permissionTable, roleSelect },
+    components: { permissionTable, commonSelect },
     computed: {
         rules() {
             return {

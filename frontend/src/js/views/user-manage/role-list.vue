@@ -7,7 +7,7 @@
                     <div class="panel-body">
                         <div class="data-item">
                             <div class="item-start">{{ $t('field.ROLE.SELECT_ROLE') }}</div>
-                            <role-select ref="role" class="item-middle" v-model="item.roleId" @on-change="item.roleName=arguments[0].roleName;item.sysDefault=arguments[0].sysDefault;item.permissionIdList=arguments[0].permissionIdList"></role-select>
+                            <common-select ref="role" class="item-middle" type="role" v-model="item.roleId" @on-change="roleSelectChange"></common-select>
                             <div class="item-end" v-if="item.roleId&&!item.sysDefault"><a @click="edit(item)"><icon type="edit"></icon> {{ $t('common.EDIT')+$t('field.ROLE.ROLE_NAME') }}</a><a @click="remove(item)"><icon type="close"></icon> {{ $t('common.REMOVE')+$t('field.ROLE.ROLE_NAME') }}</a></div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
 
 <script>
 import permissionTable from '../../components/permission-table';
-import roleSelect from '../../components/role-select';
+import commonSelect from '../../components/common-select';
 
 import roleService from '../../service/role';
 
@@ -49,7 +49,7 @@ export default {
             }
         }
     },
-    components: { permissionTable, roleSelect },
+    components: { permissionTable, commonSelect },
     computed: {
         rules() {
             return {
@@ -130,6 +130,17 @@ export default {
                 this.$refs.role.search();
             } else {
                 this.$Message.error(result.data);
+            }
+        },
+        roleSelectChange(item) {
+            if (item === null) {
+                this.item.roleName = '';
+                this.item.sysDefault = undefined;
+                this.item.permissionIdList = '';
+            } else {
+                this.item.roleName = item.roleName;
+                this.item.sysDefault = item.sysDefault;
+                this.item.permissionIdList = item.permissionIdList;
             }
         }
     },

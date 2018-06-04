@@ -111,10 +111,10 @@ export default {
             }
         },
         async initCategoryList(){
-            let result = await materialCategoryService.getAll();
+            let result = await materialCategoryService.getList();
             if (result.status === 200) {
                 var items = result.data;
-                this.categoryList = [{ categoryId: -1, title: this.$t('component.ALL_CATEGORY'), children: this.generateCategoryList(0, items) }];
+                this.categoryList = [{ categoryId: -1, title: this.$t('component.ALL_CATEGORY'), expand: true, children: this.generateCategoryList(0, items) }];
             }
         },
         generateCategoryList(parent, list){

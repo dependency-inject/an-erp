@@ -23,10 +23,10 @@ public class MaterialCategoryController {
     MaterialCategoryService materialCategoryService;
 
     //返回全部信息列表
-    @RequestMapping(value = "/getAll", method = RequestMethod.POST)
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
     @ResponseBody
-    public List<MaterialCategory> getAll(){
-        return materialCategoryService.getAll();
+    public List<MaterialCategory> getList(){
+        return materialCategoryService.getList();
     }
 
     //增添记录

@@ -30,7 +30,7 @@ public class MaterialCategoryService extends BaseService {
      * 获取物料类别表的所有信息
      * @return 返回一个List
      */
-    public List<MaterialCategory> getAll(){
+    public List<MaterialCategory> getList(){
         return materialCategoryDAO.selectByExample(new MaterialCategoryQuery());
     }
 

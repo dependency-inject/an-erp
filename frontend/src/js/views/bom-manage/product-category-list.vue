@@ -32,7 +32,7 @@
                     <i-input v-model="modal.item.categoryName"></i-input>
                 </form-item>
                 <form-item :label="$t('field.PRODUCT_CATEGORY.PARENT_ID')" prop="parentId">
-                    <product-category-select ref="select" v-model="modal.item.parentId" root-option disabled></product-category-select>
+                    <tree-select ref="select" type="product-category" v-model="modal.item.parentId" root-option disabled></tree-select>
                 </form-item>
             </i-form>
         </modal>
@@ -41,7 +41,7 @@
 
 <script>
 import treeTable from '../../components/tree-table';
-import productCategorySelect from '../../components/product-category-select';
+import treeSelect from '../../components/tree-select';
 
 import productCategoryService from '../../service/product-category';
 
@@ -113,7 +113,7 @@ export default {
     },
 
     components: {
-        treeTable, productCategorySelect
+        treeTable, treeSelect
     },
 
     methods: {
@@ -122,7 +122,7 @@ export default {
         },
 
         async search() {
-            let result = await productCategoryService.getAll();
+            let result = await productCategoryService.getList();
 
             if (result.status === 200) {
                 this.vm.receiveData = result.data;

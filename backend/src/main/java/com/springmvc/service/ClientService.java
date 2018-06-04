@@ -27,6 +27,15 @@ public class ClientService extends BaseService {
     private OrderBillDAO orderBillDAO;
 
     /**
+     * 获取客户表的所有信息
+     *
+     * @return 返回列表
+     */
+    public List<Client> getList() {
+        return clientDAO.selectByExample(new ClientQuery());
+    }
+
+    /**
      * 查询客户信息（分页）
      *
      * 将主表信息取出：

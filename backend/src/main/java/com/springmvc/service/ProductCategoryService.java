@@ -31,7 +31,7 @@ public class ProductCategoryService extends BaseService {
      *
      * @return 返回列表
      */
-    public List<ProductCategory> getAll() {
+    public List<ProductCategory> getList() {
         return productCategoryDAO.selectByExample(new ProductCategoryQuery());
     }
 

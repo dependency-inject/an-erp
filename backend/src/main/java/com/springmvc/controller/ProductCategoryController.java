@@ -22,10 +22,10 @@ public class ProductCategoryController {
     ProductCategoryService productCategoryService;
 
     // 返回分类所有信息
-    @RequestMapping(value = "/getAll", method = RequestMethod.POST)
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
     @ResponseBody
-    public List<ProductCategory> getAll(){
-        return productCategoryService.getAll();
+    public List<ProductCategory> getList(){
+        return productCategoryService.getList();
     }
 
     // 新增记录

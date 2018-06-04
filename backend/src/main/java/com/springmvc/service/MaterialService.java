@@ -39,6 +39,15 @@ public class MaterialService extends BaseService {
     SupplierMaterialDAO supplierMaterialDAO;
 
     /**
+     * 获取物料表的所有信息
+     *
+     * @return 返回列表
+     */
+    public List<Material> getList() {
+        return materialDAO.selectByExample(new MaterialQuery());
+    }
+
+    /**
      * 查询物料信息（分页），包括分类名称.
      *
      * 信息来自：material left join material_category（同时包含总记录数）

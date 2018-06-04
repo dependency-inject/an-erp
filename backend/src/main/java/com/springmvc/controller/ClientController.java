@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/client")
@@ -20,6 +21,12 @@ public class ClientController {
 
     @Resource
     ClientService clientService;
+
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Client> getList() {
+        return clientService.getList();
+    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody

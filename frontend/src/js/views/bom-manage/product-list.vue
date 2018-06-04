@@ -49,6 +49,7 @@ import Permission from '../../mixins/permission';
 import util from '../../libs/util.js';
 
 import productService from '../../service/product';
+import productCategoryService from '../../service/product-category';
 
 export default {
     mixins: [ Permission ],
@@ -127,10 +128,10 @@ export default {
             return result;
         },
         async initCategoryList(){
-            let result = await productService.getCategoryList();
+            let result = await productCategoryService.getList();
             if (result.status === 200) {
                 var items = result.data;
-                this.categoryList = [{ categoryId: -1, title: '所有类别', children: this.generateCategoryList(0, items) }];
+                this.categoryList = [{ categoryId: -1, title: '所有类别', expand: true, children: this.generateCategoryList(0, items) }];
             }
         },
         async search() {

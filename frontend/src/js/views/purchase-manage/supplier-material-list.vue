@@ -37,9 +37,7 @@
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="savePrice" :loading="true">
             <i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
                 <form-item :label="$t('field.SUPPLIER.MATERIAL')" prop="materialId">
-                    <i-select v-model="modal.item.materialId">
-                        <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
-                    </i-select>
+                    <common-select type="material" v-model="modal.item.materialId"></common-select>
                 </form-item>
                 <form-item :label="$t('field.SUPPLIER.PRICE')" prop="price"><input-number v-model="modal.item.price" :min="0" style="width:100%"></input-number></form-item>
                 <form-item :label="$t('field.SUPPLIER.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
@@ -52,6 +50,8 @@
 import Permission from '../../mixins/permission';
 
 import util from '../../libs/util.js';
+
+import commonSelect from '../../components/common-select';
 
 import supplierService from '../../service/supplier';
 
@@ -81,8 +81,7 @@ export default {
                     materialId: ''
                 },
                 visible: false
-            },
-            materialList: []
+            }
         }
     },
     computed: {
@@ -117,6 +116,7 @@ export default {
             ];
         }
     },
+    components: { commonSelect },
     methods: {
         initData() {
             // 路由检查
@@ -229,17 +229,10 @@ export default {
                     this.$refs.modal.abortLoading();
                 }
             });
-        },
-        async getMaterialList() {
-            let result = await supplierService.getMaterialList();
-            if (result.status === 200) {
-                this.materialList = result.data;
-            }
         }
     },
     created() {
         this.initData();
-        this.getMaterialList();
     },
     watch: {
         '$route'(to, from) {

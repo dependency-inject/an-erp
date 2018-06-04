@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -39,6 +40,12 @@ public class AdminController {
     @ResponseBody
     public Admin getById(@RequestParam Integer adminId) {
         return adminService.getAdminWithRoleById(adminId);
+    }
+
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Admin> getList(Integer closed) {
+        return adminService.getList(closed);
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)

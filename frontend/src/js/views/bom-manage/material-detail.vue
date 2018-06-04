@@ -22,7 +22,7 @@
                         <div class="panel-header">{{ $t('field.CATEGORY_INFO') }}</div>
                         <div class="panel-body">
                             <form-item :label="$t('field.MATERIAL.CATEGORY_ID')" prop="categoryId">
-                                <material-category-select v-model="item.categoryId"></material-category-select>
+                                <tree-select type="material-category" v-model="item.categoryId"></tree-select>
                             </form-item>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
 <script>
 import Permission from '../../mixins/permission'
 
-import materialCategorySelect from '../../components/material-category-select';
+import treeSelect from '../../components/tree-select';
 
 import materialService from '../../service/material';
 
@@ -64,7 +64,7 @@ export default {
             }
         },
     },
-    components: { materialCategorySelect },
+    components: { treeSelect },
     methods: {
         initData() {
             // 路由检查

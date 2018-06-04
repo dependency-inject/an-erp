@@ -9,7 +9,7 @@
                             <form-item :label="$t('field.PRODUCT.PRODUCT_NO')" prop="productNo"><i-input v-model="item.productNo"></i-input></form-item>
                             <form-item :label="$t('field.PRODUCT.PRODUCT_NAME')" prop="productName"><i-input v-model="item.productName"></i-input></form-item>
                             <form-item :label="$t('field.PRODUCT.UNIT')" prop="unit"><i-input v-model="item.unit"></i-input></form-item>
-                            <form-item :label="$t('field.PRODUCT.CATEGORY_ID')" prop="categoryId"><i-input v-model="item.categoryId"></i-input></form-item>
+                            <form-item :label="$t('field.PRODUCT.CATEGORY_ID')" prop="categoryId"><tree-select type="product-category" v-model="item.categoryId"></tree-select></form-item>
                             <form-item :label="$t('field.PRODUCT.SPEC')" prop="spec"><i-input v-model="item.spec"></i-input></form-item>
                             <form-item :label="$t('field.PRODUCT.PRICE')" prop="price"><i-input v-model="item.price"></i-input></form-item>
                             <form-item :label="$t('field.PRODUCT.STATE')" prop="closed"><radio-group v-model="item.closed"><radio v-for="item in closedList" :key="item.value" :label="item.value">{{ item.descript }}</radio></radio-group></form-item>
@@ -31,9 +31,7 @@
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveMaterial" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.PRODUCT.MATERIAL')" prop="materialId">
-                    <i-select v-model="modal.item.materialId">
-                        <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
-                    </i-select>
+                    <common-select type="material" v-model="modal.item.materialId" @on-change="materialSelectChange"></common-select>
                 </form-item>
                 <form-item :label="$t('field.PRODUCT.MATERIAL_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
                 <form-item :label="$t('field.PRODUCT.MATERIAL_PROPERTY')" prop="materialProperty"><i-input v-model="modal.item.materialProperty" type="textarea"></i-input></form-item>
@@ -48,6 +46,9 @@ import Permission from '../../mixins/permission';
 
 import util from '../../libs/util.js';
 
+import commonSelect from '../../components/common-select';
+import treeSelect from '../../components/tree-select';
+
 import productService from '../../service/product';
 
 export default {
@@ -57,10 +58,11 @@ export default {
             item: {},
             modal: {
                 title: 'title',
-                item: {},
+                item: {
+                    materialId: ''
+                },
                 visible: false
-            },
-            materialList: []
+            }
         }
     },
     computed: {
@@ -121,6 +123,7 @@ export default {
             return result;
         }
     },
+    components: { commonSelect, treeSelect },
     methods: {
         initData() {
             // 路由检查
@@ -188,12 +191,6 @@ export default {
                 return item.permissionIdList.split(',');
             })).join(',');
         },
-        async getMaterialList() {
-            let result = await productService.getMaterialList();
-            if (result.status === 200) {
-                this.materialList = result.data;
-            }
-        },
         addMaterial() {
             this.modal.title = this.$t('common.ADD') + this.$t('field.MATERIAL_INFO');
             this.$refs.formValidate2.resetFields();
@@ -217,12 +214,6 @@ export default {
         saveMaterial() {
             this.$refs.formValidate2.validate(async (valid) => {
                 if (valid) {
-                    this.materialList.forEach((item) => {
-                        if (item.materialId === this.modal.item.materialId) {
-                            this.modal.item.materialNo = item.materialNo;
-                            this.modal.item.materialName = item.materialName;
-                        }
-                    });
                     if (this.modal.item._index === -1) {
                         this.item.productMaterialList.push({
                             materialId: this.modal.item.materialId,
@@ -255,12 +246,20 @@ export default {
                     this.item.productMaterialList.splice(index, 1);
                 }
             });
+        },
+        materialSelectChange(item) {
+            if (item === null) {
+                this.modal.item.materialNo = ''
+                this.modal.item.materialName = '';
+            } else {
+                this.modal.item.materialNo = item.materialNo;
+                this.modal.item.materialName = item.materialName;
+            }
         }
     },
     created() {
         this.setDefault();
         this.initData();
-        this.getMaterialList();
     },
     watch: {
         '$route'(to, from) {

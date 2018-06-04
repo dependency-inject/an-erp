@@ -42,6 +42,19 @@ public class ProductService extends BaseService {
     private ProductCategoryDAO productCategoryDAO;
 
     /**
+     * 获取货品表的所有信息
+     *
+     * @return 返回列表
+     */
+    public List<Product> getList(Integer closed) {
+        ProductQuery productQuery = new ProductQuery();
+        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
+            productQuery.or().andClosedEqualTo(closed > 0);
+        }
+        return productDAO.selectByExample(productQuery);
+    }
+
+    /**
      * 查询单个货品物料组成信息
      *
      * 将物料信息补全：
@@ -297,13 +310,6 @@ public class ProductService extends BaseService {
         // 添加日志
         addLog(LogType.PRODUCT, Operate.UPDATE, productIdList);
     }
-
-    /**
-     * 获取货品类别列表
-     * 主表： ProductCategory
-     * @Return categoryList
-     */
-    public List<ProductCategory> getCategoryList() { return productCategoryDAO.selectByExample(new ProductCategoryQuery()); }
 
     /**
      * 获取所有可选的物料
