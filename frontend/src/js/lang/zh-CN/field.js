@@ -56,6 +56,26 @@ export default {
         CATEGORY_NAME: '类别名称',
         PARENT_ID: '上级分类',
     },
+    PRODUCT_STOCK: {
+        PRODUCT_NO: '货品编号',
+        PRODUCT_NAME: '货品名称',
+        PRODUCT_COUNT: '货品数量',
+        PRODUCT_AMOUNT: '实际库存数量',
+        PRODUCT_ORDERED: '待出库数量',
+        PRODUCT_LEFT: '可用数量'
+    },
+    MATERIAL_STOCK: {
+        MATERIAL_NO: '物料编号',
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_COUNT: '物料数量',
+        MATERIAL_AMOUNT: '实际库存数量',
+        MATERIAL_ORDERED: '待出库数量',
+        MATERIAL_LEFT: '可用数量'
+    },
+    WAREHOUSE:{
+        WAREHOUSE_NO:'仓库编号',
+        WAREHOUSE_NAME:'仓库名称',
+    },
 
     BASE_INFO: '基础信息',
     ACCOUNT_INFO: '账号信息',

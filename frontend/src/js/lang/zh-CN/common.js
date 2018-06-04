@@ -20,6 +20,7 @@ export default {
 	IMPORT: '导入',
 	EXPORT: '导出',
 	RESET_PASSWORD: '重置密码',
+	CHART: '图表',
 
 	DOT: '，',
 
