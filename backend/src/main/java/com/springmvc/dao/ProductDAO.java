@@ -84,4 +84,11 @@ public interface ProductDAO {
      * @param record
      */
     int updateByPrimaryKey(Product record);
+
+    /**
+     * 获取一个带有类别名称的数据库记录
+     *
+     * @param example
+     */
+    List<Product> selectWithCategoryNameByExample(ProductQuery example);
 }

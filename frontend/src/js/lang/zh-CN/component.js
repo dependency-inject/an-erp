@@ -7,7 +7,7 @@ export default {
 
     ALL_STATE: '全部状态',
     ALL_CATEGORY: '全部分类',
-    START_TIME: '开始时间',
+    BEGIN_TIME: '开始时间',
     END_TIME: '结束时间',
     DATETIME: '日期和时间',
 

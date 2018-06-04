@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.MATERIAL_CATEGORY_INFO2') }}</div>
+                        <div class="panel-header">{{ $t('field.CATEGORY_INFO') }}</div>
                         <div class="panel-body">
                             <form-item :label="$t('field.MATERIAL.CATEGORY_ID')" prop="categoryId">
                                 <material-category-select v-model="item.categoryId"></material-category-select>
