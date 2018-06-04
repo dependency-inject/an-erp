@@ -17,31 +17,37 @@
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
+      <trim prefix="(" prefixOverrides="and" suffix=")">
+        <foreach collection="oredCriteria" item="criteria" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+        and 1 = 1
+      </trim>
+      <if test="categoryId != null">
+        and CONCAT(',',get_category_ids(material.category_id,'material'),',') like CONCAT('%,',#{categoryId},',%')
+      </if>
     </where>
   </sql>
   <sql id="Update_By_Example_Where_Clause">
@@ -100,7 +106,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from material
     where material_id = #{materialId,jdbcType=INTEGER}
@@ -119,14 +125,14 @@
     <selectKey keyProperty="materialId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into material (material_no, material_name, unit, 
-      category_id, spec, cost, 
-      remark, create_at, create_by, 
-      update_at, update_by)
-    values (#{materialNo,jdbcType=VARCHAR}, #{materialName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
-      #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{cost,jdbcType=DECIMAL}, 
-      #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
+    insert into material (material_no, material_name, unit,
+    category_id, spec, cost,
+    remark, create_at, create_by,
+    update_at, update_by)
+    values (#{materialNo,jdbcType=VARCHAR}, #{materialName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
+    #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{cost,jdbcType=DECIMAL},
+    #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+    #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.dto.Material">
     <selectKey keyProperty="materialId" order="AFTER" resultType="java.lang.Integer">
@@ -254,16 +260,16 @@
   <update id="updateByExample" parameterType="map">
     update material
     set material_no = #{record.materialNo,jdbcType=VARCHAR},
-      material_name = #{record.materialName,jdbcType=VARCHAR},
-      unit = #{record.unit,jdbcType=VARCHAR},
-      category_id = #{record.categoryId,jdbcType=INTEGER},
-      spec = #{record.spec,jdbcType=VARCHAR},
-      cost = #{record.cost,jdbcType=DECIMAL},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=INTEGER}
+    material_name = #{record.materialName,jdbcType=VARCHAR},
+    unit = #{record.unit,jdbcType=VARCHAR},
+    category_id = #{record.categoryId,jdbcType=INTEGER},
+    spec = #{record.spec,jdbcType=VARCHAR},
+    cost = #{record.cost,jdbcType=DECIMAL},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    create_at = #{record.createAt,jdbcType=TIMESTAMP},
+    create_by = #{record.createBy,jdbcType=INTEGER},
+    update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+    update_by = #{record.updateBy,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -365,18 +371,89 @@
     </if>
   </select>
 
+  <!-- List<MaterialStockRecord> selectWithStockByExample 方法的实现 -->
+  <resultMap id="ResultMapWithStock" type="com.springmvc.dto.MaterialStockRecord">
+    <id column="material_id" jdbcType="INTEGER" property="materialId"/>
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo"/>
+    <result column="material_name" jdbcType="VARCHAR" property="materialName"/>
+    <result column="unit" jdbcType="VARCHAR" property="unit"/>
+    <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    <result column="spec" jdbcType="VARCHAR" property="spec"/>
+    <result column="cost" jdbcType="DECIMAL" property="cost"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+    <result column="create_by" jdbcType="INTEGER" property="createBy"/>
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    <result column="update_by" jdbcType="INTEGER" property="updateBy"/>
+    <result column="left_amount" jdbcType="INTEGER" property="leftAmount"/>
+    <result column="total_amount" jdbcType="INTEGER" property="totalAmount"/>
+    <result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount"/>
+  </resultMap>
+  <select id="selectWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
+    SELECT material.*, IFNULL((total- material.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
+    ((SELECT a.material_id, sum(a.quantity) AS total FROM (
+    SELECT material_id, -quantity AS quantity
+    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    WHERE bill_state = 3
+    UNION ALL
+    SELECT material_id, quantity
+    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
+    WHERE bill_state = 3
+    ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
+    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
+    SELECT material_id, sum(quantity) AS ordered FROM
+    material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    GROUP BY material_id) AS c ON c.material_id = material.material_id)
+    AS material ON material.material_id = b.material_id)
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <!-- MaterialStockRecord statisticsWithStockByExample 方法的实现 -->
+  <select id="statisticsWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
+    SELECT IFNULL(SUM(IFNULL((total- material.ordered_amount), 0)), 0) AS left_amount , IFNULL(SUM(IFNULL(b.total, 0)), 0) AS total_amount FROM
+    ((SELECT a.material_id, sum(a.quantity) AS total FROM (
+    SELECT material_id, -quantity AS quantity
+    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    WHERE bill_state = 3
+    UNION ALL
+    SELECT material_id, quantity
+    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
+    WHERE bill_state = 3
+    ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
+    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
+    SELECT material_id, sum(quantity) AS ordered FROM
+    material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
+    GROUP BY material_id) AS c ON c.material_id = material.material_id)
+    AS material ON material.material_id = b.material_id)
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+  </select>
+
   <!--List<MaterialLack> selectWithLackByExample(MaterialQuery example); 方法的实现 -->
   <resultMap id="ResultMapWithLack" type="com.springmvc.dto.MaterialLack">
     <id column="material_id" jdbcType="INTEGER" property="materialId"/>
     <result column="material_no" jdbcType="VARCHAR" property="materialNo"/>
     <result column="material_name" jdbcType="VARCHAR" property="materialName"/>
-    <result column="draw_use_amount" jdbcType="INTEGER" property="usedraw"/>
-    <result column="total_amount" jdbcType="INTEGER" property="totalstock"/>
-    <result column="stock_use_amount" jdbcType="INTEGER" property="useoutstock"/>
+    <result column="use_draw" jdbcType="INTEGER" property="useDraw"/>
+    <result column="total_stock" jdbcType="INTEGER" property="totalStock"/>
+    <result column="use_outstock" jdbcType="INTEGER" property="useOutstock"/>
     <result column="unit" jdbcType="VARCHAR" property="unit"/>
   </resultMap>
   <select id="selectWithLackByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithLack">
-    SELECT 	material.material_id,material.material_no,material.material_name,material.unit,IFNULL((total- material.ordered_amount), 0) AS stock_use_amount , IFNULL((total- d.get_amount), 0) AS draw_use_amount , IFNULL(b.total, 0) AS total_amount
+    SELECT 	material.material_id,material.material_no,material.material_name,material.unit,IFNULL((total- material.ordered_amount), 0) AS use_outstock , IFNULL((total- d.get_amount), 0) AS use_draw , IFNULL(b.total, 0) AS total_stock
     FROM(
     SELECT material_id, sum(quantity) AS get_amount
     FROM draw_material_bill LEFT JOIN draw_material_bill_material ON draw_material_bill.bill_id = draw_material_bill_material.bill_id
@@ -417,6 +494,74 @@
       <if test="offset == null">
         limit ${limit}
       </if>
+    </if>
+  </select>
+
+  <!-- 搜索物料的数量 -->
+  <resultMap id="ResultMapWithStockCost" type="com.springmvc.dto.MaterialStockCostRecord">
+    <id column="material_id" jdbcType="INTEGER" property="materialId" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="VARCHAR" property="materialName" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="total_amount" jdbcType="INTEGER" property="totalAmount"/>
+    <result column="total_cost" jdbcType="INTEGER" property="totalCost"/>
+  </resultMap>
+  <select id="selectWithStockCostByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStockCost">
+    SELECT material.*,IFNULL(C.real_stock,0) AS total_amount,IFNULL(C.real_stock,0)*material.cost AS total_cost FROM material
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS real_stock FROM (
+    SELECT material_id, -quantity as quantity FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state=3
+    UNION ALL
+    SELECT material_id, quantity FROM material_instock_bill_material LEFT JOIN material_instock_bill
+    on material_instock_bill_material.bill_id=material_instock_bill.bill_id
+    where material_instock_bill.bill_state=3
+    ) B
+    GROUP BY material_id
+    ) C ON material.material_id=C.material_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <!-- 统计物料的数量 -->
+  <select id="statisticsWithStockCostByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStockCost">
+    SELECT IFNULL(SUM(IFNULL(C.total_amount,0)),0) AS total_amount,IFNULL(SUM(IFNULL(C.total_amount,0)*material.cost),0) AS total_cost FROM material
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS total_amount FROM (
+    SELECT material_id, -quantity as quantity FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state=3
+    UNION ALL
+    SELECT material_id, quantity FROM material_instock_bill_material LEFT JOIN material_instock_bill
+    on material_instock_bill_material.bill_id=material_instock_bill.bill_id
+    where material_instock_bill.bill_state=3
+    ) B
+    GROUP BY material_id
+    ) C ON material.material_id=C.material_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
     </if>
   </select>
 </mapper>

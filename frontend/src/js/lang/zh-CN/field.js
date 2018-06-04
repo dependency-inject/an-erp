@@ -5,6 +5,77 @@ export default {
 	    NEW_PASSWORD: '新密码',
 	    CONFIRM_PASSWORD: '确认密码',
     },
+    ADMIN: {
+        TRUE_NAME: '真实姓名',
+        MOBILE: '手机',
+        LOGIN_NAME: '登录名',
+        STATE: '账号状态',
+        ROLE: '角色'
+    },
+    ROLE: {
+        ROLE_NAME: '角色名称',
+        SELECT_ROLE: '选择角色',
+    },
+    PRODUCT: {
+        ALL_CATEGORY: '所有类别',
+        PRODUCT_NO: '货品编号',
+        PRODUCT_NAME: '货品名称',
+        UNIT: '计量单位',
+        CATEGORY_ID: '类别',
+        CATEGORY_NAME: '类别',
+        SPEC: '规格',
+        PRICE: '价格',
+        STATE: '状态',
+        REMARK: '备注',
+        CREATE_AT: '创建时间',
+        CREATE_BY: '创建人',
+        UPDATE_AT: '修改时间',
+        UPDATE_BY: '修改人',
+        MATERIAL: '物料',
+        MATERIAL_NO: '物料编号',
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_QUANTITY: '数量',
+        MATERIAL_REMARK: '备注',
+        MATERIAL_PROPERTY: '配料属性',
+    },
+    PRODUCT_CATEGORY: {
+        CATEGORY_NAME: '类别名称',
+        PARENT_ID: '上级分类',
+    },
+    MATERIAL: {
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_NO: '物料编号',
+        UNIT: '单位',
+        SPEC: '规格',
+        CATEGORY_ID: '类别',
+        CATEGORY_NAME: '类别',
+        COST: '定价',
+        REMARK: '备注',
+    },
+    MATERIAL_CATEGORY: {
+        CATEGORY_NAME: '类别名称',
+        PARENT_ID: '上级分类',
+    },
+    PRODUCT_STOCK: {
+        PRODUCT_NO: '货品编号',
+        PRODUCT_NAME: '货品名称',
+        PRODUCT_COUNT: '货品数量',
+        PRODUCT_AMOUNT: '实际库存数量',
+        PRODUCT_ORDERED: '待出库数量',
+        PRODUCT_LEFT: '可用数量'
+    },
+    MATERIAL_STOCK: {
+        MATERIAL_NO: '物料编号',
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_COUNT: '物料数量',
+        MATERIAL_AMOUNT: '实际库存数量',
+        MATERIAL_ORDERED: '待出库数量',
+        MATERIAL_LEFT: '可用数量'
+    },
+    WAREHOUSE:{
+        WAREHOUSE_NO:'仓库编号',
+        WAREHOUSE_NAME:'仓库名称',
+    },
     SUPPLIER: {
         SUPPLIER_NAME: '供应商名称',
         CONTACT: '联系人',
@@ -23,16 +94,13 @@ export default {
         SEARCH_MATERIAL_PRICE: '报价信息',
         MATERIAL_INFO: '供料信息'
     },
-    ADMIN: {
-        TRUE_NAME: '真实姓名',
-        MOBILE: '手机',
-        LOGIN_NAME: '登录名',
-        STATE: '账号状态',
-        ROLE: '角色'
-    },
-    ROLE: {
-        ROLE_NAME: '角色名称',
-        SELECT_ROLE: '选择角色',
+    MATERIAL_COST: {
+        MATERIAL_NO: '物料编号',
+        MATERIAL_NAME: '物料名称',
+        MATERIAL_COUNT: '物料数量',
+        MATERIAL_COST: '物料成本',
+        TOTAL_AMOUNT: '实际库存数量',
+        TOTAL_COST: '库存成本'
     },
 
     BASE_INFO: '基础信息',
@@ -43,6 +111,9 @@ export default {
     ROLE_PERMISSION2: '角色与权限',
     PERMISSION_DETAIL: '角色权限明细',
     SYSTEM_SETTING: '系统设置',
+
+    MATERIAL_INFO: '物料信息',
+    CATEGORY_INFO: '类别信息',
 
     NOT_BE_NULL: '不能为空',
     PLEASE_SELECT: '请选择',

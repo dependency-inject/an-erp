@@ -1,8 +1,5 @@
 package com.springmvc.dto;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 public class MaterialLack {
     /**
      * 物料ID
@@ -31,23 +28,23 @@ public class MaterialLack {
     /**
      *总库存
      */
-    private Integer totalstock;
+    private Integer totalStock;
     /**
      * 出库可用库存
      */
-    private Integer useoutstock;
+    private Integer useOutstock;
 
     /**
      * 领料可用库存
      */
-    private Integer usedraw;
+    private Integer useDraw;
 
-    public Integer getTotalstock(){return totalstock; }
-    public void setTotalstock(Integer totalstock){this.totalstock=totalstock;}
-    public Integer getUseoutstock(){return useoutstock; }
-    public void setUseoutstock(Integer useoutstock){this.useoutstock=useoutstock;}
-    public Integer getUsedraw(){return usedraw; }
-    public void setUsedraw(Integer usedraw){this.usedraw=usedraw;}
+    public Integer getTotalStock(){return totalStock; }
+    public void setTotalStock(Integer totalStock){this.totalStock = totalStock;}
+    public Integer getUseOutstock(){return useOutstock; }
+    public void setUseOutstock(Integer useOutstock){this.useOutstock = useOutstock;}
+    public Integer getUseDraw(){return useDraw; }
+    public void setUseDraw(Integer useDraw){this.useDraw = useDraw;}
     /**
      * 获取 物料ID
      * 表字段 : material.material_id

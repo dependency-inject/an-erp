@@ -74,10 +74,10 @@ export default {
                 { width: 50, align: 'center' },
                 { title: this.$t('field.SUPPLIER.MATERIAL_NO'), key: 'materialNo', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.MATERIAL_NAME'), key: 'materialName', sortable: 'custom' },
-                { title: this.$t('field.SUPPLIER.UNIT'), key: 'unit', },
-                { title: this.$t('field.SUPPLIER.INVENTORY'), key: 'totalstock' },
-                { title: this.$t('field.SUPPLIER.DRAW_MATERIAL_QUANTITY'), key: 'usedraw' },
-                { title: this.$t('field.SUPPLIER.PRODUCT_OUTSTOCK_QUANTITY'), key: 'useoutstock' },
+                { title: this.$t('field.SUPPLIER.UNIT'), key: 'unit', sortable: 'custom' },
+                { title: this.$t('field.SUPPLIER.INVENTORY'), key: 'totalStock', sortable: 'custom' },
+                { title: this.$t('field.SUPPLIER.PRODUCT_OUTSTOCK_QUANTITY'), key: 'useOutstock', sortable: 'custom' },
+                { title: this.$t('field.SUPPLIER.DRAW_MATERIAL_QUANTITY'), key: 'useDraw', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('field.SUPPLIER.SEARCH_MATERIAL_PRICE'), (row) => {
                             this.showMaterialPrice(row); 
@@ -137,11 +137,11 @@ export default {
         },
         handleSortPrice(data) {
             if (data.order === 'normal') {
-                this.modal.sortColumn = '';
-                this.modal.sort = '';
+                this.modal.queryParameters.sortColumn = '';
+                this.modal.queryParameters.sort = '';
             } else {
-                this.modal.sortColumn = data.key;
-                this.modal.sort = data.order;
+                this.modal.queryParameters.sortColumn = data.key;
+                this.modal.queryParameters.sort = data.order;
             }
             this.searchMaterialPrice();
         }

@@ -69,7 +69,6 @@ export default {
             }
         },
         add() {
-        	console.log(this.item.roleId);
             this.modal.title = this.$t('common.ADD') + this.$t('field.ROLE.ROLE_NAME');
             this.$refs.formValidate.resetFields();
             this.modal.item.roleId = 0;
