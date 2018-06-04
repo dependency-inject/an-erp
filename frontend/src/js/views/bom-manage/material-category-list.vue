@@ -16,7 +16,7 @@
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true">
 	       	<i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
 	            <form-item :label="$t('field.MATERIAL_CATEGORY.CATEGORY_NAME')" prop="categoryName"><i-input v-model="modal.item.categoryName"></i-input></form-item>
-				<form-item :label="$t('field.MATERIAL_CATEGORY.PARENT_ID')" prop="parentId"><material-category-select v-model="modal.item.parentId" root-option disabled></material-category-select></form-item>
+				<form-item :label="$t('field.MATERIAL_CATEGORY.PARENT_ID')" prop="parentId"><material-category-select ref="select" v-model="modal.item.parentId" root-option disabled></material-category-select></form-item>
 	        </i-form>
 	    </modal>
     </div>
@@ -42,8 +42,7 @@ export default {
             		parentId: ''
             	},
             	visible: false
-            },
-            selectItems: []
+            }
         }
     },
     computed: {
@@ -107,7 +106,7 @@ export default {
                     let result = await materialCategoryService.remove(idList);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
-                        this.selectItems = [];
+                        this.$refs.select.search();
                         this.search();
                     } else {
                         this.$Message.error(result.data);
@@ -143,6 +142,7 @@ export default {
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.SAVE_SUCCESS'));
                         this.modal.visible = false;
+                        this.$refs.select.search();
                         await this.search();
                     } else {
                         this.$Message.error(result.data);

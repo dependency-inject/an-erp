@@ -18,6 +18,7 @@
                     :columns="columnList"
                     :data="vm.receiveData" 
                     :operates="tableOperates"
+                    :identity="vm.identity"
                     @add="add(arguments[0][vm.identity])"
                     @edit="edit"
                     @remove="remove([arguments[0]])"
@@ -31,7 +32,7 @@
                     <i-input v-model="modal.item.categoryName"></i-input>
                 </form-item>
                 <form-item :label="$t('field.PRODUCT_CATEGORY.PARENT_ID')" prop="parentId">
-                    <product-category-select v-model="modal.item.parentId" root-option disabled></product-category-select>
+                    <product-category-select ref="select" v-model="modal.item.parentId" root-option disabled></product-category-select>
                 </form-item>
             </i-form>
         </modal>
@@ -85,7 +86,7 @@ export default {
         },
         columnList() {
             return [{
-                title: this.$t('common.CATEGORY_NAME'),
+                title: this.$t('field.PRODUCT_CATEGORY.CATEGORY_NAME'),
                 key: 'categoryName',
                 width: 400
             }];
@@ -151,6 +152,7 @@ export default {
                     let result = await productCategoryService.remove(idList);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
+                        this.$refs.select.search();
                         this.search();
                     }
                     else {
@@ -191,6 +193,7 @@ export default {
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.SAVE_SUCCESS'));
                         this.modal.visible = false;
+                        this.$refs.select.search();
                         await this.search();
                     } else {
                         this.$Message.error(result.data);

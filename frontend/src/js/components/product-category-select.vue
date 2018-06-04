@@ -59,7 +59,6 @@ export default {
                     this.makeTreeData(row.categoryId);
                 }
             });
-            console.log(this.treeData);
         },
         async search() {
             let result = await productCategoryService.getAll();
