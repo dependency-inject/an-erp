@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -177,5 +178,32 @@ public class MaterialService extends BaseService {
 
         addLog(LogType.MATERIAL, Operate.UPDATE, material.getMaterialId());
         return getMaterialWithCategoryById(materialId);
+    }
+
+    /**
+     * 更新物料成本信息
+     *
+     * 更新主表信息：material
+     * 更新关联的从表信息：暂无
+     * 添加日志信息：LogType.MATERIAL_COST, Operate.UPDATE
+     *
+     * @param materialId
+     * @param cost
+     * @return
+     */
+
+    public Material updateCost(Integer materialId, BigDecimal cost) {
+
+        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
+        Material material = new Material();
+        material.setMaterialId(materialId);
+        material.setCost(cost);
+        material.setUpdateAt(new Date());
+        material.setUpdateBy(loginAdmin.getAdminId());
+        materialDAO.updateByPrimaryKeySelective(material);
+        // 添加日志
+        addLog(LogType.MATERIAL_COST, Operate.UPDATE, material.getMaterialId());
+        return getMaterialById(material.getMaterialId());
     }
 }

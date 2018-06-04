@@ -33,7 +33,7 @@
             <!-- 表格 -->
             <div class="main-content" style="display:flex">
                 <div style="border: 1px solid #dddee1; padding: 15px; margin-right: 10px; min-width: 200px;"><tree :data="categoryList" @on-select-change="selectChange" ref="tree"></tree></div>
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]" @detail="$router.push('/admin/'+arguments[0][vm.identity])" @remove="remove([arguments[0]])"></i-table>
+                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">

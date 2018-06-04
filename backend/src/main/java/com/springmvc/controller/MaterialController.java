@@ -61,4 +61,11 @@ public class MaterialController {
                            @RequestParam String spec, @RequestParam String remark) {
         return materialService.updateMaterial(materialId, materialNo, materialName, unit, categoryId, spec, remark);
     }
+
+    @RequestMapping(value = "/updateCost", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.MATERIAL_COST)
+    public Material updateCost(@RequestParam Integer materialId, @RequestParam BigDecimal cost) {
+        return materialService.updateCost(materialId, cost);
+    }
 }

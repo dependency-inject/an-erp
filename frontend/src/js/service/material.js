@@ -10,4 +10,6 @@ var search = (queryParameters) => http.post('material/search', queryParameters);
 
 var update = (material) => http.post('material/update', material);
 
-export default { add, getById, remove, search, update };
+var updateCost = (material) => http.post('material/updateCost', material);
+
+export default { add, getById, remove, search, update, updateCost };

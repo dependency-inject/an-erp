@@ -1,9 +1,8 @@
 package com.springmvc.dao;
 
-import com.springmvc.dto.Admin;
 import com.springmvc.dto.Material;
+import com.springmvc.dto.MaterialStockCostRecord;
 import com.springmvc.dto.MaterialStockRecord;
-import com.springmvc.pojo.AdminQuery;
 import com.springmvc.pojo.MaterialQuery;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -88,7 +87,7 @@ public interface MaterialDAO {
      */
     int updateByPrimaryKey(Material record);
 
-    /**
+    /*
      * 获取一个带有类别名称的数据库记录
      *
      * @param example
@@ -110,4 +109,18 @@ public interface MaterialDAO {
      * @return 一页记录
      */
     MaterialStockRecord statisticsWithStockByExample(MaterialQuery example);
+
+    /**
+     *
+     *  搜索物料的数量
+     * @param example
+     */
+    List<MaterialStockCostRecord> selectWithStockCostByExample(MaterialQuery example);
+
+    /**
+     *
+     *  统计物料的数量
+     * @param example
+     */
+    MaterialStockCostRecord statisticsWithStockCostByExample(MaterialQuery example);
 }
