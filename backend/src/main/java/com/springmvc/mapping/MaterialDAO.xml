@@ -17,31 +17,37 @@
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
+      <trim prefix="(" prefixOverrides="and" suffix=")">
+        <foreach collection="oredCriteria" item="criteria" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+        and 1 = 1
+      </trim>
+      <if test="categoryId != null">
+        and CONCAT(',',get_category_ids(material.category_id,'material'),',') like CONCAT('%,',#{categoryId},',%')
+      </if>
     </where>
   </sql>
   <sql id="Update_By_Example_Where_Clause">
@@ -322,4 +328,46 @@
       update_by = #{updateBy,jdbcType=INTEGER}
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
+
+  <!-- 从material+material_category中获得内容 -->
+  <resultMap id="ResultMapWithCName" type="com.springmvc.dto.Material">
+    <id column="material_id" jdbcType="INTEGER" property="materialId" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="VARCHAR" property="materialName" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+  </resultMap>
+  <select id="selectWithCategoryNameByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithCName">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    material.material_id, material.material_no, material.material_name, material.unit, material.category_id,
+    material.spec, material.cost, material.remark, material.create_at, material.create_by, material.update_at,
+    material.update_by, material_category.category_name as category_name
+    from material
+    left join material_category on material.category_id = material_category.category_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
 </mapper>
