@@ -88,7 +88,8 @@ public class ProductCategoryService extends BaseService {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setCategoryId(categoryId);
         productCategory.setCategoryName(categoryName);
-        productCategory.setParentId(parentId);
+        // 不更新上级类别信息
+//        productCategory.setParentId(parentId);
         productCategory.setUpdateAt(new Date());
         productCategory.setUpdateBy(loginAdmin.getAdminId());
 

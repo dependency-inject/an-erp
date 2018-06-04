@@ -17,10 +17,10 @@
                     ref="table" 
                     :columns="columnList"
                     :data="vm.receiveData" 
-                    :operates="tableOperates" 
+                    :operates="tableOperates"
                     @add="add(arguments[0][vm.identity])"
                     @edit="edit"
-                    @remove="remove(arguments[0])"
+                    @remove="remove([arguments[0]])"
                 >
                 </tree-table>
             </div>
@@ -39,10 +39,10 @@
 </template>
 
 <script>
-
 import treeTable from '../../components/tree-table';
-import productCategoryService from '../../service/product-category';
 import productCategorySelect from '../../components/product-category-select';
+
+import productCategoryService from '../../service/product-category';
 
 export default {
 
@@ -60,11 +60,10 @@ export default {
             modal: {
                 title: 'title',
                 item: {
-                    parentId: 0
+                    parentId: ''
                 },
                 visible: false
-            },
-            selectItems: []
+            }
         }
     },
 
@@ -144,11 +143,12 @@ export default {
         },
 
         // 删除记录
-        remove(item) {
+        remove(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",");
             this.$Modal.confirm({
                 content: this.$t('common.REMOVE_CONFIRM'),
                 onOk: async () => {
-                    let result = await productCategoryService.remove(item.categoryId);
+                    let result = await productCategoryService.remove(idList);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
                         this.search();
@@ -197,7 +197,6 @@ export default {
                         this.$refs.modal.abortLoading();
                     }
                 } else {
-                    console.log("E1");
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
                     this.$refs.modal.abortLoading();
                 }

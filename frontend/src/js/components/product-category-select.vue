@@ -12,7 +12,9 @@
 
 <script>
 import Emitter from '../mixins/emitter';
-import productCategoryService from '../service/product-category'
+
+import productCategoryService from '../service/product-category';
+
 export default {
     mixins: [ Emitter ],
     data() {
@@ -63,16 +65,19 @@ export default {
             let result = await productCategoryService.getAll();
             if (result.status === 200) {
                 this.data = result.data;
-                if (this.rootOption)
-                    this.treeData = [ { categoryId: 0, categoryName: this.$t('component.ROOT_CATEGORY'), depth: 0 } ];
-                else
-                    this.treeData = [];
+                this.treeData = this.rootOption ? [ { categoryId: 0, categoryName: this.$t('component.ROOT_CATEGORY'), depth: 0 } ] : [];
                 this.makeTreeData(0);
+                this.emitChange();
+                this.model = this.value;
             }
         },
         updateValue() {
             this.$emit('input', this.model);
             this.dispatch('FormItem', 'on-form-change');
+        },
+        emitChange() {
+            let items = this.data.filter((item) => { return item.categoryId == this.model });
+            this.$emit('on-change', items.length == 0? { categoryId: '', categoryName: '' }: items[0]);
         }
     },
     created() {
@@ -80,10 +85,13 @@ export default {
     },
     watch: {
         value(val) {
-            this.model = val;
+            if (this.treeData.length > 0) {
+                this.model = val;
+            }
         },
         model() {
             this.updateValue();
+            this.emitChange();
         }
     }
 }
