@@ -42,6 +42,7 @@ export default {
     PRO_STATUS_INFO: '入库单状态',
     PROIN_STATUS: { '1': '待审核', '2': '已审核', '3': '已完成' },
     PRODUCT_STOCK_STATE: { '-1': '全部状态', '1': '待审核', '2': '已审核', '3':'已完成' },
+    PRODUCTIN_WARE_NAME: {'1': '生产入库'},
     PROINSTOCK: {
         PROINSTOCK_ID: '入库单编号',
         PROINSTOCK_TIME: '创建时间',
@@ -50,8 +51,22 @@ export default {
         STOCK_NAME: '仓库',
         PRO_SOURCE: '货品来源',
         STATUS: '状态',
+        DETAIL_INFO: "产品详情",
+        PRODUCT_ID: "货品ID",
+        PRODUCT_NO: "货品编号",
+        PRODUCT_NAME:"货品名称",
+        PRODUCT_NUM: "数量",
+        PRODUCT_PRIN: "盘点负责人",
+        PRODUCT_WARE: "仓库",
+        PRODUCT_PLACE: "仓库内位置",
+        PRODUCT_REMARK: "备注",
+        PRODUCT: "产品"
     },
 
+    PROOUTSTOCK_INFO: '出库单信息',
+    PROOUT_STATUS_INFO: '出库单状态',
+    PROOUT_STATUS: { '1': '待审核', '2': '已审核', '3': '已完成' },
+    PRODUCT_WARE_NAME: {'1': '发货出库'},
     PROOUTSTOCK: {
         PROOUTSTOCK_ID: '出库单编号',
         PROOUTSTOCK_TIME: '创建时间',
@@ -60,5 +75,15 @@ export default {
         STOCK_NAME: '仓库',
         PRO_SOURCE: '货品来源',
         STATUS: '状态',
+        DETAIL_INFO: "产品详情",
+        PRODUCT_ID: "货品ID",
+        PRODUCT_NO: "货品编号",
+        PRODUCT_NAME:"货品名称",
+        PRODUCT_NUM: "数量",
+        PRODUCT_PRIN: "盘点负责人",
+        PRODUCT_WARE: "仓库",
+        PRODUCT_PLACE: "仓库内位置",
+        PRODUCT_REMARK: "备注",
+        PRODUCT: "产品"
     },
 };

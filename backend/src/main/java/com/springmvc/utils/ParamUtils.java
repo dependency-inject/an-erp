@@ -1,5 +1,9 @@
 package com.springmvc.utils;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,6 +11,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParamUtils {
+
+    /**
+     * json转泛型列表
+     * @param json
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> jsonToList(String json, Class<T> clazz) {
+        ObjectMapper mapper = new ObjectMapper();
+        JavaType javaType = mapper.getTypeFactory().constructParametricType(ArrayList.class, clazz);
+        try {
+            return (List<T>) mapper.readValue(json, javaType);
+        } catch (IOException e) {
+            return new ArrayList<T>();
+        }
+    }
 
     /**
      * 字符串转int列表

@@ -15,10 +15,10 @@
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
                     <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
-                    <!-- 待审核 -->
-                    <span class="label-btn" @click="" v-if="productInstockUpdatePermission"><icon type="android-open"></icon>{{ $t('field.PRODUCT_STOCK_STATE.2') }}</span>
-                    <!-- 已审核 -->
-                    <span class="label-btn" @click="" v-if="productInstockUpdatePermission"><icon type="android-exit"></icon>{{ $t('field.PRODUCT_STOCK_STATE.3') }}</span>
+                    <!-- 审核 -->
+                    <span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
+                    <!-- 反审核 -->
+                    <span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
                     <!-- 删除 -->
                     <span class="label-btn" @click="remove(selectItems)" v-if="productInstockRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
@@ -77,7 +77,7 @@ export default {
                 { title: this.$t('field.PROINSTOCK.PROINSTOCK_TIME'), key: 'productInstockTime', sortable: 'custom' },
                 { title: this.$t('field.PROINSTOCK.PROINSTOCK_PERSON'), key: 'fromPrincipal' },
                 { title: this.$t('field.PROINSTOCK.STOCK_PERSON'), key: 'warehousePrincipal', sortable: 'custom' },
-                { title: this.$t('field.PROINSTOCK.PRO_SOURCE'), key: 'productSource', sortable: 'custom' },
+                { title: this.$t('field.PROINSTOCK.PRO_SOURCE'), key: 'productSourceName', sortable: 'custom' },
                 { title: this.$t('field.PROINSTOCK.STATUS'), key: 'productInstockStateCn', sortable: 'custom' },
 
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
@@ -116,8 +116,9 @@ export default {
                 var items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
-                    item.productInstockTime = new Date().toLocaleDateString(item.billTime);
+                    item.productInstockTime = new Date().toLocaleDateString(item.creatAt);
                     item.productInstockStateCn = this.$t('field.PRODUCT_STOCK_STATE.' + Number(item.billState));
+                    item.productSourceName = this.$t('field.PRODUCTIN_WARE_NAME.' + Number(item.productSource));
                     if (!item.sysDefault) {
                         item['detailPermission'] = true;
                         if (this.productInstockRemovePermission)
@@ -148,21 +149,6 @@ export default {
             this.selectItems = [];
             this.search();
         },
-        /*updateAuditState(selectItems, state) {
-            let idList = _.map(selectItems, this.vm.identity).join(",");
-            this.$Modal.confirm({
-                content: this.$t('common.OPERATE_CONFIRM'),
-                onOk: async () => {
-                    let result = await productInstockService.updateAuditState(idList, state);
-                    if (result.status === 200) {
-                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
-                        this.search();
-                    } else {
-                        this.$Message.error(result.data);
-                    }
-                }
-            });
-        },*/
         remove(selectItems) {
             let idList = _.map(selectItems, this.vm.identity).join(",");
             this.$Modal.confirm({

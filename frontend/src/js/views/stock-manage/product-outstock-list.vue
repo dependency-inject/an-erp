@@ -15,10 +15,10 @@
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
                     <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
-                    <!-- 待审核 -->
-                    <span class="label-btn" @click="" v-if="productOutstockUpdatePermission"><icon type="android-open"></icon>{{ $t('field.PRODUCT_STOCK_STATE.2') }}</span>
-                    <!-- 已审核 -->
-                    <span class="label-btn" @click="" v-if="productOutstockUpdatePermission"><icon type="android-exit"></icon>{{ $t('field.PRODUCT_STOCK_STATE.3') }}</span>
+                    <!-- 审核 -->
+                    <span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
+                    <!-- 反审核 -->
+                    <span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
                     <!-- 删除 -->
                     <span class="label-btn" @click="remove(selectItems)" v-if="productOutstockRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
@@ -63,7 +63,6 @@ export default {
                 identity: 'billId',
             },
             selectItems: [],
-            
         }
     },
     computed: {
@@ -75,9 +74,9 @@ export default {
                 { type: 'selection', width: 80, align: 'center' },
                 { title: this.$t('field.PROOUTSTOCK.PROOUTSTOCK_ID'), key: 'billNo', sortable: 'custom' },
                 { title: this.$t('field.PROOUTSTOCK.PROOUTSTOCK_TIME'), key: 'productOutstockTime', sortable: 'custom' },
-                { title: this.$t('field.PROOUTSTOCK.PROOUTSTOCK_PERSON'), key: 'toPrincipal' },
-                { title: this.$t('field.PROOUTSTOCK.STOCK_PERSON'), key: 'warehousePrincipal', sortable: 'custom' },
-                { title: this.$t('field.PROOUTSTOCK.PRO_SOURCE'), key: 'productWhereabouts', sortable: 'custom' },
+                { title: this.$t('field.PROOUTSTOCK.PROOUTSTOCK_PERSON'), key: 'toPrincipalName' },
+                { title: this.$t('field.PROOUTSTOCK.STOCK_PERSON'), key: 'warehousePrincipalName', sortable: 'custom' },
+                { title: this.$t('field.PROOUTSTOCK.PRO_SOURCE'), key: 'productWhereaboutsName', sortable: 'custom' },
                 { title: this.$t('field.PROOUTSTOCK.STATUS'), key: 'productOutstockStateCn', sortable: 'custom' },
 
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
@@ -116,9 +115,9 @@ export default {
                 var items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
-                    console.log(item);
-                    item.productOutstockTime = new Date().toLocaleDateString(item.billTime);
+                    item.productOutstockTime = new Date().toLocaleDateString(item.createAt);
                     item.productOutstockStateCn = this.$t('field.PRODUCT_STOCK_STATE.' + Number(item.billState));
+                    item.productWhereaboutsName = this.$t('field.PRODUCT_WARE_NAME.' + Number(item.productWhereabouts));
                     if (!item.sysDefault) {
                         item['detailPermission'] = true;
                         if (this.productOutstockRemovePermission)
@@ -149,21 +148,36 @@ export default {
             this.selectItems = [];
             this.search();
         },
-        /*updateAuditState(selectItems, state) {
-            let idList = _.map(selectItems, this.vm.identity).join(",");
+        audit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
             this.$Modal.confirm({
                 content: this.$t('common.OPERATE_CONFIRM'),
                 onOk: async () => {
-                    let result = await productOutstockService.updateAuditState(idList, state);
+                    let result = await productoutstockService.audit(idList)
                     if (result.status === 200) {
-                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
-                        this.search();
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
                     } else {
-                        this.$Message.error(result.data);
+                        this.$Message.error(result.data)
                     }
                 }
             });
-        },*/
+        },
+        unaudit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productoutstockService.unaudit(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
         remove(selectItems) {
             let idList = _.map(selectItems, this.vm.identity).join(",");
             this.$Modal.confirm({
