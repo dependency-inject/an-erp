@@ -79,12 +79,12 @@
             },
             rules2() {
                 return {
-                    // materialId: [
-                    //     { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.RETURN_MATERIAL.MATERIAL'), trigger: 'change' }
-                    // ],
-                    // quantity: [
-                    //     { type: 'number', required: true, message: this.$t('field.RETURN_MATERIAL.QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
-                    // ]
+                    materialId: [
+                        { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.RETURN_MATERIAL.MATERIAL'), trigger: 'change' }
+                    ],
+                    quantity: [
+                        { type: 'number', required: true, message: this.$t('field.RETURN_MATERIAL.QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                    ]
                 }
             },
             loginAdmin() {
