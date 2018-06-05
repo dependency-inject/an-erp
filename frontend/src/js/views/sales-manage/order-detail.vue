@@ -184,6 +184,8 @@ export default {
                 this.item.billTimeLocal = util.formatTimestamp(this.item.billTime, "yyyy-MM-dd hh:mm:ss");
                 if (this.item.billState === 3 || this.item.billState === 4)
                     this.getMaterialRequired();
+            } else {
+                this.$router.replace('/order');
             }
         },
         async getMaterialRequired() {

@@ -96,4 +96,8 @@ public class RequestUtils {
         }
         return false;
     }
+
+    public static boolean isLoginPath(String path) {
+        return path.equals("/login") || path.startsWith("/login?") || path.startsWith("/login#");
+    }
 }
