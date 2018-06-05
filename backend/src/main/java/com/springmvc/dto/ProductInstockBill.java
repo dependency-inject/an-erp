@@ -13,13 +13,13 @@ public class ProductInstockBill extends ProductInstockBillEntity {
 
     private String finishName;
 
-    private List<ProductInstockBillProduct> productIdList;
+    private List<ProductInstockBillProduct> productList;
 
     public String getFromPrincipalName() {
         return fromPrincipalName;
     }
 
-    public void setFromPrincipalName(String toPrincipalName) {
+    public void setFromPrincipalName(String fromPrincipalName) {
         this.fromPrincipalName = fromPrincipalName;
     }
 
@@ -47,12 +47,12 @@ public class ProductInstockBill extends ProductInstockBillEntity {
         this.finishName = finishName;
     }
 
-    public List<ProductInstockBillProduct> getProductIdList() {
-        return productIdList;
+    public List<ProductInstockBillProduct> getProductList() {
+        return productList;
     }
 
-    public void setProductIdList(List<ProductInstockBillProduct> productIdList) {
-        this.productIdList= productIdList;
+    public void setProductList(List<ProductInstockBillProduct> productList) {
+        this.productList = productList;
     }
 
 

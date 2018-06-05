@@ -52,42 +52,32 @@ public class ProductInstockController {
         return productInstockService.getWarehouses();
     }
 
-
-
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCT_ADD)
-    public ProductInstockBill add(@RequestParam Integer billId, @RequestParam String billNo, @RequestParam Integer fromPrincipal,
-                                  @RequestParam Integer warehousePrincipal, @RequestParam Integer productWhereabins,
-                                  @RequestParam Integer relatedBill, @RequestParam Integer status,
-                                  @RequestParam String remark, @RequestParam String productIdList) {
-        return productInstockService.addProductInsockBill(billNo, fromPrincipal, warehousePrincipal, productWhereabins,
-                relatedBill, status, remark, ParamUtils.jsonToList(productIdList,ProductInstockBillProduct.class));
+    public ProductInstockBill add(@RequestParam Integer fromPrincipal, @RequestParam Integer productSource,
+                                  @RequestParam String remark, @RequestParam String productList) {
+        return productInstockService.addProductInsockBill(fromPrincipal, productSource, remark,
+                ParamUtils.jsonToList(productList, ProductInstockBillProduct.class));
     }
-
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCT_UPDATE)
-    public ProductInstockBill update(@RequestParam Integer billId, @RequestParam String billNo, @RequestParam Integer fromPrincipal,
-                                     @RequestParam Integer warehousePrincipal, @RequestParam Integer productSource,
-                                     @RequestParam Integer relatedBill, @RequestParam Integer status,
-                                     @RequestParam String remark, @RequestParam String productIdList) {
-        return productInstockService.updateProductInsockBill(billId,billNo, fromPrincipal, warehousePrincipal, productSource,
-                relatedBill, status, remark, ParamUtils.jsonToList(productIdList,ProductInstockBillProduct.class));
+    public ProductInstockBill update(@RequestParam Integer billId, @RequestParam Integer fromPrincipal, @RequestParam Integer productSource,
+                                     @RequestParam String remark, @RequestParam String productList) {
+        return productInstockService.updateProductInsockBill(billId, fromPrincipal,  productSource, remark,
+                ParamUtils.jsonToList(productList,ProductInstockBillProduct.class));
     }
-
-
-
-
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public PageMode<ProductInstockBill> search(@RequestParam Integer current, @RequestParam Integer limit,
-                                               String sortColumn, String sort, String searchKey, Integer productInstockState, Integer total) {
-        return productInstockService.pageProductInstockBill(current, limit, sortColumn, sort, searchKey, productInstockState);
+                                               String sortColumn, String sort, String searchKey, Integer state,
+                                               Long beginTime, Long endTime) {
+        return productInstockService.pageProductInstockBill(current, limit, sortColumn, sort, searchKey, state,
+                ParamUtils.toDate(beginTime), ParamUtils.toDate(endTime));
     }
-
 
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
     @ResponseBody
@@ -95,12 +85,11 @@ public class ProductInstockController {
         return productInstockService.getProductInstockBillById(billId);
     }
 
-
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_REMOVE)
     public String remove(@RequestParam String idList) {
-        productInstockService.removeProductBill(toIntList(idList));
+        productInstockService.removeProductBill(ParamUtils.toIntList(idList));
         return "success";
     }
 
@@ -109,6 +98,4 @@ public class ProductInstockController {
     public List<Product> getProductIdList() {
         return productInstockService.getProductIdList();
     }
-
-
 }

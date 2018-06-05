@@ -3,14 +3,15 @@
         <div class="main-panel-content">
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
-                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.productInstockState=arguments[0];selectItems=[];search()" style="margin:0 10px">
-            			<a href="javascript:void(0)"><span class="main-document-name">{{ productInstockStateCn }}</span><icon type="arrow-down-b"></icon></a>
+                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];selectItems=[];search()" style="margin:0 10px">
+            			<a href="javascript:void(0)"><span class="main-document-name">{{ stateCn }}</span><icon type="arrow-down-b"></icon></a>
             			<dropdown-menu slot="list">
-            				<dropdown-item v-for="item in productInstockStateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
+            				<dropdown-item v-for="item in stateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
             			</dropdown-menu>
             		</dropdown>
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.PROINSTOCK.PROINSTOCK_ID')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.PROUDCT_INSTOCK.BILL_NO')+'/'+$t('field.PROUDCT_INSTOCK.FROM_PRINCIPAL')+'/'+$t('field.PROUDCT_INSTOCK.WAREHOUSE_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
                 </div>
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
@@ -29,7 +30,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-selection-change="selectItems=arguments[0]" @remove="remove([arguments[0]])"></i-table>
+                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -40,10 +41,11 @@
 </template>
 
 <script>
-
 import Permission from '../../mixins/permission';
+
 import util from '../../libs/util.js';
-import productinstockService from '../../service/product-instock';
+
+import productInstockService from '../../service/product-instock';
 
 export default {
     mixins: [ Permission ],
@@ -51,13 +53,15 @@ export default {
         return {
             vm: {
                 queryParameters: {
-                    productInstockState: -1,
                     searchKey: '',
                     total: 0,
                     limit: 10,
                     current: 1,
                     sortColumn: '',
-                    sort: ''
+                    sort: '',
+                    state: -1,
+                    beginTime: '',
+                    endTime: ''
                 },
                 items: [],                
                 identity: 'billId',
@@ -73,12 +77,12 @@ export default {
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.PROINSTOCK.PROINSTOCK_ID'), key: 'billNo', sortable: 'custom' },
-                { title: this.$t('field.PROINSTOCK.PROINSTOCK_TIME'), key: 'productInstockTime', sortable: 'custom' },
-                { title: this.$t('field.PROINSTOCK.PROINSTOCK_PERSON'), key: 'fromPrincipal' },
-                { title: this.$t('field.PROINSTOCK.STOCK_PERSON'), key: 'warehousePrincipal', sortable: 'custom' },
-                { title: this.$t('field.PROINSTOCK.PRO_SOURCE'), key: 'productSourceName', sortable: 'custom' },
-                { title: this.$t('field.PROINSTOCK.STATUS'), key: 'productInstockStateCn', sortable: 'custom' },
+                { title: this.$t('field.PROUDCT_INSTOCK.BILL_NO'), key: 'billNo', sortable: 'custom' },
+                { title: this.$t('field.PROUDCT_INSTOCK.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
+                { title: this.$t('field.PROUDCT_INSTOCK.FROM_PRINCIPAL'), key: 'fromPrincipalName', sortable: 'custom' },
+                { title: this.$t('field.PROUDCT_INSTOCK.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
+                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_SOURCE'), key: 'productSourceCn', sortable: 'custom' },
+                { title: this.$t('field.PROUDCT_INSTOCK.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },
 
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
@@ -90,18 +94,18 @@ export default {
                 }
             ];
         },
-        productInstockStateCn() {
-            for (let i = 0; i < this.productInstockStateList.length; ++i) {
-                if (this.productInstockStateList[i].value === this.vm.queryParameters.productInstockState)
-                    return this.productInstockStateList[i].descript;
+        stateCn() {
+            for (let i = 0; i < this.stateList.length; ++i) {
+                if (this.stateList[i].value === this.vm.queryParameters.state)
+                    return this.stateList[i].descript;
             }
         },
-        productInstockStateList() {
+        stateList() {
             return [
-                { value: -1, descript: this.$t('field.PRODUCT_STOCK_STATE.-1') },
-                { value: 1, descript: this.$t('field.PRODUCT_STOCK_STATE.1') },
-                { value: 2, descript: this.$t('field.PRODUCT_STOCK_STATE.2') },
-                { value: 3, descript: this.$t('field.PRODUCT_STOCK_STATE.3') },
+                { value: -1, descript: this.$t('field.PRODUCT_INSTOCK_STATE.-1') },
+                { value: 1, descript: this.$t('field.PRODUCT_INSTOCK_STATE.1') },
+                { value: 2, descript: this.$t('field.PRODUCT_INSTOCK_STATE.2') },
+                { value: 3, descript: this.$t('field.PRODUCT_INSTOCK_STATE.3') },
             ]
         }
     },
@@ -111,19 +115,23 @@ export default {
         },
         async search() {
             let idList = _.map(this.selectItems, this.vm.identity).join(",");
-            let result = await productinstockService.search(this.vm.queryParameters);
+            let beginTime = -1;
+            if (this.vm.queryParameters.beginTime != '')
+                beginTime = this.vm.queryParameters.beginTime.getTime();
+            let endTime = -1;
+            if (this.vm.queryParameters.endTime != '')
+                endTime = this.vm.queryParameters.endTime.getTime();
+            let result = await productInstockService.search(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }));
             if (result.status === 200) {
                 var items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
-                    item.productInstockTime = new Date().toLocaleDateString(item.creatAt);
-                    item.productInstockStateCn = this.$t('field.PRODUCT_STOCK_STATE.' + Number(item.billState));
-                    item.productSourceName = this.$t('field.PRODUCTIN_WARE_NAME.' + Number(item.productSource));
-                    if (!item.sysDefault) {
-                        item['detailPermission'] = true;
-                        if (this.productInstockRemovePermission)
-                            item['removePermission'] = true;
-                    }
+                    item.billStateCn = this.$t('field.PRODUCT_INSTOCK_STATE.' + Number(item.billState));
+                    item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
+                    item.productSourceCn = this.$t('field.PRODUCT_INSTOCK_PRODUCT_SOURCE.' + Number(item.productSource));
+                    item['detailPermission'] = true;
+                    if (this.productInstockRemovePermission)
+                        item['removePermission'] = true;
                 });
                 this.vm.items = items;
                 this.$nextTick(() => {
@@ -139,8 +147,20 @@ export default {
             if (data.order === 'normal') {
                 this.vm.queryParameters.sortColumn = '';
                 this.vm.queryParameters.sort = '';
-            } else if (data.key === 'productInstockStateCn') {
-                this.vm.queryParameters.sortColumn = 'productInstockState';
+            } else if (data.key === 'fromPrincipalName') {
+                this.vm.queryParameters.sortColumn = 'fromPrincipal';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'warehousePrincipalName') {
+                this.vm.queryParameters.sortColumn = 'warehousePrincipal';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'billTimeLocal') {
+                this.vm.queryParameters.sortColumn = 'billTime';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'billStateCn') {
+                this.vm.queryParameters.sortColumn = 'billState';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'productSourceCn') {
+                this.vm.queryParameters.sortColumn = 'productSource';
                 this.vm.queryParameters.sort = data.order;
             } else {
                 this.vm.queryParameters.sortColumn = data.key;
@@ -149,12 +169,42 @@ export default {
             this.selectItems = [];
             this.search();
         },
+        audit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productInstockService.audit(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        unaudit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productInstockService.unaudit(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
         remove(selectItems) {
             let idList = _.map(selectItems, this.vm.identity).join(",");
             this.$Modal.confirm({
                 content: this.$t('common.REMOVE_CONFIRM'),
                 onOk: async () => {
-                    let result = await productinstockService.remove(idList);
+                    let result = await productInstockService.remove(idList);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.REMOVE_SUCCESS'));
                         this.selectItems = [];

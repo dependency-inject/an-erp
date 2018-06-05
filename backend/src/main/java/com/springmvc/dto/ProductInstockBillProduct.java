@@ -7,16 +7,16 @@ public class ProductInstockBillProduct extends ProductInstockBillProductEntity {
 
     private String productName;
 
-    private String fromPrincipalName;
+    private String principalName;
 
     private String warehouseName;
 
-    public String getFromPrincipalName() {
-        return fromPrincipalName;
+    public String getPrincipalName() {
+        return principalName;
     }
 
-    public void setFromPrincipalName(String toPrincipalName) {
-        this.fromPrincipalName = toPrincipalName;
+    public void setPrincipalName(String toPrincipalName) {
+        this.principalName = toPrincipalName;
     }
 
     public String getWarehouseName() {
