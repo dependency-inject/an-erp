@@ -58,6 +58,7 @@ public class MaterialOutstockService extends BaseService {
     public MaterialOutstockBill addMaterialOutstockBill(Integer toPrincipal, Integer materialWhereabouts, Integer relatedBill,
                                                         String remark, List<MaterialOutstockBillMaterial> materialList) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+        // TODO: 检查库存数量
 
         MaterialOutstockBill materialOutstockBill = new MaterialOutstockBill();
         materialOutstockBill.setBillNo("MO" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
@@ -119,6 +120,7 @@ public class MaterialOutstockService extends BaseService {
 
         checkBillState(Collections.singletonList(billId), 1);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+        // TODO: 检查库存数量
 
         MaterialOutstockBill materialOutstockBill = new MaterialOutstockBill();
         materialOutstockBill.setBillId(billId);
@@ -351,23 +353,35 @@ public class MaterialOutstockService extends BaseService {
 
     /**
      * 完成物料出库单
+     * 若为领料出库，将相关领料单转为已完成状态
      *
-     * @param idList 单据编号
+     * @param billId 单据编号
      */
-    public void finish(List<Integer> idList) {
-        checkBillState(idList, 2);
+    public void finish(Integer billId) {
+        checkBillState(Collections.singletonList(billId), 2);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
         MaterialOutstockBill materialOutstockBill = new MaterialOutstockBill();
+        materialOutstockBill.setBillId(billId);
         materialOutstockBill.setBillState(3);
         materialOutstockBill.setFinishBy(loginAdmin.getAdminId());
         materialOutstockBill.setFinishAt(new Date());
+        materialOutstockBillDAO.updateByPrimaryKeySelective(materialOutstockBill);
 
-        MaterialOutstockBillQuery materialOutstockBillQuery = new MaterialOutstockBillQuery();
-        materialOutstockBillQuery.or().andBillIdIn(idList);
-        materialOutstockBillDAO.updateByExampleSelective(materialOutstockBill, materialOutstockBillQuery);
+        // 若为领料出库，将相关领料单转为已完成状态
+        materialOutstockBill = materialOutstockBillDAO.selectByPrimaryKey(materialOutstockBill.getBillId());
+        if (materialOutstockBill != null && materialOutstockBill.getMaterialWhereabouts().equals(1)
+                && !ParamUtils.isNull(materialOutstockBill.getRelatedBill())) {
+            DrawMaterialBill drawMaterialBill = new DrawMaterialBill();
+            drawMaterialBill.setBillId(materialOutstockBill.getRelatedBill());
+            drawMaterialBill.setBillState(3);
+            drawMaterialBill.setFinishBy(loginAdmin.getAdminId());
+            drawMaterialBill.setFinishAt(new Date());
+            drawMaterialBillDAO.updateByPrimaryKeySelective(drawMaterialBill);
+        }
+
         // 添加日志
-        addLog(LogType.MATERIAL_OUTSTOCK, Operate.FINISH, idList);
+        addLog(LogType.MATERIAL_OUTSTOCK, Operate.FINISH, billId);
     }
 
     private void checkBillState(List<Integer> idList, int state) {

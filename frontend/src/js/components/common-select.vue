@@ -13,6 +13,8 @@ import productService from '../service/product';
 import materialService from '../service/material';
 import orderService from '../service/order';
 import clientService from '../service/client';
+import drawMaterialService from '../service/draw-material';
+import returnMaterialService from '../service/return-material';
 import warehouseService from '../service/warehouse';
 import adminService from '../service/admin';
 import roleService from '../service/role';
@@ -29,7 +31,7 @@ export default {
     props: {
         type: {
             validator (value) {
-                return util.oneOf(value, ['product', 'material', 'order', 'client', 'warehouse', 'admin', 'role']);
+                return util.oneOf(value, ['product', 'material', 'order', 'client', 'draw-material', 'return-material', 'warehouse', 'admin', 'role']);
             }
         },
         value: {
@@ -58,6 +60,10 @@ export default {
                 this.option = { service: orderService, value: 'billId', label: ['billNo'] }
             } else if (this.type === 'client') {
                 this.option = { service: clientService, value: 'clientId', label: ['clientName'] }
+            } else if (this.type === 'draw-material') {
+                this.option = { service: drawMaterialService, value: 'billId', label: ['billNo'] }
+            } else if (this.type === 'return-material') {
+                this.option = { service: returnMaterialService, value: 'billId', label: ['billNo'] }
             } else if (this.type === 'warehouse') {
                 this.option = { service: warehouseService, value: 'warehouseId', label: ['warehouseName'] }
             } else if (this.type === 'admin') {

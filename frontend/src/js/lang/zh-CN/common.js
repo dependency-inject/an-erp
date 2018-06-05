@@ -10,10 +10,7 @@ export default {
 	DISABLE: '停用',
 	SAVE: '保存',
 	BACK: '返回',
-	BEGIN: '开始',
-	CANCEL_BEGIN: '取消开始',
-	COMPLETE: '完成',
-	RECOVER: '恢复',
+	FINISH: '完成',
 	AUDIT: '审核',
 	UNAUDIT: '反审核',
 	PRODUCE: '启动生产',
@@ -22,7 +19,6 @@ export default {
 	IMPORT: '导入',
 	EXPORT: '导出',
 	RESET_PASSWORD: '重置密码',
-	CHART: '图表',
 
 	DOT: '，',
 

@@ -1,6 +1,6 @@
 <template>
     <div class="main-panel">
-       <div class="main-panel-content2">
+        <div class="main-panel-content2">
             <div class="panel-container">
                 <i-form ref="formValidate" :model="item" :rules="rules" :label-width="90" inline>
                     <div class="chief-panel">
@@ -15,12 +15,12 @@
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
                             <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_WHEREABOUTS')" prop="productWhereabouts">
-                                <i-select v-model="item.productWhereabouts" style="width:100%">
+                                <i-select v-model="item.productWhereabouts" :disabled="item.billId!==0" style="width:100%">
                                     <i-option v-for="item in productWhereaboutsList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>
                             <form-item :label="$t('field.PRODUCT_OUTSTOCK.RELATED_BILL')" prop="relatedBill" v-if="item.productWhereabouts===1">
-                                <common-select type="order" v-model="item.relatedBill" :query-parameters="{state:3}" v-if="item.billId===0" @on-change="orderSelectChange"></common-select>
+                                <common-select type="order" v-model="item.relatedBill" :query-parameters="{state:3,onlyNotOutstock:true}" v-if="item.billId===0" @on-change="orderSelectChange"></common-select>
                                 <span v-else>{{ item.relatedBillNo }}</span>
                             </form-item>
                             <form-item :label="$t('field.PRODUCT_OUTSTOCK.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
@@ -35,11 +35,12 @@
                     </div>
                 </i-form>
             </div>
-       </div>
-       <div class="panel-bottom">
+        </div>
+        <div class="panel-bottom">
             <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="productOutstockAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="productOutstockAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
+            <i-button class="operate-btn" type="success" shape="circle" @click="finish" v-if="productOutstockFinishPermission&&item.billId!==0&&item.billState===2">{{ $t('common.FINISH') }}</i-button>
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
@@ -240,6 +241,20 @@ export default {
                 content: this.$t('common.OPERATE_CONFIRM'),
                 onOk: async () => {
                     let result = await productOutstockService.unaudit(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        finish() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productOutstockService.finish(this.item.billId);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
                         this.initData();

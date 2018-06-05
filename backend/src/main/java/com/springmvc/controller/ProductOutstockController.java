@@ -35,15 +35,23 @@ public class ProductOutstockController {
 
     @RequestMapping(value="/unaudit",method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_AUDIT)
+    @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_AUDIT)
     public String unaudit(String idList){
         productOutstockService.unaudit(ParamUtils.toIntList(idList));
         return "success";
     }
 
+    @RequestMapping(value = "/finish", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_FINISH)
+    public String finish(@RequestParam Integer billId) {
+        productOutstockService.finish(billId);
+        return "success";
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.PRODUCT_ADD)
+    @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_ADD)
     public ProductOutstockBill add(@RequestParam Integer toPrincipal, @RequestParam Integer productWhereabouts, @RequestParam Integer relatedBill,
                                    @RequestParam String remark, @RequestParam String productList) {
         return productOutstockService.addProductOutsockBill(toPrincipal, productWhereabouts, relatedBill,
@@ -53,7 +61,7 @@ public class ProductOutstockController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.PRODUCT_UPDATE)
+    @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_UPDATE)
     public ProductOutstockBill update(@RequestParam Integer billId, @RequestParam Integer toPrincipal, @RequestParam Integer productWhereabouts,
                                       @RequestParam Integer relatedBill, @RequestParam String remark, @RequestParam String productList) {
         return productOutstockService.updateProductOutsockBill(billId, toPrincipal, productWhereabouts, relatedBill,
@@ -81,7 +89,7 @@ public class ProductOutstockController {
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_REMOVE)
+    @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_REMOVE)
     public String remove(@RequestParam String idList) {
         productOutstockService.removeProductBill(ParamUtils.toIntList(idList));
         return "success";

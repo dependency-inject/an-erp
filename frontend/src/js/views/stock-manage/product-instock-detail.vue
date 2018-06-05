@@ -15,7 +15,7 @@
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
                             <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_SOURCE')" prop="productSource">
-                                <i-select v-model="item.productSource" style="width:100%">
+                                <i-select v-model="item.productSource" :disabled="item.billId!==0" style="width:100%">
                                     <i-option v-for="item in productSourceList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>
@@ -36,11 +36,12 @@
             <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="productInstockAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="productInstockAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
+            <i-button class="operate-btn" type="success" shape="circle" @click="finish" v-if="productInstockFinishPermission&&item.billId!==0&&item.billState===2">{{ $t('common.FINISH') }}</i-button>
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT')" prop="productId">
-                    <common-select type="product" v-model="modal.item.productId" :query-parameters="{closed:0}" @on-change="productSelectChange"></common-select>
+                    <common-select type="product" v-model="modal.item.productId" @on-change="productSelectChange"></common-select>
                 </form-item>
                 <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
                 <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_PRINCIPAL')" prop="principal">
@@ -221,6 +222,20 @@ export default {
                 content: this.$t('common.OPERATE_CONFIRM'),
                 onOk: async () => {
                     let result = await productInstockService.unaudit(this.item.billId);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
+                        this.initData();
+                    } else {
+                        this.$Message.error(result.data);
+                    }
+                }
+            });
+        },
+        finish() {
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productInstockService.finish(this.item.billId);
                     if (result.status === 200) {
                         this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
                         this.initData();

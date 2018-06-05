@@ -38,15 +38,29 @@ public class OrderService extends BaseService {
     @Resource
     private MaterialDAO materialDAO;
 
+    @Resource
+    private ProductOutstockBillDAO productOutstockBillDAO;
+
     /**
      * 获取订单表的所有信息
      *
      * @return 返回列表
      */
-    public List<OrderBill> getList(Integer state) {
+    public List<OrderBill> getList(Integer state, Boolean onlyNotOutstock) {
         OrderBillQuery orderBillQuery = new OrderBillQuery();
+        OrderBillQuery.Criteria criteria = orderBillQuery.or();
         if (!ParamUtils.isNull(state) && !state.equals(-1)) {
-            orderBillQuery.or().andBillStateEqualTo(state);
+            criteria.andBillStateEqualTo(state);
+        }
+        if (!ParamUtils.isNull(onlyNotOutstock) && onlyNotOutstock) {
+            Set<Integer> billIdSet = new HashSet<Integer>();
+            List<ProductOutstockBill> billList = productOutstockBillDAO.selectByExample(new ProductOutstockBillQuery());
+            for (ProductOutstockBill bill: billList) {
+                if (bill.getProductWhereabouts().equals(1) && !ParamUtils.isNull(bill.getRelatedBill())) {
+                    billIdSet.add(bill.getRelatedBill());
+                }
+            }
+            criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
         }
         return orderBillDAO.selectByExample(orderBillQuery);
     }

@@ -26,7 +26,7 @@ public class ProductInstockController {
 
     @RequestMapping(value="/audit",method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_AUDIT)
+    @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_AUDIT)
     public String audit(String idList){
         productInstockService.audit(ParamUtils.toIntList(idList));
         return "success";
@@ -34,15 +34,23 @@ public class ProductInstockController {
 
     @RequestMapping(value="/unaudit",method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.DEVELOPMENT_DRAW_AUDIT)
+    @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_AUDIT)
     public String unaudit(String idList){
         productInstockService.unaudit(ParamUtils.toIntList(idList));
         return "success";
     }
 
+    @RequestMapping(value = "/finish", method = RequestMethod.POST)
+    @ResponseBody
+    @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_FINISH)
+    public String finish(@RequestParam Integer billId) {
+        productInstockService.finish(billId);
+        return "success";
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.PRODUCT_ADD)
+    @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_ADD)
     public ProductInstockBill add(@RequestParam Integer fromPrincipal, @RequestParam Integer productSource,
                                   @RequestParam String remark, @RequestParam String productList) {
         return productInstockService.addProductInsockBill(fromPrincipal, productSource, remark,
@@ -51,7 +59,7 @@ public class ProductInstockController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.PRODUCT_UPDATE)
+    @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_UPDATE)
     public ProductInstockBill update(@RequestParam Integer billId, @RequestParam Integer fromPrincipal, @RequestParam Integer productSource,
                                      @RequestParam String remark, @RequestParam String productList) {
         return productInstockService.updateProductInsockBill(billId, fromPrincipal,  productSource, remark,
@@ -75,7 +83,7 @@ public class ProductInstockController {
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_REMOVE)
+    @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_REMOVE)
     public String remove(@RequestParam String idList) {
         productInstockService.removeProductBill(ParamUtils.toIntList(idList));
         return "success";

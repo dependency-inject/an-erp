@@ -348,23 +348,35 @@ public class MaterialInstockService extends BaseService {
 
     /**
      * 完成物料入库单
+     * 若为退料入库，将相关退料单转为已完成状态
      *
-     * @param idList 单据编号
+     * @param billId 单据编号
      */
-    public void finish(List<Integer> idList) {
-        checkBillState(idList, 2);
+    public void finish(Integer billId) {
+        checkBillState(Collections.singletonList(billId), 2);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
         MaterialInstockBill materialInstockBill = new MaterialInstockBill();
+        materialInstockBill.setBillId(billId);
         materialInstockBill.setBillState(3);
         materialInstockBill.setFinishBy(loginAdmin.getAdminId());
         materialInstockBill.setFinishAt(new Date());
+        materialInstockBillDAO.updateByPrimaryKeySelective(materialInstockBill);
 
-        MaterialInstockBillQuery materialInstockBillQuery = new MaterialInstockBillQuery();
-        materialInstockBillQuery.or().andBillIdIn(idList);
-        materialInstockBillDAO.updateByExampleSelective(materialInstockBill, materialInstockBillQuery);
+        // 若为退料入库，将相关退料单转为已完成状态
+        materialInstockBill = materialInstockBillDAO.selectByPrimaryKey(materialInstockBill.getBillId());
+        if (materialInstockBill != null && materialInstockBill.getMaterialSource().equals(1)
+                && !ParamUtils.isNull(materialInstockBill.getRelatedBill())) {
+            ReturnMaterialBill returnMaterialBill = new ReturnMaterialBill();
+            returnMaterialBill.setBillId(materialInstockBill.getRelatedBill());
+            returnMaterialBill.setBillState(3);
+            returnMaterialBill.setFinishBy(loginAdmin.getAdminId());
+            returnMaterialBill.setFinishAt(new Date());
+            returnMaterialBillDAO.updateByPrimaryKeySelective(returnMaterialBill);
+        }
+
         // 添加日志
-        addLog(LogType.MATERIAL_INSTOCK, Operate.FINISH, idList);
+        addLog(LogType.MATERIAL_INSTOCK, Operate.FINISH, billId);
     }
 
     private void checkBillState(List<Integer> idList, int state) {

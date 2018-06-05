@@ -62,7 +62,7 @@ public class MaterialOutstockController {
         return materialOutstockService.getMaterialOutstockBillById(billId);
     }
     
-    @RequestMapping(value = "audit", method = RequestMethod.POST)
+    @RequestMapping(value = "/audit", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_AUDIT)
     public String audit(@RequestParam String idList) {
@@ -70,7 +70,7 @@ public class MaterialOutstockController {
         return "success";
     }
 
-    @RequestMapping(value = "unaudit", method = RequestMethod.POST)
+    @RequestMapping(value = "/unaudit", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_AUDIT)
     public String unaudit(@RequestParam String idList) {
@@ -78,11 +78,11 @@ public class MaterialOutstockController {
         return "success";
     }
 
-    @RequestMapping(value = "finish", method = RequestMethod.POST)
+    @RequestMapping(value = "/finish", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_FINISH)
-    public String finish(@RequestParam String idList) {
-        materialOutstockService.finish(ParamUtils.toIntList(idList));
+    public String finish(@RequestParam Integer billId) {
+        materialOutstockService.finish(billId);
         return "success";
     }
 

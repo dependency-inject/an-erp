@@ -14,4 +14,6 @@ var audit = (idList) => http.post('product-outstock/audit', { idList: idList });
 
 var unaudit = (idList) => http.post('product-outstock/unaudit', { idList: idList });
 
-export default { add, getById, remove, search, update, audit, unaudit };
+var finish = (billId) => http.post('product-outstock/finish', { billId: billId });
+
+export default { add, getById, remove, search, update, audit, unaudit, finish };

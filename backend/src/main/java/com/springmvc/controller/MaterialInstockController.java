@@ -61,7 +61,7 @@ public class MaterialInstockController {
         return materialInstockService.getMaterialInstockBillById(billId);
     }
 
-    @RequestMapping(value = "audit", method = RequestMethod.POST)
+    @RequestMapping(value = "/audit", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_AUDIT)
     public String audit(@RequestParam String idList) {
@@ -69,7 +69,7 @@ public class MaterialInstockController {
         return "success";
     }
 
-    @RequestMapping(value = "unaudit", method = RequestMethod.POST)
+    @RequestMapping(value = "/unaudit", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_AUDIT)
     public String unaudit(@RequestParam String idList) {
@@ -77,11 +77,11 @@ public class MaterialInstockController {
         return "success";
     }
 
-    @RequestMapping(value = "finish", method = RequestMethod.POST)
+    @RequestMapping(value = "/finish", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_FINISH)
-    public String finish(@RequestParam String idList) {
-        materialInstockService.finish(ParamUtils.toIntList(idList));
+    public String finish(@RequestParam Integer billId) {
+        materialInstockService.finish(billId);
         return "success";
     }
 }

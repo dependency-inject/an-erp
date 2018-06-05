@@ -48,7 +48,7 @@ public class ProductOutstockService extends BaseService {
      * 将主表信息保存：product_outstock_bill
      * 将关联的从表信息保存：product_outstock_bill_product
      * 添加日志信息：LogType.PRODUCT_OUTSTOCK, Operate.ADD
-     * 若为发货出库，将相应订单状态转为已发货
+     * 若为发货出库，检查相应订单状态
      *
      * @param toPrincipal
      * @param productWhereabouts
@@ -84,7 +84,7 @@ public class ProductOutstockService extends BaseService {
 
         addLog(LogType.PRODUCT_OUTSTOCK,Operate.ADD,productOutstockBill.getBillId());
 
-        // 若为发货出库，将相应订单状态转为已发货
+        // 若为发货出库，检查相应订单状态
         if (productOutstockBill.getProductWhereabouts().equals(1)) {
             OrderBill orderBill = orderBillDAO.selectByPrimaryKey(productOutstockBill.getRelatedBill());
             if (orderBill == null) {
@@ -93,12 +93,6 @@ public class ProductOutstockService extends BaseService {
             if (!orderBill.getBillState().equals(3)) {
                 throw new BadRequestException(ORDER_BILL_NOT_PRODUCE);
             }
-            orderBill = new OrderBill();
-            orderBill.setBillId(productOutstockBill.getRelatedBill());
-            orderBill.setBillState(4);
-            orderBill.setDeliveryAt(new Date());
-            orderBill.setDeliveryBy(loginAdmin.getAdminId());
-            orderBillDAO.updateByPrimaryKeySelective(orderBill);
         }
 
         return getProductOutstockBillById(productOutstockBill.getBillId());
@@ -295,7 +289,6 @@ public class ProductOutstockService extends BaseService {
      * 删除货品出库单
      *
      * 进行必要的检查：是否为待审核状态
-     * 若为发货出库，将相应订单状态转为生产中
      * 删除主表信息：product_outstock_bill
      * 删除关联的从表信息：product_outstock_bill_product
      * 添加日志信息：LogType.PRODUCT_OUTSTOCK, Operate.REMOVE
@@ -305,26 +298,8 @@ public class ProductOutstockService extends BaseService {
     public void removeProductBill(List<Integer> billIdList) {
         checkBillState(billIdList, 1);
 
-        // 若为发货出库，将相应订单状态转为生产中
-        ProductOutstockBillQuery productOutstockBillQuery = new ProductOutstockBillQuery();
-        productOutstockBillQuery.or().andBillIdIn(billIdList);
-        List<ProductOutstockBill> billList = productOutstockBillDAO.selectByExample(productOutstockBillQuery);
-        for (ProductOutstockBill bill : billList) {
-            if (!bill.getProductWhereabouts().equals(1)) {
-                continue;
-            }
-            OrderBill orderBill = orderBillDAO.selectByPrimaryKey(bill.getRelatedBill());
-            if (orderBill == null) {
-                continue;
-            }
-            orderBill = new OrderBill();
-            orderBill.setBillId(bill.getRelatedBill());
-            orderBill.setBillState(3);
-            orderBillDAO.updateByPrimaryKeySelective(orderBill);
-        }
-
         //删除出库单
-        productOutstockBillQuery = new ProductOutstockBillQuery();
+        ProductOutstockBillQuery productOutstockBillQuery = new ProductOutstockBillQuery();
         productOutstockBillQuery.or().andBillIdIn(billIdList);
         productOutstockBillDAO.deleteByExample(productOutstockBillQuery);
         //删除关联
@@ -375,6 +350,39 @@ public class ProductOutstockService extends BaseService {
         productOutstockBillDAO.updateByExampleSelective(productOutstockBill, productOutstockBillQuery);
         // 添加日志
         addLog(LogType.PRODUCT_OUTSTOCK, Operate.UNAUDIT, idList);
+    }
+
+    /**
+     * 完成货品出库单
+     * 若为发货出库，将相关订单转为已发货状态
+     *
+     * @param billId 单据编号
+     */
+    public void finish(Integer billId) {
+        checkBillState(Collections.singletonList(billId), 2);
+        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
+        ProductOutstockBill productOutstockBill = new ProductOutstockBill();
+        productOutstockBill.setBillId(billId);
+        productOutstockBill.setBillState(3);
+        productOutstockBill.setFinishBy(loginAdmin.getAdminId());
+        productOutstockBill.setFinishAt(new Date());
+        productOutstockBillDAO.updateByPrimaryKeySelective(productOutstockBill);
+
+        // 若为发货出库，将相关订单转为已发货状态
+        productOutstockBill = productOutstockBillDAO.selectByPrimaryKey(productOutstockBill.getBillId());
+        if (productOutstockBill != null && productOutstockBill.getProductWhereabouts().equals(1)
+                && !ParamUtils.isNull(productOutstockBill.getRelatedBill())) {
+            OrderBill orderBill = new OrderBill();
+            orderBill.setBillId(productOutstockBill.getRelatedBill());
+            orderBill.setBillState(4);
+            orderBill.setDeliveryBy(loginAdmin.getAdminId());
+            orderBill.setDeliveryAt(new Date());
+            orderBillDAO.updateByPrimaryKeySelective(orderBill);
+        }
+
+        // 添加日志
+        addLog(LogType.MATERIAL_OUTSTOCK, Operate.FINISH, billId);
     }
 
     private void checkBillState(List<Integer> idList, int state) {

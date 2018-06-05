@@ -328,6 +328,26 @@ public class ProductInstockService extends BaseService {
         addLog(LogType.PRODUCT_INSTOCK, Operate.UNAUDIT, idList);
     }
 
+    /**
+     * 完成货品入库单
+     *
+     * @param billId 单据编号
+     */
+    public void finish(Integer billId) {
+        checkBillState(Collections.singletonList(billId), 2);
+        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
+        ProductInstockBill productInstockBill = new ProductInstockBill();
+        productInstockBill.setBillId(billId);
+        productInstockBill.setBillState(3);
+        productInstockBill.setFinishBy(loginAdmin.getAdminId());
+        productInstockBill.setFinishAt(new Date());
+        productInstockBillDAO.updateByPrimaryKeySelective(productInstockBill);
+
+        // 添加日志
+        addLog(LogType.PRODUCT_INSTOCK, Operate.FINISH, billId);
+    }
+
     private void checkBillState(List<Integer> idList, int state) {
         ProductInstockBillQuery productInstockBillQuery = new ProductInstockBillQuery();
         productInstockBillQuery.or().andBillIdIn(idList)
