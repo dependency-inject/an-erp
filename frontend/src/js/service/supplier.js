@@ -18,6 +18,4 @@ var searchMaterial = (queryParameters) => http.post('supplier/searchMaterial', q
 
 var updateMaterial = (materialPrice) => http.post('supplier/updateMaterial', materialPrice);
 
-var getMaterialList = () => http.post('supplier/getMaterialList');
-
-export default {add, getById, remove, search, update, addMaterial, removeMaterial, searchMaterial, updateMaterial, getMaterialList };
+export default {add, getById, remove, search, update, addMaterial, removeMaterial, searchMaterial, updateMaterial };

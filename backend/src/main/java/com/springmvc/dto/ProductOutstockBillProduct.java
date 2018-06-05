@@ -25,8 +25,8 @@ public class ProductOutstockBillProduct extends ProductOutstockBillProductEntity
         return warehouseName;
     }
 
-    public void setWarehouseName(String warehousePrincipalName) {
-        this.warehouseName = warehousePrincipalName;
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 
     public String getProductNo() {

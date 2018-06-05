@@ -9,14 +9,10 @@
                             <form-item :label="$t('field.PROUDCT_INSTOCK.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
                             <form-item :label="$t('field.PROUDCT_INSTOCK.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
                             <form-item :label="$t('field.PROUDCT_INSTOCK.FROM_PRINCIPAL')" prop="fromPrincipal">
-                                <i-select v-model="item.fromPrincipal" style="width:100%">
-                                    <i-option v-for="item in allAdmins" :value="item.adminId" :key="item.adminId">{{ item.trueName }}</i-option>
-                                </i-select>
+                                <common-select type="admin" v-model="item.fromPrincipal"></common-select>
                             </form-item>
                             <form-item :label="$t('field.PROUDCT_INSTOCK.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">
-                                <i-select v-model="item.warehousePrincipal" style="width:100%" disabled>
-                                    <i-option v-for="item in allAdmins" :value="item.adminId" :key="item.adminId">{{ item.trueName }}</i-option>
-                                </i-select>
+                                <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
                             <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_SOURCE')" prop="productSource">
                                 <i-select v-model="item.productSource" style="width:100%">
@@ -44,16 +40,14 @@
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT')" prop="productId">
-                    <i-select v-model="modal.item.productId">
-                        <i-option v-for="item in productList" :value="item.productId" :key="item.productId">{{ item.productNo + ' - ' +item.productName }}</i-option>
-                    </i-select>
+                    <common-select type="product" v-model="modal.item.productId" :query-parameters="{closed:0}" @on-change="productSelectChange"></common-select>
                 </form-item>
                 <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL')" prop="principal"><i-input v-model="modal.item.fromPrincipalName" :min="1" style="width:100%" :disabled=true></i-input></form-item>
+                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL')" prop="principal">
+                    <common-select type="admin" v-model="modal.item.principal" @on-change="principalSelectChange"></common-select>
+                </form-item>
                 <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_WAREHOUSE')" prop="warehouse">
-					<i-select v-model="modal.item.warehouse" style="width:100%">
-						<i-option v-for="item in allWarehouses" :value="item.warehouseId" :key="item.warehouseId">{{ item.warehouseName }}</i-option>
-					</i-select>
+					<common-select type="warehouse" v-model="modal.item.warehouse" @on-change="warehouseSelectChange"></common-select>
 				</form-item>
                 <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_PLACE')" prop="place"><i-input v-model="modal.item.place" type="textarea"></i-input></form-item>
                 <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
@@ -67,6 +61,8 @@ import Permission from '../../mixins/permission'
 
 import util from '../../libs/util.js';
 
+import commonSelect from '../../components/common-select';
+
 import productInstockService from '../../service/product-instock';
 
 export default {
@@ -78,12 +74,13 @@ export default {
             },
             modal: {
                 title: 'title',
-                item: {},
+                item: {
+                    productId: '',
+                    principal: '',
+                    warehouse: ''
+                },
                 visible: false
-            },
-            productList: [],
-            allAdmins: [],
-            allWarehouses: [],
+            }
         }
     },
     computed: {
@@ -126,7 +123,7 @@ export default {
                 { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_NO'), key: 'productNo' },
                 { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_NAME'), key: 'productName' },
                 { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_QUANTITY'), key: 'quantity' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL'), key: 'fromPrincipalName' },
+                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL'), key: 'principalName' },
                 { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_WAREHOUSE'), key: 'warehouseName' },
                 { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_PLACE'), key: 'place' },
                 { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_REMARK'), key: 'remark' },
@@ -145,6 +142,7 @@ export default {
             return result;
         }
     },
+    components: { commonSelect },
     methods: {
         initData() {
             if (!isNaN(Number(this.$route.params.id))) {
@@ -180,7 +178,7 @@ export default {
         save() {
             this.$refs.formValidate.validate(async (valid) => {
                 if (valid) {
-                    let obj = Object.assign({}, this.item, { productList: JSON.stringify(this.productList) });
+                    let obj = Object.assign({}, this.item, { productList: JSON.stringify(this.item.productList) });
                     if (this.$route.params.id === 'add'&& this.item.billId === 0) {
                         let result = await productInstockService.add(obj);
                         if (result.status === 200) {
@@ -232,31 +230,13 @@ export default {
                 }
             });
         },
-        async getProductIdList() {
-            let result = await productInstockService.getProductIdList();
-            if (result.status === 200) {
-                this.productList = result.data;
-            }
-        },
-        async getAdmins() {
-            let result = await productInstockService.getAdmins()
-            if (result.status === 200) {
-                this.allAdmins = result.data;
-            }
-        },
-        async getWarehouses() {
-            let result = await productInstockService.getWarehouses()
-            if (result.status === 200) {
-                this.allWarehouses = result.data;
-            }
-        },
         addProduct() {
             this.modal.title = this.$t('common.ADD') + this.$t('field.PROUDCT_INSTOCK.DETAIL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = -1;
             this.modal.item.productId = '';
             this.modal.item.quantity = 1;
-            this.modal.item.principal = '';
+            this.modal.item.principal = this.$store.state.app.loginAdmin.adminId;
             this.modal.item.warehouse = '';
             this.modal.item.place = '';
             this.modal.item.remark = '';
@@ -272,27 +252,25 @@ export default {
             this.modal.item.warehouse = item.warehouse;
             this.modal.item.place = item.place;
             this.modal.item.remark = item.remark;
+            this.modal.item.productNo = item.productNo;
+            this.modal.item.productName = item.productName;
+            this.modal.item.principalName = item.principalName;
+            this.modal.item.warehouseName = item.warehouseName;
             this.modal.visible = true;
         },
         saveProduct() {
             this.$refs.formValidate2.validate(async (valid) => {
                 if (valid) {
-                    this.productList.forEach((item) => {
-                        if (item.productId === this.modal.item.productId) {
-                            this.modal.item.productNo = item.productNo;
-                            this.modal.item.productName = item.productName;
-                        }
-                    });
-                    
                     if (this.modal.item._index === -1) {
-                            
                         this.item.productList.push({
                             productId: this.modal.item.productId,
                             productNo: this.modal.item.productNo,
                             productName: this.modal.item.productName,
                             quantity: this.modal.item.quantity,
-                            principal: this.$store.state.app.loginAdmin.adminId,
+                            principal: this.modal.item.principal,
+                            principalName: this.modal.item.principalName,
                             warehouse: this.modal.item.warehouse,
+                            warehouseName: this.modal.item.warehouseName,
                             place: this.modal.item.place,
                             remark: this.modal.item.remark,  
                         });
@@ -301,8 +279,10 @@ export default {
                         this.item.productList[this.modal.item._index].productNo = this.modal.item.productNo;
                         this.item.productList[this.modal.item._index].productName = this.modal.item.productName;
                         this.item.productList[this.modal.item._index].quantity = this.modal.item.quantity;
-                        this.item.productList[this.modal.item._index].principal = this.$store.state.app.loginAdmin.adminId;
+                        this.item.productList[this.modal.item._index].principal = this.modal.item.principal;
+                        this.item.productList[this.modal.item._index].principalName = this.modal.item.principalName;
                         this.item.productList[this.modal.item._index].warehouse = this.modal.item.warehouse;
+                        this.item.productList[this.modal.item._index].warehouseName = this.modal.item.warehouseName;
                         this.item.productList[this.modal.item._index].place = this.modal.item.place;
                         this.item.productList[this.modal.item._index].remark = this.modal.item.remark;
                     }
@@ -311,18 +291,6 @@ export default {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
                     this.$refs.modal.abortLoading();
                 }
-            });
-            this.item.productList.forEach((i) => {
-                this.allAdmins.forEach((item) => {
-                    if (item.adminId === i.principal) {
-                        i.fromPrincipalName = item.trueName;
-                    }
-                });
-                this.allWarehouses.forEach((item) => {
-                    if (item.warehouseId === i.warehouse) {
-                        i.warehouseName = item.warehouseName;
-                    }
-                });
             });
         },
         removeProduct(index) {
@@ -334,16 +302,35 @@ export default {
                 }
             });
         },
+        productSelectChange(item) {
+            if (item === null) {
+                this.modal.item.productNo = ''
+                this.modal.item.productName = '';
+            } else {
+                this.modal.item.productNo = item.productNo;
+                this.modal.item.productName = item.productName;
+            }
+        },
+        principalSelectChange(item) {
+            if (item === null) {
+                this.modal.item.principalName = '';
+            } else {
+                this.modal.item.principalName = item.trueName;
+            }
+        },
+        warehouseSelectChange(item) {
+            if (item === null) {
+                this.modal.item.warehouseName = '';
+            } else {
+                this.modal.item.warehouseName = item.warehouseName;
+            }
+        }
     },
-    
     created() {
         this.setDefault();
-        this.getProductIdList();
-        this.getAdmins();
-        this.getWarehouses();
         this.initData();
     },
-     watch: {
+    watch: {
         '$route'(to, from) {
             this.initData();
         }

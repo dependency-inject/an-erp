@@ -40,18 +40,6 @@ public class ProductInstockController {
         return "success";
     }
 
-    @RequestMapping(value = "/getAdmins", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Admin> getAdmins() {
-        return productInstockService.getAdmins();
-    }
-
-    @RequestMapping(value = "/getWarehouses", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Warehouse> getWarehouses() {
-        return productInstockService.getWarehouses();
-    }
-
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCT_ADD)
@@ -91,11 +79,5 @@ public class ProductInstockController {
     public String remove(@RequestParam String idList) {
         productInstockService.removeProductBill(ParamUtils.toIntList(idList));
         return "success";
-    }
-
-    @RequestMapping(value="/getProductIdList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Product> getProductIdList() {
-        return productInstockService.getProductIdList();
     }
 }

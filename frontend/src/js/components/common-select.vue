@@ -11,7 +11,9 @@ import util from '../libs/util.js';
 
 import productService from '../service/product';
 import materialService from '../service/material';
+import orderService from '../service/order';
 import clientService from '../service/client';
+import warehouseService from '../service/warehouse';
 import adminService from '../service/admin';
 import roleService from '../service/role';
 
@@ -20,14 +22,14 @@ export default {
     data() {
         return {
             data: [],
-            model: this.rebuildValue(this.value),
+            model: '',
             option: {}
         }
     },
     props: {
         type: {
             validator (value) {
-                return util.oneOf(value, ['product', 'material', 'client', 'admin', 'role']);
+                return util.oneOf(value, ['product', 'material', 'order', 'client', 'warehouse', 'admin', 'role']);
             }
         },
         value: {
@@ -52,8 +54,12 @@ export default {
                 this.option = { service: productService, value: 'productId', label: ['productNo', 'productName'] }
             } else if (this.type === 'material') {
                 this.option = { service: materialService, value: 'materialId', label: ['materialNo', 'materialName'] }
+            } else if (this.type === 'order') {
+                this.option = { service: orderService, value: 'billId', label: ['billNo'] }
             } else if (this.type === 'client') {
                 this.option = { service: clientService, value: 'clientId', label: ['clientName'] }
+            } else if (this.type === 'warehouse') {
+                this.option = { service: warehouseService, value: 'warehouseId', label: ['warehouseName'] }
             } else if (this.type === 'admin') {
                 this.option = { service: adminService, value: 'adminId', label: ['trueName'] }
             } else if (this.type === 'role') {

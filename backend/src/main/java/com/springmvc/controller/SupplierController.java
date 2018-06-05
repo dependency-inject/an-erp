@@ -130,14 +130,4 @@ public class SupplierController {
                                            @RequestParam BigDecimal price, @RequestParam String remark ) {
         return supplierService.updateSupplierMaterial(supplierMaterialId,supplierId, materialId, price, remark);
     }
-
-    /**
-     * 获取物料列表
-     */
-    @RequestMapping(value = "/getMaterialList", method = RequestMethod.POST)
-    @ResponseBody
-    @PermissionRequired(AccessPermission.SUPPLIER_UPDATE)
-    public List<Material> getMaterialList() {
-        return supplierService.getMaterialList();
-    }
 }

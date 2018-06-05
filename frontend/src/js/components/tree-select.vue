@@ -18,7 +18,7 @@ export default {
         return {
             data: [],
             treeData: [],
-            model: this.value,
+            model: '',
             option: {}
         }
     },

@@ -311,13 +311,6 @@ public class ProductService extends BaseService {
         addLog(LogType.PRODUCT, Operate.UPDATE, productIdList);
     }
 
-    /**
-     * 获取所有可选的物料
-     */
-    public List<Material> getMaterialList() {
-        return materialDAO.selectByExample(new MaterialQuery());
-    }
-
     private static final String PRODUCT_REFER_BY_ORDER = "货品被订单引用";
     private static final String PRODUCT_REFER_BY_INSTOCK = "货品被货品入库单引用";
     private static final String PRODUCT_REFER_BY_OUTSTOCK = "货品被货品出库单引用";

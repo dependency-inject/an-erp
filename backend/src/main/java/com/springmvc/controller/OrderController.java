@@ -22,6 +22,12 @@ public class OrderController {
     @Resource
     OrderService orderService;
 
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<OrderBill> getList(Integer state) {
+        return orderService.getList(state);
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public PageMode<OrderBill> search(@RequestParam Integer current, @RequestParam Integer limit,
@@ -61,32 +67,12 @@ public class OrderController {
         return "success";
     }
 
-    @RequestMapping(value = "/delivery", method = RequestMethod.POST)
-    @ResponseBody
-    @PermissionRequired(AccessPermission.ORDER_DELIVERY)
-    public String deliver(@RequestParam Integer billId) {
-        orderService.delivery(billId);
-        return "success";
-    }
-
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.ORDER_CANCEL)
     public String cancel(@RequestParam Integer billId) {
         orderService.cancel(billId);
         return "success";
-    }
-
-    @RequestMapping(value = "/getClientList", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Client> getClientList() {
-        return orderService.getClientList();
-    }
-
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Product> getProductList() {
-        return orderService.getProductList();
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

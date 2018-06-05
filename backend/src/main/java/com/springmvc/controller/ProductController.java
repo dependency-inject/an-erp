@@ -79,10 +79,4 @@ public class ProductController {
         productService.updateProductClosedState(ParamUtils.toIntList(productIdList), closed);
         return "success";
     }
-
-    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getMaterialList() {
-        return productService.getMaterialList();
-    }
 }

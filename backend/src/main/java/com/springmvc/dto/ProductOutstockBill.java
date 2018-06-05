@@ -9,11 +9,13 @@ public class ProductOutstockBill extends ProductOutstockBillEntity {
 
     private String warehousePrincipalName;
 
+    private String relatedBillNo;
+
     private String auditName;
 
     private String finishName;
 
-    private List<ProductOutstockBillProduct> productIdList;
+    private List<ProductOutstockBillProduct> productList;
 
     public String getToPrincipalName() {
         return toPrincipalName;
@@ -29,6 +31,14 @@ public class ProductOutstockBill extends ProductOutstockBillEntity {
 
     public void setWarehousePrincipalName(String warehousePrincipalName) {
         this.warehousePrincipalName = warehousePrincipalName;
+    }
+
+    public String getRelatedBillNo() {
+        return relatedBillNo;
+    }
+
+    public void setRelatedBillNo(String relatedBillNo) {
+        this.relatedBillNo = relatedBillNo;
     }
 
     public String getAuditName() {
@@ -47,11 +57,11 @@ public class ProductOutstockBill extends ProductOutstockBillEntity {
         this.finishName = finishName;
     }
 
-    public List<ProductOutstockBillProduct> getProductIdList() {
-        return productIdList;
+    public List<ProductOutstockBillProduct> getProductList() {
+        return productList;
     }
 
-    public void setProductIdList(List<ProductOutstockBillProduct> productIdList) {
-        this.productIdList= productIdList;
+    public void setProductList(List<ProductOutstockBillProduct> productList) {
+        this.productList = productList;
     }
 }

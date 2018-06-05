@@ -15,16 +15,16 @@ public class ProductInstockBillProduct extends ProductInstockBillProductEntity {
         return principalName;
     }
 
-    public void setPrincipalName(String toPrincipalName) {
-        this.principalName = toPrincipalName;
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
     }
 
     public String getWarehouseName() {
         return warehouseName;
     }
 
-    public void setWarehouseName(String warehousePrincipalName) {
-        this.warehouseName = warehousePrincipalName;
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 
     public String getProductNo() {

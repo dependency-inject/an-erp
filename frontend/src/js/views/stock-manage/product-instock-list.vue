@@ -130,7 +130,7 @@ export default {
                     item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
                     item.productSourceCn = this.$t('field.PRODUCT_INSTOCK_PRODUCT_SOURCE.' + Number(item.productSource));
                     item['detailPermission'] = true;
-                    if (this.productInstockRemovePermission)
+                    if (item.billState === 1 && this.productInstockRemovePermission)
                         item['removePermission'] = true;
                 });
                 this.vm.items = items;

@@ -120,6 +120,7 @@ export default {
         TO_PRINCIPAL: '领货人',
         WAREHOUSE_PRINCIPAL: '仓库负责人',
         PRODUCT_WHEREABOUTS: '货品去向',
+        RELATED_BILL: '相关订单',
         BILL_STATE: '状态',
         REMARK: '备注',
         DETAIL_INFO: "产品详情",

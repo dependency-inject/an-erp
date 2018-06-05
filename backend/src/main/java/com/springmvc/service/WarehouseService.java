@@ -35,6 +35,15 @@ public class WarehouseService extends BaseService {
     private ProductOutstockBillProductDAO productOutstockBillProductDAO;
 
     /**
+     * 获取仓库表的所有信息
+     *
+     * @return 返回列表
+     */
+    public List<Warehouse> getList() {
+        return warehouseDAO.selectByExample(new WarehouseQuery());
+    }
+
+    /**
      * 查询仓库资料信息（以列表形式显示）
      *
      * 取出主表信息:warehouse

@@ -14,6 +14,4 @@ var update = (product) => http.post('product/update', product);
 
 var updateClosedState = (productIdList, closed) => http.post('product/updateClosedState', { productIdList: productIdList, closed: closed });
 
-var getMaterialList = () => http.post('product/getMaterialList');
-
-export default { add, getById, getList, remove, search, update, updateClosedState, getMaterialList };
+export default { add, getById, getList, remove, search, update, updateClosedState };

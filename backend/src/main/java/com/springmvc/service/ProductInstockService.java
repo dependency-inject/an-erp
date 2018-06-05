@@ -33,6 +33,7 @@ public class ProductInstockService extends BaseService {
 
     @Resource
     private ProductInstockBillProductDAO productInstockBillProductDAO;
+
     private static final String PRODUCT_BILL_NOT_EXISTED="出库单不存在";
     private static final String PRODUCT_BILL_STATE_WRONG="出库单状态不符合要求";//只有待审核可修改和可删除
     private static final String PRODUCT_SOURCE_MODIFY_ERROR="退货出库的出库单无法修改";
@@ -150,13 +151,17 @@ public class ProductInstockService extends BaseService {
         List<ProductInstockBillProduct> result = productInstockBillProductDAO.selectByExample(productInstockBillProductQuery);
         for(ProductInstockBillProduct item: result) {
             Product product = productDAO.selectByPrimaryKey(item.getProductId());
-            if (product != null){
+            if (product != null) {
                 item.setProductNo(product.getProductNo());
                 item.setProductName(product.getProductName());
-                String principalName = adminDAO.selectByPrimaryKey(item.getPrincipal()).getTrueName();
-                item.setPrincipalName(principalName);
-                String warehouseName = warehouseDAO.selectByPrimaryKey(item.getWarehouse()).getWarehouseName();
-                item.setWarehouseName(warehouseName);
+            }
+            Admin principal = adminDAO.selectByPrimaryKey(item.getPrincipal());
+            if (principal != null) {
+                item.setPrincipalName(principal.getTrueName());
+            }
+            Warehouse warehouse = warehouseDAO.selectByPrimaryKey(item.getWarehouse());
+            if (warehouse != null) {
+                item.setWarehouseName(warehouse.getWarehouseName());
             }
         }
         productInstockBill.setProductList(result);
@@ -278,24 +283,6 @@ public class ProductInstockService extends BaseService {
         productInstockBillProductDAO.deleteByExample(productInstockBillProductQuery);
         // 添加日志
         addLog(LogType.PRODUCT_INSTOCK, Operate.REMOVE, billIdList);
-    }
-
-
-    public List<Product> getProductIdList() {
-        return productDAO.selectByExample(new ProductQuery());
-    }
-
-
-    public List<Warehouse> getWarehouses() {
-        WarehouseQuery warehouseQuery = new WarehouseQuery();
-        List<Warehouse> result = warehouseDAO.selectByExample(warehouseQuery);
-        return result;
-    }
-
-    public List<Admin> getAdmins() {
-        AdminQuery adminQuery = new AdminQuery();
-        List<Admin> result = adminDAO.selectByExample(adminQuery);
-        return result;
     }
 
     /**

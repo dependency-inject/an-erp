@@ -39,6 +39,19 @@ public class OrderService extends BaseService {
     private MaterialDAO materialDAO;
 
     /**
+     * 获取订单表的所有信息
+     *
+     * @return 返回列表
+     */
+    public List<OrderBill> getList(Integer state) {
+        OrderBillQuery orderBillQuery = new OrderBillQuery();
+        if (!ParamUtils.isNull(state) && !state.equals(-1)) {
+            orderBillQuery.or().andBillStateEqualTo(state);
+        }
+        return orderBillDAO.selectByExample(orderBillQuery);
+    }
+
+    /**
      * 查询订单信息（单个）
      * @param billId 订单编号
      * @return
@@ -236,34 +249,13 @@ public class OrderService extends BaseService {
         addLog(LogType.ORDER, Operate.PRODUCE, orderBill.getBillId());
     }
 
-
-    /**
-     * 状态改为已发货
-     *
-     * @param billId 订单编号
-     */
-    public void delivery(Integer billId) {
-        checkBillState(Collections.singletonList(billId), 3);
-        Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-
-        // TODO: 增加出库单
-
-        OrderBill orderBill = new OrderBill();
-        orderBill.setBillId(billId);
-        orderBill.setBillState(4);
-        orderBill.setDeliveryAt(new Date());
-        orderBill.setDeliveryBy(loginAdmin.getAdminId());
-        orderBillDAO.updateByPrimaryKeySelective(orderBill);
-        // 添加日志
-        addLog(LogType.ORDER, Operate.DELIVERY, orderBill.getBillId());
-    }
-
     /**
      * 状态改为已取消
      *
      * @param billId 订单编号
      */
     public void cancel(Integer billId) {
+        checkBillState(Collections.singletonList(billId), 3);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
         OrderBill orderBill = new OrderBill();
@@ -273,22 +265,6 @@ public class OrderService extends BaseService {
         orderBillDAO.updateByPrimaryKeySelective(orderBill);
         // 添加日志
         addLog(LogType.ORDER, Operate.CANCEL, orderBill.getBillId());
-    }
-
-    /**
-     * 获取所有可选的客户
-     */
-    public List<Client> getClientList() {
-        return clientDAO.selectByExample(new ClientQuery());
-    }
-
-    /**
-     * 获取所有可选的货品（过滤已停用的货品）
-     */
-    public List<Product> getProductList() {
-        ProductQuery productQuery = new ProductQuery();
-        productQuery.or().andClosedEqualTo(false);
-        return productDAO.selectByExample(productQuery);
     }
 
 

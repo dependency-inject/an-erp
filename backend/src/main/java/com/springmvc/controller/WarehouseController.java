@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/warehouse")
@@ -20,6 +21,12 @@ public class WarehouseController {
 
     @Resource
     WarehouseService warehouseService;
+
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Warehouse> getList() {
+        return warehouseService.getList();
+    }
 
     // 查询
     // 点击查询框获取信息列表，搜索字段：no/name

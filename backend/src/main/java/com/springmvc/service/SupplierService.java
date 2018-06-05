@@ -323,11 +323,4 @@ public class SupplierService extends BaseService {
         addLog(LogType.SUPPLIER_MATERIAL, Operate.UPDATE, supplierMaterial.getSupplierMaterialId());
         return getSupplierMaterialById(supplierMaterial.getSupplierMaterialId());
     }
-
-    /**
-     * 查询所有物料
-     */
-    public List<Material> getMaterialList() {
-        return materialDAO.selectByExample(new MaterialQuery());
-    }
 }

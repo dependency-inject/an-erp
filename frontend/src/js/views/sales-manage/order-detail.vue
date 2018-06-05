@@ -46,7 +46,6 @@
             <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="orderAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="orderAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
             <i-button class="operate-btn" type="success" shape="circle" @click="produce" v-if="orderProducePermission&&item.billId!==0&&item.billState===2">{{ $t('common.PRODUCE') }}</i-button>
-            <i-button class="operate-btn" type="success" shape="circle" @click="delivery" v-if="orderDeliveryPermission&&item.billId!==0&&item.billState===3">{{ $t('common.DELIVERY') }}</i-button>
             <i-button class="operate-btn" type="error" shape="circle" @click="cancel" v-if="orderCancelPermission&&item.billId!==0&&item.billState===3">{{ $t('common.CANCEL') }}</i-button>
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
@@ -84,7 +83,6 @@ export default {
                 },
                 visible: false
             },
-            clientList: [],
             materialList: []
         }
     },
@@ -263,20 +261,6 @@ export default {
                 }
             });
         },
-        delivery() {
-            this.$Modal.confirm({
-                content: this.$t('common.OPERATE_CONFIRM'),
-                onOk: async () => {
-                    let result = await orderService.delivery(this.item.billId);
-                    if (result.status === 200) {
-                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'));
-                        this.initData();
-                    } else {
-                        this.$Message.error(result.data);
-                    }
-                }
-            });
-        },
         cancel() {
             this.$Modal.confirm({
                 content: this.$t('common.OPERATE_CONFIRM'),
@@ -290,12 +274,6 @@ export default {
                     }
                 }
             });
-        },
-        async getClientList() {
-            let result = await orderService.getClientList();
-            if (result.status === 200) {
-                this.clientList = result.data;
-            }
         },
         addProduct() {
             this.modal.title = this.$t('common.ADD') + this.$t('field.ORDER.PRODUCT_INFO');
@@ -370,7 +348,6 @@ export default {
     },
     created() {
         this.setDefault();
-        this.getClientList();
         this.initData();
     },
     watch: {
