@@ -38,7 +38,7 @@
                                     <icon type="arrow-down-b"></icon>
                                 </a>
                                 <dropdown-menu slot="list">
-                                    <dropdown-item name="ownSpace">个人中心</dropdown-item>
+                                    <dropdown-item name="changePassword">修改密码</dropdown-item>
                                     <dropdown-item name="logout" divided>退出登录</dropdown-item>
                                 </dropdown-menu>
                             </dropdown>
@@ -58,6 +58,13 @@
                 </keep-alive>
             </div>
         </div>
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" @on-ok="save" :loading="true">
+            <i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
+                <form-item :label="$t('field.CHANGE_PASSWORD.OLD_PASSWORD')" prop="oldPassword"><i-input type="password" v-model="modal.item.oldPassword"></i-input></form-item>
+                <form-item :label="$t('field.CHANGE_PASSWORD.NEW_PASSWORD')" prop="newPassword"><i-input type="password" v-model="modal.item.newPassword"></i-input></form-item>
+                <form-item :label="$t('field.CHANGE_PASSWORD.CONFIRM_PASSWORD')" prop="confirmPassword"><i-input type="password" v-model="modal.item.confirmPassword"></i-input></form-item>
+            </i-form>
+        </modal>
     </div>
 </template>
 <script>
@@ -68,6 +75,8 @@ import fullScreen from '../components/fullscreen.vue';
 import scrollBar from '../components/scroll-bar/scroll-bar.vue';
 
 import util from '../libs/util.js';
+
+import adminService from '../service/admin';
 
 export default {
     components: {
@@ -83,7 +92,12 @@ export default {
             shrink: false,
             userName: '',
             isFullScreen: false,
-            openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+            openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+            modal: {
+                title: 'title',
+                item: {},
+                visible: false
+            }
         };
     },
     computed: {
@@ -107,6 +121,19 @@ export default {
         },
         menuTheme () {
             return this.$store.state.app.menuTheme;
+        },
+        rules() {
+            return {
+                oldPassword: [
+                    { required: true, message: this.$t('field.CHANGE_PASSWORD.OLD_PASSWORD')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ],
+                newPassword: [
+                    { required: true, message: this.$t('field.CHANGE_PASSWORD.NEW_PASSWORD')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ],
+                confirmPassword: [
+                    { required: true, message: this.$t('field.CHANGE_PASSWORD.CONFIRM_PASSWORD')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                ]
+            }
         }
     },
     methods: {
@@ -123,18 +150,12 @@ export default {
             this.shrink = !this.shrink;
         },
         handleClickUserDropdown (name) {
-            if (name === 'ownSpace') {
-                util.openNewPage(this, 'ownspace_index');
-                this.$router.push({
-                    name: 'ownspace_index'
-                });
+            if (name === 'changePassword') {
+                // 修改密码
+                this.changePassword();
             } else if (name === 'logout') {
                 // 退出登录
-                this.$store.commit('logout', this);
-                this.$store.commit('clearOpenedSubmenu');
-                this.$router.push({
-                    name: 'login'
-                });
+                this.logout();
             }
         },
         checkTag (name) {
@@ -156,6 +177,49 @@ export default {
         },
         scrollBarResize () {
             this.$refs.scrollBar.resize();
+        },
+        changePassword() {
+            this.$refs.formValidate.resetFields();
+            this.modal.title = this.$t('navigate.CHANGE_PASSWORD');
+            this.modal.item.oldPassword = '';
+            this.modal.item.newPassword = '';
+            this.modal.item.confirmPassword = '';
+            this.modal.visible = true;
+        },
+        async save() {
+            this.$refs.formValidate.validate(async (valid) => {
+                if (valid) {
+                    let result = await adminService.changePassword(this.modal.item);
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.SAVE_SUCCESS'));
+                        this.modal.visible = false;
+                    } else {
+                        this.$Message.error(result.data);
+                        this.$refs.modal.abortLoading();
+                    }
+                } else {
+                    this.$Message.error(this.$t('common.VALIDATE_ERROR'));
+                    this.$refs.modal.abortLoading();
+                }
+            });
+        },
+        logout() {
+            this.$Modal.confirm({
+                content: this.$t('common.LOGOUT_CONFIRM'),
+                onOk: () => {
+                    let form = document.createElement('form');
+                    form.setAttribute('style', 'display:none');
+                    form.setAttribute('method', 'post');
+                    form.setAttribute('action', '/logout');
+                    // var input = document.createElement('input');
+                    // input.setAttribute('type', 'hidden');
+                    // input.setAttribute('name', '_token');
+                    // input.setAttribute('value', window.Laravel.csrfToken);
+                    // form.appendChild(input);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
         }
     },
     watch: {

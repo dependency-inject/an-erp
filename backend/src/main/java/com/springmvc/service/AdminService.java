@@ -180,6 +180,20 @@ public class AdminService extends BaseService {
     }
 
     /**
+     * 查询全部用户信息
+     *
+     * @param closed
+     * @return
+     */
+    public List<Admin> getList(Integer closed) {
+        AdminQuery adminQuery = new AdminQuery();
+        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
+            adminQuery.or().andClosedEqualTo(closed > 0);
+        }
+        return adminDAO.selectByExample(adminQuery);
+    }
+
+    /**
      * 用户登录
      *
      * 进行必要的检查：登录名是否存在、密码是否正确、对应账号状态是否为停用

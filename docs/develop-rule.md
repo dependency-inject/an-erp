@@ -8,6 +8,8 @@
 
 !> 可以把自己本地代码 push 到 github 的其他分支（不能是 master 分支）上，也不要发起 pull request，进行分支合并。
 
+?> 以上 git 开发流程并不是最正规的流程，但我们为了方便采用了这种简化流程，但需要大家自行检查提交的分支是否有误。最正规的 git 团队项目合作流程参考：[https://www.cnblogs.com/schaepher/p/4933873.html](https://www.cnblogs.com/schaepher/p/4933873.html)
+
 ### 各模块命名规则
 
 为了方便统一，前后端对应的代码编写位置已经提前建好，大家根据分工自行匹配。
