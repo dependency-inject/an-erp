@@ -1,6 +1,7 @@
 package com.springmvc.interceptor;
 
 import com.springmvc.dto.Admin;
+import com.springmvc.utils.LogUtils;
 import com.springmvc.utils.RequestUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +20,7 @@ public class RedirectIfAuthenticatedInterceptor extends HandlerInterceptorAdapte
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object o) throws Exception {
         // 只拦截登录页面
-        if (!request.getServletPath().equals("/login") || RequestUtils.isAjaxOrWantsJson(request)) {
+        if (!RequestUtils.isLoginPath(request.getServletPath()) || RequestUtils.isAjaxOrWantsJson(request)) {
             return true;
         }
 

@@ -41,6 +41,7 @@ export default {
     PURCHASE_MANAGE: '采购辅助管理',
     SUPPLIER: '供应商信息',
     SUPPLIERS: '供应商管理',
+    SUPPLIER_MATERIAL: '供料信息',
     LACK_MATERIAL: '缺料情况',
 
     COST_MANAGE: '成本管理',

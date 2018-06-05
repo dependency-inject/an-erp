@@ -56,6 +56,7 @@ export const otherRouter = {
         
         // 采购辅助管理
         { path: 'supplier/:id', title: { i18n: 'navigate.SUPPLIER' }, name: 'supplier-detail', access: 'PURCHASE@SUPPLIER_SEARCH', component: require('../views/purchase-manage/supplier-detail.vue') },
+        { path: 'supplier-material/:id', title: { i18n: 'navigate.SUPPLIER_MATERIAL' }, name: 'supplier-material-list', access: 'PURCHASE@SUPPLIER_SEARCH', component: require('../views/purchase-manage/supplier-material-list.vue') },
         
         // 研发辅助管理
         { path: 'development-draw/:id', title: { i18n: 'navigate.DRAW_MATERIAL' }, name: 'development-draw-detail', access: 'DEVELOPMENT@DRAW_SEARCH', component: require('../views/development-manage/draw-material-detail.vue') },
