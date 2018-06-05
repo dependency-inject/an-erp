@@ -1,56 +1,56 @@
 <template>
     <div class="main-panel">
-       <div class="main-panel-content2">
+        <div class="main-panel-content2">
             <div class="panel-container">
                 <i-form ref="formValidate" :model="item" :rules="rules" :label-width="90" inline>
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.FROM_PRINCIPAL')" prop="fromPrincipal">
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.FROM_PRINCIPAL')" prop="fromPrincipal">
                                 <common-select type="admin" v-model="item.fromPrincipal"></common-select>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_SOURCE')" prop="productSource">
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_SOURCE')" prop="productSource">
                                 <i-select v-model="item.productSource" style="width:100%">
                                     <i-option v-for="item in productSourceList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
-                            <form-item :label="$t('field.PROUDCT_INSTOCK.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.PRODUCT_INSTOCK.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
                         </div>
                     </div>
                      <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.PROUDCT_INSTOCK.DETAIL_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addProduct"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.PROUDCT_INSTOCK.DETAIL_INFO') }}</a>）</span></div>
+                        <div class="panel-header">{{ $t('field.PRODUCT_INSTOCK.DETAIL_INFO') }}&nbsp;&nbsp;<span v-if="editable">（<a class="remark" @click="addProduct"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.PRODUCT_INSTOCK.DETAIL_INFO') }}</a>）</span></div>
                         <div class="panel-body">
                             <i-table border :columns="columnList" :data="this.item.productList"></i-table>
                         </div>
                     </div>
                 </i-form>
             </div>
-       </div>
-       <div class="panel-bottom">
+        </div>
+        <div class="panel-bottom">
             <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="productInstockAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="productInstockAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT')" prop="productId">
+                <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT')" prop="productId">
                     <common-select type="product" v-model="modal.item.productId" :query-parameters="{closed:0}" @on-change="productSelectChange"></common-select>
                 </form-item>
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL')" prop="principal">
+                <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
+                <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_PRINCIPAL')" prop="principal">
                     <common-select type="admin" v-model="modal.item.principal" @on-change="principalSelectChange"></common-select>
                 </form-item>
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_WAREHOUSE')" prop="warehouse">
+                <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_WAREHOUSE')" prop="warehouse">
 					<common-select type="warehouse" v-model="modal.item.warehouse" @on-change="warehouseSelectChange"></common-select>
 				</form-item>
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_PLACE')" prop="place"><i-input v-model="modal.item.place" type="textarea"></i-input></form-item>
-                <form-item :label="$t('field.PROUDCT_INSTOCK.PRODUCT_REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
+                <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_PLACE')" prop="place"><i-input v-model="modal.item.place" type="textarea"></i-input></form-item>
+                <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
             </i-form>
         </modal>
     </div>
@@ -87,26 +87,26 @@ export default {
         rules() {
             return {
                 fromPrincipal: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_INSTOCK.FROM_PRINCIPAL'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_INSTOCK.FROM_PRINCIPAL'), trigger: 'change' }
                 ],
                 productSource: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_INSTOCK.PRODUCT_SOURCE'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_INSTOCK.PRODUCT_SOURCE'), trigger: 'change' }
                 ]
             }
         },
         rules2() {
             return {
                 productId: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_INSTOCK.PRODUCT'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_INSTOCK.PRODUCT'), trigger: 'change' }
                 ],
                 quantity: [
-                    { type: 'number', required: true, message: this.$t('field.PROUDCT_INSTOCK.PRODUCT_QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                    { type: 'number', required: true, message: this.$t('field.PRODUCT_INSTOCK.PRODUCT_QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ],
                 principal: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_INSTOCK.PRODUCT_PRINCIPAL'), trigger: 'change' }
                 ],
                 warehouse: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_INSTOCK.PRODUCT_WAREHOUSE'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_INSTOCK.PRODUCT_WAREHOUSE'), trigger: 'change' }
                 ]
             }
         },
@@ -120,13 +120,13 @@ export default {
         },
         columnList() {
             let result = [
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_NO'), key: 'productNo' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_NAME'), key: 'productName' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_QUANTITY'), key: 'quantity' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_PRINCIPAL'), key: 'principalName' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_WAREHOUSE'), key: 'warehouseName' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_PLACE'), key: 'place' },
-                { title: this.$t('field.PROUDCT_INSTOCK.PRODUCT_REMARK'), key: 'remark' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_NO'), key: 'productNo' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_NAME'), key: 'productName' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_QUANTITY'), key: 'quantity' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_PRINCIPAL'), key: 'principalName' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_WAREHOUSE'), key: 'warehouseName' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_PLACE'), key: 'place' },
+                { title: this.$t('field.PRODUCT_INSTOCK.PRODUCT_REMARK'), key: 'remark' },
             ];
             if (this.editable) {
                 result.push({ 
@@ -231,7 +231,7 @@ export default {
             });
         },
         addProduct() {
-            this.modal.title = this.$t('common.ADD') + this.$t('field.PROUDCT_INSTOCK.DETAIL_INFO');
+            this.modal.title = this.$t('common.ADD') + this.$t('field.PRODUCT_INSTOCK.DETAIL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = -1;
             this.modal.item.productId = '';
@@ -243,7 +243,7 @@ export default {
             this.modal.visible = true;
         },
         editProduct(item) {
-            this.modal.title = this.$t('common.EDIT') + this.$t('field.PROUDCT_INSTOCK.DETAIL_INFO');
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.PRODUCT_INSTOCK.DETAIL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = item._index;
             this.modal.item.productId = item.productId;

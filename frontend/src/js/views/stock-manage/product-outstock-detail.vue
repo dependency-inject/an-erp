@@ -6,29 +6,29 @@
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
                         <div class="panel-body">
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.TO_PRINCIPAL')" prop="toPrincipal">
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.TO_PRINCIPAL')" prop="toPrincipal">
                                 <common-select type="admin" v-model="item.toPrincipal"></common-select>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT_WHEREABOUTS')" prop="productWhereabouts">
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_WHEREABOUTS')" prop="productWhereabouts">
                                 <i-select v-model="item.productWhereabouts" style="width:100%">
                                     <i-option v-for="item in productWhereaboutsList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.RELATED_BILL')" prop="relatedBill" v-if="item.productWhereabouts===1">
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.RELATED_BILL')" prop="relatedBill" v-if="item.productWhereabouts===1">
                                 <common-select type="order" v-model="item.relatedBill" :query-parameters="{state:3}" v-if="item.billId===0" @on-change="orderSelectChange"></common-select>
                                 <span v-else>{{ item.relatedBillNo }}</span>
                             </form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
-                            <form-item :label="$t('field.PROUDCT_OUTSTOCK.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.PRODUCT_OUTSTOCK.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
                         </div>
                     </div>
                      <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.PROUDCT_OUTSTOCK.DETAIL_INFO') }}&nbsp;&nbsp;<span v-if="editable&&item.productWhereabouts!==1">（<a class="remark" @click="addProduct"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.PROUDCT_OUTSTOCK.DETAIL_INFO') }}</a>）</span></div>
+                        <div class="panel-header">{{ $t('field.PRODUCT_OUTSTOCK.DETAIL_INFO') }}&nbsp;&nbsp;<span v-if="editable&&item.productWhereabouts!==1">（<a class="remark" @click="addProduct"><icon type="plus"></icon> {{ $t('common.ADD')+$t('field.PRODUCT_OUTSTOCK.DETAIL_INFO') }}</a>）</span></div>
                         <div class="panel-body">
                             <i-table border :columns="columnList" :data="this.item.productList"></i-table>
                         </div>
@@ -43,18 +43,18 @@
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
-                <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT')" prop="productId">
+                <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT')" prop="productId">
                     <common-select type="product" v-model="modal.item.productId" @on-change="productSelectChange" :disabled="item.productWhereabouts===1"></common-select>
                 </form-item>
-                <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%" :disabled="item.productWhereabouts===1"></input-number></form-item>
-                <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT_PRINCIPAL')" prop="principal">
+                <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%" :disabled="item.productWhereabouts===1"></input-number></form-item>
+                <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_PRINCIPAL')" prop="principal">
                     <common-select type="admin" v-model="modal.item.principal" @on-change="principalSelectChange"></common-select>
                 </form-item>
-                <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT_WAREHOUSE')" prop="warehouse">
+                <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_WAREHOUSE')" prop="warehouse">
                     <common-select type="warehouse" v-model="modal.item.warehouse" @on-change="warehouseSelectChange"></common-select>
                 </form-item>
-                <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT_PLACE')" prop="place"><i-input v-model="modal.item.place" type="textarea"></i-input></form-item>
-                <form-item :label="$t('field.PROUDCT_OUTSTOCK.PRODUCT_REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
+                <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_PLACE')" prop="place"><i-input v-model="modal.item.place" type="textarea"></i-input></form-item>
+                <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT_REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
             </i-form>
         </modal>
     </div>
@@ -92,29 +92,29 @@ export default {
         rules() {
             return {
                 toPrincipal: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_OUTSTOCK.TO_PRINCIPAL'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_OUTSTOCK.TO_PRINCIPAL'), trigger: 'change' }
                 ],
                 productWhereabouts: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_WHEREABOUTS'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_WHEREABOUTS'), trigger: 'change' }
                 ],
                 relatedBill: [
-                    { type: 'number', required: this.item.productWhereabouts===1, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_OUTSTOCK.RELATED_BILL'), trigger: 'change' }
+                    { type: 'number', required: this.item.productWhereabouts===1, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_OUTSTOCK.RELATED_BILL'), trigger: 'change' }
                 ]
             }
         },
         rules2() {
             return {
                 productId: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_OUTSTOCK.PRODUCT'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_OUTSTOCK.PRODUCT'), trigger: 'change' }
                 ],
                 quantity: [
-                    { type: 'number', required: true, message: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
+                    { type: 'number', required: true, message: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_QUANTITY')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ],
                 principal: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_PRINCIPAL'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_PRINCIPAL'), trigger: 'change' }
                 ],
                 warehouse: [
-                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_WAREHOUSE'), trigger: 'change' }
+                    { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_WAREHOUSE'), trigger: 'change' }
                 ]
             }
         },
@@ -128,13 +128,13 @@ export default {
         },
         columnList() {
             let result = [
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_NO'), key: 'productNo' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_NAME'), key: 'productName' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_QUANTITY'), key: 'quantity' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_PRINCIPAL'), key: 'principalName' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_WAREHOUSE'), key: 'warehouseName' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_PLACE'), key: 'place' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_REMARK'), key: 'remark' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_NO'), key: 'productNo' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_NAME'), key: 'productName' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_QUANTITY'), key: 'quantity' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_PRINCIPAL'), key: 'principalName' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_WAREHOUSE'), key: 'warehouseName' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_PLACE'), key: 'place' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_REMARK'), key: 'remark' },
             ];
             if (this.editable) {
                 if (this.item.productWhereabouts !== 1) {
@@ -250,7 +250,7 @@ export default {
             });
         },
         addProduct() {
-            this.modal.title = this.$t('common.ADD') + this.$t('field.PROUDCT_OUTSTOCK.DETAIL_INFO');
+            this.modal.title = this.$t('common.ADD') + this.$t('field.PRODUCT_OUTSTOCK.DETAIL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = -1;
             this.modal.item.productId = '';
@@ -262,7 +262,7 @@ export default {
             this.modal.visible = true;
         },
         editProduct(item) {
-            this.modal.title = this.$t('common.EDIT') + this.$t('field.PROUDCT_OUTSTOCK.DETAIL_INFO');
+            this.modal.title = this.$t('common.EDIT') + this.$t('field.PRODUCT_OUTSTOCK.DETAIL_INFO');
             this.$refs.formValidate2.resetFields();
             this.modal.item._index = item._index;
             this.modal.item.productId = item.productId;

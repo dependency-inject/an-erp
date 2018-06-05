@@ -10,7 +10,7 @@
                         </dropdown-menu>
                     </dropdown>
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.PROUDCT_OUTSTOCK.BILL_NO')+'/'+$t('field.PROUDCT_OUTSTOCK.TO_PRINCIPAL')+'/'+$t('field.PROUDCT_OUTSTOCK.WAREHOUSE_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.PRODUCT_OUTSTOCK.BILL_NO')+'/'+$t('field.PRODUCT_OUTSTOCK.TO_PRINCIPAL')+'/'+$t('field.PRODUCT_OUTSTOCK.WAREHOUSE_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
                     <date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
                 </div>
                 <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -77,12 +77,12 @@ export default {
         columnList() {
             return [
                 { type: 'selection', width: 80, align: 'center' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.BILL_NO'), key: 'billNo', sortable: 'custom' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.TO_PRINCIPAL'), key: 'toPrincipalName', sortable: 'custom' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.PRODUCT_WHEREABOUTS'), key: 'productWhereaboutsCn', sortable: 'custom' },
-                { title: this.$t('field.PROUDCT_OUTSTOCK.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.BILL_NO'), key: 'billNo', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.TO_PRINCIPAL'), key: 'toPrincipalName', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.PRODUCT_WHEREABOUTS'), key: 'productWhereaboutsCn', sortable: 'custom' },
+                { title: this.$t('field.PRODUCT_OUTSTOCK.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },
 
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {

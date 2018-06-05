@@ -96,7 +96,7 @@ export default {
         CONTACT: '联系人',
         CONTACT_PHONE: '联系电话',
     },
-    PROUDCT_INSTOCK: {
+    PRODUCT_INSTOCK: {
         BILL_NO: '入库单编号',
         BILL_TIME: '创建时间',
         FROM_PRINCIPAL: '交货人',
@@ -114,7 +114,7 @@ export default {
         PRODUCT_REMARK: "备注",
         PRODUCT: "货品"
     },
-    PROUDCT_OUTSTOCK: {
+    PRODUCT_OUTSTOCK: {
         BILL_NO: '出库单编号',
         BILL_TIME: '创建时间',
         TO_PRINCIPAL: '领货人',
