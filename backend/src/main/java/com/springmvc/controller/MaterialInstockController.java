@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("/material-instock")
@@ -26,35 +23,35 @@ public class MaterialInstockController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_ADD)
-    public MaterialInstockBill add(@RequestParam String billNo, @RequestParam Integer selectedPrincipal,
-                                   @RequestParam Integer warehousePrincipal, @RequestParam Integer relatedBill, @RequestParam String remark,
-                                   @RequestParam Integer materialInstockState, @RequestParam String materials, @RequestParam Integer selectedSource) {
-        return materialInstockService.addMaterialInstockBillByPurchase(billNo, selectedPrincipal, warehousePrincipal, relatedBill,
-                remark, materialInstockState, materials, selectedSource);
+    public MaterialInstockBill add(@RequestParam Integer fromPrincipal, @RequestParam Integer materialSource, @RequestParam Integer relatedBill,
+                                   @RequestParam String remark, @RequestParam String materialList) {
+        return materialInstockService.addMaterialInstockBill(fromPrincipal, materialSource, relatedBill,
+                remark, ParamUtils.jsonToList(materialList, MaterialInstockBillMaterial.class));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_UPDATE)
-    public MaterialInstockBill update(@RequestParam Integer billId, @RequestParam String billNo, @RequestParam Integer selectedPrincipal,
-                                      @RequestParam Integer warehousePrincipal, @RequestParam Integer relatedBill, @RequestParam Integer materialInstockState,
-                                      @RequestParam String remark,  @RequestParam Integer selectedSource) {
-        return materialInstockService.updateMateialInstockBill(billId, billNo, selectedPrincipal, warehousePrincipal,
-                relatedBill, materialInstockState, remark, selectedSource);
+    public MaterialInstockBill update(@RequestParam Integer billId, @RequestParam Integer fromPrincipal, @RequestParam Integer materialSource,
+                                      @RequestParam Integer relatedBill, @RequestParam String remark, @RequestParam String materialList) {
+        return materialInstockService.updateMateialInstockBill(billId, fromPrincipal, materialSource,
+                relatedBill, remark, ParamUtils.jsonToList(materialList, MaterialInstockBillMaterial.class));
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public PageMode<MaterialInstockBill> search(@RequestParam Integer current, @RequestParam Integer limit,
-                                  String sortColumn, String sort, String searchKey, Integer materialInstockState) {
-        return materialInstockService.pageMaterialInstockBill(current, limit, sortColumn, sort, searchKey, materialInstockState);
+                                                String sortColumn, String sort, String searchKey, Integer state,
+                                                Long beginTime, Long endTime) {
+        return materialInstockService.pageMaterialInstockBill(current, limit, sortColumn, sort, searchKey, state,
+                ParamUtils.toDate(beginTime), ParamUtils.toDate(endTime));
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_REMOVE)
     public String remove(@RequestParam String idList) {
-        materialInstockService.removeMaterialBill(ParamUtils.toIntList(idList));
+        materialInstockService.removeMaterialInstockBill(ParamUtils.toIntList(idList));
         return "success";
     }
 
@@ -62,30 +59,6 @@ public class MaterialInstockController {
     @ResponseBody
     public MaterialInstockBill getById(@RequestParam Integer billId) {
         return materialInstockService.getMaterialInstockBillById(billId);
-    }
-
-    @RequestMapping(value = "getMaterials", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getMaterials() {
-        return materialInstockService.getMaterials();
-    }
-
-    @RequestMapping(value = "getMaterial", method = RequestMethod.POST)
-    @ResponseBody
-    public List<MaterialInstockBillMaterial> getMaterial(@RequestParam Integer billId) {
-        return materialInstockService.getMaterial(billId);
-    }
-
-    @RequestMapping(value = "getWarehouses", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Warehouse> getWarehouses() {
-        return materialInstockService.getWarehouses();
-    }
-
-    @RequestMapping(value = "getAdmins", method = RequestMethod.POST)
-    @ResponseBody
-    public List<Admin> getAdmins() {
-        return materialInstockService.getAdmins();
     }
 
     @RequestMapping(value = "audit", method = RequestMethod.POST)

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.springmvc.dto.Product">
     <id column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="product_no" jdbcType="VARCHAR" property="productNo" />
-    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_name" jdbcType="VARCHAR" property="materialName" />
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="category_id" jdbcType="INTEGER" property="categoryId" />
     <result column="spec" jdbcType="VARCHAR" property="spec" />
@@ -125,7 +125,7 @@
       closed, remark, create_at, 
       create_by, update_at, update_by
       )
-    values (#{productNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+    values (#{productNo,jdbcType=VARCHAR}, #{materialName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
       #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{closed,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
       #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
@@ -140,7 +140,7 @@
       <if test="productNo != null">
         product_no,
       </if>
-      <if test="productName != null">
+      <if test="materialName != null">
         product_name,
       </if>
       <if test="unit != null">
@@ -178,8 +178,8 @@
       <if test="productNo != null">
         #{productNo,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null">
-        #{productName,jdbcType=VARCHAR},
+      <if test="materialName != null">
+        #{materialName,jdbcType=VARCHAR},
       </if>
       <if test="unit != null">
         #{unit,jdbcType=VARCHAR},
@@ -225,8 +225,8 @@
       <if test="record.productNo != null">
         product_no = #{record.productNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.productName != null">
-        product_name = #{record.productName,jdbcType=VARCHAR},
+      <if test="record.materialName != null">
+        product_name = #{record.materialName,jdbcType=VARCHAR},
       </if>
       <if test="record.unit != null">
         unit = #{record.unit,jdbcType=VARCHAR},
@@ -266,7 +266,7 @@
   <update id="updateByExample" parameterType="map">
     update product
     set product_no = #{record.productNo,jdbcType=VARCHAR},
-      product_name = #{record.productName,jdbcType=VARCHAR},
+      product_name = #{record.materialName,jdbcType=VARCHAR},
       unit = #{record.unit,jdbcType=VARCHAR},
       category_id = #{record.categoryId,jdbcType=INTEGER},
       spec = #{record.spec,jdbcType=VARCHAR},
@@ -287,8 +287,8 @@
       <if test="productNo != null">
         product_no = #{productNo,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null">
-        product_name = #{productName,jdbcType=VARCHAR},
+      <if test="materialName != null">
+        product_name = #{materialName,jdbcType=VARCHAR},
       </if>
       <if test="unit != null">
         unit = #{unit,jdbcType=VARCHAR},
@@ -326,7 +326,7 @@
   <update id="updateByPrimaryKey" parameterType="com.springmvc.dto.Product">
     update product
     set product_no = #{productNo,jdbcType=VARCHAR},
-      product_name = #{productName,jdbcType=VARCHAR},
+      product_name = #{materialName,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=INTEGER},
       spec = #{spec,jdbcType=VARCHAR},

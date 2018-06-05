@@ -3,32 +3,46 @@ package com.springmvc.dto;
 import com.springmvc.pojo.MaterialOutstockBillMaterialEntity;
 
 public class MaterialOutstockBillMaterial extends MaterialOutstockBillMaterialEntity {
-    String materialName;
-    String warehouseName;
-    String principalName;
 
-    public void setMaterialName(String materialName) {
+    private String materialNo;
 
-        this.materialName = materialName;
+    private String materialName;
+
+
+    private String principalName;
+
+    private String warehouseName;
+
+    public String getPrincipalName() {
+        return principalName;
     }
-    public String getMaterialName() {
-        return materialName;
+
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
     }
 
-    public void setWarehouseName(String warehouseName) {
-
-        this.warehouseName = warehouseName;
-    }
     public String getWarehouseName() {
         return warehouseName;
     }
 
-    public void setPrincipalName(String principalName) {
-
-        this.principalName = principalName;
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
-    public String getPrincipalName() {
-        return principalName;
+
+    public String getMaterialNo() {
+        return materialNo;
+    }
+
+    public void setMaterialNo(String materialNo) {
+        this.materialNo = materialNo;
+    }
+
+    public String getMaterialName() {
+        return materialName;
+    }
+
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
 }
