@@ -2,6 +2,8 @@ import { http } from '../libs/http';
 
 var getBill = (billId) => http.post('development-draw/billDetail', { billId: billId });
 
+var getMaterial = (billId) => http.post('development-draw/getMaterial', { billId: billId });
+
 var searchBill = (queryParameters) => http.post('development-draw/searchBill', queryParameters);
 
 var auditBill = (idList) => http.post('development-draw/auditBill', { idList: idList });

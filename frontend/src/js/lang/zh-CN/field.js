@@ -19,6 +19,7 @@ export default {
     DRAW_MATERIAL: {
         BILL_NO: '领料单编号',
         TO_PRINCIPAL: '领料人',
+        ORDER:'订单',
         WAREHOUSE_PRINCIPAL: '仓库负责人',
         BILL_STATE: '领料单状态',
         DRAW_REASON: '领料原因',
@@ -52,7 +53,11 @@ export default {
         CREATE_AT: '创建时间',
         CREATE_BY: '创建者',
         UPDATE_AT: '更新时间',
-        UPDATE_BY: '更新者'
+        UPDATE_BY: '更新者',
+        MATERIAL_INFO:'物料信息',
+        MATERIAL: '物料',
+        QUANTITY: '数量',
+        REMARK: '备注'
     },
     MATERIAL: {
         MATERIAL_NO: '物料编号',

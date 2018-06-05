@@ -20,12 +20,14 @@ public class ReturnMaterialBillEntity {
      * 表字段 : return_material_bill.from_principal
      */
     private Integer fromPrincipal;
+    private String fromPrincipalName;
 
     /**
      * 仓库负责人
      * 表字段 : return_material_bill.warehouse_principal
      */
     private Integer warehousePrincipal;
+    private String warehousePrincipalName;
 
     /**
      * 退料单创建时间
@@ -62,13 +64,13 @@ public class ReturnMaterialBillEntity {
      * 表字段 : return_material_bill.audit_at
      */
     private Date auditAt;
-
+    private String auditAtName;
     /**
      * 审核者
      * 表字段 : return_material_bill.audit_by
      */
     private Integer auditBy;
-
+    private String auditByName;
     /**
      * 完成时间
      * 表字段 : return_material_bill.finish_at
@@ -80,7 +82,7 @@ public class ReturnMaterialBillEntity {
      * 表字段 : return_material_bill.finish_by
      */
     private Integer finishBy;
-
+    private String finishByName;
     /**
      * 创建时间
      * 表字段 : return_material_bill.create_at
@@ -92,7 +94,10 @@ public class ReturnMaterialBillEntity {
      * 表字段 : return_material_bill.create_by
      */
     private Integer createBy;
-
+    /**
+     * 设置createname
+     */
+    private String createByname;
     /**
      * 更新时间
      * 表字段 : return_material_bill.update_at
@@ -104,7 +109,7 @@ public class ReturnMaterialBillEntity {
      * 表字段 : return_material_bill.update_by
      */
     private Integer updateBy;
-
+    private String updateByName;
     /**
      * 获取 退料单ID
      * 表字段 : return_material_bill.bill_id
@@ -164,7 +169,21 @@ public class ReturnMaterialBillEntity {
     public void setFromPrincipal(Integer fromPrincipal) {
         this.fromPrincipal = fromPrincipal;
     }
-
+    public void setFromPrincipalName(String fromPrincipalName) {
+        this.fromPrincipalName=fromPrincipalName;
+    }
+    public void setCreateByname(String createByname) {
+        this.createByname=createByname;
+    }
+    public void setAuditAtName(String auditAtName) {
+        this.auditAtName=auditAtName;
+    }
+    public void setWarehousePrincipalName(String warehousePrincipalName){
+        this.warehousePrincipalName=warehousePrincipalName;
+    }
+    public void setFinishByName(String finishByName){
+        this.finishByName=finishByName;
+    }
     /**
      * 获取 仓库负责人
      * 表字段 : return_material_bill.warehouse_principal
@@ -446,7 +465,7 @@ public class ReturnMaterialBillEntity {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public String toString() {

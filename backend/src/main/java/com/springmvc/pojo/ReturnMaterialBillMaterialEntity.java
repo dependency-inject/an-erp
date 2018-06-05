@@ -2,7 +2,7 @@ package com.springmvc.pojo;
 
 public class ReturnMaterialBillMaterialEntity {
     /**
-     * 
+     *
      * 表字段 : return_material_bill_material.bill_material_id
      */
     private Integer billMaterialId;
@@ -18,6 +18,7 @@ public class ReturnMaterialBillMaterialEntity {
      * 表字段 : return_material_bill_material.material_id
      */
     private Integer materialId;
+    private String materialName;
 
     /**
      * 数量
@@ -32,7 +33,7 @@ public class ReturnMaterialBillMaterialEntity {
     private String remark;
 
     /**
-     * 获取 
+     * 获取
      * 表字段 : return_material_bill_material.bill_material_id
      *
      * @return Integer
@@ -42,7 +43,7 @@ public class ReturnMaterialBillMaterialEntity {
     }
 
     /**
-     * 设置 
+     * 设置
      * 表字段 : return_material_bill_material.bill_material_id
      *
      * @param billMaterialId
@@ -90,6 +91,11 @@ public class ReturnMaterialBillMaterialEntity {
     public void setMaterialId(Integer materialId) {
         this.materialId = materialId;
     }
+    public void setMaterialName(String materialName) {
+        this.materialName=materialName;
+    }
+    public String getMaterialName(){ return this.materialName;}
+
 
     /**
      * 获取 数量
@@ -132,7 +138,7 @@ public class ReturnMaterialBillMaterialEntity {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public String toString() {
