@@ -141,6 +141,44 @@ export default {
         PRODUCT_ORDERED: '待出库数量',
         PRODUCT_LEFT: '可用数量'
     },
+    MATERIAL_INSTOCK: {
+        BILL_NO: '入库单编号',
+        BILL_TIME: '创建时间',
+        FROM_PRINCIPAL: '交料人',
+        WAREHOUSE_PRINCIPAL: '仓库负责人',
+        MATERIAL_SOURCE: '物料来源',
+        RELATED_BILL: '相关退料单',
+        BILL_STATE: '状态',
+        REMARK: '备注',
+        DETAIL_INFO: "物料详情",
+        MATERIAL_NO: "物料编号",
+        MATERIAL_NAME:"物料名称",
+        MATERIAL_QUANTITY: "数量",
+        MATERIAL_PRINCIPAL: "盘点负责人",
+        MATERIAL_WAREHOUSE: '仓库',
+        MATERIAL_PLACE: "仓库内位置",
+        MATERIAL_REMARK: "备注",
+        MATERIAL: "物料"
+    },
+    MATERIAL_OUTSTOCK: {
+        BILL_NO: '出库单编号',
+        BILL_TIME: '创建时间',
+        TO_PRINCIPAL: '领料人',
+        WAREHOUSE_PRINCIPAL: '仓库负责人',
+        MATERIAL_WHEREABOUTS: '物料去向',
+        RELATED_BILL: '相关领料单',
+        BILL_STATE: '状态',
+        REMARK: '备注',
+        DETAIL_INFO: "物料详情",
+        MATERIAL_NO: "物料编号",
+        MATERIAL_NAME:"物料名称",
+        MATERIAL_QUANTITY: "数量",
+        MATERIAL_PRINCIPAL: "盘点负责人",
+        MATERIAL_WAREHOUSE: '仓库',
+        MATERIAL_PLACE: "仓库内位置",
+        MATERIAL_REMARK: "备注",
+        MATERIAL: "物料"
+    },
     MATERIAL_STOCK: {
         MATERIAL_NO: '物料编号',
         MATERIAL_NAME: '物料名称',
@@ -188,6 +226,7 @@ export default {
     ROLE_PERMISSION2: '角色与权限',
     PERMISSION_DETAIL: '角色权限明细',
     SYSTEM_SETTING: '系统设置',
+    
 
     MATERIAL_INFO: '物料信息',
     CATEGORY_INFO: '类别信息',
@@ -206,9 +245,13 @@ export default {
     WOMAN: '女',
 
     CLOSED: { '-1': '全部状态', '0': '启用', '1': '停用' },
+    ORDER_STATE: {'-1': '全部状态', '1': '待审核', '2': '已审核', '3': '生产中', '4': '已发货', '5': '已取消'},
     PRODUCT_INSTOCK_STATE: { '-1': '全部状态', '1': '待审核', '2': '已审核', '3':'已完成' },
     PRODUCT_INSTOCK_PRODUCT_SOURCE: { '1': '生产入库' },
     PRODUCT_OUTSTOCK_STATE: { '-1': '全部状态', '1': '待审核', '2': '已审核', '3':'已完成' },
     PRODUCT_OUTSTOCK_PRODUCT_WHEREABOUTS: { '1': '发货出库' },
-    ORDER_STATE: {'-1': '全部状态', '1': '待审核', '2': '已审核', '3': '生产中', '4': '已发货', '5': '已取消'},
+    MATERIAL_INSTOCK_STATE: { '-1': '全部状态', '1': '待审核', '2': '已审核', '3':'已完成' },
+    MATERIAL_INSTOCK_MATERIAL_SOURCE: { '1': '退料入库', '2': '采购入库' },
+    MATERIAL_OUTSTOCK_STATE: { '-1': '全部状态', '1': '待审核', '2': '已审核', '3':'已完成' },
+    MATERIAL_OUTSTOCK_MATERIAL_WHEREABOUTS: { '1': '领料出库' },
 };

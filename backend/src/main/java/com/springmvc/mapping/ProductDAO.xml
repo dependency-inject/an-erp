@@ -127,15 +127,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into product (product_no, product_name, unit,
-      category_id, spec, price,
-      closed, remark, create_at,
-      create_by, update_at, update_by
-      )
+    category_id, spec, price,
+    closed, remark, create_at,
+    create_by, update_at, update_by
+    )
     values (#{productNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
-      #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
-      #{closed,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
-      #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
-      )
+    #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+    #{closed,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
+    #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.dto.Product">
     <selectKey keyProperty="productId" order="AFTER" resultType="java.lang.Integer">
@@ -272,17 +272,17 @@
   <update id="updateByExample" parameterType="map">
     update product
     set product_no = #{record.productNo,jdbcType=VARCHAR},
-      product_name = #{record.productName,jdbcType=VARCHAR},
-      unit = #{record.unit,jdbcType=VARCHAR},
-      category_id = #{record.categoryId,jdbcType=INTEGER},
-      spec = #{record.spec,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=DECIMAL},
-      closed = #{record.closed,jdbcType=TINYINT},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=INTEGER}
+    product_name = #{record.productName,jdbcType=VARCHAR},
+    unit = #{record.unit,jdbcType=VARCHAR},
+    category_id = #{record.categoryId,jdbcType=INTEGER},
+    spec = #{record.spec,jdbcType=VARCHAR},
+    price = #{record.price,jdbcType=DECIMAL},
+    closed = #{record.closed,jdbcType=TINYINT},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    create_at = #{record.createAt,jdbcType=TIMESTAMP},
+    create_by = #{record.createBy,jdbcType=INTEGER},
+    update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+    update_by = #{record.updateBy,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
