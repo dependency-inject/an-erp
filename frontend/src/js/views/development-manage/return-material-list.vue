@@ -1,54 +1,50 @@
 <template>
-	<div class="main-panel no-scroll">
-		<div class="main-panel-content">
-			<div class="operate-panel">
-				<div class="pull-left operate-list" v-show="selectItems==''">
-					<!-- 状态筛选框 -->
-					<dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];selectItems=[];search()" style="margin: 0 10px">
-						<a href="javascript:void(0)"><span class="main-user-name">{{ stateCn }} </span><icon type="arrow-down-b"></icon></a>
-						<dropdown-menu slot="list">
-							<dropdown-item v-for="item in stateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
-						</dropdown-menu>
-					</dropdown>
-					<!-- 搜索框 -->
-					<i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.RETURN_MATERIAL.BILL_NO')+'/'+$t('field.RETURN_MATERIAL.FROM_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
-					<!-- 日期选择框 -->
-					<date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
-				</div>
-				<div class="pull-left operate-list" v-show="selectItems!=''">
-					<a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
-					<span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
-					<!-- 审核 -->
-					<span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
-					<!-- 反审核 -->
-					<span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
-					<!-- 删除 -->
-					<span class="label-btn" @click="remove(selectItems)" ><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
-				</div>
-				<div class="button-list pull-right">
-					<Button class="operate-btn" type="primary" shape="circle" @click="$router.push('/development-return/add')">{{ $t('common.ADD') }}</Button>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-			<div class="main-content">
-				<Table border ref="table" :columns="columnsList" :data="vm.items" :height="tableHeight" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></Table>
-			</div>
-			<div class="page-panel">
-				<page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
-			</div>
-		</div>
-	</div>
+    <div class="main-panel no-scroll">
+        <div class="main-panel-content">
+            <div class="operate-panel">
+                <div class="pull-left operate-list" v-show="selectItems==''">
+                    <!-- 状态筛选框 -->
+                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];selectItems=[];search()" style="margin: 0 10px">
+                        <a href="javascript:void(0)"><span class="main-user-name">{{ stateCn }} </span><icon type="arrow-down-b"></icon></a>
+                        <dropdown-menu slot="list">
+                            <dropdown-item v-for="item in stateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
+                        </dropdown-menu>
+                    </dropdown>
+                    <!-- 搜索框 -->
+                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.RETURN_MATERIAL.BILL_NO')+'/'+$t('field.RETURN_MATERIAL.FROM_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <!-- 日期选择框 -->
+                    <date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
+                </div>
+                <div class="pull-left operate-list" v-show="selectItems!=''">
+                    <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
+                    <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
+                    <!-- 审核 -->
+                    <span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
+                    <!-- 反审核 -->
+                    <span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
+                    <!-- 删除 -->
+                    <span class="label-btn" @click="remove(selectItems)" ><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+                </div>
+                <div class="button-list pull-right">
+                    <Button class="operate-btn" type="primary" shape="circle" @click="$router.push('/development-return/add')">{{ $t('common.ADD') }}</Button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="main-content">
+                <Table border ref="table" :columns="columnsList" :data="vm.items" :height="tableHeight" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></Table>
+            </div>
+            <div class="page-panel">
+                <page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import Permission from '../../mixins/permission';
-
 import util from '../../libs/util.js';
-
 import commonSelect from '../../components/common-select';
-
 import developmentReturnService from '../../service/development-return';
-
 export default {
     mixins: [ Permission ],
     data() {
