@@ -6,23 +6,18 @@
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
                         <div class="panel-body">
-                            <div>
-                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_NO') }}： </label>{{ item.billNo }}</div>
-                                <div class="info-item"><label>{{ $t('field.ORDER.SALES_MAN') }}： </label>{{ item.salesName }}</div>
-                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_TIME') }}： </label>{{ item.billTimeLocal }}</div>
-                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_AMOUNT') }}： </label>{{ billAmount }}</div>
-                                <div class="info-item"><label>{{ $t('field.ORDER.BILL_STATE') }}： </label>{{ item.billStateCn }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.ELSE_INFO') }}</div>
-                        <div class="panel-body">
+                            <form-item :label="$t('field.ORDER.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
+                            <form-item :label="$t('field.ORDER.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.ORDER.BILL_AMOUNT')" prop="billAmount">{{ billAmount }}</form-item>
+                            <form-item :label="$t('field.ORDER.SALES_MAN')" prop="salesman">
+                                <common-select type="admin" v-model="item.salesman" disabled></common-select>
+                            </form-item>
                             <form-item :label="$t('field.ORDER.CLIENT')" prop="clientId">
                                 <common-select type="client" v-model="item.clientId" :disabled="item.billId!==0"></common-select>
                             </form-item>
                             <form-item :label="$t('field.ORDER.CONTACT')" prop="contact"><i-input v-model="item.contact"></i-input></form-item>
                             <form-item :label="$t('field.ORDER.CONTACT_PHONE')" prop="contactPhone"><i-input v-model="item.contactPhone"></i-input></form-item>
+                            <form-item :label="$t('field.ORDER.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
                             <form-item :label="$t('field.ORDER.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
                         </div>
                     </div>
@@ -104,9 +99,6 @@ export default {
                 ]
             }
         },
-        loginAdmin() {
-            return this.$store.state.app.loginAdmin;
-        },
         editable() {
             return (this.orderAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.orderUpdatePermission && this.item.billId !==0 && this.item.billState === 1);
         },
@@ -166,7 +158,7 @@ export default {
         setDefault() {
             this.item = {
                 billId: 0,
-                salesName: this.loginAdmin.trueName,
+                salesman: this.$store.state.app.loginAdmin.adminId,
                 clientId: '',
                 contact: '',
                 contactPhone: '',

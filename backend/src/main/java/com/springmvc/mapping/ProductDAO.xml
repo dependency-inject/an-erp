@@ -409,21 +409,28 @@
     <result column="left_amount" jdbcType="INTEGER" property="leftAmount" />
   </resultMap>
   <select id="selectProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
-    SELECT product.*, IFNULL((total- product.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
-    ((SELECT a.product_id, sum(a.quantity) AS total FROM (
-    SELECT product_id, -quantity AS quantity
-    FROM product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
-    WHERE bill_state = 3
+    SELECT product.*,IFNULL(C.total_amount,0) AS total_amount,IFNULL(D.ordered_amount,0) AS ordered_amount,
+    IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0) AS left_amount FROM product
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS total_amount FROM (
+    SELECT product_id, -quantity as quantity FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state=3
     UNION ALL
-    SELECT product_id, quantity
-    FROM product_instock_bill LEFT JOIN product_instock_bill_product ON product_instock_bill.bill_id = product_instock_bill_product.bill_id
-    WHERE bill_state = 3
-    ) AS a GROUP BY product_id) AS b RIGHT JOIN  (
-    SELECT product.*, IFNULL(c.ordered, 0) AS ordered_amount FROM product LEFT JOIN (
-    SELECT product_id, sum(quantity) AS ordered FROM
-    product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
-    GROUP BY product_id) AS c ON c.product_id = product.product_id)
-    AS product ON product.product_id = b.product_id)
+    SELECT product_id, quantity FROM product_instock_bill_product LEFT JOIN product_instock_bill
+    on product_instock_bill_product.bill_id=product_instock_bill.bill_id
+    where product_instock_bill.bill_state=3
+    ) B
+    GROUP BY product_id
+    ) C ON product.product_id=C.product_id
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS ordered_amount FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state IN (1,2)
+    GROUP BY product_id
+    ) D ON product.product_id=D.product_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -441,21 +448,28 @@
   </select>
   <!-- ProductStockRecord statisticsProductStockByExample 方法的实现 -->
   <select id="statisticsProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
-    SELECT IFNULL(SUM(IFNULL((total- product.ordered_amount), 0)), 0) AS left_amount , IFNULL(SUM(IFNULL(b.total, 0)), 0) AS total_amount FROM
-    ((SELECT a.product_id, sum(a.quantity) AS total FROM (
-    SELECT product_id, -quantity AS quantity
-    FROM product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
-    WHERE bill_state = 3
+    SELECT IFNULL(SUM(IFNULL(C.total_amount,0)),0) AS total_amount,IFNULL(SUM(IFNULL(D.ordered_amount,0)),0) AS ordered_amount,
+    IFNULL(SUM(IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0)),0) AS left_amount FROM product
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS total_amount FROM (
+    SELECT product_id, -quantity as quantity FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state=3
     UNION ALL
-    SELECT product_id, quantity
-    FROM product_instock_bill LEFT JOIN product_instock_bill_product ON product_instock_bill.bill_id = product_instock_bill_product.bill_id
-    WHERE bill_state = 3
-    ) AS a GROUP BY product_id) AS b RIGHT JOIN  (
-    SELECT product.*, IFNULL(c.ordered, 0) AS ordered_amount FROM product LEFT JOIN (
-    SELECT product_id, sum(quantity) AS ordered FROM
-    product_outstock_bill LEFT JOIN product_outstock_bill_product ON product_outstock_bill.bill_id = product_outstock_bill_product.bill_id
-    GROUP BY product_id) AS c ON c.product_id = product.product_id)
-    AS product ON product.product_id = b.product_id)
+    SELECT product_id, quantity FROM product_instock_bill_product LEFT JOIN product_instock_bill
+    on product_instock_bill_product.bill_id=product_instock_bill.bill_id
+    where product_instock_bill.bill_state=3
+    ) B
+    GROUP BY product_id
+    ) C ON product.product_id=C.product_id
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS ordered_amount FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state IN (1,2)
+    GROUP BY product_id
+    ) D ON product.product_id=D.product_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

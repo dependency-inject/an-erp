@@ -204,8 +204,8 @@ export default {
         PRICE: '物料报价',
         REMARK: '备注',
         INVENTORY: '实际库存数量' ,
-        DRAW_MATERIAL_QUANTITY: '待领料数量' ,
-        PRODUCT_OUTSTOCK_QUANTITY: '待出库数量',
+        DRAW_MATERIAL_QUANTITY: '领料后数量' ,
+        PRODUCT_OUTSTOCK_QUANTITY: '出库后数量',
         SEARCH_MATERIAL_PRICE: '报价信息',
         MATERIAL_INFO: '供料信息'
     },

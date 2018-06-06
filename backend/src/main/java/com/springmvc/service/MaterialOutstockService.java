@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service("MaterialOutstockService")
@@ -58,7 +55,6 @@ public class MaterialOutstockService extends BaseService {
     public MaterialOutstockBill addMaterialOutstockBill(Integer toPrincipal, Integer materialWhereabouts, Integer relatedBill,
                                                         String remark, List<MaterialOutstockBillMaterial> materialList) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        // TODO: 检查库存数量
 
         MaterialOutstockBill materialOutstockBill = new MaterialOutstockBill();
         materialOutstockBill.setBillNo("MO" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
@@ -75,6 +71,9 @@ public class MaterialOutstockService extends BaseService {
         materialOutstockBill.setUpdateBy(loginAdmin.getAdminId());
         materialOutstockBillDAO.insertSelective(materialOutstockBill);
 
+        // 检查库存数量
+        checkStockQuantity(materialList);
+        // 将关联的从表信息保存
         for (MaterialOutstockBillMaterial material: materialList) {
             material.setBillId(materialOutstockBill.getBillId());
             materialOutstockBillMaterialDAO.insert(material);
@@ -120,7 +119,6 @@ public class MaterialOutstockService extends BaseService {
 
         checkBillState(Collections.singletonList(billId), 1);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        // TODO: 检查库存数量
 
         MaterialOutstockBill materialOutstockBill = new MaterialOutstockBill();
         materialOutstockBill.setBillId(billId);
@@ -132,9 +130,13 @@ public class MaterialOutstockService extends BaseService {
         materialOutstockBill.setUpdateBy(loginAdmin.getAdminId());
         materialOutstockBillDAO.updateByPrimaryKeySelective(materialOutstockBill);
 
+        // 先删除关联的从表信息
         MaterialOutstockBillMaterialQuery materialOutstockBillMaterialQuery = new MaterialOutstockBillMaterialQuery();
         materialOutstockBillMaterialQuery.or().andBillIdEqualTo(materialOutstockBill.getBillId());
         materialOutstockBillMaterialDAO.deleteByExample(materialOutstockBillMaterialQuery);
+        // 检查库存数量
+        checkStockQuantity(materialList);
+        // 再将关联的从表信息保存
         for (MaterialOutstockBillMaterial material : materialList){
             material.setBillId(materialOutstockBill.getBillId());
             materialOutstockBillMaterialDAO.insert(material);
@@ -398,6 +400,28 @@ public class MaterialOutstockService extends BaseService {
         }
     }
 
+    private void checkStockQuantity(List<MaterialOutstockBillMaterial> materialList) {
+        Map<Integer, Integer> materialMap = new HashMap<Integer, Integer>();
+        for (MaterialOutstockBillMaterial material : materialList) {
+            if (!materialMap.containsKey(material.getMaterialId())) {
+                materialMap.put(material.getMaterialId(), 0);
+            }
+            materialMap.put(material.getMaterialId(), materialMap.get(material.getMaterialId()) + material.getQuantity());
+        }
+
+        for (Integer materialId : materialMap.keySet()) {
+            MaterialQuery materialQuery = new MaterialQuery();
+            materialQuery.or().andMaterialIdEqualTo(materialId);
+            List<MaterialStockRecord> materialStockRecordList = materialDAO.selectWithStockByExample(materialQuery);
+            if (materialStockRecordList.size() == 0) {
+                throw new BadRequestException(STOCK_QUANTITY_NOT_ENOUGH);
+            }
+            if (materialStockRecordList.get(0).getLeftAmount() < materialMap.get(materialId)) {
+                throw new BadRequestException(STOCK_QUANTITY_NOT_ENOUGH + "，编号：" + materialStockRecordList.get(0).getMaterialNo());
+            }
+        }
+    }
+
     private List<Integer> searchAdminByTrueName(String searchKey) {
         AdminQuery adminQuery = new AdminQuery();
         AdminQuery.Criteria criteria = adminQuery.or();
@@ -414,4 +438,5 @@ public class MaterialOutstockService extends BaseService {
     private static final String DRAW_MATERIAL_BILL_NOT_AUDIT = "相关领料单不是已审核状态";
     private static final String BILL_STATE_NOT_UNAUDIT = "单据不是待审核状态";
     private static final String BILL_STATE_NOT_AUDIT = "单据不是已审核状态";
+    private static final String STOCK_QUANTITY_NOT_ENOUGH = "物料库存数量不足";
 }

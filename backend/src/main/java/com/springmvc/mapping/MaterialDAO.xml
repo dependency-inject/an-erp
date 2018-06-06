@@ -390,21 +390,28 @@
     <result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount"/>
   </resultMap>
   <select id="selectWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
-    SELECT material.*, IFNULL((total- material.ordered_amount), 0) AS left_amount , IFNULL(b.total, 0) AS total_amount FROM
-    ((SELECT a.material_id, sum(a.quantity) AS total FROM (
-    SELECT material_id, -quantity AS quantity
-    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-    WHERE bill_state = 3
+    SELECT material.*,IFNULL(C.total_amount,0) AS total_amount,IFNULL(D.ordered_amount,0) AS ordered_amount,
+    IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0) AS left_amount FROM material
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS total_amount FROM (
+    SELECT material_id, -quantity as quantity FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state=3
     UNION ALL
-    SELECT material_id, quantity
-    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
-    WHERE bill_state = 3
-    ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
-    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
-    SELECT material_id, sum(quantity) AS ordered FROM
-    material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-    GROUP BY material_id) AS c ON c.material_id = material.material_id)
-    AS material ON material.material_id = b.material_id)
+    SELECT material_id, quantity FROM material_instock_bill_material LEFT JOIN material_instock_bill
+    on material_instock_bill_material.bill_id=material_instock_bill.bill_id
+    where material_instock_bill.bill_state=3
+    ) B
+    GROUP BY material_id
+    ) C ON material.material_id=C.material_id
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS ordered_amount FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state IN (1,2)
+    GROUP BY material_id
+    ) D ON material.material_id=D.material_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause"/>
     </if>
@@ -422,21 +429,28 @@
   </select>
   <!-- MaterialStockRecord statisticsWithStockByExample 方法的实现 -->
   <select id="statisticsWithStockByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithStock">
-    SELECT IFNULL(SUM(IFNULL((total- material.ordered_amount), 0)), 0) AS left_amount , IFNULL(SUM(IFNULL(b.total, 0)), 0) AS total_amount FROM
-    ((SELECT a.material_id, sum(a.quantity) AS total FROM (
-    SELECT material_id, -quantity AS quantity
-    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-    WHERE bill_state = 3
+    SELECT IFNULL(SUM(IFNULL(C.total_amount,0)),0) AS total_amount,IFNULL(SUM(IFNULL(D.ordered_amount,0)),0) AS ordered_amount,
+    IFNULL(SUM(IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0)),0) AS left_amount FROM material
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS total_amount FROM (
+    SELECT material_id, -quantity as quantity FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state=3
     UNION ALL
-    SELECT material_id, quantity
-    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
-    WHERE bill_state = 3
-    ) AS a GROUP BY material_id) AS b RIGHT JOIN  (
-    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount FROM material LEFT JOIN (
-    SELECT material_id, sum(quantity) AS ordered FROM
-    material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-    GROUP BY material_id) AS c ON c.material_id = material.material_id)
-    AS material ON material.material_id = b.material_id)
+    SELECT material_id, quantity FROM material_instock_bill_material LEFT JOIN material_instock_bill
+    on material_instock_bill_material.bill_id=material_instock_bill.bill_id
+    where material_instock_bill.bill_state=3
+    ) B
+    GROUP BY material_id
+    ) C ON material.material_id=C.material_id
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS ordered_amount FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state IN (1,2)
+    GROUP BY material_id
+    ) D ON material.material_id=D.material_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause"/>
     </if>
@@ -453,34 +467,35 @@
     <result column="unit" jdbcType="VARCHAR" property="unit"/>
   </resultMap>
   <select id="selectWithLackByExample" parameterType="com.springmvc.pojo.MaterialQuery" resultMap="ResultMapWithLack">
-    SELECT 	material.material_id,material.material_no,material.material_name,material.unit,IFNULL((total- material.ordered_amount), 0) AS use_outstock , IFNULL((total- d.get_amount), 0) AS use_draw , IFNULL(b.total, 0) AS total_stock
-    FROM(
-    SELECT material_id, sum(quantity) AS get_amount
-    FROM draw_material_bill LEFT JOIN draw_material_bill_material ON draw_material_bill.bill_id = draw_material_bill_material.bill_id
-    WHERE bill_state =1 OR bill_state=2
-    GROUP BY material_id
-    ) AS d RIGHT JOIN ((
-    SELECT a.material_id, sum(a.quantity) AS total
-    FROM (
-    SELECT material_id, -quantity AS quantity
-    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-    WHERE bill_state = 3
+    SELECT material.*,IFNULL(C.total_amount,0) AS total_stock,IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0) AS use_outstock,
+    IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0)-IFNULL(E.draw_amount,0) AS use_draw FROM material
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS total_amount FROM (
+    SELECT material_id, -quantity as quantity FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state=3
     UNION ALL
-    SELECT material_id, quantity
-    FROM material_instock_bill LEFT JOIN material_instock_bill_material ON material_instock_bill.bill_id = material_instock_bill_material.bill_id
-    WHERE bill_state = 3
-    ) AS a
+    SELECT material_id, quantity FROM material_instock_bill_material LEFT JOIN material_instock_bill
+    on material_instock_bill_material.bill_id=material_instock_bill.bill_id
+    where material_instock_bill.bill_state=3
+    ) B
     GROUP BY material_id
-    ) AS b RIGHT JOIN  (
-    SELECT material.*, IFNULL(c.ordered, 0) AS ordered_amount
-    FROM material LEFT JOIN (
-    SELECT material_id, sum(quantity) AS ordered
-    FROM material_outstock_bill LEFT JOIN material_outstock_bill_material ON material_outstock_bill.bill_id = material_outstock_bill_material.bill_id
-    WHERE bill_state =1 OR bill_state=2
+    ) C ON material.material_id=C.material_id
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS ordered_amount FROM material_outstock_bill_material LEFT JOIN material_outstock_bill
+    on material_outstock_bill_material.bill_id=material_outstock_bill.bill_id
+    where material_outstock_bill.bill_state IN (1,2)
     GROUP BY material_id
-    ) AS c ON c.material_id = material.material_id
-    ) AS material ON material.material_id = b.material_id
-    ) ON material.material_id= d.material_id
+    ) D ON material.material_id=D.material_id
+
+    LEFT OUTER JOIN (
+    SELECT material_id,sum(quantity) AS draw_amount FROM draw_material_bill_material LEFT JOIN draw_material_bill
+    on draw_material_bill_material.bill_id=draw_material_bill.bill_id
+    where draw_material_bill.bill_id NOT IN (SELECT material_outstock_bill.related_bill FROM material_outstock_bill WHERE material_outstock_bill.material_whereabouts=1)
+    GROUP BY material_id
+    ) E ON material.material_id=E.material_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause"/>
     </if>

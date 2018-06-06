@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service("ProductOutstockService")
 @Transactional
@@ -41,6 +38,7 @@ public class ProductOutstockService extends BaseService {
     private static final String ORDER_BILL_NOT_PRODUCE = "相关订单不是生产中状态";
     private static final String BILL_STATE_NOT_UNAUDIT = "单据不是待审核状态";
     private static final String BILL_STATE_NOT_AUDIT = "单据不是已审核状态";
+    private static final String STOCK_QUANTITY_NOT_ENOUGH = "货品库存数量不足";
 
     /**
      * 添加货品出库单
@@ -60,7 +58,6 @@ public class ProductOutstockService extends BaseService {
     public ProductOutstockBill addProductOutsockBill(Integer toPrincipal, Integer productWhereabouts, Integer relatedBill,
                                                      String remark, List<ProductOutstockBillProduct> productList) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        // TODO: 检查库存数量
 
         ProductOutstockBill productOutstockBill = new ProductOutstockBill();
         productOutstockBill.setBillNo("PO" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
@@ -77,6 +74,9 @@ public class ProductOutstockService extends BaseService {
         productOutstockBill.setUpdateBy(loginAdmin.getAdminId());
         productOutstockBillDAO.insertSelective(productOutstockBill);
 
+        // 检查库存数量
+        checkStockQuantity(productList);
+        // 将关联的从表信息保存
         for (ProductOutstockBillProduct product: productList) {
             product.setBillId(productOutstockBill.getBillId());
             productOutstockBillProductDAO.insert(product);
@@ -118,7 +118,6 @@ public class ProductOutstockService extends BaseService {
                                                         String remark, List<ProductOutstockBillProduct> productList) {
         checkBillState(Collections.singletonList(billId), 1);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        // TODO: 检查库存数量
 
         ProductOutstockBill productOutstockBill=new ProductOutstockBill();
         productOutstockBill.setBillId(billId);
@@ -130,9 +129,13 @@ public class ProductOutstockService extends BaseService {
         productOutstockBill.setUpdateBy(loginAdmin.getAdminId());
         productOutstockBillDAO.updateByPrimaryKeySelective(productOutstockBill);
 
+        // 先删除关联的从表信息
         ProductOutstockBillProductQuery productOutstockBillProductQuery = new ProductOutstockBillProductQuery();
         productOutstockBillProductQuery.or().andBillIdEqualTo(productOutstockBill.getBillId());
         productOutstockBillProductDAO.deleteByExample(productOutstockBillProductQuery);
+        // 检查库存数量
+        checkStockQuantity(productList);
+        // 再将关联的从表信息保存
         for (ProductOutstockBillProduct product : productList){
             product.setBillId(productOutstockBill.getBillId());
             productOutstockBillProductDAO.insert(product);
@@ -383,6 +386,28 @@ public class ProductOutstockService extends BaseService {
 
         // 添加日志
         addLog(LogType.MATERIAL_OUTSTOCK, Operate.FINISH, billId);
+    }
+
+    private void checkStockQuantity(List<ProductOutstockBillProduct> productList) {
+        Map<Integer, Integer> productMap = new HashMap<Integer, Integer>();
+        for (ProductOutstockBillProduct product : productList) {
+            if (!productMap.containsKey(product.getProductId())) {
+                productMap.put(product.getProductId(), 0);
+            }
+            productMap.put(product.getProductId(), productMap.get(product.getProductId()) + product.getQuantity());
+        }
+
+        for (Integer productId : productMap.keySet()) {
+            ProductQuery productQuery = new ProductQuery();
+            productQuery.or().andProductIdEqualTo(productId);
+            List<ProductStockRecord> productStockRecordList = productDAO.selectProductStockByExample(productQuery);
+            if (productStockRecordList.size() == 0) {
+                throw new BadRequestException(STOCK_QUANTITY_NOT_ENOUGH);
+            }
+            if (productStockRecordList.get(0).getLeftAmount() < productMap.get(productId)) {
+                throw new BadRequestException(STOCK_QUANTITY_NOT_ENOUGH + "，编号：" + productStockRecordList.get(0).getProductNo());
+            }
+        }
     }
 
     private void checkBillState(List<Integer> idList, int state) {
