@@ -36,7 +36,7 @@ public class ReturnMaterialBillEntity {
     private Date billTime;
 
     /**
-     * 退料原因（1生产退料，研发退料）
+     * 退料原因（1生产退料，2研发退料）
      * 表字段 : return_material_bill.return_reason
      */
     private Integer returnReason;

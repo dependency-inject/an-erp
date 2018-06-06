@@ -10,12 +10,10 @@ var auditBill = (idList) => http.post('development-draw/auditBill', { idList: id
 
 var unauditBill = (idList) => http.post('development-draw/unauditBill', { idList: idList });
 
-var getMaterialList = () => http.post('development-draw/getMaterialList');
-
 var addBill = (bill) => http.post('development-draw/addBill', bill)
 
 var updateBill = (bill) => http.post('development-draw/updateBill', bill)
 
 var deleteBill = (idList) => http.post('development-draw/deleteBill', { idList: idList });
 
-export default { getBill, searchBill, auditBill, unauditBill, getMaterialList, addBill, updateBill, deleteBill };
+export default { getBill, searchBill, auditBill, unauditBill, addBill, updateBill, deleteBill };

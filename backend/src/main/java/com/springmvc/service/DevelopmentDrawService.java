@@ -47,11 +47,11 @@ public class DevelopmentDrawService extends BaseService {
         drawMaterialBill.setToPrincipalName(toPrincipalName);
 
         Integer i = drawMaterialBill.getBillState();
-        if(i > 1) {
+        if (i > 1) {
             String auditName = adminDAO.selectByPrimaryKey(drawMaterialBill.getAuditBy()).getTrueName();
             drawMaterialBill.setAuditName(auditName);
         }
-        if(i > 2) {
+        if (i > 2) {
             String warehousePrincipalName = adminDAO.selectByPrimaryKey(drawMaterialBill.getWarehousePrincipal()).getTrueName();
             drawMaterialBill.setWarehousePrincipalName(warehousePrincipalName);
             String finishName = adminDAO.selectByPrimaryKey(drawMaterialBill.getFinishBy()).getTrueName();
@@ -72,8 +72,6 @@ public class DevelopmentDrawService extends BaseService {
         drawMaterialBill.setMaterialList(result);
         return drawMaterialBill;
     }
-
-
 
     /**
      * 查询领料单信息（分页）,只取研发领料对应的数据
@@ -139,8 +137,15 @@ public class DevelopmentDrawService extends BaseService {
         List<DrawMaterialBill> result = drawMaterialBillDAO.selectByExample(drawMaterialBillQuery);
 
         for(DrawMaterialBill bill: result) {
-            String name = adminDAO.selectByPrimaryKey(bill.getToPrincipal()).getTrueName();
-            bill.setToPrincipalName(name);
+            String toPrincipalName = adminDAO.selectByPrimaryKey(bill.getToPrincipal()).getTrueName();
+            bill.setToPrincipalName(toPrincipalName);
+            if (bill.getWarehousePrincipal() == null) {
+                continue;
+            }
+            Admin warehousePrincipal = adminDAO.selectByPrimaryKey(bill.getWarehousePrincipal());
+            if (warehousePrincipal != null) {
+                bill.setWarehousePrincipalName(warehousePrincipal.getTrueName());
+            }
         }
         return new PageMode<DrawMaterialBill>(result, drawMaterialBillDAO.countByExample(drawMaterialBillQuery));
     }
@@ -193,13 +198,6 @@ public class DevelopmentDrawService extends BaseService {
         drawMaterialBillDAO.updateByExampleSelective(drawMaterialBill, drawMaterialBillQuery);
         // 添加日志
         addLog(LogType.DRAW_MATERIAL_BILL, Operate.UNAUDIT, idList);
-    }
-
-    /**
-     * 获取所有可选的物料
-     */
-    public List<Material> getMaterialList() {
-        return materialDAO.selectByExample(new MaterialQuery());
     }
 
     /**

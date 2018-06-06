@@ -1,10 +1,11 @@
 package com.springmvc.dto;
 
 import com.springmvc.pojo.ReturnMaterialBillEntity;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class ReturnMaterialBill extends ReturnMaterialBillEntity {
+
     private String FromPrincipalName;
 
     private String warehousePrincipalName;

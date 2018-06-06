@@ -1,12 +1,10 @@
 package com.springmvc.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.springmvc.annotation.AccessPermission;
 import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.DrawMaterialBill;
 import com.springmvc.dto.DrawMaterialBillMaterial;
-import com.springmvc.dto.Material;
 import com.springmvc.dto.PageMode;
 import com.springmvc.service.DevelopmentDrawService;
 import com.springmvc.utils.ParamUtils;
@@ -17,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/development-draw")
@@ -58,12 +52,6 @@ public class DevelopmentDrawController {
     public String unaudit(String idList){
         developmentDrawService.unauditBill(ParamUtils.toIntList(idList));
         return "success";
-    }
-
-    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getMaterialList() {
-        return developmentDrawService.getMaterialList();
     }
 
     @RequestMapping(value = "/addBill",method =RequestMethod.POST)

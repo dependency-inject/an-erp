@@ -2,7 +2,6 @@ package com.springmvc.controller;
 
 import com.springmvc.annotation.AccessPermission;
 import com.springmvc.annotation.PermissionRequired;
-import com.springmvc.dto.Material;
 import com.springmvc.dto.PageMode;
 import com.springmvc.dto.ReturnMaterialBill;
 import com.springmvc.dto.ReturnMaterialBillMaterial;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Controller
 @RequestMapping("/development-return")
@@ -29,11 +27,7 @@ public class DevelopmentReturnController {
     public ReturnMaterialBill getBill(int billId){
         return developmentReturnService.getBillById(billId);
     }
-    @RequestMapping(value="/getMaterial",method = RequestMethod.POST)
-    @ResponseBody
-    public List<ReturnMaterialBillMaterial> getmaterial(int billid){
-        return this.developmentReturnService.getMaterials(billid);
-    }
+
     @RequestMapping(value = "/searchBill",method =RequestMethod.POST)
     @ResponseBody
     public PageMode<ReturnMaterialBill> searchBill(@RequestParam Integer current, @RequestParam Integer limit,
@@ -57,12 +51,6 @@ public class DevelopmentReturnController {
     public String unaudit(String idList){
         developmentReturnService.unauditBill(ParamUtils.toIntList(idList));
         return "success";
-    }
-
-    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getMaterialList() {
-        return developmentReturnService.getMaterialList();
     }
 
     @RequestMapping(value = "/addBill",method =RequestMethod.POST)
