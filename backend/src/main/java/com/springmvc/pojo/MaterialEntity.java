@@ -41,7 +41,7 @@ public class MaterialEntity {
     private String spec;
 
     /**
-     * 
+     *
      * 表字段 : material.cost
      */
     private BigDecimal cost;
@@ -317,7 +317,7 @@ public class MaterialEntity {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public String toString() {
