@@ -73,8 +73,6 @@ public class DevelopmentDrawService extends BaseService {
         return drawMaterialBill;
     }
 
-
-
     /**
      * 查询领料单信息（分页）,只取研发领料对应的数据
      *
@@ -193,13 +191,6 @@ public class DevelopmentDrawService extends BaseService {
         drawMaterialBillDAO.updateByExampleSelective(drawMaterialBill, drawMaterialBillQuery);
         // 添加日志
         addLog(LogType.DRAW_MATERIAL_BILL, Operate.UNAUDIT, idList);
-    }
-
-    /**
-     * 获取所有可选的物料
-     */
-    public List<Material> getMaterialList() {
-        return materialDAO.selectByExample(new MaterialQuery());
     }
 
     /**
