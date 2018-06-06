@@ -1,11 +1,7 @@
 package com.springmvc.dto;
 
-import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.DrawMaterialBillEntity;
-import com.springmvc.pojo.DrawMaterialBillMaterialQuery;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DrawMaterialBill extends DrawMaterialBillEntity {

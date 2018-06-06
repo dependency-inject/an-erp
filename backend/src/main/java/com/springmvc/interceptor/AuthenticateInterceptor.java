@@ -2,6 +2,7 @@ package com.springmvc.interceptor;
 
 import com.springmvc.exception.UnauthorizedException;
 import com.springmvc.dto.Admin;
+import com.springmvc.utils.LogUtils;
 import com.springmvc.utils.RequestUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,11 +32,11 @@ public class AuthenticateInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object o) throws Exception {
         // 不拦截登录
-        if (request.getServletPath().equals("/login")) {
+        RequestUtils.clearLoginAdminInCache();
+        if (RequestUtils.isLoginPath(request.getServletPath())) {
             return true;
         }
 
-        RequestUtils.clearLoginAdminInCache();
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache(request);
         if (loginAdmin != null && !loginAdmin.getClosed()) {
             return true;

@@ -3,7 +3,6 @@
 .@{main-view-prefix-cls} {
     
     .main-panel {
-        background-color: #fff; 
         width: 100%; 
         padding: 0 20px;
 
@@ -87,11 +86,11 @@
     }
 
     .statistics-panel {
+        display: flex;
         margin-bottom: 10px;
 
         >div {
-            display: inline-block;
-            width: 33%;
+            flex: 1;
             padding: 0 5px;
             color: #fff;
             vertical-align: middle;
@@ -105,7 +104,7 @@
             }
 
             >div {
-                padding: 17px 0 23px 0;
+                padding-bottom: 8px;
                 text-align: center;
 
                 h4 {
@@ -177,6 +176,7 @@
         position: fixed;
         bottom: 0;
         width: 100%;
+        z-index: 100;
 
         >button {
             margin-right: 8px;

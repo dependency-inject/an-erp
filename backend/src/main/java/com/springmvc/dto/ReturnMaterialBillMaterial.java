@@ -23,5 +23,4 @@ public class ReturnMaterialBillMaterial extends ReturnMaterialBillMaterialEntity
     public void setMaterialName(String materialName) {
         this.materialName = materialName;
     }
-
 }

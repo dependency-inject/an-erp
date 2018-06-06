@@ -1,9 +1,6 @@
 package com.springmvc.service;
 
-import com.springmvc.dao.AdminDAO;
-import com.springmvc.dao.AdminRoleDAO;
-import com.springmvc.dao.PermissionDAO;
-import com.springmvc.dao.RoleDAO;
+import com.springmvc.dao.*;
 import com.springmvc.dto.*;
 import com.springmvc.exception.BadRequestException;
 import com.springmvc.pojo.*;
@@ -31,6 +28,30 @@ public class AdminService extends BaseService {
     
     @Resource
     private RoleDAO roleDAO;
+
+    @Resource
+    private MaterialInstockBillDAO materialInstockBillDAO;
+
+    @Resource
+    private MaterialInstockBillMaterialDAO materialInstockBillMaterialDAO;
+
+    @Resource
+    private MaterialOutstockBillDAO materialOutstockBillDAO;
+
+    @Resource
+    private MaterialOutstockBillMaterialDAO materialOutstockBillMaterialDAO;
+
+    @Resource
+    private ProductInstockBillDAO productInstockBillDAO;
+
+    @Resource
+    private ProductInstockBillProductDAO productInstockBillProductDAO;
+
+    @Resource
+    private ProductOutstockBillDAO productOutstockBillDAO;
+
+    @Resource
+    private ProductOutstockBillProductDAO productOutstockBillProductDAO;
 
     /**
      * 新增用户信息
@@ -180,6 +201,20 @@ public class AdminService extends BaseService {
     }
 
     /**
+     * 查询全部用户信息
+     *
+     * @param closed
+     * @return
+     */
+    public List<Admin> getList(Integer closed) {
+        AdminQuery adminQuery = new AdminQuery();
+        if (!ParamUtils.isNull(closed) && !closed.equals(-1)) {
+            adminQuery.or().andClosedEqualTo(closed > 0);
+        }
+        return adminDAO.selectByExample(adminQuery);
+    }
+
+    /**
      * 用户登录
      *
      * 进行必要的检查：登录名是否存在、密码是否正确、对应账号状态是否为停用
@@ -281,6 +316,59 @@ public class AdminService extends BaseService {
      */
     public void removeAdmin(List<Integer> idList) {
         checkNotSystemDefault(idList);
+
+        // 检查是否被物料入库单引用
+        MaterialInstockBillQuery materialInstockBillQuery = new MaterialInstockBillQuery();
+        materialInstockBillQuery.or().andFromPrincipalIn(idList);
+        materialInstockBillQuery.or().andWarehousePrincipalIn(idList);
+        if (materialInstockBillDAO.countByExample(materialInstockBillQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_MATERIAL_INSTOCK);
+        }
+        MaterialInstockBillMaterialQuery materialInstockBillMaterialQuery = new MaterialInstockBillMaterialQuery();
+        materialInstockBillMaterialQuery.or().andPrincipalIn(idList);
+        if (materialInstockBillMaterialDAO.countByExample(materialInstockBillMaterialQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_MATERIAL_INSTOCK);
+        }
+
+        // 检查是否被物料出库单引用
+        MaterialOutstockBillQuery materialOutstockBillQuery = new MaterialOutstockBillQuery();
+        materialOutstockBillQuery.or().andToPrincipalIn(idList);
+        materialOutstockBillQuery.or().andWarehousePrincipalIn(idList);
+        if (materialOutstockBillDAO.countByExample(materialOutstockBillQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_MATERIAL_OUTSTOCK);
+        }
+        MaterialOutstockBillMaterialQuery materialOutstockBillMaterialQuery = new MaterialOutstockBillMaterialQuery();
+        materialOutstockBillMaterialQuery.or().andPrincipalIn(idList);
+        if (materialOutstockBillMaterialDAO.countByExample(materialOutstockBillMaterialQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_MATERIAL_OUTSTOCK);
+        }
+
+        // 检查是否被货品入库单引用
+        ProductInstockBillQuery productInstockBillQuery = new ProductInstockBillQuery();
+        productInstockBillQuery.or().andFromPrincipalIn(idList);
+        productInstockBillQuery.or().andWarehousePrincipalIn(idList);
+        if (productInstockBillDAO.countByExample(productInstockBillQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_PRODUCT_INSTOCK);
+        }
+        ProductInstockBillProductQuery productInstockBillProductQuery = new ProductInstockBillProductQuery();
+        productInstockBillProductQuery.or().andPrincipalIn(idList);
+        if (productInstockBillProductDAO.countByExample(productInstockBillProductQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_PRODUCT_INSTOCK);
+        }
+
+        // 检查是否被货品出库单引用
+        ProductOutstockBillQuery productOutstockBillQuery = new ProductOutstockBillQuery();
+        productOutstockBillQuery.or().andToPrincipalIn(idList);
+        productOutstockBillQuery.or().andWarehousePrincipalIn(idList);
+        if (productOutstockBillDAO.countByExample(productOutstockBillQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_PRODUCT_OUTSTOCK);
+        }
+        ProductOutstockBillProductQuery productOutstockBillProductQuery = new ProductOutstockBillProductQuery();
+        productOutstockBillProductQuery.or().andPrincipalIn(idList);
+        if (productOutstockBillProductDAO.countByExample(productOutstockBillProductQuery) > 0) {
+            throw new BadRequestException(ADMIN_REFER_BY_PRODUCT_OUTSTOCK);
+        }
+
         // 检查是否被log引用
         LogQuery logQuery = new LogQuery();
         logQuery.or().andAdminIdIn(idList).andLogTypeNotEqualTo(LogType.SYSTEM.type);
@@ -389,6 +477,10 @@ public class AdminService extends BaseService {
     private static final String OLD_PASSWORD_INCORRECT = "旧密码错误";
     private static final String LOGIN_NAME_OR_PASSWORD_ERROR = "登录名或密码错误";
     private static final String ACCOUNT_IS_CLOSED = "账号已停用";
+    private static final String ADMIN_REFER_BY_MATERIAL_INSTOCK = "用户被物料入库单引用";
+    private static final String ADMIN_REFER_BY_MATERIAL_OUTSTOCK = "用户被物料出库单引用";
+    private static final String ADMIN_REFER_BY_PRODUCT_INSTOCK = "用户被货品入库单引用";
+    private static final String ADMIN_REFER_BY_PRODUCT_OUTSTOCK = "用户被货品出库单引用";
     private static final String ADMIN_REFER_BY_LOG = "用户被日志引用";
     private static final String SYSTEM_ADMIN_OPERATION_DENIED = "系统默认用户不可操作";
 

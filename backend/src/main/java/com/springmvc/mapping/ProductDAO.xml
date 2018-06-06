@@ -18,31 +18,37 @@
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
+      <trim prefix="(" prefixOverrides="and" suffix=")">
+        <foreach collection="oredCriteria" item="criteria" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+        and 1 = 1
+      </trim>
+      <if test="categoryId != null">
+        and CONCAT(',',get_category_ids(product.category_id,'product'),',') like CONCAT('%,',#{categoryId},',%')
+      </if>
     </where>
   </sql>
   <sql id="Update_By_Example_Where_Clause">
@@ -75,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    product_id, product_no, product_name, unit, category_id, spec, price, closed, remark, 
+    product_id, product_no, product_name, unit, category_id, spec, price, closed, remark,
     create_at, create_by, update_at, update_by
   </sql>
   <select id="selectByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="BaseResultMap">
@@ -101,7 +107,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from product
     where product_id = #{productId,jdbcType=INTEGER}
@@ -120,16 +126,16 @@
     <selectKey keyProperty="productId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into product (product_no, product_name, unit, 
-      category_id, spec, price, 
-      closed, remark, create_at, 
-      create_by, update_at, update_by
-      )
-    values (#{productNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
-      #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{closed,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
-      )
+    insert into product (product_no, product_name, unit,
+    category_id, spec, price,
+    closed, remark, create_at,
+    create_by, update_at, update_by
+    )
+    values (#{productNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
+    #{categoryId,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+    #{closed,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
+    #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.springmvc.dto.Product">
     <selectKey keyProperty="productId" order="AFTER" resultType="java.lang.Integer">
@@ -266,17 +272,17 @@
   <update id="updateByExample" parameterType="map">
     update product
     set product_no = #{record.productNo,jdbcType=VARCHAR},
-      product_name = #{record.productName,jdbcType=VARCHAR},
-      unit = #{record.unit,jdbcType=VARCHAR},
-      category_id = #{record.categoryId,jdbcType=INTEGER},
-      spec = #{record.spec,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=DECIMAL},
-      closed = #{record.closed,jdbcType=TINYINT},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=INTEGER},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      update_by = #{record.updateBy,jdbcType=INTEGER}
+    product_name = #{record.productName,jdbcType=VARCHAR},
+    unit = #{record.unit,jdbcType=VARCHAR},
+    category_id = #{record.categoryId,jdbcType=INTEGER},
+    spec = #{record.spec,jdbcType=VARCHAR},
+    price = #{record.price,jdbcType=DECIMAL},
+    closed = #{record.closed,jdbcType=TINYINT},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    create_at = #{record.createAt,jdbcType=TIMESTAMP},
+    create_by = #{record.createBy,jdbcType=INTEGER},
+    update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+    update_by = #{record.updateBy,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -339,4 +345,133 @@
       update_by = #{updateBy,jdbcType=INTEGER}
     where product_id = #{productId,jdbcType=INTEGER}
   </update>
+
+  <!-- product+product_category中获得内容 -->
+  <resultMap id="ResultMapWithCName" type="com.springmvc.dto.Product">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="closed" jdbcType="TINYINT" property="closed" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+  </resultMap>
+  <select id="selectWithCategoryNameByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ResultMapWithCName">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    product.product_id, product.product_no, product.product_name, product.unit, product.category_id,
+    product.spec, product.price, product.closed, product.remark, product.create_at, product.create_by, product.update_at,
+    product.update_by, product_category.category_name as category_name
+    from product
+    left join product_category on product.category_id = product_category.category_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+
+  <!-- List<ProductStockRecord> selectProductStockByExample 方法的实现-->
+  <resultMap id="ProductStockResultMap" type="com.springmvc.dto.ProductStockRecord">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="closed" jdbcType="TINYINT" property="closed" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="total_amount" jdbcType="INTEGER" property="totalAmount" />
+    <result column="ordered_amount" jdbcType="INTEGER" property="orderedAmount" />
+    <result column="left_amount" jdbcType="INTEGER" property="leftAmount" />
+  </resultMap>
+  <select id="selectProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
+    SELECT product.*,IFNULL(C.total_amount,0) AS total_amount,IFNULL(D.ordered_amount,0) AS ordered_amount,
+    IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0) AS left_amount FROM product
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS total_amount FROM (
+    SELECT product_id, -quantity as quantity FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state=3
+    UNION ALL
+    SELECT product_id, quantity FROM product_instock_bill_product LEFT JOIN product_instock_bill
+    on product_instock_bill_product.bill_id=product_instock_bill.bill_id
+    where product_instock_bill.bill_state=3
+    ) B
+    GROUP BY product_id
+    ) C ON product.product_id=C.product_id
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS ordered_amount FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state IN (1,2)
+    GROUP BY product_id
+    ) D ON product.product_id=D.product_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <!-- ProductStockRecord statisticsProductStockByExample 方法的实现 -->
+  <select id="statisticsProductStockByExample" parameterType="com.springmvc.pojo.ProductQuery" resultMap="ProductStockResultMap">
+    SELECT IFNULL(SUM(IFNULL(C.total_amount,0)),0) AS total_amount,IFNULL(SUM(IFNULL(D.ordered_amount,0)),0) AS ordered_amount,
+    IFNULL(SUM(IFNULL(C.total_amount,0)-IFNULL(D.ordered_amount,0)),0) AS left_amount FROM product
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS total_amount FROM (
+    SELECT product_id, -quantity as quantity FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state=3
+    UNION ALL
+    SELECT product_id, quantity FROM product_instock_bill_product LEFT JOIN product_instock_bill
+    on product_instock_bill_product.bill_id=product_instock_bill.bill_id
+    where product_instock_bill.bill_state=3
+    ) B
+    GROUP BY product_id
+    ) C ON product.product_id=C.product_id
+
+    LEFT OUTER JOIN (
+    SELECT product_id,sum(quantity) AS ordered_amount FROM product_outstock_bill_product LEFT JOIN product_outstock_bill
+    on product_outstock_bill_product.bill_id=product_outstock_bill.bill_id
+    where product_outstock_bill.bill_state IN (1,2)
+    GROUP BY product_id
+    ) D ON product.product_id=D.product_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
 </mapper>
