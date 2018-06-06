@@ -1,143 +1,218 @@
 <template>
 	<div class="main-panel no-scroll">
-        <div class="main-panel-content">
-            <div class="operate-panel">
-                <div class="pull-left operate-list" v-show="selectItems==''">
-                    <div><Input clearable type="text" v-model="searchKey.billNo" :placeholder="$t('field.RETURN_MATERIAL.BILL_NO')" @on-enter="selectItems=[];search()"></Input></div>
-                    <div><Input clearable type="text" v-model="searchKey.toPrincipal" :placeholder="$t('field.RETURN_MATERIAL.FROM_PRINCIPAL')" @on-enter="selectItems=[];search()"></Input></div>
-                    <div><DatePicker type="daterange" v-model="searchKey.billTime" :placeholder="$t('component.START_TIME')+'-'+$t('component.END_TIME')"></DatePicker></div>
-                    <div><Select v-model="searchKey.billState" :placeholder="$t('component.ALL_STATE')" style="width:100px" clearable>  
-                        <Option v-for="item in status" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                    </Select> </div>
-                    <Button type="ghost" shape="circle" icon="ios-search" @click="search()"></Button>
-                    </div>
-                <div class="pull-left operate-list" v-show="selectItems!=''">
-                    <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
-                    <span class="label-btn" @click="remove(selectItems)" ><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>                    
-                </div>
-                <div class="button-list pull-right">
-                    <Button  type="primary" @click="$router.push('/production-draw/add')">{{ $t('common.ADD') }}</Button>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="main-content">
-                <Table border ref="table" :columns="columnsList" :data="vm.items" :height="tableHeight" @on-selection-change="selectItems=arguments[0]"></Table>
-            </div>
-        </div>
+		<div class="main-panel-content">
+			<div class="operate-panel">
+				<div class="pull-left operate-list" v-show="selectItems==''">
+					<!-- 状态筛选框 -->
+					<dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];selectItems=[];search()" style="margin:0 10px">
+						<a href="javascript:void(0)"><span class="main-user-name">{{ stateCn }} </span><icon type="arrow-down-b"></icon></a>
+						<dropdown-menu slot="list">
+							<dropdown-item v-for="item in stateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+					<!-- 搜索框 -->
+					<i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.DRAW_MATERIAL.BILL_NO')+'/'+$t('field.DRAW_MATERIAL.TO_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+					<!-- 日期选择框 -->
+					<date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
+				</div>
+				<div class="pull-left operate-list" v-show="selectItems!=''">
+					<a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
+					<span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
+					<!-- 审核 -->
+					<span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
+					<!-- 反审核 -->
+					<span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
+					<!-- 删除 -->
+					<span class="label-btn" @click="remove(selectItems)" ><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+				</div>
+				<div class="button-list pull-right">
+					<i-button class="operate-btn" type="primary" shape="circle" @click="$router.push('/production-draw/add')">{{ $t('common.ADD') }}</i-button>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="main-content">
+				<i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+			</div>
+			<div class="page-panel">
+				<page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-import productionDrawService from '../../service/production-draw';
+    import Permission from '../../mixins/permission';
 
+    import util from '../../libs/util.js';
 
-export default {
-    data() {
-        return {
-            vm: {
-                items: [],
-                identity: 'billId',
-            },
-            selectItems: [],
-            searchKey: {
-                toPrincipal: '',
-                billTime: '',
-                billNo: '',
-                billState: ''
+    import productionDrawService from '../../service/production-draw';
+
+    export default {
+        mixins: [ Permission ],
+        data() {
+            return {
+                vm: {
+                    queryParameters: {
+                        searchKey: '',
+                        total: 0,
+                        limit: 10,
+                        current: 1,
+                        sortColumn: '',
+                        sort: '',
+                        state: -1,
+                        beginTime: '',
+                        endTime: ''
+                    },
+                    items: [],
+                    identity: 'billId',
+                },
+                selectItems: [],
             }
-        }
-    },
-    computed: {
-        status() {
-            return [
-                { value: 1, label: this.$t('field.BILL_STATE.STATE1') },
-                { value: 2,  label: this.$t('field.BILL_STATE.STATE2') },
-                { value: 3, label: this.$t('field.BILL_STATE.STATE3') },
-            ]
         },
-        tableHeight() {
-            return document.documentElement.clientHeight - 220;
-        },
-        columnsList() {
-            return [
-                { type: 'selection', width: 60, align: 'center' },
-                { title: this.$t('field.DRAW_MATERIAL.BILL_NO'), key: 'billNo' },
-                { title: this.$t('field.DRAW_MATERIAL.TO_PRINCIPAL'), key: 'toPrincipal' },
-                { title: this.$t('field.DRAW_MATERIAL.DRAW_REASON'), key:'drawReason' },
-                { title: this.$t('field.DRAW_MATERIAL.BILL_STATE'), key: 'billState' },
-                { title: this.$t('field.DRAW_MATERIAL.BILL_TIME'), key: 'billTime' },
-                { title: this.$t('field.DRAW_MATERIAL.REMARK'), key: 'remark' },
-                { title: this.$t('field.OPERATE'), key: 'action', render: (h, params) => {
-                        return h('div', [
-                                h('Button', {
-                                    props: { type: 'primary', size: 'small' },
-                                    style: { marginRight: '5px' },
-                                    on: { click: () => {
-                                            this.$router.push('/production-draw/' + params.row[this.vm.identity])
-                                        }}
-                                }, this.$t('common.DETAIL')),
-                                h('Button', {
-                                    props: { type: 'error', size: 'small' },
-                                    on: { click: () => {
-                                            this.remove([params.row])
-                                        }}
-                                }, this.$t('common.REMOVE'))
-                            ]);
+        computed: {
+            tableHeight() {
+                return document.documentElement.clientHeight - 220;
+            },
+            columnList() {
+                return [
+                    { type: 'selection', width: 60, align: 'center' },
+                    { title: this.$t('field.DRAW_MATERIAL.BILL_NO'), key: 'billNo', sortable: 'custom' },
+                    { title: this.$t('field.DRAW_MATERIAL.TO_PRINCIPAL'), key: 'toPrincipalName', sortable: 'custom' },
+                    { title: this.$t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
+                    { title: this.$t('field.DRAW_MATERIAL.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
+                    { title: this.$t('field.DRAW_MATERIAL.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },
+                    { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                            return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                                this.$router.push('/production-draw/'+row[this.vm.identity])
+                            }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
+                                this.remove([row])
+                            }, 'removePermission')]);
                         }
                     }
-            ]
-        }
-    },
-    methods: {
-        initData() {
-            this.search()
-        },
-        async search() {
-            this.searchKey.billTime[0] = new Date(this.searchKey.billTime[0]).getTime()
-            this.searchKey.billTime[1] = new Date(this.searchKey.billTime[1]).getTime()
-            let result = await productionDrawService.searchBill(JSON.stringify(this.searchKey))
-            console.log(result)
-            if (result.status === 200) {
-                var items = result.data
-                items.forEach((item) => {
-                    if (item.billState === 1) {
-                        item.billState = this.$t('field.BILL_STATE.STATE1')
-                    } else if (item.billState === 2) {
-                        item.billState = this.$t('field.BILL_STATE.STATE2')
-                    } else if (item.billState === 3) {
-                        item.billState = this.$t('field.BILL_STATE.STATE3')
-                    }
-                    if (item.drawReason === 1) {
-                        item.drawReason = this.$t('field.DRAW_REASON.REASON1')
-                    }
-                    let date = new Date(item.billTime)
-                    item.billTime = date.getFullYear() + '-' + (date.getMonth() < 9 ? '0' + (date.getMonth() + 1): date.getMonth() + 1) + '-' + date.getDate() 
-                })
-                this.vm.items = items;
+                ]
+            },
+            // 单据状态筛选框的当前值
+            stateCn() {
+                for (let i = 0; i < this.stateList.length; ++i) {
+                    if (this.stateList[i].value === this.vm.queryParameters.state)
+                        return this.stateList[i].descript;
+                }
+            },
+            // 单据状态筛选框的列表值
+            stateList() {
+                return [
+                    { value: -1, descript: this.$t('field.BILL_STATE.ALL_STATE') },
+                    { value: 1, descript: this.$t('field.BILL_STATE.STATE1') },
+                    { value: 2,  descript: this.$t('field.BILL_STATE.STATE2') },
+                    { value: 3, descript: this.$t('field.BILL_STATE.STATE3') },
+                ]
             }
         },
-        remove(selectItems) {
-            let idList = _.map(selectItems, this.vm.identity).join(",")
-            this.$Modal.confirm({
-                content: this.$t('common.REMOVE_CONFIRM'),
-                onOk: async () => {
-                    let result = await productionDrawService.deletebills(idList)
-                    if (result.status === 200) {
-                        this.$Message.success(this.$t('common.REMOVE_SUCCESS'))
-                        this.selectItems = []
-                        this.search()
-                    } else {
-                        this.$Message.error(result.data)
-                    }
+        methods: {
+            initData() {
+                this.search()
+            },
+            async search() {
+                let idList = _.map(this.selectItems, this.vm.identity).join(",");
+                let beginTime = -1;
+                if (this.vm.queryParameters.beginTime != '')
+                    beginTime = this.vm.queryParameters.beginTime.getTime();
+                let endTime = -1;
+                if (this.vm.queryParameters.endTime != '')
+                    endTime = this.vm.queryParameters.endTime.getTime();
+                let result = await productionDrawService.searchBill(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }));
+                if (result.status === 200) {
+                    var items = result.data.list;
+                    this.vm.queryParameters.total = result.data.total;
+                    items.forEach((item) => {
+                        item.billStateCn = this.$t('field.BILL_STATE.STATE' + Number(item.billState));
+                        item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
+                        item['detailPermission'] = true;
+                        if (this.productionDrawRemovePermission)
+                            item['removePermission'] = true;
+                    });
+                    this.vm.items = items;
+                    this.$nextTick(() => {
+                        for (var i = 0; i < items.length; ++i) {
+                            if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
+                                this.$refs.table.toggleSelect(i);
+                            }
+                        }
+                    });
                 }
-            });
+            },
+            handleSort(data) {
+                if (data.order === 'normal') {
+                    this.vm.queryParameters.sortColumn = '';
+                    this.vm.queryParameters.sort = '';
+                } else if (data.key === 'toPrincipalName') {
+                    this.vm.queryParameters.sortColumn = 'toPrincipal';
+                    this.vm.queryParameters.sort = data.order;
+                } else if (data.key === 'billTimeLocal') {
+                    this.vm.queryParameters.sortColumn = 'billTime';
+                    this.vm.queryParameters.sort = data.order;
+                } else if (data.key === 'billStateCn') {
+                    this.vm.queryParameters.sortColumn = 'billState';
+                    this.vm.queryParameters.sort = data.order;
+                } else {
+                    this.vm.queryParameters.sortColumn = data.key;
+                    this.vm.queryParameters.sort = data.order;
+                }
+                this.selectItems = [];
+                this.search();
+            },
+            audit(selectItems) {
+                let idList = _.map(selectItems, this.vm.identity).join(",")
+                this.$Modal.confirm({
+                    content: this.$t('common.OPERATE_CONFIRM'),
+                    onOk: async () => {
+                        let result = await productionDrawService.auditBill(idList)
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                            this.search()
+                        } else {
+                            this.$Message.error(result.data)
+                        }
+                    }
+                });
+            },
+            unaudit(selectItems) {
+                let idList = _.map(selectItems, this.vm.identity).join(",")
+                this.$Modal.confirm({
+                    content: this.$t('common.OPERATE_CONFIRM'),
+                    onOk: async () => {
+                        let result = await productionDrawService.unauditBill(idList)
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                            this.search()
+                        } else {
+                            this.$Message.error(result.data)
+                        }
+                    }
+                });
+            },
+            remove(selectItems) {
+                let idList = _.map(selectItems, this.vm.identity).join(",")
+                this.$Modal.confirm({
+                    content: this.$t('common.REMOVE_CONFIRM'),
+                    onOk: async () => {
+                        let result = await productionDrawService.deleteBill(idList)
+                        if (result.status === 200) {
+                            this.$Message.success(this.$t('common.REMOVE_SUCCESS'))
+                            this.selectItems = []
+                            this.search()
+                        } else {
+                            this.$Message.error(result.data)
+                        }
+                    }
+                });
+            },
+            clearChecked() {
+                this.$refs.table.selectAll(false)
+            }
         },
-        clearChecked() {
-            this.$refs.table.selectAll(false)
+        mounted() {
+            this.initData()
         }
-    },
-    mounted() {
-        this.initData()
     }
-}
 </script>
