@@ -29,7 +29,7 @@ public class LoginController {
         try {
             Admin admin = adminService.login(loginName, password);
             RequestUtils.setLoginAdminToSession(request, admin.getAdminId());
-            return "redirect:";
+            return "redirect:/";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "login";
