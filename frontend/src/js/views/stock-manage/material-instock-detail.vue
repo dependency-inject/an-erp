@@ -136,15 +136,25 @@ export default {
                 { title: this.$t('field.MATERIAL_INSTOCK.MATERIAL_REMARK'), key: 'remark' },
             ];
             if (this.editable) {
-                result.push({ 
-                    title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
-                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
-                            this.editMaterial(row) 
-                        }), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
-                            this.removeMaterial(params.index) 
-                        })]);
-                    } 
-                });
+                if (this.item.materialSource !== 1) {
+                    result.push({ 
+                        title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                            return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                                this.editMaterial(row) 
+                            }), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => { 
+                                this.removeMaterial(params.index) 
+                            })]);
+                        } 
+                    });
+                } else {
+                    result.push({ 
+                        title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                            return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                                this.editMaterial(row) 
+                            })]);
+                        } 
+                    });
+                }
             }
             return result;
         }

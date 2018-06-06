@@ -136,8 +136,15 @@ public class DevelopmentReturnService extends BaseService {
         List<ReturnMaterialBill> result = returnMaterialBillDAO.selectByExample(returnMaterialBillQuery);
 
         for(ReturnMaterialBill bill: result) {
-            String name = adminDAO.selectByPrimaryKey(bill.getFromPrincipal()).getTrueName();
-            bill.setFromPrincipalName(name);
+            String fromPrincipalName = adminDAO.selectByPrimaryKey(bill.getFromPrincipal()).getTrueName();
+            bill.setFromPrincipalName(fromPrincipalName);
+            if (bill.getWarehousePrincipal() == null) {
+                continue;
+            }
+            Admin warehousePrincipal = adminDAO.selectByPrimaryKey(bill.getWarehousePrincipal());
+            if (warehousePrincipal != null) {
+                bill.setWarehousePrincipalName(warehousePrincipal.getTrueName());
+            }
         }
         return new PageMode<ReturnMaterialBill>(result, returnMaterialBillDAO.countByExample(returnMaterialBillQuery));
     }

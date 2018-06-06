@@ -65,7 +65,9 @@ public class ProductOutstockService extends BaseService {
         productOutstockBill.setWarehousePrincipal(loginAdmin.getAdminId());
         productOutstockBill.setBillTime(new Date());
         productOutstockBill.setProductWhereabouts(productWhereabouts);
-        productOutstockBill.setRelatedBill(relatedBill);
+        if (productWhereabouts.equals(1)) {
+            productOutstockBill.setRelatedBill(relatedBill);
+        }
         productOutstockBill.setBillState(1);
         productOutstockBill.setRemark(remark);
         productOutstockBill.setCreateAt(new Date());
@@ -122,8 +124,8 @@ public class ProductOutstockService extends BaseService {
         ProductOutstockBill productOutstockBill=new ProductOutstockBill();
         productOutstockBill.setBillId(billId);
         productOutstockBill.setToPrincipal(toPrincipal);
-        productOutstockBill.setProductWhereabouts(productWhereabouts);
-        productOutstockBill.setRelatedBill(relatedBill);
+//        productOutstockBill.setProductWhereabouts(productWhereabouts);
+//        productOutstockBill.setRelatedBill(relatedBill);
         productOutstockBill.setRemark(remark);
         productOutstockBill.setUpdateAt(new Date());
         productOutstockBill.setUpdateBy(loginAdmin.getAdminId());

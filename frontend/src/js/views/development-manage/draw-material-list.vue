@@ -128,7 +128,7 @@ export default {
                     item.billStateCn = this.$t('field.BILL_STATE.STATE' + Number(item.billState));
                     item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
                     item['detailPermission'] = true;
-                    if (this.developmentDrawRemovePermission)
+                    if (item.billState === 1 && this.developmentDrawRemovePermission)
                         item['removePermission'] = true;
                 });
                 this.vm.items = items;
@@ -147,6 +147,9 @@ export default {
                 this.vm.queryParameters.sort = '';
             } else if (data.key === 'toPrincipalName') {
                 this.vm.queryParameters.sortColumn = 'toPrincipal';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'warehousePrincipalName') {
+                this.vm.queryParameters.sortColumn = 'warehousePrincipal';
                 this.vm.queryParameters.sort = data.order;
             } else if (data.key === 'billTimeLocal') {
                 this.vm.queryParameters.sortColumn = 'billTime';

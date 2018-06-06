@@ -47,11 +47,11 @@ public class DevelopmentDrawService extends BaseService {
         drawMaterialBill.setToPrincipalName(toPrincipalName);
 
         Integer i = drawMaterialBill.getBillState();
-        if(i > 1) {
+        if (i > 1) {
             String auditName = adminDAO.selectByPrimaryKey(drawMaterialBill.getAuditBy()).getTrueName();
             drawMaterialBill.setAuditName(auditName);
         }
-        if(i > 2) {
+        if (i > 2) {
             String warehousePrincipalName = adminDAO.selectByPrimaryKey(drawMaterialBill.getWarehousePrincipal()).getTrueName();
             drawMaterialBill.setWarehousePrincipalName(warehousePrincipalName);
             String finishName = adminDAO.selectByPrimaryKey(drawMaterialBill.getFinishBy()).getTrueName();
@@ -137,8 +137,15 @@ public class DevelopmentDrawService extends BaseService {
         List<DrawMaterialBill> result = drawMaterialBillDAO.selectByExample(drawMaterialBillQuery);
 
         for(DrawMaterialBill bill: result) {
-            String name = adminDAO.selectByPrimaryKey(bill.getToPrincipal()).getTrueName();
-            bill.setToPrincipalName(name);
+            String toPrincipalName = adminDAO.selectByPrimaryKey(bill.getToPrincipal()).getTrueName();
+            bill.setToPrincipalName(toPrincipalName);
+            if (bill.getWarehousePrincipal() == null) {
+                continue;
+            }
+            Admin warehousePrincipal = adminDAO.selectByPrimaryKey(bill.getWarehousePrincipal());
+            if (warehousePrincipal != null) {
+                bill.setWarehousePrincipalName(warehousePrincipal.getTrueName());
+            }
         }
         return new PageMode<DrawMaterialBill>(result, drawMaterialBillDAO.countByExample(drawMaterialBillQuery));
     }

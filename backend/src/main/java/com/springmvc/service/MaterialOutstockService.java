@@ -62,7 +62,9 @@ public class MaterialOutstockService extends BaseService {
         materialOutstockBill.setWarehousePrincipal(loginAdmin.getAdminId());
         materialOutstockBill.setBillTime(new Date());
         materialOutstockBill.setMaterialWhereabouts(materialWhereabouts);
-        materialOutstockBill.setRelatedBill(relatedBill);
+        if (materialWhereabouts.equals(1)) {
+            materialOutstockBill.setRelatedBill(relatedBill);
+        }
         materialOutstockBill.setBillState(1);
         materialOutstockBill.setRemark(remark);
         materialOutstockBill.setCreateAt(new Date());
@@ -123,8 +125,8 @@ public class MaterialOutstockService extends BaseService {
         MaterialOutstockBill materialOutstockBill = new MaterialOutstockBill();
         materialOutstockBill.setBillId(billId);
         materialOutstockBill.setToPrincipal(toPrincipal);
-        materialOutstockBill.setMaterialWhereabouts(materialWhereabouts);
-        materialOutstockBill.setRelatedBill(relatedBill);
+//        materialOutstockBill.setMaterialWhereabouts(materialWhereabouts);
+//        materialOutstockBill.setRelatedBill(relatedBill);
         materialOutstockBill.setRemark(remark);
         materialOutstockBill.setUpdateAt(new Date());
         materialOutstockBill.setUpdateBy(loginAdmin.getAdminId());

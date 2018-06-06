@@ -6,19 +6,18 @@
                     <div class="chief-panel">
                         <div class="panel-header">{{ $t('field.BASE_INFO') }}</div>
                         <div class="panel-body">
-                            <div>
-                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.BILL_NO') }}： </label>{{ item.billNo }}</div>
-                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.TO_PRINCIPAL') }}： </label>{{ item.toPrincipalName }}</div>
-                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL') }}： </label>{{ item.warehousePrincipalName }}</div>
-                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.BILL_TIME') }}： </label>{{ item.billTimeLocal }}</div>
-                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.DRAW_REASON') }}： </label>{{ item.drawReasonCn }}</div>
-                                <div class="info-item"><label>{{ $t('field.DRAW_MATERIAL.BILL_STATE') }}： </label>{{ item.billStateCn }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chief-panel">
-                        <div class="panel-header">{{ $t('field.ELSE_INFO') }}</div>
-                        <div class="panel-body">
+                            <form-item :label="$t('field.DRAW_MATERIAL.BILL_NO')" prop="billNo">{{ item.billNo || $t('field.NOT_AVAILABLE')  }}</form-item>
+                            <form-item :label="$t('field.DRAW_MATERIAL.BILL_TIME')" prop="billTime">{{ item.billTimeLocal || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.DRAW_MATERIAL.TO_PRINCIPAL')" prop="toPrincipal">
+                                <common-select type="admin" v-model="item.toPrincipal" disabled></common-select>
+                            </form-item>
+                            <form-item :label="$t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">{{ item.warehousePrincipalName || $t('field.NOT_AVAILABLE') }}</form-item>
+                            <form-item :label="$t('field.DRAW_MATERIAL.DRAW_REASON')" prop="drawReason">
+                                <i-select v-model="item.drawReason" disabled style="width:100%">
+                                    <i-option v-for="item in drawReasonList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
+                                </i-select>
+                            </form-item>
+                            <form-item :label="$t('field.DRAW_MATERIAL.BILL_STATE')" prop="billState">{{ item.billStateCn || $t('field.NOT_AVAILABLE') }}</form-item>
                             <form-item :label="$t('field.DRAW_MATERIAL.REMARK')" prop="remark"><i-input v-model="item.remark"></i-input></form-item>
                         </div>
                     </div>
@@ -39,9 +38,7 @@
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveMaterial" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.DRAW_MATERIAL.MATERIAL')" prop="materialId">
-                    <i-select v-model="modal.item.materialId">
-                        <i-option v-for="item in materialList" :value="item.materialId" :key="item.materialId">{{ item.materialNo + ' - ' +item.materialName }}</i-option>
-                    </i-select>
+                    <common-select type="material" v-model="modal.item.materialId" @on-change="materialSelectChange"></common-select>
                 </form-item>
                 <form-item :label="$t('field.DRAW_MATERIAL.QUANTITY')" prop="quantity"><input-number v-model="modal.item.quantity" :min="1" style="width:100%"></input-number></form-item>
                 <form-item :label="$t('field.DRAW_MATERIAL.REMARK')" prop="remark"><i-input v-model="modal.item.remark" type="textarea"></i-input></form-item>
@@ -55,6 +52,8 @@ import Permission from '../../mixins/permission';
 
 import util from '../../libs/util.js';
 
+import commonSelect from '../../components/common-select';
+
 import developmentDrawService from '../../service/development-draw';
 
 export default {
@@ -66,10 +65,11 @@ export default {
             },
             modal: {
                 title: 'title',
-                item: {},
+                item: {
+                    materialId: ''
+                },
                 visible: false
-            },
-            materialList: []
+            }
         }
     },
     computed: {
@@ -87,8 +87,10 @@ export default {
                 ]
             }
         },
-        loginAdmin() {
-            return this.$store.state.app.loginAdmin;
+        drawReasonList() {
+            return [
+                { value: 2, descript: this.$t('field.DRAW_REASON.REASON2') },
+            ]
         },
         editable() {
             return (this.developmentDrawAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.developmentDrawUpdatePermission && this.item.billId !==0 && this.item.billState === 1);
@@ -114,6 +116,7 @@ export default {
             return result;
         }
     },
+    components: { commonSelect },
     methods: {
         initData() {
             // 路由检查           
@@ -129,19 +132,21 @@ export default {
         setDefault() {
             this.item = {
                 billId: 0,
-                toPrincipalName: this.loginAdmin.trueName,
-                drawReasonCn: this.$t('field.DRAW_REASON.REASON2'),
+                toPrincipal: this.$store.state.app.loginAdmin.adminId,
+                drawReason: 2,
                 remark: '',
                 materialList: []
             }
         },
         async getById() {
+            if (this.$route.params.id === 'add' && this.item.billId === 0) return;
             let result = await developmentDrawService.getBill(this.item.billId);
             if (result.status === 200) {
                 this.item = result.data;
                 this.item.billStateCn = this.$t('field.BILL_STATE.STATE' + Number(this.item.billState));
                 this.item.billTimeLocal = util.formatTimestamp(this.item.billTime, "yyyy-MM-dd hh:mm:ss");
-                this.item.drawReasonCn = this.$t('field.DRAW_REASON.REASON' + Number(this.item.drawReason));
+            } else {
+                this.$router.replace('/development-draw');
             }
         },
         save() {
@@ -199,12 +204,6 @@ export default {
                 }
             });
         },
-        async getMaterialList() {
-            let result = await developmentDrawService.getMaterialList();
-            if (result.status === 200) {
-                this.materialList = result.data;
-            }
-        },
         addMaterial() {
             this.modal.title = this.$t('common.ADD') + this.$t('field.DRAW_MATERIAL.MATERIAL_INFO');
             this.$refs.formValidate2.resetFields();
@@ -221,17 +220,13 @@ export default {
             this.modal.item.materialId = item.materialId;
             this.modal.item.quantity = item.quantity;
             this.modal.item.remark = item.remark;
+            this.modal.item.materialNo = item.materialNo;
+            this.modal.item.materialName = item.materialName;
             this.modal.visible = true;
         },
         saveMaterial() {
             this.$refs.formValidate2.validate(async (valid) => {
                 if (valid) {
-                    this.materialList.forEach((item) => {
-                        if (item.materialId === this.modal.item.materialId) {
-                            this.modal.item.materialNo = item.materialNo;
-                            this.modal.item.materialName = item.materialName;
-                        }
-                    });
                     if (this.modal.item._index === -1) {
                         this.item.materialList.push({
                             materialId: this.modal.item.materialId,
@@ -262,12 +257,20 @@ export default {
                     this.item.materialList.splice(index, 1);
                 }
             });
+        },
+        materialSelectChange(item) {
+            if (item === null) {
+                this.modal.item.materialNo = ''
+                this.modal.item.materialName = '';
+            } else {
+                this.modal.item.materialNo = item.materialNo;
+                this.modal.item.materialName = item.materialName;
+            }
         }
     },
     created() {
         this.setDefault();
         this.initData();
-        this.getMaterialList();
     },
     watch: {
         '$route'(to, from) {

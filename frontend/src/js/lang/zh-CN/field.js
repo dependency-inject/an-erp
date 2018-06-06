@@ -51,6 +51,7 @@ export default {
         CATEGORY_NAME: '类别',
         COST: '定价',
         REMARK: '备注',
+        QUANTITY: '数量',
     },
     MATERIAL_CATEGORY: {
         CATEGORY_NAME: '类别名称',
