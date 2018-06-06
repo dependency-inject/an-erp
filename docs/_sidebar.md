@@ -2,15 +2,24 @@
   - [文档写作](about-docs.md)
   - [快速开始](README.md)
 - **设计**
-  - [系统模块](module.md)
-  - [功能清单](function-list.md)
-  - [原形设计](axure-design.md)
-  - [数据建模](db-design.md)
+  - [系统模块](design/module.md)
+  - [功能清单](design/function-list.md)
+  - [原形设计](design/axure-design.md)
+  - [数据建模](design/db-design.md)
 - **规范及架构**
-  - [开发规范](develop-rule.md)
-  - [后端架构](backend-framework.md)
-  - [前端架构](frontend-framework.md)
+  - [开发规范](framework/develop-rule.md)
+  - [后端架构](framework/backend-framework.md)
+  - [前端架构](framework/frontend-framework.md)
+- **后端文档**
+  - [BOM管理API](backend/bom-api.md)
+  - [销售管理API](backend/sales-api.md)
+  - [生产管理API](backend/production-api.md)
+  - [库存管理API](backend/stock-api.md)
+  - [采购辅助管理API](backend/purchase-api.md)
+  - [成本管理API](backend/cost-api.md)
+  - [研发辅助管理API](backend/development-api.md)
+  - [人员管理API](backend/user-api.md)
 - **前端文档**
-  - [组件—treeTable](component-tree-table.md)
+  - [组件—treeTable](frontend/component-tree-table.md)
 - **问题整理**
-  - [环境搭建](problem-environment.md)
+  - [环境搭建](problem/problem-environment.md)

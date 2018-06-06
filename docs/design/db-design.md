@@ -4,7 +4,7 @@
 
 ### BOM信息
 
-![](media/db-bom.png)
+![](../media/db-bom.png)
 
 #### 货品表（product）
 
@@ -17,7 +17,7 @@
 | category_id  | int(11)       | YES  |                | 类别ID          |
 | spec         | varchar(255)  | YES  |                | 规格            |
 | price        | decimal(10,2) | YES  |                | 价格            |
-| closed       | tinyint(4)    | YES  |                | 是否停用（0启用，1停用） |
+| closed       | tinyint(1)    | YES  |                | 是否停用（0启用，1停用） |
 | remark       | varchar(2000) | YES  |                | 备注            |
 | create_at    | datetime      | YES  |                | 创建时间          |
 | create_by    | int(11)       | YES  |                | 创建者           |
@@ -80,7 +80,7 @@
 
 ### 订单相关
 
-![](media/db-order.png)
+![](../media/db-order.png)
 
 #### 订单表（order_bill）
 
@@ -134,7 +134,7 @@
 
 ### 领料单相关
 
-![](media/db-draw-material.png)
+![](../media/db-draw-material.png)
 
 #### 领料单表（draw_material_bill）
 
@@ -170,7 +170,7 @@
 
 ### 退料单相关
 
-![](media/db-return-material.png)
+![](../media/db-return-material.png)
 
 #### 退料单表（return_material_bill）
 
@@ -206,7 +206,7 @@
 
 ### 货品出库相关
 
-![](media/db-product-outstock.png)
+![](../media/db-product-outstock.png)
 
 #### 货品出库单表（product_outstock_bill）
 
@@ -245,7 +245,7 @@
 
 ### 货品入库相关
 
-![](media/db-product-instock.png)
+![](../media/db-product-instock.png)
 
 #### 货品入库单表（product_instock_bill）
 
@@ -284,7 +284,7 @@
 
 ### 物料出库相关
 
-![](media/db-material-outstock.png)
+![](../media/db-material-outstock.png)
 
 #### 物料出库单表（material_outstock_bill）
 
@@ -323,7 +323,7 @@
 
 ### 物料入库相关
 
-![](media/db-material-instock.png)
+![](../media/db-material-instock.png)
 
 #### 物料入库单表（material_instock_bill）
 
@@ -362,7 +362,7 @@
 
 ### 采购相关
 
-![](media/db-supplier.png)
+![](../media/db-supplier.png)
 
 #### 供应商表（supplier）
 
@@ -391,7 +391,7 @@
 
 ### 用户权限相关
 
-![](media/db-admin.png)
+![](../media/db-admin.png)
 
 #### 用户表（admin）
 

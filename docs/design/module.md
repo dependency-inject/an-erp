@@ -31,18 +31,18 @@
 
 #### 订单、生产
 
-![](media/flow1.jpg)
+![](../media/flow1.jpg)
 
 相关角色：role1、role3
 
 #### 领料、退料
 
-![](media/flow2.jpg)
+![](../media/flow2.jpg)
 
 相关角色：role3、role4、role7
 
 #### 物料采购
 
-![](media/flow3.jpg)
+![](../media/flow3.jpg)
 
 相关角色：role6

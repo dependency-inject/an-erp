@@ -1,6 +1,6 @@
 ## 前端组件 —— treeTable
 
-![](media/component-tree-table.png)
+![](../media/component-tree-table.png)
 
 **用途：**货品类别、物料类别列表页中，以树形方式呈现信息
 
