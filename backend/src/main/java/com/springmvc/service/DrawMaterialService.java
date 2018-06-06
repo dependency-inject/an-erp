@@ -77,7 +77,9 @@ public class DrawMaterialService extends BaseService {
                     billIdSet.add(bill.getRelatedBill());
                 }
             }
-            criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            if (billIdSet.size() > 0) {
+                criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            }
         }
         return drawMaterialBillDAO.selectByExample(drawMaterialBillQuery);
     }

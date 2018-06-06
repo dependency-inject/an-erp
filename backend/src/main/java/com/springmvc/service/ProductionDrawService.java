@@ -36,6 +36,9 @@ public class ProductionDrawService extends BaseService {
     @Resource
     private ProductMaterialDAO productMaterialDAO;
 
+    @Resource
+    private OrderBillDAO orderBillDAO;
+
     /**
      * 查询领料单信息（单个）,只取生产领料对应的数据
      *
@@ -61,6 +64,9 @@ public class ProductionDrawService extends BaseService {
             String finishName = adminDAO.selectByPrimaryKey(drawMaterialBill.getFinishBy()).getTrueName();
             drawMaterialBill.setFinishName(finishName);
         }
+
+        String relatedBillNo = orderBillDAO.selectByPrimaryKey(drawMaterialBill.getRelatedBill()).getBillNo();
+        drawMaterialBill.setRelatedBillNo(relatedBillNo);
 
         DrawMaterialBillMaterialQuery drawMaterialBillMaterialQuery = new DrawMaterialBillMaterialQuery();
         DrawMaterialBillMaterialQuery.Criteria criteria = drawMaterialBillMaterialQuery.or();
@@ -237,6 +243,16 @@ public class ProductionDrawService extends BaseService {
         }
         // 添加日志
         addLog(LogType.DRAW_MATERIAL_BILL, Operate.ADD, drawMaterialBill.getBillId());
+
+        // 检查相应订单状态
+        OrderBill orderBill = orderBillDAO.selectByPrimaryKey(drawMaterialBill.getRelatedBill());
+        if (orderBill == null) {
+            throw new BadRequestException(ORDER_BILL_NOT_EXIST);
+        }
+        if (!orderBill.getBillState().equals(3)) {
+            throw new BadRequestException(ORDER_BILL_NOT_PRODUCE);
+        }
+
         return getBillById(drawMaterialBill.getBillId());
     }
 
@@ -367,11 +383,14 @@ public class ProductionDrawService extends BaseService {
                 drawMaterialBillMaterial.setMaterialNo(material.getMaterialNo());
                 drawMaterialBillMaterial.setMaterialName(material.getMaterialName());
                 drawMaterialBillMaterial.setQuantity(materialMap.get(materialId));
+                result.add(drawMaterialBillMaterial);
             }
         }
         return result;
     }
 
+    private static final String ORDER_BILL_NOT_EXIST = "相关订单不存在";
+    private static final String ORDER_BILL_NOT_PRODUCE = "相关订单不是生产中状态";
     private static final String BILL_STATE_NOT_UNAUDIT = "单据不是待审核状态";
     private static final String BILL_STATE_NOT_AUDIT = "单据不是已审核状态";
     private static final String EXISE_OUTSTOCK_CANNOT_UNAUDIT = "单据已存在对应出库单，不能反审核";

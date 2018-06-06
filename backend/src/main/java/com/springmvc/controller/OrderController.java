@@ -24,8 +24,8 @@ public class OrderController {
 
     @RequestMapping(value = "/getList", method = RequestMethod.POST)
     @ResponseBody
-    public List<OrderBill> getList(Integer state, Boolean onlyNotOutstock) {
-        return orderService.getList(state, onlyNotOutstock);
+    public List<OrderBill> getList(Integer state, Boolean onlyNotOutstock, Boolean onlyNotDraw) {
+        return orderService.getList(state, onlyNotOutstock, onlyNotDraw);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)

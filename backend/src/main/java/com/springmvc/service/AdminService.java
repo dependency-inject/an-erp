@@ -159,22 +159,27 @@ public class AdminService extends BaseService {
     public Admin getAdminWithPermissionById(int adminId) {
         Admin admin = getAdminWithRoleById(adminId);
 
-        RoleQuery roleQuery = new RoleQuery();
-        roleQuery.or().andRoleIdIn(ParamUtils.toIntList(admin.getRoleIdList()));
-        List<Role> roleList = roleDAO.selectWithPermissionByExample(roleQuery);
-        Set<Integer> permissionIdSet = new HashSet<Integer>();
-        for (Role role : roleList) {
-            permissionIdSet.addAll(ParamUtils.toIntList(role.getPermissionIdList()));
-        }
+        List<Integer> roleIdList = ParamUtils.toIntList(admin.getRoleIdList());
+        if (roleIdList.size() > 0) {
+            RoleQuery roleQuery = new RoleQuery();
+            roleQuery.or().andRoleIdIn(roleIdList);
+            List<Role> roleList = roleDAO.selectWithPermissionByExample(roleQuery);
+            Set<Integer> permissionIdSet = new HashSet<Integer>();
+            for (Role role : roleList) {
+                permissionIdSet.addAll(ParamUtils.toIntList(role.getPermissionIdList()));
+            }
 
-        PermissionQuery permissionQuery = new PermissionQuery();
-        permissionQuery.or().andPermissionIdIn(new ArrayList<Integer>(permissionIdSet));
-        List<Permission> permissionList = permissionDAO.selectWithModuleByExample(permissionQuery);
-        List<String> permissionNameList = new ArrayList<String>();
-        for (Permission permission : permissionList) {
-            permissionNameList.add(permission.getModuleName() + "@" + permission.getPermissionName());
+            if (permissionIdSet.size() > 0) {
+                PermissionQuery permissionQuery = new PermissionQuery();
+                permissionQuery.or().andPermissionIdIn(new ArrayList<Integer>(permissionIdSet));
+                List<Permission> permissionList = permissionDAO.selectWithModuleByExample(permissionQuery);
+                List<String> permissionNameList = new ArrayList<String>();
+                for (Permission permission : permissionList) {
+                    permissionNameList.add(permission.getModuleName() + "@" + permission.getPermissionName());
+                }
+                admin.setPermissionNameList(ParamUtils.toStr(permissionNameList));
+            }
         }
-        admin.setPermissionNameList(ParamUtils.toStr(permissionNameList));
         return admin;
     }
 

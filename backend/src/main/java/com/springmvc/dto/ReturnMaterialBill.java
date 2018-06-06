@@ -10,6 +10,8 @@ public class ReturnMaterialBill extends ReturnMaterialBillEntity {
 
     private String warehousePrincipalName;
 
+    private String relatedBillNo;
+
     private String auditName;
 
     private String finishName;
@@ -30,6 +32,14 @@ public class ReturnMaterialBill extends ReturnMaterialBillEntity {
 
     public void setWarehousePrincipalName(String warehousePrincipalName) {
         this.warehousePrincipalName = warehousePrincipalName;
+    }
+
+    public String getRelatedBillNo() {
+        return relatedBillNo;
+    }
+
+    public void setRelatedBillNo(String relatedBillNo) {
+        this.relatedBillNo = relatedBillNo;
     }
 
     public String getAuditName() {

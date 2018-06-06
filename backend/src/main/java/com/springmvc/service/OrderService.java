@@ -41,12 +41,15 @@ public class OrderService extends BaseService {
     @Resource
     private ProductOutstockBillDAO productOutstockBillDAO;
 
+    @Resource
+    private DrawMaterialBillDAO drawMaterialBillDAO;
+
     /**
      * 获取订单表的所有信息
      *
      * @return 返回列表
      */
-    public List<OrderBill> getList(Integer state, Boolean onlyNotOutstock) {
+    public List<OrderBill> getList(Integer state, Boolean onlyNotOutstock, Boolean onlyNotDraw) {
         OrderBillQuery orderBillQuery = new OrderBillQuery();
         OrderBillQuery.Criteria criteria = orderBillQuery.or();
         if (!ParamUtils.isNull(state) && !state.equals(-1)) {
@@ -60,7 +63,21 @@ public class OrderService extends BaseService {
                     billIdSet.add(bill.getRelatedBill());
                 }
             }
-            criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            if (billIdSet.size() > 0) {
+                criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            }
+        }
+        if (!ParamUtils.isNull(onlyNotDraw) && onlyNotDraw) {
+            Set<Integer> billIdSet = new HashSet<Integer>();
+            List<DrawMaterialBill> billList = drawMaterialBillDAO.selectByExample(new DrawMaterialBillQuery());
+            for (DrawMaterialBill bill: billList) {
+                if (bill.getDrawReason().equals(1) && !ParamUtils.isNull(bill.getRelatedBill())) {
+                    billIdSet.add(bill.getRelatedBill());
+                }
+            }
+            if (billIdSet.size() > 0) {
+                criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            }
         }
         return orderBillDAO.selectByExample(orderBillQuery);
     }

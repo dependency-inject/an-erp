@@ -75,7 +75,7 @@ export default {
             return [
                 { type: 'selection', width: 60, align: 'center' },
                 { title: this.$t('field.RETURN_MATERIAL.BILL_NO'), key: 'billNo', sortable: 'custom' },
-                { title: this.$t('field.RETURN_MATERIAL.FROM_PRINCIPAL'), key: 'fromPrincipal', sortable:'cu stom' },
+                { title: this.$t('field.RETURN_MATERIAL.FROM_PRINCIPAL'), key: 'fromPrincipalName', sortable:'custom' },
                 { title: this.$t('field.RETURN_MATERIAL.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
                 { title: this.$t('field.RETURN_MATERIAL.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
                 { title: this.$t('field.RETURN_MATERIAL.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },

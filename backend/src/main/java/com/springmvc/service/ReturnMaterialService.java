@@ -77,7 +77,9 @@ public class ReturnMaterialService extends BaseService {
                     billIdSet.add(bill.getRelatedBill());
                 }
             }
-            criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            if (billIdSet.size() > 0) {
+                criteria.andBillIdNotIn(new ArrayList<Integer>(billIdSet));
+            }
         }
         return returnMaterialBillDAO.selectByExample(returnMaterialBillQuery);
     }

@@ -33,6 +33,9 @@ public class ProductionReturnService extends BaseService {
     @Resource
     private MaterialInstockBillDAO materialInstockBillDAO;
 
+    @Resource
+    private OrderBillDAO orderBillDAO;
+
     /**
      * 查询退料单信息（单个）,只取生产退料对应的数据
      *
@@ -58,6 +61,9 @@ public class ProductionReturnService extends BaseService {
             String finishName = adminDAO.selectByPrimaryKey(returnMaterialBill.getFinishBy()).getTrueName();
             returnMaterialBill.setFinishByName(finishName);
         }
+
+        String relatedBillNo = orderBillDAO.selectByPrimaryKey(returnMaterialBill.getRelatedBill()).getBillNo();
+        returnMaterialBill.setRelatedBillNo(relatedBillNo);
 
         ReturnMaterialBillMaterialQuery returnMaterialBillMaterialQuery = new ReturnMaterialBillMaterialQuery();
         ReturnMaterialBillMaterialQuery.Criteria criteria = returnMaterialBillMaterialQuery.or();
@@ -234,6 +240,16 @@ public class ProductionReturnService extends BaseService {
         }
         // 添加日志
         addLog(LogType.RETURN_MATERIAL_BILL, Operate.ADD, returnMaterialBill.getBillId());
+
+        // 检查相应订单状态
+        OrderBill orderBill = orderBillDAO.selectByPrimaryKey(returnMaterialBill.getRelatedBill());
+        if (orderBill == null) {
+            throw new BadRequestException(ORDER_BILL_NOT_EXIST);
+        }
+        if (!orderBill.getBillState().equals(3)) {
+            throw new BadRequestException(ORDER_BILL_NOT_PRODUCE);
+        }
+
         return getBillById(returnMaterialBill.getBillId());
     }
 
@@ -325,6 +341,8 @@ public class ProductionReturnService extends BaseService {
         return adminIdList;
     }
 
+    private static final String ORDER_BILL_NOT_EXIST = "相关订单不存在";
+    private static final String ORDER_BILL_NOT_PRODUCE = "相关订单不是生产中状态";
     private static final String BILL_STATE_NOT_UNAUDIT = "单据不是待审核状态";
     private static final String BILL_STATE_NOT_AUDIT = "单据不是已审核状态";
     private static final String EXISE_INSTOCK_CANNOT_UNAUDIT = "单据已存在对应入库单，不能反审核";
