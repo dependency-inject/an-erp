@@ -14,8 +14,6 @@ var updateBill = (bill) => http.post('production-draw/updateBill', bill)
 
 var deleteBill = (idList) => http.post('production-draw/deleteBill', { idList: idList });
 
-var getAllOrderBillProduct=()=>http.post('production-draw/allorderBill', );
+var getAllMaterial = (relatedBillId) => http.post('production-draw/allOrderBillMaterial', { relatedBillId: relatedBillId });
 
-var getAllMaterial=(relatedbillid)=>http.post('production-draw/allorderBillMaterial', { relatedbillid: relatedbillid });
-
-export default { getBill, searchBill, auditBill, unauditBill, addBill, updateBill, deleteBill,getAllOrderBillProduct,getAllMaterial };
+export default { getBill, searchBill, auditBill, unauditBill, addBill, updateBill, deleteBill, getAllMaterial };

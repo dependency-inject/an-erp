@@ -17,23 +17,36 @@ import java.util.*;
 @Service("ProductionReturnService")
 @Transactional
 public class ProductionReturnService extends BaseService {
+
     @Resource
     private AdminDAO adminDAO;
+
     @Resource
     private ReturnMaterialBillDAO returnMaterialBillDAO;
+
     @Resource
     private ReturnMaterialBillMaterialDAO returnMaterialBillMaterialDAO;
+
     @Resource
     private MaterialDAO materialDAO;
+
     @Resource
     private MaterialInstockBillDAO materialInstockBillDAO;
 
+    /**
+     * 查询退料单信息（单个）,只取生产退料对应的数据
+     *
+     * @param billId 订单编号
+     * @return
+     */
     public ReturnMaterialBill getBillById(Integer billId) {
-        ReturnMaterialBill returnMaterialBill=returnMaterialBillDAO.selectByPrimaryKey(billId);
-        if(returnMaterialBill.getReturnReason()!=1)
+        ReturnMaterialBill returnMaterialBill = returnMaterialBillDAO.selectByPrimaryKey(billId);
+        if(returnMaterialBill.getReturnReason() != 1) {
             return null;
+        }
         String fromPrincipalName = adminDAO.selectByPrimaryKey(returnMaterialBill.getFromPrincipal()).getTrueName();
         returnMaterialBill.setFromPrincipalName(fromPrincipalName);
+
         Integer i = returnMaterialBill.getBillState();
         if (i > 1) {
             String auditName = adminDAO.selectByPrimaryKey(returnMaterialBill.getAuditBy()).getTrueName();
@@ -45,38 +58,27 @@ public class ProductionReturnService extends BaseService {
             String finishName = adminDAO.selectByPrimaryKey(returnMaterialBill.getFinishBy()).getTrueName();
             returnMaterialBill.setFinishByName(finishName);
         }
-        ReturnMaterialBillMaterialQuery returnMaterialBillMaterialQuery=new ReturnMaterialBillMaterialQuery();
+
+        ReturnMaterialBillMaterialQuery returnMaterialBillMaterialQuery = new ReturnMaterialBillMaterialQuery();
         ReturnMaterialBillMaterialQuery.Criteria criteria = returnMaterialBillMaterialQuery.or();
-        criteria.andBillIdEqualTo(billId);
-        List<ReturnMaterialBillMaterial> returnMaterialBillMaterials=returnMaterialBillMaterialDAO.selectByExample(returnMaterialBillMaterialQuery);
+        criteria.andBillIdEqualTo(returnMaterialBill.getBillId());
+        List<ReturnMaterialBillMaterial> returnMaterialBillMaterials = returnMaterialBillMaterialDAO.selectByExample(returnMaterialBillMaterialQuery);
         for (ReturnMaterialBillMaterial item : returnMaterialBillMaterials) {
             Material material = materialDAO.selectByPrimaryKey(item.getMaterialId());
             if (material != null) {
+                item.setMaterialNo(material.getMaterialNo());
                 item.setMaterialName(material.getMaterialName());
             }
         }
         returnMaterialBill.setMaterialList(returnMaterialBillMaterials);
         return returnMaterialBill;
     }
-    public List<ReturnMaterialBillMaterial> getMaterials(int billid){
-        ReturnMaterialBillMaterialQuery returnMaterialBillMaterialQuery=new ReturnMaterialBillMaterialQuery();
-        ReturnMaterialBillMaterialQuery.Criteria criteria = returnMaterialBillMaterialQuery.or();
-        criteria.andBillIdEqualTo(billid);
-        List<ReturnMaterialBillMaterial> returnMaterialBillMaterials=returnMaterialBillMaterialDAO.selectByExample(returnMaterialBillMaterialQuery);
-        for (ReturnMaterialBillMaterial item : returnMaterialBillMaterials) {
-            Material material = materialDAO.selectByPrimaryKey(item.getMaterialId());
-            if (material != null) {
-                item.setMaterialName(material.getMaterialName());
-            }
-        }
-        return returnMaterialBillMaterials;
-    }
 
     /**
-     * 查询领料单信息（分页）,只取研发领料对应的数据
+     * 查询退料单信息（分页）,只取生产退料对应的数据
      *
      * 将主表信息取出：（同时包含总记录数）
-     * 搜索字段：编号、领料人
+     * 搜索字段：编号、退料人
      * 筛选字段：状态
      *
      * @param current 当前位置
@@ -98,6 +100,8 @@ public class ProductionReturnService extends BaseService {
             sort = "desc";
         }
         returnMaterialBillQuery.setOrderByClause(ParamUtils.camel2Underline(sortColumn) + " " + sort);
+
+        // 搜索编号
         ReturnMaterialBillQuery.Criteria criteria = returnMaterialBillQuery.or().andReturnReasonEqualTo(1);
         if (!ParamUtils.isNull(searchKey)) {
             criteria.andBillNoLike("%" + searchKey + "%");
@@ -111,7 +115,7 @@ public class ProductionReturnService extends BaseService {
         if (!ParamUtils.isNull(endTime)) {
             criteria.andBillTimeLessThanOrEqualTo(endTime);
         }
-        // 搜索领料人
+        // 搜索退料人
         criteria = returnMaterialBillQuery.or().andReturnReasonEqualTo(1);
         if (!ParamUtils.isNull(searchKey)) {
             List<Integer> adminIdList = searchAdminByTrueName(searchKey);
@@ -134,8 +138,15 @@ public class ProductionReturnService extends BaseService {
         List<ReturnMaterialBill> result = returnMaterialBillDAO.selectByExample(returnMaterialBillQuery);
 
         for(ReturnMaterialBill bill: result) {
-            String name = adminDAO.selectByPrimaryKey(bill.getFromPrincipal()).getTrueName();
-            bill.setFromPrincipalName(name);
+            String fromPrincipalName = adminDAO.selectByPrimaryKey(bill.getFromPrincipal()).getTrueName();
+            bill.setFromPrincipalName(fromPrincipalName);
+            if (bill.getWarehousePrincipal() == null) {
+                continue;
+            }
+            Admin warehousePrincipal = adminDAO.selectByPrimaryKey(bill.getWarehousePrincipal());
+            if (warehousePrincipal != null) {
+                bill.setWarehousePrincipalName(warehousePrincipal.getTrueName());
+            }
         }
         return new PageMode<ReturnMaterialBill>(result, returnMaterialBillDAO.countByExample(returnMaterialBillQuery));
     }
@@ -143,73 +154,72 @@ public class ProductionReturnService extends BaseService {
     /**
      * 审核退料单
      *
-     * @param idList 领料单编号
+     * @param idList 退料单编号
      */
     public void auditBill(List<Integer> idList) {
         checkBillState(idList,1);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        ReturnMaterialBill returnMaterialBill=new ReturnMaterialBill();
+
+        ReturnMaterialBill returnMaterialBill = new ReturnMaterialBill();
         returnMaterialBill.setBillState(2);
         returnMaterialBill.setAuditAt(new Date());
         returnMaterialBill.setAuditBy(loginAdmin.getAdminId());
+
         ReturnMaterialBillQuery returnMaterialBillQuery=new ReturnMaterialBillQuery();
         returnMaterialBillQuery.or().andBillIdIn(idList);
-        returnMaterialBillDAO.updateByExampleSelective(returnMaterialBill,returnMaterialBillQuery);
+        returnMaterialBillDAO.updateByExampleSelective(returnMaterialBill, returnMaterialBillQuery);
         // 添加日志
         addLog(LogType.RETURN_MATERIAL_BILL, Operate.AUDIT, idList);
     }
 
     /**
-     * 反审核领料单
-     * <p>
-     * 检查领料单是否已经有对应出库单
+     * 反审核退料单
+     *
+     * 检查退料单是否已经有对应入库单
      *
      * @param idList 领料单编号
      */
     public void unauditBill(List<Integer> idList) {
         checkBillState(idList, 2);
-        MaterialInstockBillQuery materialInstockBillQuery=new MaterialInstockBillQuery();
+        MaterialInstockBillQuery materialInstockBillQuery = new MaterialInstockBillQuery();
         materialInstockBillQuery.or().andRelatedBillIn(idList);
-        if(materialInstockBillDAO.countByExample(materialInstockBillQuery)>0) {
+        if (materialInstockBillDAO.countByExample(materialInstockBillQuery) > 0) {
             throw new BadRequestException(EXISE_INSTOCK_CANNOT_UNAUDIT);
         }
 
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
-        ReturnMaterialBill returnMaterialBill=new ReturnMaterialBill();
+
+        ReturnMaterialBill returnMaterialBill = new ReturnMaterialBill();
         returnMaterialBill.setBillState(1);
         returnMaterialBill.setAuditBy(loginAdmin.getAdminId());
         returnMaterialBill.setAuditAt(new Date());
-        ReturnMaterialBillQuery returnMaterialBillQuery=new ReturnMaterialBillQuery();
+
+        ReturnMaterialBillQuery returnMaterialBillQuery = new ReturnMaterialBillQuery();
         returnMaterialBillQuery.or().andBillIdIn(idList);
-        returnMaterialBillDAO.updateByExampleSelective(returnMaterialBill,returnMaterialBillQuery);
+        returnMaterialBillDAO.updateByExampleSelective(returnMaterialBill, returnMaterialBillQuery);
         // 添加日志
         addLog(LogType.RETURN_MATERIAL_BILL, Operate.UNAUDIT, idList);
     }
 
     /**
-     * 获取所有可选的物料
-     */
-    public List<Material> getMaterialList() {
-        return materialDAO.selectByExample(new MaterialQuery());
-    }
-
-    /**
-     * 添加领料单
-     * <p>
+     * 添加退料单
+     *
      * 将主表信息保存：return_material_bill
      * 将关联的从表信息保存：return_material_bill_material
-     * 添加日志信息：LogType.return_MATERIAL_BILL, Operate.ADD
+     * 添加日志信息：LogType.RETURN_MATERIAL_BILL, Operate.ADD
      *
      * @param remark       备注
      * @param materialList 物料信息
      */
-    public ReturnMaterialBill addBill(String remark, List<ReturnMaterialBillMaterial> materialList) {
+    public ReturnMaterialBill addBill(Integer relatedBill, String remark, List<ReturnMaterialBillMaterial> materialList) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
+
         ReturnMaterialBill returnMaterialBill=new ReturnMaterialBill();
-        returnMaterialBill.setBillNo("DDM" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
+        returnMaterialBill.setBillNo("PRM" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
         returnMaterialBill.setFromPrincipal(loginAdmin.getAdminId());
         returnMaterialBill.setBillTime(new Date());
         returnMaterialBill.setReturnReason(1);
+        returnMaterialBill.setRelatedBill(relatedBill);
         returnMaterialBill.setBillState(1);
         returnMaterialBill.setRemark(remark);
         returnMaterialBill.setCreateAt(new Date());
@@ -228,22 +238,23 @@ public class ProductionReturnService extends BaseService {
     }
 
     /**
-     * 更新领料单
-     * <p>
+     * 更新退料单
+     *
      * 进行必要的检查：是否为待审核状态
      * 更新主表信息：return_material_bill
      * 更新关联的从表信息：return_material_bill_material
-     * 添加日志信息：LogType.return_MATERIAL_BILL, Operate.UPDATE
+     * 添加日志信息：LogType.RETURN_MATERIAL_BILL, Operate.UPDATE
      *
      * @param remark       备注
      * @param materialList 物料信息
      */
-    public ReturnMaterialBill updateBill(Integer billId, String remark, List<ReturnMaterialBillMaterial> materialList) {
+    public ReturnMaterialBill updateBill(Integer billId, Integer relatedBill, String remark, List<ReturnMaterialBillMaterial> materialList) {
         checkBillState(Collections.singletonList(billId), 1);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
         ReturnMaterialBill returnMaterialBill = new ReturnMaterialBill();
         returnMaterialBill.setBillId(billId);
+//        returnMaterialBill.setRelatedBill(relatedBill);
         returnMaterialBill.setRemark(remark);
         returnMaterialBill.setUpdateAt(new Date());
         returnMaterialBill.setUpdateBy(loginAdmin.getAdminId());
@@ -265,11 +276,11 @@ public class ProductionReturnService extends BaseService {
 
     /**
      * 删除领料单
-     * <p>
+     *
      * 进行必要的检查：是否为待审核状态
      * 删除主表信息：return_material_bill
      * 删除关联的从表信息：return_material_bill_material
-     * 添加日志信息：LogType.return_MATERIAL_BILL, Operate.UPDATE
+     * 添加日志信息：LogType.RETURN_MATERIAL_BILL, Operate.UPDATE
      *
      * @param idList
      */
@@ -313,11 +324,7 @@ public class ProductionReturnService extends BaseService {
         }
         return adminIdList;
     }
-    public List<Material> getAllmaterials(){
-        MaterialQuery materialQuery=new MaterialQuery();
-        materialQuery.or();
-        return this.materialDAO.selectByExample(materialQuery);
-    }
+
     private static final String BILL_STATE_NOT_UNAUDIT = "单据不是待审核状态";
     private static final String BILL_STATE_NOT_AUDIT = "单据不是已审核状态";
     private static final String EXISE_INSTOCK_CANNOT_UNAUDIT = "单据已存在对应入库单，不能反审核";

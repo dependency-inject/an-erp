@@ -20,13 +20,14 @@ public class ProductionDrawController {
 
     @Resource
     ProductionDrawService productionDrawService;
-    @RequestMapping(value = "/billDetail",method = RequestMethod.POST)
+
+    @RequestMapping(value = "/billDetail", method = RequestMethod.POST)
     @ResponseBody
     public DrawMaterialBill getBill(int billId){
         return productionDrawService.getBillById(billId);
     }
 
-    @RequestMapping(value = "/searchBill",method =RequestMethod.POST)
+    @RequestMapping(value = "/searchBill", method = RequestMethod.POST)
     @ResponseBody
     public PageMode<DrawMaterialBill> searchBill(@RequestParam Integer current, @RequestParam Integer limit,
                                                  String sortColumn, String sort, String searchKey, Integer state,
@@ -35,7 +36,7 @@ public class ProductionDrawController {
                 ParamUtils.toDate(beginTime), ParamUtils.toDate(endTime));
     }
 
-    @RequestMapping(value="/auditBill",method = RequestMethod.POST)
+    @RequestMapping(value="/auditBill", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_DRAW_AUDIT)
     public String audit(String idList){
@@ -43,7 +44,7 @@ public class ProductionDrawController {
         return "success";
     }
 
-    @RequestMapping(value="/unauditBill",method = RequestMethod.POST)
+    @RequestMapping(value="/unauditBill", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_DRAW_AUDIT)
     public String unaudit(String idList){
@@ -51,41 +52,31 @@ public class ProductionDrawController {
         return "success";
     }
 
-    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getMaterialList() {
-        return productionDrawService.getMaterialList();
-    }
-
-    @RequestMapping(value = "/addBill",method =RequestMethod.POST)
+    @RequestMapping(value = "/addBill", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_DRAW_ADD)
-    public DrawMaterialBill addBill(String remark, String materialList){
-        return productionDrawService.addBill(remark, ParamUtils.jsonToList(materialList, DrawMaterialBillMaterial.class));
+    public DrawMaterialBill addBill(Integer relatedBill, String remark, String materialList){
+        return productionDrawService.addBill(relatedBill, remark, ParamUtils.jsonToList(materialList, DrawMaterialBillMaterial.class));
     }
 
-    @RequestMapping(value = "/updateBill",method =RequestMethod.POST)
+    @RequestMapping(value = "/updateBill", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_DRAW_UPDATE)
-    public DrawMaterialBill updateBill(Integer billId, String remark, String materialList){
-        return productionDrawService.updateBill(billId, remark, ParamUtils.jsonToList(materialList, DrawMaterialBillMaterial.class));
+    public DrawMaterialBill updateBill(Integer billId, Integer relatedBill, String remark, String materialList){
+        return productionDrawService.updateBill(billId, relatedBill, remark, ParamUtils.jsonToList(materialList, DrawMaterialBillMaterial.class));
     }
 
-    @RequestMapping(value = "/deleteBill",method =RequestMethod.POST)
+    @RequestMapping(value = "/deleteBill", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_DRAW_REMOVE)
     public String deleteBill(String idList){
         productionDrawService.removeBill(ParamUtils.toIntList(idList));
         return "success";
     }
-    @RequestMapping(value = "/allorderBill",method =RequestMethod.POST)
+
+    @RequestMapping(value = "/allOrderBillMaterial", method = RequestMethod.POST)
     @ResponseBody
-    public  List<OrderBillProduct>getAllOrderBillProduct(){
-        return this.productionDrawService.getAllOrderBillProduct();
-    }
-    @RequestMapping(value = "/allorderBillMaterial",method =RequestMethod.POST)
-    @ResponseBody
-    public  List<DrawMaterialBillMaterial> getAllMaterial(int relatedbillid){
-        return this.productionDrawService.getAllMaterial(relatedbillid);
+    public List<DrawMaterialBillMaterial> getAllMaterial(int relatedBillId){
+        return this.productionDrawService.getAllMaterial(relatedBillId);
     }
 }

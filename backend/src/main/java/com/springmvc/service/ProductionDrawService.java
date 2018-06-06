@@ -1,7 +1,5 @@
 package com.springmvc.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.springmvc.dao.*;
 import com.springmvc.dto.*;
 import com.springmvc.exception.BadRequestException;
@@ -16,6 +14,7 @@ import java.util.*;
 @Service("ProductionDrawService")
 @Transactional
 public class ProductionDrawService extends BaseService {
+
     @Resource
     private AdminDAO adminDAO;
 
@@ -27,16 +26,19 @@ public class ProductionDrawService extends BaseService {
 
     @Resource
     private MaterialDAO materialDAO;
+
     @Resource
-    private  OrderBillProductDAO orderBillProductDAO;
+    private OrderBillProductDAO orderBillProductDAO;
 
     @Resource
     private MaterialOutstockBillDAO materialOutstockBillDAO;
+
     @Resource
     private ProductMaterialDAO productMaterialDAO;
 
     /**
-     * 查询领料单信息（单个）,只取研发领料对应的数据
+     * 查询领料单信息（单个）,只取生产领料对应的数据
+     *
      * @param billId 订单编号
      * @return
      */
@@ -49,11 +51,11 @@ public class ProductionDrawService extends BaseService {
         drawMaterialBill.setToPrincipalName(toPrincipalName);
 
         Integer i = drawMaterialBill.getBillState();
-        if(i > 1) {
+        if (i > 1) {
             String auditName = adminDAO.selectByPrimaryKey(drawMaterialBill.getAuditBy()).getTrueName();
             drawMaterialBill.setAuditName(auditName);
         }
-        if(i > 2) {
+        if (i > 2) {
             String warehousePrincipalName = adminDAO.selectByPrimaryKey(drawMaterialBill.getWarehousePrincipal()).getTrueName();
             drawMaterialBill.setWarehousePrincipalName(warehousePrincipalName);
             String finishName = adminDAO.selectByPrimaryKey(drawMaterialBill.getFinishBy()).getTrueName();
@@ -75,10 +77,8 @@ public class ProductionDrawService extends BaseService {
         return drawMaterialBill;
     }
 
-
-
     /**
-     * 查询领料单信息（分页）,只取研发领料对应的数据
+     * 查询领料单信息（分页）,只取生产领料对应的数据
      *
      * 将主表信息取出：（同时包含总记录数）
      * 搜索字段：编号、领料人
@@ -141,8 +141,15 @@ public class ProductionDrawService extends BaseService {
         List<DrawMaterialBill> result = drawMaterialBillDAO.selectByExample(drawMaterialBillQuery);
 
         for(DrawMaterialBill bill: result) {
-            String name = adminDAO.selectByPrimaryKey(bill.getToPrincipal()).getTrueName();
-            bill.setToPrincipalName(name);
+            String toPrincipalName = adminDAO.selectByPrimaryKey(bill.getToPrincipal()).getTrueName();
+            bill.setToPrincipalName(toPrincipalName);
+            if (bill.getWarehousePrincipal() == null) {
+                continue;
+            }
+            Admin warehousePrincipal = adminDAO.selectByPrimaryKey(bill.getWarehousePrincipal());
+            if (warehousePrincipal != null) {
+                bill.setWarehousePrincipalName(warehousePrincipal.getTrueName());
+            }
         }
         return new PageMode<DrawMaterialBill>(result, drawMaterialBillDAO.countByExample(drawMaterialBillQuery));
     }
@@ -198,13 +205,6 @@ public class ProductionDrawService extends BaseService {
     }
 
     /**
-     * 获取所有可选的物料
-     */
-    public List<Material> getMaterialList() {
-        return materialDAO.selectByExample(new MaterialQuery());
-    }
-
-    /**
      * 添加领料单
      *
      * 将主表信息保存：draw_material_bill
@@ -214,14 +214,15 @@ public class ProductionDrawService extends BaseService {
      * @param remark 备注
      * @param materialList 物料信息
      */
-    public DrawMaterialBill addBill(String remark, List<DrawMaterialBillMaterial> materialList) {
+    public DrawMaterialBill addBill(Integer relatedBill, String remark, List<DrawMaterialBillMaterial> materialList) {
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
         DrawMaterialBill drawMaterialBill = new DrawMaterialBill();
-        drawMaterialBill.setBillNo("DDM" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
+        drawMaterialBill.setBillNo("PDM" + ParamUtils.dateConvert(new Date(), "yyMMddHHmmssSSS"));
         drawMaterialBill.setToPrincipal(loginAdmin.getAdminId());
         drawMaterialBill.setBillTime(new Date());
         drawMaterialBill.setDrawReason(1);
+        drawMaterialBill.setRelatedBill(relatedBill);
         drawMaterialBill.setBillState(1);
         drawMaterialBill.setRemark(remark);
         drawMaterialBill.setCreateAt(new Date());
@@ -250,12 +251,13 @@ public class ProductionDrawService extends BaseService {
      * @param remark 备注
      * @param materialList 物料信息
      */
-    public DrawMaterialBill updateBill(Integer billId, String remark, List<DrawMaterialBillMaterial> materialList) {
+    public DrawMaterialBill updateBill(Integer billId, Integer relatedBill, String remark, List<DrawMaterialBillMaterial> materialList) {
         checkBillState(Collections.singletonList(billId), 1);
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
 
         DrawMaterialBill drawMaterialBill = new DrawMaterialBill();
         drawMaterialBill.setBillId(billId);
+//        drawMaterialBill.setRelatedBill(relatedBill);
         drawMaterialBill.setRemark(remark);
         drawMaterialBill.setUpdateAt(new Date());
         drawMaterialBill.setUpdateBy(loginAdmin.getAdminId());
@@ -325,31 +327,51 @@ public class ProductionDrawService extends BaseService {
         }
         return adminIdList;
     }
-    public List<DrawMaterialBillMaterial> getAllMaterial(int relatedbillid){
-        System.out.println("***");
-        OrderBillProduct target= orderBillProductDAO.selectByPrimaryKey(relatedbillid);
-        System.out.println("****");
-        int  productId=target.getProductId();
-        int quantity=target.getQuantity();
-        ProductMaterialQuery productMaterialQuery= new ProductMaterialQuery();
-        productMaterialQuery.or().andProductIdEqualTo(productId);
-        List<ProductMaterial> productMaterials=this.productMaterialDAO.selectByExample(productMaterialQuery);
-        List<DrawMaterialBillMaterial> result=new ArrayList<DrawMaterialBillMaterial>();
-        for(int i=0;i<productMaterials.size();i++){
-            DrawMaterialBillMaterial drawMaterialBillMaterial=new DrawMaterialBillMaterial();
-            drawMaterialBillMaterial.setQuantity(quantity*productMaterials.get(i).getQuantity());
-            int materialid=productMaterials.get(i).getMaterialId();
-            drawMaterialBillMaterial.setMaterialId(materialid);
-            drawMaterialBillMaterial.setMaterialName(materialDAO.selectByPrimaryKey(materialid).getMaterialName());
-            result.add(drawMaterialBillMaterial);
+
+    /**
+     * 订单物料分解
+     *
+     * 进行必要的检查：是否为生产中状态
+     *
+     * @param relatedBillId
+     * @return
+     */
+    public List<DrawMaterialBillMaterial> getAllMaterial(int relatedBillId) {
+        OrderBillProductQuery orderBillProductQuery = new OrderBillProductQuery();
+        OrderBillProductQuery.Criteria criteria = orderBillProductQuery.or();
+        criteria.andBillIdEqualTo(relatedBillId);
+        List<OrderBillProduct> productList = orderBillProductDAO.selectByExample(orderBillProductQuery);
+        Map<Integer, Integer> materialMap = new HashMap<Integer, Integer>();
+        for (OrderBillProduct orderBillProduct : productList) {
+            ProductMaterialQuery productMaterialQuery = new ProductMaterialQuery();
+            productMaterialQuery.or().andProductIdEqualTo(orderBillProduct.getProductId());
+            List<ProductMaterial> productMaterialList = productMaterialDAO.selectByExample(productMaterialQuery);
+
+            for (ProductMaterial productMaterial: productMaterialList) {
+                if (!materialMap.containsKey(productMaterial.getMaterialId())) {
+                    materialMap.put(productMaterial.getMaterialId(), 0);
+                }
+                materialMap.put(productMaterial.getMaterialId(), materialMap.get(productMaterial.getMaterialId()) + productMaterial.getQuantity());
+            }
+        }
+
+        List<DrawMaterialBillMaterial> result = new ArrayList<DrawMaterialBillMaterial>();
+        for (Integer materialId : materialMap.keySet()) {
+            if (materialMap.get(materialId) <= 0) {
+                continue;
+            }
+            Material material = materialDAO.selectByPrimaryKey(materialId);
+            if (material != null) {
+                DrawMaterialBillMaterial drawMaterialBillMaterial = new DrawMaterialBillMaterial();
+                drawMaterialBillMaterial.setMaterialId(material.getMaterialId());
+                drawMaterialBillMaterial.setMaterialNo(material.getMaterialNo());
+                drawMaterialBillMaterial.setMaterialName(material.getMaterialName());
+                drawMaterialBillMaterial.setQuantity(materialMap.get(materialId));
+            }
         }
         return result;
     }
-    public List<OrderBillProduct> getAllOrderBillProduct(){
-        OrderBillProductQuery orderBillProductQuery=new OrderBillProductQuery();
-        orderBillProductQuery.or();
-        return this.orderBillProductDAO.selectByExample(orderBillProductQuery);
-    }
+
     private static final String BILL_STATE_NOT_UNAUDIT = "单据不是待审核状态";
     private static final String BILL_STATE_NOT_AUDIT = "单据不是已审核状态";
     private static final String EXISE_OUTSTOCK_CANNOT_UNAUDIT = "单据已存在对应出库单，不能反审核";

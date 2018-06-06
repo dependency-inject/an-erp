@@ -41,178 +41,181 @@
 </template>
 
 <script>
-    import Permission from '../../mixins/permission';
+import Permission from '../../mixins/permission';
 
-    import util from '../../libs/util.js';
+import util from '../../libs/util.js';
 
-    import productionDrawService from '../../service/production-draw';
+import productionDrawService from '../../service/production-draw';
 
-    export default {
-        mixins: [ Permission ],
-        data() {
-            return {
-                vm: {
-                    queryParameters: {
-                        searchKey: '',
-                        total: 0,
-                        limit: 10,
-                        current: 1,
-                        sortColumn: '',
-                        sort: '',
-                        state: -1,
-                        beginTime: '',
-                        endTime: ''
-                    },
-                    items: [],
-                    identity: 'billId',
+export default {
+    mixins: [ Permission ],
+    data() {
+        return {
+            vm: {
+                queryParameters: {
+                    searchKey: '',
+                    total: 0,
+                    limit: 10,
+                    current: 1,
+                    sortColumn: '',
+                    sort: '',
+                    state: -1,
+                    beginTime: '',
+                    endTime: ''
                 },
-                selectItems: [],
-            }
-        },
-        computed: {
-            tableHeight() {
-                return document.documentElement.clientHeight - 220;
+                items: [],
+                identity: 'billId',
             },
-            columnList() {
-                return [
-                    { type: 'selection', width: 60, align: 'center' },
-                    { title: this.$t('field.DRAW_MATERIAL.BILL_NO'), key: 'billNo', sortable: 'custom' },
-                    { title: this.$t('field.DRAW_MATERIAL.TO_PRINCIPAL'), key: 'toPrincipalName', sortable: 'custom' },
-                    { title: this.$t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
-                    { title: this.$t('field.DRAW_MATERIAL.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
-                    { title: this.$t('field.DRAW_MATERIAL.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },
-                    { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
-                            return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
-                                this.$router.push('/production-draw/'+row[this.vm.identity])
-                            }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
-                                this.remove([row])
-                            }, 'removePermission')]);
-                        }
-                    }
-                ]
-            },
-            // 单据状态筛选框的当前值
-            stateCn() {
-                for (let i = 0; i < this.stateList.length; ++i) {
-                    if (this.stateList[i].value === this.vm.queryParameters.state)
-                        return this.stateList[i].descript;
-                }
-            },
-            // 单据状态筛选框的列表值
-            stateList() {
-                return [
-                    { value: -1, descript: this.$t('field.BILL_STATE.ALL_STATE') },
-                    { value: 1, descript: this.$t('field.BILL_STATE.STATE1') },
-                    { value: 2,  descript: this.$t('field.BILL_STATE.STATE2') },
-                    { value: 3, descript: this.$t('field.BILL_STATE.STATE3') },
-                ]
-            }
-        },
-        methods: {
-            initData() {
-                this.search()
-            },
-            async search() {
-                let idList = _.map(this.selectItems, this.vm.identity).join(",");
-                let beginTime = -1;
-                if (this.vm.queryParameters.beginTime != '')
-                    beginTime = this.vm.queryParameters.beginTime.getTime();
-                let endTime = -1;
-                if (this.vm.queryParameters.endTime != '')
-                    endTime = this.vm.queryParameters.endTime.getTime();
-                let result = await productionDrawService.searchBill(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }));
-                if (result.status === 200) {
-                    var items = result.data.list;
-                    this.vm.queryParameters.total = result.data.total;
-                    items.forEach((item) => {
-                        item.billStateCn = this.$t('field.BILL_STATE.STATE' + Number(item.billState));
-                        item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
-                        item['detailPermission'] = true;
-                        if (this.productionDrawRemovePermission)
-                            item['removePermission'] = true;
-                    });
-                    this.vm.items = items;
-                    this.$nextTick(() => {
-                        for (var i = 0; i < items.length; ++i) {
-                            if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
-                                this.$refs.table.toggleSelect(i);
-                            }
-                        }
-                    });
-                }
-            },
-            handleSort(data) {
-                if (data.order === 'normal') {
-                    this.vm.queryParameters.sortColumn = '';
-                    this.vm.queryParameters.sort = '';
-                } else if (data.key === 'toPrincipalName') {
-                    this.vm.queryParameters.sortColumn = 'toPrincipal';
-                    this.vm.queryParameters.sort = data.order;
-                } else if (data.key === 'billTimeLocal') {
-                    this.vm.queryParameters.sortColumn = 'billTime';
-                    this.vm.queryParameters.sort = data.order;
-                } else if (data.key === 'billStateCn') {
-                    this.vm.queryParameters.sortColumn = 'billState';
-                    this.vm.queryParameters.sort = data.order;
-                } else {
-                    this.vm.queryParameters.sortColumn = data.key;
-                    this.vm.queryParameters.sort = data.order;
-                }
-                this.selectItems = [];
-                this.search();
-            },
-            audit(selectItems) {
-                let idList = _.map(selectItems, this.vm.identity).join(",")
-                this.$Modal.confirm({
-                    content: this.$t('common.OPERATE_CONFIRM'),
-                    onOk: async () => {
-                        let result = await productionDrawService.auditBill(idList)
-                        if (result.status === 200) {
-                            this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
-                            this.search()
-                        } else {
-                            this.$Message.error(result.data)
-                        }
-                    }
-                });
-            },
-            unaudit(selectItems) {
-                let idList = _.map(selectItems, this.vm.identity).join(",")
-                this.$Modal.confirm({
-                    content: this.$t('common.OPERATE_CONFIRM'),
-                    onOk: async () => {
-                        let result = await productionDrawService.unauditBill(idList)
-                        if (result.status === 200) {
-                            this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
-                            this.search()
-                        } else {
-                            this.$Message.error(result.data)
-                        }
-                    }
-                });
-            },
-            remove(selectItems) {
-                let idList = _.map(selectItems, this.vm.identity).join(",")
-                this.$Modal.confirm({
-                    content: this.$t('common.REMOVE_CONFIRM'),
-                    onOk: async () => {
-                        let result = await productionDrawService.deleteBill(idList)
-                        if (result.status === 200) {
-                            this.$Message.success(this.$t('common.REMOVE_SUCCESS'))
-                            this.selectItems = []
-                            this.search()
-                        } else {
-                            this.$Message.error(result.data)
-                        }
-                    }
-                });
-            },
-            clearChecked() {
-                this.$refs.table.selectAll(false)
-            }
-        },
-        mounted() {
-            this.initData()
+            selectItems: [],
         }
+    },
+    computed: {
+        tableHeight() {
+            return document.documentElement.clientHeight - 220;
+        },
+        columnList() {
+            return [
+                { type: 'selection', width: 60, align: 'center' },
+                { title: this.$t('field.DRAW_MATERIAL.BILL_NO'), key: 'billNo', sortable: 'custom' },
+                { title: this.$t('field.DRAW_MATERIAL.TO_PRINCIPAL'), key: 'toPrincipalName', sortable: 'custom' },
+                { title: this.$t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL'), key: 'warehousePrincipalName', sortable: 'custom' },
+                { title: this.$t('field.DRAW_MATERIAL.BILL_TIME'), key: 'billTimeLocal', sortable: 'custom' },
+                { title: this.$t('field.DRAW_MATERIAL.BILL_STATE'), key: 'billStateCn', sortable: 'custom' },
+                { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
+                        return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.DETAIL'), (row) => {
+                            this.$router.push('/production-draw/'+row[this.vm.identity])
+                        }, 'detailPermission'), util.tableButton(h, params, 'error', this.$t('common.REMOVE'), (row) => {
+                            this.remove([row])
+                        }, 'removePermission')]);
+                    }
+                }
+            ]
+        },
+        // 单据状态筛选框的当前值
+        stateCn() {
+            for (let i = 0; i < this.stateList.length; ++i) {
+                if (this.stateList[i].value === this.vm.queryParameters.state)
+                    return this.stateList[i].descript;
+            }
+        },
+        // 单据状态筛选框的列表值
+        stateList() {
+            return [
+                { value: -1, descript: this.$t('field.BILL_STATE.ALL_STATE') },
+                { value: 1, descript: this.$t('field.BILL_STATE.STATE1') },
+                { value: 2,  descript: this.$t('field.BILL_STATE.STATE2') },
+                { value: 3, descript: this.$t('field.BILL_STATE.STATE3') },
+            ]
+        }
+    },
+    methods: {
+        initData() {
+            this.search()
+        },
+        async search() {
+            let idList = _.map(this.selectItems, this.vm.identity).join(",");
+            let beginTime = -1;
+            if (this.vm.queryParameters.beginTime != '')
+                beginTime = this.vm.queryParameters.beginTime.getTime();
+            let endTime = -1;
+            if (this.vm.queryParameters.endTime != '')
+                endTime = this.vm.queryParameters.endTime.getTime();
+            let result = await productionDrawService.searchBill(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }));
+            if (result.status === 200) {
+                var items = result.data.list;
+                this.vm.queryParameters.total = result.data.total;
+                items.forEach((item) => {
+                    item.billStateCn = this.$t('field.BILL_STATE.STATE' + Number(item.billState));
+                    item.billTimeLocal = util.formatTimestamp(item.billTime, "yyyy-MM-dd hh:mm:ss");
+                    item['detailPermission'] = true;
+                    if (item.billState === 1 && this.productionDrawRemovePermission)
+                        item['removePermission'] = true;
+                });
+                this.vm.items = items;
+                this.$nextTick(() => {
+                    for (var i = 0; i < items.length; ++i) {
+                        if ((','+idList+',').indexOf(','+items[i][this.vm.identity]+',') > -1) {
+                            this.$refs.table.toggleSelect(i);
+                        }
+                    }
+                });
+            }
+        },
+        handleSort(data) {
+            if (data.order === 'normal') {
+                this.vm.queryParameters.sortColumn = '';
+                this.vm.queryParameters.sort = '';
+            } else if (data.key === 'toPrincipalName') {
+                this.vm.queryParameters.sortColumn = 'toPrincipal';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'warehousePrincipalName') {
+                this.vm.queryParameters.sortColumn = 'warehousePrincipal';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'billTimeLocal') {
+                this.vm.queryParameters.sortColumn = 'billTime';
+                this.vm.queryParameters.sort = data.order;
+            } else if (data.key === 'billStateCn') {
+                this.vm.queryParameters.sortColumn = 'billState';
+                this.vm.queryParameters.sort = data.order;
+            } else {
+                this.vm.queryParameters.sortColumn = data.key;
+                this.vm.queryParameters.sort = data.order;
+            }
+            this.selectItems = [];
+            this.search();
+        },
+        audit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productionDrawService.auditBill(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        unaudit(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.OPERATE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productionDrawService.unauditBill(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.OPERATE_SUCCESS'))
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        remove(selectItems) {
+            let idList = _.map(selectItems, this.vm.identity).join(",")
+            this.$Modal.confirm({
+                content: this.$t('common.REMOVE_CONFIRM'),
+                onOk: async () => {
+                    let result = await productionDrawService.deleteBill(idList)
+                    if (result.status === 200) {
+                        this.$Message.success(this.$t('common.REMOVE_SUCCESS'))
+                        this.selectItems = []
+                        this.search()
+                    } else {
+                        this.$Message.error(result.data)
+                    }
+                }
+            });
+        },
+        clearChecked() {
+            this.$refs.table.selectAll(false)
+        }
+    },
+    mounted() {
+        this.initData()
     }
+}
 </script>

@@ -27,11 +27,7 @@ public class ProductionReturnController {
     public ReturnMaterialBill getBill(int billId){
         return productionReturnService.getBillById(billId);
     }
-    @RequestMapping(value="/getMaterial",method = RequestMethod.POST)
-    @ResponseBody
-    public List<ReturnMaterialBillMaterial> getmaterial(int billid){
-        return this.productionReturnService.getMaterials(billid);
-    }
+
     @RequestMapping(value = "/searchBill",method =RequestMethod.POST)
     @ResponseBody
     public PageMode<ReturnMaterialBill> searchBill(@RequestParam Integer current, @RequestParam Integer limit,
@@ -57,24 +53,18 @@ public class ProductionReturnController {
         return "success";
     }
 
-    @RequestMapping(value="/getMaterialList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getMaterialList() {
-        return productionReturnService.getMaterialList();
-    }
-
     @RequestMapping(value = "/addBill",method =RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_RETURN_ADD)
-    public ReturnMaterialBill addBill(String remark, String materialList){
-        return productionReturnService.addBill(remark, ParamUtils.jsonToList(materialList, ReturnMaterialBillMaterial.class));
+    public ReturnMaterialBill addBill(Integer relatedBill, String remark, String materialList){
+        return productionReturnService.addBill(relatedBill, remark, ParamUtils.jsonToList(materialList, ReturnMaterialBillMaterial.class));
     }
 
     @RequestMapping(value = "/updateBill",method =RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCTION_RETURN_UPDATE)
-    public ReturnMaterialBill updateBill(Integer billId, String remark, String materialList){
-        return productionReturnService.updateBill(billId, remark, ParamUtils.jsonToList(materialList, ReturnMaterialBillMaterial.class));
+    public ReturnMaterialBill updateBill(Integer billId, Integer relatedBill, String remark, String materialList){
+        return productionReturnService.updateBill(billId, relatedBill, remark, ParamUtils.jsonToList(materialList, ReturnMaterialBillMaterial.class));
     }
 
     @RequestMapping(value = "/deleteBill",method =RequestMethod.POST)
@@ -83,10 +73,5 @@ public class ProductionReturnController {
     public String deleteBill(String idList){
         productionReturnService.removeBill(ParamUtils.toIntList(idList));
         return "success";
-    }
-    @RequestMapping(value = "/allMaterial",method =RequestMethod.POST)
-    @ResponseBody
-    public List<Material> getAllMaterial(){
-        return this.productionReturnService.getAllmaterials();
     }
 }
