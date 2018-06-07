@@ -28,7 +28,7 @@
         <div class="panel-bottom">
             <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="(productAddPermission&&$route.params.id==='add'&&item.productId===0)||(productUpdatePermission&&item.productId!==0)">{{ $t('common.SAVE') }}</i-button>
         </div>
-        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveMaterial" :loading="true">
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" @on-ok="saveMaterial" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.PRODUCT.MATERIAL')" prop="materialId">
                     <common-select type="material" v-model="modal.item.materialId" @on-change="materialSelectChange"></common-select>
@@ -234,7 +234,7 @@ export default {
                     this.modal.visible = false;
                 } else {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
-                    this.$refs.modal.abortLoading();
+                    this.$refs.modal.buttonLoading = false;
                 }
             });
         },

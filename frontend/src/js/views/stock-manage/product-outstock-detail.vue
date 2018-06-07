@@ -42,7 +42,7 @@
             <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="productOutstockAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
             <i-button class="operate-btn" type="success" shape="circle" @click="finish" v-if="productOutstockFinishPermission&&item.billId!==0&&item.billState===2">{{ $t('common.FINISH') }}</i-button>
         </div>
-        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveProduct" :loading="true">
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" @on-ok="saveProduct" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.PRODUCT_OUTSTOCK.PRODUCT')" prop="productId">
                     <common-select type="product" v-model="modal.item.productId" @on-change="productSelectChange" :disabled="item.productWhereabouts===1"></common-select>
@@ -323,7 +323,7 @@ export default {
                     this.modal.visible = false;
                 } else {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
-                    this.$refs.modal.abortLoading();
+                    this.$refs.modal.buttonLoading = false;
                 }
             });
         },

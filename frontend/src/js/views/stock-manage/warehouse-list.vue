@@ -110,8 +110,7 @@ export default {
                 var items = result.data.list;
                 this.vm.queryParameters.total = result.data.total;
                 items.forEach((item) => {
-                    if (this.warehouseUpdatePermission)
-                        item['updatePermission'] = true;
+                    item['updatePermission'] = true;
                     if (this.warehouseRemovePermission)
                         item['removePermission'] = true;
                 });
@@ -185,11 +184,11 @@ export default {
                         this.search();
                     } else {
                         this.$Message.error(result.data);
-                        this.$refs.modal.abortLoading();
+                        this.$refs.modal.buttonLoading = false;
                     }
                 } else {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
-                    this.$refs.modal.abortLoading();
+                    this.$refs.modal.buttonLoading = false;
                 }
             });
         },

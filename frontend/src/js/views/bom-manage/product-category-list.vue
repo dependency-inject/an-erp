@@ -197,11 +197,11 @@ export default {
                         await this.search();
                     } else {
                         this.$Message.error(result.data);
-                        this.$refs.modal.abortLoading();
+                        this.$refs.modal.buttonLoading = false;
                     }
                 } else {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
-                    this.$refs.modal.abortLoading();
+                    this.$refs.modal.buttonLoading = false;
                 }
             });
         },

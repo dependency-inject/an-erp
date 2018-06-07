@@ -39,7 +39,7 @@
             <i-button class="operate-btn" type="info" shape="circle" @click="audit" v-if="productionReturnAuditPermission&&item.billId!==0&&item.billState===1">{{ $t('common.AUDIT') }}</i-button>
             <i-button class="operate-btn" type="info" shape="circle" @click="unaudit" v-if="productionReturnAuditPermission&&item.billId!==0&&item.billState===2">{{ $t('common.UNAUDIT') }}</i-button>
         </div>
-        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="saveMaterial" :loading="true">
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" @on-ok="saveMaterial" :loading="true">
             <i-form ref="formValidate2" :model="modal.item" :rules="rules2" :label-width="90">
                 <form-item :label="$t('field.RETURN_MATERIAL.MATERIAL')" prop="materialId">
                     <common-select type="material" v-model="modal.item.materialId" @on-change="materialSelectChange"></common-select>
@@ -251,7 +251,7 @@ export default {
                     this.modal.visible = false;
                 } else {
                     this.$Message.error(this.$t('common.VALIDATE_ERROR'));
-                    this.$refs.modal.abortLoading();
+                    this.$refs.modal.buttonLoading = false;
                 }
             });
         },
