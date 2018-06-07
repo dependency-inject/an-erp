@@ -15,7 +15,7 @@
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
                             <form-item :label="$t('field.MATERIAL_OUTSTOCK.MATERIAL_WHEREABOUTS')" prop="materialWhereabouts">
-                                <i-select v-model="item.materialWhereabouts" :disabled="item.billId!==0" style="width:100%">
+                                <i-select v-model="item.materialWhereabouts" :disabled="item.billId!==0" transfer style="width:100%">
                                     <i-option v-for="item in materialWhereaboutsList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>

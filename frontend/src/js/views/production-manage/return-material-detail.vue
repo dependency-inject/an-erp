@@ -13,7 +13,7 @@
                             </form-item>
                             <form-item :label="$t('field.RETURN_MATERIAL.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">{{ item.warehousePrincipalName || $t('field.NOT_AVAILABLE') }}</form-item>
                             <form-item :label="$t('field.RETURN_MATERIAL.RETURN_REASON')" prop="returnReason">
-                                <i-select v-model="item.returnReason" disabled style="width:100%">
+                                <i-select v-model="item.returnReason" disabled transfer style="width:100%">
                                     <i-option v-for="item in returnReasonList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>

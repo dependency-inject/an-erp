@@ -15,7 +15,7 @@
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
                             <form-item :label="$t('field.MATERIAL_INSTOCK.MATERIAL_SOURCE')" prop="materialSource">
-                                <i-select v-model="item.materialSource" :disabled="item.billId!==0" style="width:100%">
+                                <i-select v-model="item.materialSource" :disabled="item.billId!==0" transfer style="width:100%">
                                     <i-option v-for="item in materialSourceList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>
@@ -97,6 +97,9 @@ export default {
                 ],
                 materialSource: [
                     { type: 'number', required: true, message: this.$t('field.PLEASE_SELECT')+this.$t('field.MATERIAL_INSTOCK.MATERIAL_SOURCE'), trigger: 'change' }
+                ],
+                relatedBill: [
+                    { type: 'number', required: this.item.materialSource===1, message: this.$t('field.PLEASE_SELECT')+this.$t('field.MATERIAL_INSTOCK.RELATED_BILL'), trigger: 'change' }
                 ]
             }
         },

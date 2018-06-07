@@ -15,7 +15,7 @@
                                 <common-select type="admin" v-model="item.warehousePrincipal" disabled></common-select>
                             </form-item>
                             <form-item :label="$t('field.PRODUCT_INSTOCK.PRODUCT_SOURCE')" prop="productSource">
-                                <i-select v-model="item.productSource" :disabled="item.billId!==0" style="width:100%">
+                                <i-select v-model="item.productSource" :disabled="item.billId!==0" transfer style="width:100%">
                                     <i-option v-for="item in productSourceList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>

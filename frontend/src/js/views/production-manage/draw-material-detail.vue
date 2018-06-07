@@ -13,7 +13,7 @@
                             </form-item>
                             <form-item :label="$t('field.DRAW_MATERIAL.WAREHOUSE_PRINCIPAL')" prop="warehousePrincipal">{{ item.warehousePrincipalName || $t('field.NOT_AVAILABLE') }}</form-item>
                             <form-item :label="$t('field.DRAW_MATERIAL.DRAW_REASON')" prop="drawReason">
-                                <i-select v-model="item.drawReason" disabled style="width:100%">
+                                <i-select v-model="item.drawReason" disabled transfer style="width:100%">
                                     <i-option v-for="item in drawReasonList" :value="item.value" :key="item.value">{{ item.descript }}</i-option>
                                 </i-select>
                             </form-item>
