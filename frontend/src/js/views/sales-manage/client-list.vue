@@ -44,6 +44,7 @@ import util from '../../libs/util.js';
 import clientService from '../../service/client';
 
 export default {
+    name: 'client-list',
     mixins: [ Permission ],
     data() {
         return {

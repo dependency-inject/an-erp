@@ -57,6 +57,7 @@ import commonSelect from '../../components/common-select';
 import developmentReturnService from '../../service/development-return';
 
 export default {
+    name: 'development-return-detail',
     mixins: [ Permission ],
     data() {
         return {

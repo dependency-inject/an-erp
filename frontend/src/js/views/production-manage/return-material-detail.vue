@@ -61,6 +61,7 @@ import commonSelect from '../../components/common-select';
 import productionReturnService from '../../service/production-return';
 
 export default {
+    name: 'production-return-detail',
     mixins: [ Permission ],
     data() {
         return {

@@ -65,6 +65,7 @@ import commonSelect from '../../components/common-select';
 import orderService from '../../service/order';
 
 export default {
+    name: 'order-detail',
     mixins: [ Permission ],
     data() {
         return {

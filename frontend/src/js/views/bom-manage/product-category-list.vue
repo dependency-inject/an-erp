@@ -46,7 +46,7 @@ import treeSelect from '../../components/tree-select';
 import productCategoryService from '../../service/product-category';
 
 export default {
-
+    name: 'product-category-list',
     data() {
         return {
             vm: {

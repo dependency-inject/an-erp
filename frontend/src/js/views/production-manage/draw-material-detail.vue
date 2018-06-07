@@ -61,6 +61,7 @@ import commonSelect from '../../components/common-select';
 import productionDrawService from '../../service/production-draw';
 
 export default {
+    name: 'production-draw-detail',
     mixins: [ Permission ],
     data() {
         return {

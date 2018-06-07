@@ -39,6 +39,7 @@ import util from '../../libs/util.js';
 import supplierService from '../../service/supplier';
 
 export default {
+    name: 'supplier-list',
     mixins: [ Permission ],
     data() {
         return {

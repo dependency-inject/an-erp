@@ -52,6 +52,7 @@ import treeSelect from '../../components/tree-select';
 import productService from '../../service/product';
 
 export default {
+    name: 'product-detail',
     mixins: [ Permission ],
     data() {
         return {

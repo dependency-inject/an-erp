@@ -47,6 +47,7 @@ import materialStockChart from '../../components/material-stock-chart';
 import stockService from '../../service/stock';
 
 export default {
+    name: 'material-stock',
     data() {
         return {
             vm: {

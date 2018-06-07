@@ -29,6 +29,7 @@ import treeSelect from '../../components/tree-select';
 import materialCategoryService from '../../service/material-category';
 
 export default {
+    name: 'material-category-list',
     data() {
         return {
         	vm: {

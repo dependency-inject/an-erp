@@ -48,6 +48,7 @@ import util from '../../libs/util.js';
 import productionDrawService from '../../service/production-draw';
 
 export default {
+    name: 'production-draw-list',
     mixins: [ Permission ],
     data() {
         return {

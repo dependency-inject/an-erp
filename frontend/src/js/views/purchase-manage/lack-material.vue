@@ -34,6 +34,7 @@ import util from '../../libs/util.js';
 import stockService from '../../service/stock';
 
 export default {
+    name: 'lack-material',
     mixins: [ Permission ],
     data() {
         return {

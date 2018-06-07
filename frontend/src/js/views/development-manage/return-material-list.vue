@@ -42,10 +42,15 @@
 
 <script>
 import Permission from '../../mixins/permission';
+
 import util from '../../libs/util.js';
+
 import commonSelect from '../../components/common-select';
+
 import developmentReturnService from '../../service/development-return';
+
 export default {
+    name: 'development-return-list',
     mixins: [ Permission ],
     data() {
         return {

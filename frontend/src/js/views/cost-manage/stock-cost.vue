@@ -37,6 +37,7 @@ import materialStockCostChart from '../../components/material-stock-cost-chart';
 import stockService from '../../service/stock';
 
 export default {
+    name: 'stock-cost',
     data() {
         return {
             vm: {

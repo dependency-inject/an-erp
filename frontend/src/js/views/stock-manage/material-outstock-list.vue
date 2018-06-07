@@ -48,6 +48,7 @@ import util from '../../libs/util.js';
 import materialOutstockService from '../../service/material-outstock';
 
 export default {
+    name: 'material-outstock-list',
     mixins: [ Permission ],
     data() {
         return {

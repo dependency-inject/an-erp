@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name: 'Error403',
+    name: 'error-403',
     data() {
         return {
             prefixCls: 'di-error403'

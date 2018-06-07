@@ -67,6 +67,7 @@ import commonSelect from '../../components/common-select';
 import productInstockService from '../../service/product-instock';
 
 export default {
+    name: 'product-instock-detail',
     mixins: [ Permission ],
     data() {
         return {

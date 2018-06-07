@@ -31,6 +31,7 @@ import util from '../../libs/util.js';
 import materialService from '../../service/material';
 
 export default {
+    name: 'material-cost-list',
     data() {
         return {
             vm: {

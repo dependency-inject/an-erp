@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    name: 'Error500',
+    name: 'error-500',
     data() {
         return {
             prefixCls: 'di-error500'

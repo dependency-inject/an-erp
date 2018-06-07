@@ -72,6 +72,7 @@ import orderService from '../../service/order';
 import productOutstockService from '../../service/product-outstock';
 
 export default {
+    name: 'product-outstock-detail',
     mixins: [ Permission ],
     data() {
         return {

@@ -31,7 +31,16 @@ const app = {
         ],
         tagsList: [...otherRouter.children],
         messageCount: 0,
-        dontCache: [] // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        dontCache: [ // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+            'home', 
+            'product-detail', 'material-detail', 
+            'order-detail', 
+            'production-draw-detail', 'production-return-detail', 
+            'product-instock-detail', 'product-outstock-detail', 'material-instock-detail', 'material-outstock-detail', 
+            'supplier-detail', 'supplier-material-list', 
+            'development-draw-detail', 'development-return-detail', 
+            'admin-detail'
+        ]
     },
     mutations: {
         setTagsList (state, list) {

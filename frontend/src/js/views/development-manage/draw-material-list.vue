@@ -48,6 +48,7 @@ import util from '../../libs/util.js';
 import developmentDrawService from '../../service/development-draw';
 
 export default {
+    name: 'development-draw-list',
     mixins: [ Permission ],
     data() {
         return {

@@ -50,6 +50,7 @@ import util from '../../libs/util.js';
 import adminService from '../../service/admin';
 
 export default {
+    name: 'admin-list',
     mixins: [ Permission ],
     data() {
         return {

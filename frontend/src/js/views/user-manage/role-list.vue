@@ -38,6 +38,7 @@ import commonSelect from '../../components/common-select';
 import roleService from '../../service/role';
 
 export default {
+    name: 'role-list',
     data() {
         return {
         	item: {

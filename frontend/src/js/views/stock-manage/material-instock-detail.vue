@@ -72,6 +72,7 @@ import returnMaterialService from '../../service/return-material';
 import materialInstockService from '../../service/material-instock';
 
 export default {
+    name: 'material-instock-detail',
     mixins: [ Permission ],
     data() {
         return {

@@ -72,6 +72,7 @@ import drawMaterialService from '../../service/draw-material';
 import materialOutstockService from '../../service/material-outstock';
 
 export default {
+    name: 'material-outstock-detail',
     mixins: [ Permission ],
     data() {
         return {

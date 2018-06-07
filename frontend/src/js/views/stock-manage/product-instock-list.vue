@@ -48,6 +48,7 @@ import util from '../../libs/util.js';
 import productInstockService from '../../service/product-instock';
 
 export default {
+    name: 'product-instock-list',
     mixins: [ Permission ],
     data() {
         return {

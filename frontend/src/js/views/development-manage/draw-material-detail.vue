@@ -57,6 +57,7 @@ import commonSelect from '../../components/common-select';
 import developmentDrawService from '../../service/development-draw';
 
 export default {
+    name: 'development-draw-detail',
     mixins: [ Permission ],
     data() {
         return {

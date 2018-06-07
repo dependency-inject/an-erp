@@ -52,6 +52,7 @@ import productService from '../../service/product';
 import productCategoryService from '../../service/product-category';
 
 export default {
+    name: 'product-list',
     mixins: [ Permission ],
     data() {
         return {

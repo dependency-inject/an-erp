@@ -47,7 +47,9 @@ import Permission from '../../mixins/permission';
 import util from '../../libs/util.js';
 
 import orderService from '../../service/order';
+
 export default {
+    name: 'order-list',
     mixins: [ Permission ],
     data() {
         return {

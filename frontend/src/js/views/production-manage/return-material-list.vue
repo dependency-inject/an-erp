@@ -49,6 +49,7 @@ import productionReturnService from '../../service/production-return';
 
 
 export default {
+    name: 'production-return-list',
     mixins: [ Permission ],
     data() {
         return {

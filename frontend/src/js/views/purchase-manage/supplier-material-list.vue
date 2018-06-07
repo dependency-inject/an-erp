@@ -56,6 +56,7 @@ import commonSelect from '../../components/common-select';
 import supplierService from '../../service/supplier';
 
 export default {
+    name: 'supplier-material-list',
     mixins: [ Permission ],
     data() {
         return {

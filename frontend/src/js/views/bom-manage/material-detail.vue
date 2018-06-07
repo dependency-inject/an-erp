@@ -43,6 +43,7 @@ import treeSelect from '../../components/tree-select';
 import materialService from '../../service/material';
 
 export default {
+    name: 'material-detail',
     mixins: [Permission],
     data() {
         return {

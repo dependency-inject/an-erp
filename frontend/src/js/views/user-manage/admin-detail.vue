@@ -42,6 +42,7 @@ import commonSelect from '../../components/common-select';
 import adminService from '../../service/admin';
 
 export default {
+    name: 'admin-detail',
     mixins: [ Permission ],
     data() {
         return {

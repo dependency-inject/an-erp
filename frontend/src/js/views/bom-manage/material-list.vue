@@ -40,6 +40,7 @@ import materialService from '../../service/material';
 import materialCategoryService from '../../service/material-category';
 
 export default {
+    name: 'material-list',
     mixins: [ Permission ],
     data() {
         return {

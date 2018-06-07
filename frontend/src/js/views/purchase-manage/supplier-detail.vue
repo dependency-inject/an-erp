@@ -29,6 +29,7 @@ import Permission from '../../mixins/permission';
 import supplierService from '../../service/supplier';
 
 export default {
+    name: 'supplier-detail',
     mixins: [ Permission ],
     data() {
         return {

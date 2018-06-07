@@ -45,6 +45,7 @@ import util from '../../libs/util.js';
 import warehouseService from '../../service/warehouse';
 
 export default {
+    name: 'warehouse-list',
     mixins: [ Permission ],
     data() {
         return {
