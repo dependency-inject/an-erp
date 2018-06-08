@@ -122,7 +122,6 @@ export default {
             let endTime = -1;
             if (this.vm.queryParameters.endTime != '')
                 endTime = this.vm.queryParameters.endTime.getTime();
-            console.log(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }))
             let result = await developmentDrawService.searchBill(Object.assign({}, this.vm.queryParameters, { beginTime: beginTime, endTime: endTime }));
             if (result.status === 200) {
                 var items = result.data.list;

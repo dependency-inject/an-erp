@@ -1,5 +1,5 @@
 <template>
-    <Menu ref="sideMenu" :active-name="$route.name" :open-names="openNames" :theme="menuTheme" width="auto"z @on-select="changeMenu">
+    <Menu ref="sideMenu" :active-name="$route.name" :open-names="openNames" :theme="menuTheme" width="auto" @on-select="changeMenu" accordion>
         <Submenu v-for="item in menuList" :name="item.name" :key="item.name">
             <template slot="title">
                 <Icon :type="item.icon" :size="iconSize"></Icon>
@@ -42,11 +42,11 @@ export default {
         }
     },
     updated () {
-        this.$nextTick(() => {
-            if (this.$refs.sideMenu) {
-                this.$refs.sideMenu.updateOpened();
-            }
-        });
+        // this.$nextTick(() => {
+        //     if (this.$refs.sideMenu) {
+        //         this.$refs.sideMenu.updateOpened();
+        //     }
+        // });
     }
 
 };

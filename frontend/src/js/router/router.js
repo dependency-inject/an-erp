@@ -70,7 +70,7 @@ export const otherRouter = {
 // 作为main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
     { // BOM管理
-        path: '/',
+        path: '',
         icon: 'disc',
         name: 'bom-manage',
         title: { i18n: 'navigate.BOM_MANAGE' },
@@ -83,7 +83,7 @@ export const appRouter = [
         ]
     },
     { // 销售管理
-        path: '/',
+        path: '',
         icon: 'document-text',
         name: 'sales-manage',
         title: { i18n: 'navigate.SALES_MANAGE' },
@@ -94,7 +94,7 @@ export const appRouter = [
         ]
     },
     { // 生产管理
-        path: '/',
+        path: '',
         icon: 'settings',
         name: 'production-manage',
         title: { i18n: 'navigate.PRODUCTION_MANAGE' },
@@ -105,7 +105,7 @@ export const appRouter = [
         ]
     },
     { // 库存管理
-        path: '/',
+        path: '',
         icon: 'home',
         name: 'stock-manage',
         title: { i18n: 'navigate.STOCK_MANAGE' },
@@ -121,7 +121,7 @@ export const appRouter = [
         ]
     },
     { // 采购辅助管理
-        path: '/',
+        path: '',
         icon: 'bag',
         name: 'purchase-manage',
         title: { i18n: 'navigate.PURCHASE_MANAGE' },
@@ -132,7 +132,7 @@ export const appRouter = [
         ]
     },
     { // 成本管理
-        path: '/',
+        path: '',
         icon: 'pie-graph',
         name: 'cost-manage',
         title: { i18n: 'navigate.COST_MANAGE' },
@@ -143,7 +143,7 @@ export const appRouter = [
         ]
     },
     { // 研发辅助管理
-        path: '/',
+        path: '',
         icon: 'android-search',
         name: 'development-manage',
         title: { i18n: 'navigate.DEVELOPMENT_MANAGE' },
@@ -154,7 +154,7 @@ export const appRouter = [
         ]
     },
     { // 人员管理
-        path: '/',
+        path: '',
         icon: 'ios-people',
         name: 'user-manage',
         title: { i18n: 'navigate.USER_MANAGE' },
