@@ -48,19 +48,6 @@
             "unit":"个",
             "categoryId":3,
             "spec":"碗口不算大"
-        },
-        {
-            "productMaterialId":26,
-            "productId":1,
-            "materialId":12,
-            "quantity":10,
-            "materialProperty":"",
-            "remark":"",
-            "materialNo":"E38ABC125",
-            "materialName":"物料7号",
-            "unit":"",
-            "categoryId":26,
-            "spec":""
         }
     ]
 }
@@ -236,19 +223,6 @@ success
             "unit":"个",
             "categoryId":3,
             "spec":"碗口不算大"
-        },
-        {
-            "productMaterialId":28,
-            "productId":1,
-            "materialId":12,
-            "quantity":10,
-            "materialProperty":"",
-            "remark":"",
-            "materialNo":"E38ABC125",
-            "materialName":"物料7号",
-            "unit":"",
-            "categoryId":26,
-            "spec":""
         }
     ]
 }
@@ -296,26 +270,6 @@ success
         "createBy":null,
         "updateAt":null,
         "updateBy":null
-    },
-    {
-        "categoryId":2,
-        "categoryName":"二级类别",
-        "parentId":1,
-        "sort":null,
-        "createAt":null,
-        "createBy":null,
-        "updateAt":1527597428000,
-        "updateBy":1
-    },
-    {
-        "categoryId":14,
-        "categoryName":"三级类别",
-        "parentId":2,
-        "sort":null,
-        "createAt":1527599081000,
-        "createBy":1,
-        "updateAt":1527599081000,
-        "updateBy":1
     }
 ]
 ```
@@ -343,26 +297,6 @@ success
         "createBy":null,
         "updateAt":null,
         "updateBy":null
-    },
-    {
-        "categoryId":2,
-        "categoryName":"二级类别",
-        "parentId":1,
-        "sort":null,
-        "createAt":null,
-        "createBy":null,
-        "updateAt":1527597428000,
-        "updateBy":1
-    },
-    {
-        "categoryId":14,
-        "categoryName":"三级类别",
-        "parentId":2,
-        "sort":null,
-        "createAt":1527599081000,
-        "createBy":1,
-        "updateAt":1527599081000,
-        "updateBy":1
     }
 ]
 ```
