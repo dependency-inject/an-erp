@@ -24,11 +24,11 @@
 {
     "productId":1,
     "productNo":"01",
-    "productName":"深海玄铁",
-    "unit":"卡车",
-    "categoryId":4,
-    "spec":"解放型",
-    "price":10.00,
+    "productName":"笔记本电脑",
+    "unit":"台",
+    "categoryId":1,
+    "spec":"THINKPAD",
+    "price":998.0,
     "closed":true,
     "remark":"",
     "createAt":null,
@@ -37,17 +37,17 @@
     "updateBy":1,
     "productMaterialList":[
         {
-            "productMaterialId":25,
+            "productMaterialId":1,
             "productId":1,
             "materialId":7,
             "quantity":20,
             "materialProperty":"",
             "remark":"",
-            "materialNo":"NEW001",
-            "materialName":"新的物料",
+            "materialNo":"M001",
+            "materialName":"GTX960战术核显卡",
             "unit":"个",
             "categoryId":3,
-            "spec":"碗口不算大"
+            "spec":"NVIDIA"
         }
     ]
 }
@@ -79,18 +79,18 @@
 
 ```json
 {
-    "productId":7,
-    "productNo":"001",
-    "productName":"001",
-    "unit":"001",
+    "productId":1,
+    "productNo":"01",
+    "productName":"笔记本电脑",
+    "unit":"台",
     "categoryId":1,
-    "spec":"001",
-    "price":1.00,
-    "closed":false,
-    "remark":"001",
-    "createAt":1528374660000,
-    "createBy":1,
-    "updateAt":1528374660000,
+    "spec":"THINKPAD",
+    "price":998.0,
+    "closed":true,
+    "remark":"",
+    "createAt":null,
+    "createBy":null,
+    "updateAt":1528111479000,
     "updateBy":1,
     "productMaterialList":[]
 }
@@ -151,19 +151,19 @@ success
     "list":[
         {
             "productId":1,
-            "productNo":"01",
-            "productName":"深海玄铁",
-            "unit":"卡车",
-            "categoryId":4,
-            "spec":"解放型",
-            "price":10.00,
-            "closed":true,
-            "remark":"",
-            "createAt":null,
-            "createBy":null,
-            "updateAt":1528111479000,
-            "updateBy":1,
-            "productMaterialList":[]
+        "productNo":"01",
+        "productName":"笔记本电脑",
+        "unit":"台",
+        "categoryId":1,
+        "spec":"THINKPAD",
+        "price":998.0,
+        "closed":true,
+        "remark":"",
+        "createAt":null,
+        "createBy":null,
+        "updateAt":1528111479000,
+        "updateBy":1,
+        "productMaterialList":[]
         }
     ],
     "total":1
@@ -197,32 +197,32 @@ success
 
 ```json
 {
-    "productId":1,
+   "productId":1,
     "productNo":"01",
-    "productName":"深海玄铁",
-    "unit":"卡车",
-    "categoryId":4,
-    "spec":"解放",
-    "price":10.00,
+    "productName":"笔记本电脑",
+    "unit":"台",
+    "categoryId":1,
+    "spec":"THINKPAD",
+    "price":998.0,
     "closed":true,
     "remark":"",
     "createAt":null,
     "createBy":null,
-    "updateAt":1528375621000,
+    "updateAt":1528111479000,
     "updateBy":1,
     "productMaterialList":[
         {
-            "productMaterialId":27,
+            "productMaterialId":1,
             "productId":1,
             "materialId":7,
             "quantity":20,
             "materialProperty":"",
             "remark":"",
-            "materialNo":"NEW001",
-            "materialName":"新的物料",
+            "materialNo":"M001",
+            "materialName":"GTX960战术核显卡",
             "unit":"个",
             "categoryId":3,
-            "spec":"碗口不算大"
+            "spec":"NVIDIA"
         }
     ]
 }
