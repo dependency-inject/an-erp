@@ -16,8 +16,8 @@
 
 ```
 [
-    {"categoryId": 1, "categoryName": "A", "parentId": 0, ...},
-    {"categoryId": 2, "categoryName": "B", "parentId": 1, ...}
+    {"categoryId": 1, "categoryName": "E系列电子器件", "parentId": 0, ...},
+    {"categoryId": 2, "categoryName": "E38系列电路板", "parentId": 1, ...}
 ]
 ```
 
@@ -42,8 +42,8 @@
 ```
 {
     "categoryId": 1,
-    "categoryName": "A",
-    "parentId": 1,
+    "categoryName": "E系列电子器件",
+    "parentId": 0,
     ...
 }
 ```
@@ -68,7 +68,7 @@
 ```
 {
     "categoryId": 10,
-    "categoryName": "New",
+    "categoryName": "E39系列电路板",
     "parentId": 1,
     ...
 }
@@ -115,8 +115,8 @@
 
 ```
 [
-    {"materialId": 1, "materialNo": "di4869", "materialName": "what", ...},
-    {"materialId": 2, "materialNo": "di4567", "materialName": "don't know", ...}
+    {"materialId": 1, "materialNo": "E38PP10", "materialName": "E38上电路板 PP 10-30V", ...},
+    {"materialId": 2, "materialNo": "E38PP05", "materialName": "E38上电路板 PP 5-30V", ...}
 ]
 ```
 
@@ -144,8 +144,8 @@
 ```
 [
     "list": [
-        {"materialId": 1, "materialNo": "di4869", "materialName": "what", ...},
-        {"materialId": 2, "materialNo": "di4567", "materialName": "don't know", ...}
+        {"materialId": 1, "materialNo": "E38PP10", "materialName": "E38上电路板 PP 10-30V", ...},
+        {"materialId": 2, "materialNo": "E38PP05", "materialName": "E38上电路板 PP 5-30V", ...}
     ],
     "total": 2
 ]
@@ -170,13 +170,13 @@
 ```
 {
     "materialId": 1,
-    "materialNo": "E38ABC123",
-    "materialName": "物料1号",
-    "unit": "件",
+    "materialNo": "E38PP10",
+    "materialName": "E38上电路板 PP 10-30V",
+    "unit": "块",
     "categoryId": 1,
-    "spec": "φ50mm*200mm",
+    "spec": "50*50*200(mm)",
     "cost": 201.00,
-    "remark": "这是个物料",
+    "remark": "",
     ...
 }
 ```
@@ -204,15 +204,15 @@
 
 ```
 {
-    "materialId": 1,
-    "materialNo": "E38ABC123",
-    "materialName": "物料1号",
-    "unit": "件",
+    "materialId": 2,
+    "materialNo": "E38PP05",
+    "materialName": "E38上电路板 PP 5-30V",
+    "unit": "块",
     "categoryId": 1,
-    "spec": "φ50mm*200mm",
-    "cost": 201.00,
-    "remark": "这是个编辑过的物料",
-    ...
+    "spec": "50*50*200(mm)",
+    "cost": 301.00,
+    "remark": "",
+   ...
 }
 ```
 
@@ -239,19 +239,19 @@
 
 ```
 {
-    "materialId": 25,
-    "materialNo": "NEW",
-    "materialName": "新物料",
-    "unit": "件",
+    "materialId": 3,
+    "materialNo": "E38NPN10",
+    "materialName": "E38上电路板 NPN 5-30V",
+    "unit": "块",
     "categoryId": 1,
-    "spec": "φ50mm*200mm",
-    "cost": 201.00,
-    "remark": "这是个新的物料",
+    "spec": "50*50*200(mm)",
+    "cost": 301.00,
+    "remark": "",
     ...
 }
 ```
 
-##### 修改物料的成本信息
+#### 修改物料的成本信息
 
 - URL
 
@@ -270,19 +270,19 @@
 
 ```
 {
-    "materialId": 25,
-    "materialNo": "NEW",
-    "materialName": "新物料",
-    "unit": "件",
+    "materialId": 3,
+    "materialNo": "E38NPN10",
+    "materialName": "E38上电路板 NPN 10-30V",
+    "unit": "块",
     "categoryId": 1,
-    "spec": "φ50mm*200mm",
-    "cost": 250.00,
-    "remark": "这是个新的物料",
+    "spec": "50*50*200(mm)",
+    "cost": 300.00,
+    "remark": "",
     ...
 }
 ```
 
-##### 删除物料的信息
+#### 删除物料的信息
 
 - URL
 
