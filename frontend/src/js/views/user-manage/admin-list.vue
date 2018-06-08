@@ -4,14 +4,15 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 账号状态筛选框 -->
-                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.closed=arguments[0];selectItems=[];search()" style="margin:0 10px">
+                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.closed=arguments[0];search()" style="margin:0 10px">
                         <a href="javascript:void(0)"><span class="main-user-name">{{ closedCn }} </span><icon type="arrow-down-b"></icon></a>
                         <dropdown-menu slot="list">
                             <dropdown-item v-for="item in closedList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
                         </dropdown-menu>
                     </dropdown>
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.ADMIN.LOGIN_NAME')+'/'+$t('field.ADMIN.TRUE_NAME')+'/'+$t('field.ADMIN.MOBILE')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.ADMIN.LOGIN_NAME')+'/'+$t('field.ADMIN.TRUE_NAME')+'/'+$t('field.ADMIN.MOBILE')" v-model="vm.queryParameters.searchKey" @on-enter="search" style="width:280px"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -32,7 +33,7 @@
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -77,7 +78,7 @@ export default {
         // 控制表格显示哪些列
         columnList() {
             return [
-                { type: 'selection', width: 80, align: 'center' },
+                { type: 'selection', width: 60, align: 'center' },
                 { title: this.$t('field.ADMIN.LOGIN_NAME'), key: 'loginName', sortable: 'custom' },
                 { title: this.$t('field.ADMIN.TRUE_NAME'), key: 'trueName', sortable: 'custom' },
                 { title: this.$t('field.ADMIN.MOBILE'), key: 'mobile', sortable: 'custom' },

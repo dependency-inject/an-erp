@@ -4,7 +4,8 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.SUPPLIER_NAME')+'/'+$t('field.SUPPLIER.CONTACT')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.SUPPLIER_NAME')+'/'+$t('field.SUPPLIER.CONTACT')" v-model="vm.queryParameters.searchKey" @on-enter="search" style="width:280px"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <!-- 选中表项后的批量处理按钮 -->
                 <div class="pull-left operate-list" v-show="selectItems!=''">
@@ -21,7 +22,7 @@
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -65,7 +66,7 @@ export default {
         // 控制表格显示哪些列
         columnList() {
             return [
-                { type: 'selection', width: 80, align: 'center' },
+                { type: 'selection', width: 60, align: 'center' },
                 { title: this.$t('field.SUPPLIER.SUPPLIER_NAME'), key: 'supplierName', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.CONTACT'), key: 'contact', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.CONTACT_PHONE'), key: 'contactPhone', sortable: 'custom' },

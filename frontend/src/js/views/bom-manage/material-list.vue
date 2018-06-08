@@ -4,7 +4,8 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL.MATERIAL_NO')+'/'+$t('field.MATERIAL.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL.MATERIAL_NO')+'/'+$t('field.MATERIAL.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="search" style="width:280px"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
@@ -21,7 +22,7 @@
             <!-- 表格 -->
             <div class="main-content" style="display:flex">
                 <div style="border: 1px solid #dddee1; padding: 15px; margin-right: 10px; min-width: 200px;"><tree :data="categoryList" @on-select-change="selectChange" ref="tree"></tree></div>
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -68,7 +69,7 @@ export default {
         // 控制表格显示哪些列
         columnList() {
             return [
-                { type: 'selection', width: 80, align: 'center' },
+                { type: 'selection', width: 60, align: 'center' },
                 { title: this.$t('field.MATERIAL.MATERIAL_NO'), key: 'materialNo', sortable: 'custom' },
                 { title: this.$t('field.MATERIAL.MATERIAL_NAME'), key: 'materialName', sortable: 'custom' },
                 { title: this.$t('field.MATERIAL.UNIT'), key: 'unit' },
@@ -88,7 +89,6 @@ export default {
     methods: {
         initData() {
             this.search();
-            this.initCategoryList();
         },
         async search() {
             let idList = _.map(this.selectItems, this.vm.identity).join(",");
@@ -166,6 +166,7 @@ export default {
     },
     mounted() {
         this.initData();
+        this.initCategoryList();
     }
 }
 </script>

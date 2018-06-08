@@ -4,13 +4,14 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.MATERIAL_NO')+'/'+$t('field.SUPPLIER.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="search()" style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.SUPPLIER.MATERIAL_NO')+'/'+$t('field.SUPPLIER.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="search" style="width:280px"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -18,7 +19,7 @@
             </div>
         </div>
         <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :footer-hide="true" :width="700">
-        	<i-table :height="450" ref="table2" :columns="columnList2" :data="modal.items" @on-sort-change="handleSortPrice"></i-table>
+        	<i-table border :height="450" ref="table2" :columns="columnList2" :data="modal.items" @on-sort-change="handleSortPrice"></i-table>
             <div style="padding-top:15px;text-align:center;">
                 <page :total="modal.queryParameters.total" :current="modal.queryParameters.current" :page-size="modal.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="modal.queryParameters.current=arguments[0];searchMaterialPrice()" @on-page-size-change="modal.queryParameters.limit=arguments[0];searchMaterialPrice()"></page>
             </div>
@@ -72,7 +73,6 @@ export default {
         // 控制表格显示哪些列
         columnList() {
             return [
-                { width: 50, align: 'center' },
                 { title: this.$t('field.SUPPLIER.MATERIAL_NO'), key: 'materialNo', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.MATERIAL_NAME'), key: 'materialName', sortable: 'custom' },
                 { title: this.$t('field.SUPPLIER.UNIT'), key: 'unit', sortable: 'custom' },

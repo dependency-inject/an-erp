@@ -4,7 +4,8 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 搜索框 -->
-                    <i-input icon="search" v-model="vm.queryParameters.searchKey" :placeholder="$t('component.PLEASE_INPUT')+'/'+$t('field.CLIENT.CLIENT_NAME')+'/'+$t('field.CLIENT.CONTACT')+'/'+$t('field.CLIENT.CONTACT_PHONE')"  style="width:300px" @on-enter="selectItems=[];search()"></i-input>
+                    <i-input v-model="vm.queryParameters.searchKey" :placeholder="$t('component.PLEASE_INPUT')+$t('field.CLIENT.CLIENT_NAME')+'/'+$t('field.CLIENT.CONTACT')+'/'+$t('field.CLIENT.CONTACT_PHONE')"  style="width:280px" @on-enter="search"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
@@ -19,7 +20,7 @@
             </div>
             <!--显示订单表格-->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort" @on-selection-change="selectItems=arguments[0]"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -82,7 +83,7 @@ export default {
         },
         columnList() {
             return [
-                { type: 'selection', width: 80, align: 'center' },
+                { type: 'selection', width: 60, align: 'center' },
                 { title: this.$t('field.CLIENT.CLIENT_NAME'), key: 'clientName', sortable: 'custom' },
                 { title: this.$t('field.CLIENT.CONTACT'), key: 'contact', sortable: 'custom' },
                 { title: this.$t('field.CLIENT.CONTACT_PHONE'), key: 'contactPhone', sortable: 'custom' },

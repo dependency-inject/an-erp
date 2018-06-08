@@ -4,13 +4,14 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list">
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL_COST.MATERIAL_NO')+'/'+$t('field.MATERIAL_COST.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="search()" style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL_COST.MATERIAL_NO')+'/'+$t('field.MATERIAL_COST.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="search" style="width:280px"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <!-- 表格 -->
             <div class="main-content">
-                <i-table :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort"></i-table>
+                <i-table border :height="tableHeight" ref="table" :columns="columnList" :data="vm.items" @on-sort-change="handleSort"></i-table>
             </div>
             <!-- 翻页控制器 -->
             <div class="page-panel">
@@ -67,9 +68,10 @@ export default {
         // 控制表格显示哪些列
         columnList() {
             return [
-                { width: 50, align: 'center' },
                 { title: this.$t('field.MATERIAL_COST.MATERIAL_NO'), key: 'materialNo', sortable: 'custom' },
                 { title: this.$t('field.MATERIAL_COST.MATERIAL_NAME'), key: 'materialName', sortable: 'custom' },
+                { title: this.$t('field.MATERIAL.UNIT'), key: 'unit' },
+                { title: this.$t('field.MATERIAL.SPEC'), key: 'spec' },
                 { title: this.$t('field.MATERIAL_COST.MATERIAL_COST'), key: 'cost', sortable: 'custom' },
                 { title: this.$t('field.OPERATE'), key: 'action', width: 200, render: (h, params) => {
                         return h('div', [ util.tableButton(h, params, 'primary', this.$t('common.EDIT'), (row) => {

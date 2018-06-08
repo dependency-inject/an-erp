@@ -4,16 +4,17 @@
             <div class="operate-panel">
                 <div class="pull-left operate-list" v-show="selectItems==''">
                     <!-- 状态筛选框 -->
-                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];selectItems=[];search()" style="margin:0 10px">
+                    <dropdown trigger="click" placement="bottom-start" @on-click="vm.queryParameters.state=arguments[0];search()" style="margin:0 10px">
                         <a href="javascript:void(0)"><span class="main-user-name">{{ stateCn }} </span><icon type="arrow-down-b"></icon></a>
                         <dropdown-menu slot="list">
                             <dropdown-item v-for="item in stateList" :key="item.value" :name="item.value">{{ item.descript }}</dropdown-item>
                         </dropdown-menu>
                     </dropdown>
                     <!-- 搜索框 -->
-                    <i-input icon="search" :placeholder="$t('component.PLEASE_INPUT')+$t('field.DRAW_MATERIAL.BILL_NO')+'/'+$t('field.DRAW_MATERIAL.TO_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="selectItems=[];search()" style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.DRAW_MATERIAL.BILL_NO')+'/'+$t('field.DRAW_MATERIAL.TO_PRINCIPAL')" v-model="vm.queryParameters.searchKey" @on-enter="search" style="width:280px"></i-input>
                     <!-- 日期选择框 -->
                     <date-picker v-model="vm.queryParameters.beginTime" type="datetime" :placeholder="$t('component.BEGIN_TIME')" @on-change="search"></date-picker> - <date-picker v-model="vm.queryParameters.endTime" type="datetime" :placeholder="$t('component.END_TIME')" @on-change="search"></date-picker>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search" style="margin-left:8px"></i-button>
                 </div>
                 <div class="pull-left operate-list" v-show="selectItems!=''">
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>

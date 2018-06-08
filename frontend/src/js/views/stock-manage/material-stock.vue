@@ -3,12 +3,8 @@
         <div class="main-panel-content" style="padding-bottom:65px">
             <div class="operate-panel">
                 <div class="pull-left operate-list">
-                    <i-input icon="search"
-                             :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL_STOCK.MATERIAL_NO')+
-                                           '/'+$t('field.MATERIAL_STOCK.MATERIAL_NAME')"
-                             v-model="vm.queryParameters.searchKey"
-                             @on-enter="search();chartQueryParameters.searchKey=vm.queryParameters.searchKey"
-                             style="width:300px"></i-input>
+                    <i-input :placeholder="$t('component.PLEASE_INPUT')+$t('field.MATERIAL_STOCK.MATERIAL_NO')+'/'+$t('field.MATERIAL_STOCK.MATERIAL_NAME')" v-model="vm.queryParameters.searchKey" @on-enter="search();chartQueryParameters.searchKey=vm.queryParameters.searchKey" style="width:280px"></i-input>
+                    <i-button type="ghost" shape="circle" icon="ios-search" @click="search();chartQueryParameters.searchKey=vm.queryParameters.searchKey" style="margin-left:8px"></i-button>
                 </div>
                 <div class="button-list pull-right">
                     <!-- <i-button class="operate-btn" type="ghost" shape="circle" @click="">{{ $t('common.EXPORT') }}</i-button> -->
@@ -21,7 +17,8 @@
                 <div><div style="background-color:#9675ce"><h4>{{ vm.statistics.leftAmount || 0 }}</h4>{{ $t('field.MATERIAL_STOCK.MATERIAL_LEFT') }}</div></div>
             </div>
             <div class="main-content">
-                <i-table ref="table"
+                <i-table border
+                         ref="table"
                          :columns="columnList"
                          :data="vm.items"
                          @on-sort-change="handleSort"></i-table>
@@ -72,7 +69,6 @@ export default {
     computed: {
         columnList() {
             return [
-                {width: 50, align: 'center'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_NO'), key: 'materialNo', sortable: 'custom'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_NAME'), key: 'materialName', sortable: 'custom'},
                 {title: this.$t('field.MATERIAL_STOCK.MATERIAL_AMOUNT'), key: 'totalAmount', sortable: 'custom'},
