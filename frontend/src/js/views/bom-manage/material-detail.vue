@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="panel-bottom">
-            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="(materialAddPermission&&$route.params.id==='add'&&item.materialId===0)||(materialUpdatePermission&&item.materialId!==0)">{{ $t('common.SAVE') }}</i-button>
+            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
         </div>
     </div>
 </template>
@@ -64,6 +64,9 @@ export default {
                 ]
             }
         },
+        editable() {
+            return (this.materialAddPermission && this.$route.params.id === 'add' && this.item.materialId === 0) || (this.materialUpdatePermission && this.item.materialId !==0);
+        }
     },
     components: { treeSelect },
     methods: {

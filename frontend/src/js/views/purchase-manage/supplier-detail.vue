@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="panel-bottom">
-            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="(supplierAddPermission&&$route.params.id==='add'&&item.supplierId===0)||(supplierUpdatePermission&&item.supplierId!==0)">{{ $t('common.SAVE') }}</i-button>
+            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
             <i-button class="operate-btn" type="success" shape="circle" @click="$router.push('/supplier-material/'+item.supplierId)" v-if="item.supplierId!==0">{{ $t('field.SUPPLIER.MATERIAL_INFO') }}</i-button>
         </div>
     </div>
@@ -46,6 +46,9 @@ export default {
                     { required: true, message: this.$t('field.SUPPLIER.CONTACT')+this.$t('field.NOT_BE_NULL'), trigger: 'blur' }
                 ]
             }
+        },
+        editable() {
+            return (this.supplierAddPermission && this.$route.params.id === 'add' && this.item.supplierId === 0) || (this.supplierUpdatePermission && this.item.supplierId !==0);
         }
     },
     methods: {

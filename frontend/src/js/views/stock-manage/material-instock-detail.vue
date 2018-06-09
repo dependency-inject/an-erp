@@ -127,7 +127,7 @@ export default {
             ]
         },
         editable() {
-            return (this.materialInstockAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.materialInstockAddPermission && this.item.billId !==0 && this.item.billState === 1);
+            return (this.materialInstockAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.materialInstockUpdatePermission && this.item.billId !==0 && this.item.billState === 1);
         },
         columnList() {
             let result = [

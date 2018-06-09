@@ -118,7 +118,7 @@ export default {
             ]
         },
         editable() {
-            return (this.productInstockAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.productInstockAddPermission && this.item.billId !==0 && this.item.billState === 1);
+            return (this.productInstockAddPermission && this.$route.params.id === 'add' && this.item.billId === 0) || (this.productInstockUpdatePermission && this.item.billId !==0 && this.item.billState === 1);
         },
         columnList() {
             let result = [

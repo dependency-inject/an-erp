@@ -86,7 +86,7 @@ public class OrderController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    @PermissionRequired(AccessPermission.ORDER_ADD)
+    @PermissionRequired(AccessPermission.ORDER_UPDATE)
     public OrderBill update(@RequestParam Integer billId, @RequestParam String contact, @RequestParam String contactPhone,
                             @RequestParam BigDecimal billAmount, String remark, @RequestParam String productList) {
         return orderService.update(billId, contact, contactPhone, billAmount,

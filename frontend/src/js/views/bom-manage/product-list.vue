@@ -23,7 +23,7 @@
                     <!-- 停用 -->
                     <span class="label-btn" @click="updateClosedState(selectItems, 1)" v-if="productUpdatePermission"><icon type="android-exit"></icon>{{ $t('common.DISABLE') }}</span>
                     <!-- 删除 -->
-                    <span class="label-btn" @click="remove(selectItems)" v-if="adminRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+                    <span class="label-btn" @click="remove(selectItems)" v-if="productRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
                 <!-- 顶部右侧按钮 -->
                 <div class="button-list pull-right">

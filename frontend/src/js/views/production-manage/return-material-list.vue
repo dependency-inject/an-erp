@@ -20,11 +20,11 @@
                     <a class="cancel-btn" @click="clearChecked"><icon type="close"></icon></a>
                     <span class="split-bar">{{ $t('component.SELECTED') }} <span class="text-primary">{{ selectItems.length }}</span> {{ $t('component.ITEMS') }}</span>
                     <!-- 审核 -->
-                    <span class="label-btn" @click="audit(selectItems)" ><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
+                    <span class="label-btn" @click="audit(selectItems)" v-if="productionReturnAuditPermission"><icon type="checkmark"></icon>{{ $t('common.AUDIT') }}</span>
                     <!-- 反审核 -->
-                    <span class="label-btn" @click="unaudit(selectItems)" ><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
+                    <span class="label-btn" @click="unaudit(selectItems)" v-if="productionReturnAuditPermission"><icon type="reply"></icon>{{ $t('common.UNAUDIT') }}</span>
                     <!-- 删除 -->
-                    <span class="label-btn" @click="remove(selectItems)" ><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
+                    <span class="label-btn" @click="remove(selectItems)" v-if="productionReturnRemovePermission"><icon type="trash-a"></icon>{{ $t('common.REMOVE') }}</span>
                 </div>
                 <div class="button-list pull-right">
                     <Button class="operate-btn" type="primary" shape="circle" @click="$router.push('/production-return/add')">{{ $t('common.ADD') }}</Button>

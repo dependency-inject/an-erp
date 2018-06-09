@@ -27,7 +27,7 @@
                 <page :total="vm.queryParameters.total" :current="vm.queryParameters.current" :page-size="vm.queryParameters.limit" page-size-place="top" show-elevator show-sizer show-total @on-change="vm.queryParameters.current=arguments[0];selectItems=[];search()" @on-page-size-change="vm.queryParameters.limit=arguments[0];selectItems=[];search()"></page>
             </div>
         </div>
-        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true">
+        <modal ref="modal" v-model="modal.visible" :title="modal.title" :mask-closable="false" :ok-text="$t('common.SAVE')" @on-ok="save" :loading="true" :footer-hide="!editable">
             <i-form ref="formValidate" :model="modal.item" :rules="rules" :label-width="90">
                 <form-item :label="$t('field.CLIENT.CLIENT_NAME')" prop="clientName"><i-input v-model="modal.item.clientName"></i-input></form-item>
                 <form-item :label="$t('field.CLIENT.CONTACT')" prop="contact"><i-input v-model="modal.item.contact"></i-input></form-item>
@@ -96,6 +96,9 @@ export default {
                     } 
                 }
             ];
+        },
+        editable() {
+            return (this.clientAddPermission && this.modal.item.clientId === 0) || (this.clientUpdatePermission && this.modal.item.clientId !==0);
         }
     },
     methods: {

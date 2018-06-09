@@ -22,7 +22,7 @@ public class StockController {
     @Resource
     StockService stockService;
 
-    /*
+    /**
      * 统计货品仓储
      *
      * @param current    当前页面

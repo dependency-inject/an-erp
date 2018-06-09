@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="panel-bottom">
-            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="(adminAddPermission&&$route.params.id==='add'&&item.adminId===0)||(adminUpdatePermission&&item.adminId!==0)">{{ $t('common.SAVE') }}</i-button>
+            <i-button class="operate-btn" type="primary" shape="circle" @click="save" v-if="editable">{{ $t('common.SAVE') }}</i-button>
         </div>
     </div>
 </template>
@@ -73,6 +73,9 @@ export default {
                 { value: 0, descript: this.$t('field.CLOSED.0') },
                 { value: 1, descript: this.$t('field.CLOSED.1') },
             ]
+        },
+        editable() {
+            return (this.adminAddPermission && this.$route.params.id === 'add' && this.item.adminId === 0) || (this.adminUpdatePermission && this.item.adminId !==0);
         }
     },
     methods: {
