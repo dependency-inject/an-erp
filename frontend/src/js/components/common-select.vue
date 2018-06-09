@@ -1,5 +1,5 @@
 <template>
-    <i-select v-model="model" :disabled="disabled" :multiple="multiple" transfer>
+    <i-select v-model="model" :disabled="disabled" :multiple="multiple" :filterable="true" transfer>
         <i-option v-for="item in data" :key="item.hashCode" :value="item[option.value]">{{ item.labelValue }}</i-option>
     </i-select>
 </template>
@@ -46,6 +46,10 @@ export default {
             default: false
         },
         multiple: {
+            type: Boolean,
+            default: false
+        },
+        filterable: {
             type: Boolean,
             default: false
         }

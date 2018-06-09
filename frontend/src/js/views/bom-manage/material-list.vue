@@ -167,6 +167,9 @@ export default {
     mounted() {
         this.initData();
         this.initCategoryList();
+    },
+    activated() {
+        this.initData();
     }
 }
 </script>

@@ -104,6 +104,9 @@ export default {
     },
     mounted() {
         this.search();
+    },
+    activated() {
+        this.initData();
     }
 }
 </script>

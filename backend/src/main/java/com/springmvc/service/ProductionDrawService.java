@@ -367,7 +367,7 @@ public class ProductionDrawService extends BaseService {
                 if (!materialMap.containsKey(productMaterial.getMaterialId())) {
                     materialMap.put(productMaterial.getMaterialId(), 0);
                 }
-                materialMap.put(productMaterial.getMaterialId(), materialMap.get(productMaterial.getMaterialId()) + productMaterial.getQuantity());
+                materialMap.put(productMaterial.getMaterialId(), materialMap.get(productMaterial.getMaterialId()) + productMaterial.getQuantity() * orderBillProduct.getQuantity());
             }
         }
 

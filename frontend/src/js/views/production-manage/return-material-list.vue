@@ -217,6 +217,9 @@ export default {
     },
     mounted() {
         this.initData()
+    },
+    activated() {
+        this.initData();
     }
 }
 </script>
