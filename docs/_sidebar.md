@@ -10,6 +10,16 @@
   - [开发规范](framework/develop-rule.md)
   - [后端架构](framework/backend-framework.md)
   - [前端架构](framework/frontend-framework.md)
+- **用户故事**
+  - [核心用户故事](user-story/core-story.md)
+  - [资料管理员](user-story/zl-admin.md)
+  - [业务管理员](user-story/yw-admin.md)
+  - [生产管理员](user-story/sc-admin.md)
+  - [仓库管理员](user-story/ck-admin.md)
+  - [财务管理员](user-story/cw-admin.md)
+  - [物料采购员](user-story/cg-admin.md)
+  - [研发工程师](user-story/yf-admin.md)
+  - [系统管理员](user-story/xt-admin.md)
 - **后端文档**
   - [货品管理 API](backend/product-api.md)
   - [物料管理 API](backend/material-api.md)
