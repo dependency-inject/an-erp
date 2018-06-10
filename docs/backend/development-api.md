@@ -105,7 +105,7 @@
 "finishAt": null,
 "finishBy": null,
 "finishName": "",
-materialList:[{
+"materialList":[{
 "length": 0
 }],
 "relatedBill": null,
@@ -388,7 +388,7 @@ success
 "finishAt": null,
 "finishBy": null,
 "finishName": "",
-materialList:[{
+"materialList":[{
 "length": 0
 }],
 "relatedBill": null,
@@ -673,7 +673,7 @@ success
 "finishAt": null,
 "finishBy": null,
 "finishName": "",
-materialList:[{
+"materialList":[{
 "length": 0
 }],
 "relatedBill": null,
@@ -956,7 +956,7 @@ success
 "finishAt": null,
 "finishBy": null,
 "finishName": "",
-materialList:[{
+"materialList":[{
 "length": 0
 }],
 "relatedBill": null,
