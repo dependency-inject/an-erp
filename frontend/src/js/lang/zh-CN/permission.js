@@ -5,7 +5,7 @@ export default {
         ADD: '货品新增',
         UPDATE: '货品更新',
         REMOVE: '货品删除',
-        CATEGORY: '货品分类管理'
+        CATEGORY: '货品类别管理'
     },
     MATERIAL: {
         INDEX: '物料',
@@ -13,7 +13,7 @@ export default {
         ADD: '物料新增',
         UPDATE: '物料更新',
         REMOVE: '物料删除',
-        CATEGORY: '物料分类管理'
+        CATEGORY: '物料类别管理'
     },
     ORDER: {
         INDEX: '订单',

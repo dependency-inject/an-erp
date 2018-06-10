@@ -40,7 +40,7 @@ export default {
     },
     PRODUCT_CATEGORY: {
         CATEGORY_NAME: '类别名称',
-        PARENT_ID: '上级分类',
+        PARENT_ID: '上级类别',
     },
     MATERIAL: {
         MATERIAL_NAME: '物料名称',
@@ -55,7 +55,7 @@ export default {
     },
     MATERIAL_CATEGORY: {
         CATEGORY_NAME: '类别名称',
-        PARENT_ID: '上级分类',
+        PARENT_ID: '上级类别',
     },
     ORDER: {
         BILL_NO: '订单编号',

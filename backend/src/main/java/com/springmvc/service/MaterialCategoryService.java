@@ -35,8 +35,8 @@ public class MaterialCategoryService extends BaseService {
     }
 
     /**
-     * 根据id获取一个分类记录
-     * @param categoryId 分类id
+     * 根据id获取一个类别记录
+     * @param categoryId 类别id
      * @return返回一条记录
      */
     public MaterialCategory getMaterialCategoryById(int categoryId){
@@ -71,8 +71,8 @@ public class MaterialCategoryService extends BaseService {
 
     /**
      * 修改物料类别的信息
-     * @param categoryId 分类id
-     * @param categoryName      分类名称
+     * @param categoryId 类别id
+     * @param categoryName      类别名称
      * @param parentId          父类id
      * @return  返回一个修改过的记录
      */
@@ -98,13 +98,13 @@ public class MaterialCategoryService extends BaseService {
     }
 
     /**
-     * 删除物料分类
+     * 删除物料类别
      *
      * 删除主表的信息:MaterialCategory
      *
      *判断是否被物料表引用
      * 添加日志信息
-     * @param idList 一个分类id列表
+     * @param idList 一个类别id列表
      */
     public void removeMaterialCategory(List<Integer> idList){
 
@@ -131,6 +131,6 @@ public class MaterialCategoryService extends BaseService {
         addLog(LogType.MATERIAL_CATEGORY, Operate.REMOVE, idList);
     }
 
-    private static final String MATERIALCATEGORY_REFEREF_BY_MATERIAL = "物料分类被物料表引用";
-    private static final String CANNOT_REMOVE_CATEGORY_NOT_EMPTY = "不能删除含有子类的分类";
+    private static final String MATERIALCATEGORY_REFEREF_BY_MATERIAL = "物料类别被物料表引用";
+    private static final String CANNOT_REMOVE_CATEGORY_NOT_EMPTY = "不能删除含有子类的类别";
 }

@@ -20,11 +20,11 @@ export default {
     data() {
         return {
             items: [
-                { categoryName: '父分类1', parent: -1 },
-                { categoryName: '子分类11', parent: 0 },
-                { categoryName: '父分类2', parent: -1 },
-                { categoryName: '子分类12', parent: 0 },
-                { categoryName: '子分类21', parent: 2 },
+                { categoryName: '父类别1', parent: -1 },
+                { categoryName: '子类别11', parent: 0 },
+                { categoryName: '父类别2', parent: -1 },
+                { categoryName: '子类别12', parent: 0 },
+                { categoryName: '子类别21', parent: 2 },
             ],
             // 控制表格显示哪些列
             columnList: [

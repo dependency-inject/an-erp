@@ -27,7 +27,7 @@ public class ProductCategoryService extends BaseService {
     private ProductDAO productDAO;
 
     /**
-     * 获取货品分类表的所有信息
+     * 获取货品类别表的所有信息
      *
      * @return 返回列表
      */
@@ -36,9 +36,9 @@ public class ProductCategoryService extends BaseService {
     }
 
     /**
-     * 根据id获取一个分类信息
+     * 根据id获取一个类别信息
      *
-     * @param categoryId 分类id
+     * @param categoryId 类别id
      * @return 返回记录
      */
     public ProductCategory getProductCategoryById(int categoryId) {
@@ -46,11 +46,11 @@ public class ProductCategoryService extends BaseService {
     }
 
     /**
-     * 新增货品分类信息
+     * 新增货品类别信息
      *
-     * @param categoryName 分类名称
-     * @param parentId 父分类id
-     * @return 返回新建的分类信息
+     * @param categoryName 类别名称
+     * @param parentId 父类别id
+     * @return 返回新建的类别信息
      */
     public ProductCategory addProductCategory(String categoryName, Integer parentId){
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
@@ -74,12 +74,12 @@ public class ProductCategoryService extends BaseService {
     }
 
     /**
-     * 更新货品分类信息
+     * 更新货品类别信息
      *
-     * @param categoryId 待更新的分类id
-     * @param categoryName 分类名称
-     * @param parentId 父分类id
-     * @return 返回更新的分类信息
+     * @param categoryId 待更新的类别id
+     * @param categoryName 类别名称
+     * @param parentId 父类别id
+     * @return 返回更新的类别信息
      */
     public ProductCategory updateProductCategory(Integer categoryId, String categoryName, Integer parentId){
         Admin loginAdmin = RequestUtils.getLoginAdminFromCache();
@@ -103,9 +103,9 @@ public class ProductCategoryService extends BaseService {
     }
 
     /**
-     * 删除货品分类信息
+     * 删除货品类别信息
      *
-     * @param idList 待删除的分类id列表
+     * @param idList 待删除的类别id列表
      */
     public void removeProductCategory(List<Integer> idList){
         // 检查是否被product引用
@@ -131,6 +131,6 @@ public class ProductCategoryService extends BaseService {
         addLog(LogType.PRODUCT_CATEGORY, Operate.REMOVE, idList);
     }
 
-    private static final String PRODUCTCATEGORY_REFEREF_BY_PRODUCT = "货品分类被货品表引用";
-    private static final String CANNOT_REMOVE_CATEGORY_NOT_EMPTY = "不能删除含有子类的分类";
+    private static final String PRODUCTCATEGORY_REFEREF_BY_PRODUCT = "货品类别被货品表引用";
+    private static final String CANNOT_REMOVE_CATEGORY_NOT_EMPTY = "不能删除含有子类的类别";
 }

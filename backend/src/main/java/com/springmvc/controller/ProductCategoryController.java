@@ -21,7 +21,7 @@ public class ProductCategoryController {
     @Resource
     ProductCategoryService productCategoryService;
 
-    // 返回分类所有信息
+    // 返回类别所有信息
     @RequestMapping(value = "/getList", method = RequestMethod.POST)
     @ResponseBody
     public List<ProductCategory> getList(){

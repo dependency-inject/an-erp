@@ -48,7 +48,7 @@ public class MaterialService extends BaseService {
     }
 
     /**
-     * 查询物料信息（分页），包括分类名称.
+     * 查询物料信息（分页），包括类别名称.
      *
      * 信息来自：material left join material_category（同时包含总记录数）
      * 搜索字段：物料编号、物料名称
@@ -157,7 +157,7 @@ public class MaterialService extends BaseService {
     }
 
     /**
-     * 查询物料信息（单个），包括分类名称.
+     * 查询物料信息（单个），包括类别名称.
      *
      * 查询表：material left join material_category
      *

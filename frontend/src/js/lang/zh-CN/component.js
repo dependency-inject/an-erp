@@ -6,7 +6,7 @@ export default {
     PLEASE_SELECT: '请选择',
 
     ALL_STATE: '全部状态',
-    ALL_CATEGORY: '全部分类',
+    ALL_CATEGORY: '全部类别',
     BEGIN_TIME: '开始时间',
     END_TIME: '结束时间',
     DATETIME: '日期和时间',

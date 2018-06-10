@@ -61,7 +61,7 @@ public abstract class BaseService {
     }
 
     public enum LogType {
-        PRODUCT("货品"), PRODUCT_CATEGORY("货品分类"), MATERIAL("物料"), MATERIAL_CATEGORY("物料分类"), PRODUCT_MATERIAL("货品物料组成"),
+        PRODUCT("货品"), PRODUCT_CATEGORY("货品类别"), MATERIAL("物料"), MATERIAL_CATEGORY("物料类别"), PRODUCT_MATERIAL("货品物料组成"),
         ORDER("订单"), CLIENT("客户"),
         DRAW_MATERIAL_BILL("领料单"), RETURN_MATERIAL_BILL("退料单"),
         WAREHOUSE("仓库"), PRODUCT_OUTSTOCK("货品出库单"), PRODUCT_INSTOCK("货品入库单"), MATERIAL_OUTSTOCK("物料出库单"), MATERIAL_INSTOCK("物料入库单"),

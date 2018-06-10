@@ -1,4 +1,4 @@
-## 电子光码盘生产管理系统
+## 电子光电码盘生产管理系统
 
 一个很优秀的 erp 系统。
 
@@ -75,4 +75,12 @@ if (mix.inProduction()) {
 
 ### 项目部署
 
+先进行前端产品环境发布
 
+```shell
+npm run prod
+```
+
+打包成功后，相关的 `js`、`css` 代码会发布到 `backend/src/main/webapp/static` 目录下。然后在 IntelliJ IDEA 中执行 `maven install`（可通过右侧 `Maven Projects` 工具栏运行该过程），即可在 `backend/target` 目录下得到打包好的 `war` 文件。
+
+接下来，要将项目部署到服务器上，过程与其他 `tomcat` 项目一致，请自行了解。

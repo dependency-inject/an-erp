@@ -7,7 +7,7 @@ import java.util.List;
 public class Product extends ProductEntity {
 
     /**
-     * 分类名.
+     * 类别名.
      * 表字段：material_category.category_name
      */
     private String categoryName;
