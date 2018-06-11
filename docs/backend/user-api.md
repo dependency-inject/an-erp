@@ -236,7 +236,7 @@ success
 
 | 协议   | URL           | 方法   |
 | :--- | :------------ | :--- |
-| HTTP | /admin/remove | POST |
+| HTTP | /admin/updateClosedState | POST |
 
 * 请求参数
 
