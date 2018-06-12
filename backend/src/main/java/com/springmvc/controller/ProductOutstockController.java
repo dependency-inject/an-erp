@@ -25,6 +25,12 @@ public class ProductOutstockController {
     @Resource
     ProductOutstockService productOutstockService;
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return productOutstockService.getStatistics();
+    }
+
     @RequestMapping(value="/audit",method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCT_OUTSTOCK_AUDIT)

@@ -21,6 +21,12 @@ public class MaterialOutstockController {
     @Resource
     MaterialOutstockService materialOutstockService;
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return materialOutstockService.getStatistics();
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_OUTSTOCK_ADD)

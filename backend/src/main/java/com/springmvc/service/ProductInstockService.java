@@ -42,6 +42,34 @@ public class ProductInstockService extends BaseService {
     private static final String EXISE_OUTSTOCK_CANNOT_UNAUDIT = "单据已存在对应出库单，不能反审核";
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            ProductInstockBillQuery productInstockBillQuery = new ProductInstockBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            productInstockBillQuery.or()
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    productInstockBillDAO.countByExample(productInstockBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 3; ++i) {
+            ProductInstockBillQuery productInstockBillQuery = new ProductInstockBillQuery();
+            productInstockBillQuery.or().andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, productInstockBillDAO.countByExample(productInstockBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 添加货品入库单
      *
      * 将主表信息保存：product_instock_bill

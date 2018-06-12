@@ -24,6 +24,12 @@ public class ProductInstockController {
     @Resource
     ProductInstockService productInstockService;
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return productInstockService.getStatistics();
+    }
+
     @RequestMapping(value="/audit",method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.PRODUCT_INSTOCK_AUDIT)

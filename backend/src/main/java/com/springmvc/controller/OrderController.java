@@ -28,6 +28,12 @@ public class OrderController {
         return orderService.getList(state, onlyNotOutstock, onlyNotDraw);
     }
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return orderService.getStatistics();
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public PageMode<OrderBill> search(@RequestParam Integer current, @RequestParam Integer limit,

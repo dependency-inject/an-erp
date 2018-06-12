@@ -38,6 +38,34 @@ public class MaterialOutstockService extends BaseService {
     private DrawMaterialBillDAO drawMaterialBillDAO;
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            MaterialOutstockBillQuery materialOutstockBillQuery = new MaterialOutstockBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            materialOutstockBillQuery.or()
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    materialOutstockBillDAO.countByExample(materialOutstockBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 3; ++i) {
+            MaterialOutstockBillQuery materialOutstockBillQuery = new MaterialOutstockBillQuery();
+            materialOutstockBillQuery.or().andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, materialOutstockBillDAO.countByExample(materialOutstockBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 添加物料出库单
      *
      * 将主表信息保存：material_outstock_bill

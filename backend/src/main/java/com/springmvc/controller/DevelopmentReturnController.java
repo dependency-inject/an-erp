@@ -5,6 +5,7 @@ import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.PageMode;
 import com.springmvc.dto.ReturnMaterialBill;
 import com.springmvc.dto.ReturnMaterialBillMaterial;
+import com.springmvc.dto.StatisticsMode;
 import com.springmvc.service.DevelopmentReturnService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,12 @@ public class DevelopmentReturnController {
 
     @Resource
     DevelopmentReturnService developmentReturnService;
+
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return developmentReturnService.getStatistics();
+    }
 
     @RequestMapping(value = "/billDetail",method = RequestMethod.POST)
     @ResponseBody

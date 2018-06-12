@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -144,5 +141,26 @@ public class ParamUtils {
     public static String dateConvert(Date date, String pattern) {
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         return format.format(date);
+    }
+
+    /**
+     * 获取几天前（后）的Date
+     */
+    public static Date getCertainDate(int daysAfter) {
+        return getCertainDate(daysAfter, true);
+    }
+
+    /**
+     * 获取几天前（后）的Date
+     */
+    public static Date getCertainDate(int daysAfter, boolean zero) {
+        Calendar calendar = Calendar.getInstance();
+        if (zero) {
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+        }
+        calendar.add(Calendar.DATE, daysAfter);
+        return calendar.getTime();
     }
 }

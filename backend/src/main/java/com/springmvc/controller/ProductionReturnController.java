@@ -22,6 +22,12 @@ public class ProductionReturnController {
     @Resource
     ProductionReturnService productionReturnService;
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return productionReturnService.getStatistics();
+    }
+
     @RequestMapping(value = "/billDetail",method = RequestMethod.POST)
     @ResponseBody
     public ReturnMaterialBill getBill(int billId){

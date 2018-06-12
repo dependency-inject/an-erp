@@ -1,5 +1,7 @@
 import { http } from '../libs/http';
 
+var getStatistics = () => http.post('product-outstock/getStatistics');
+
 var search = (queryParameters) => http.post('product-outstock/search', queryParameters);
 
 var add = (productoutstock) => http.post('product-outstock/add', productoutstock);
@@ -16,4 +18,4 @@ var unaudit = (idList) => http.post('product-outstock/unaudit', { idList: idList
 
 var finish = (billId) => http.post('product-outstock/finish', { billId: billId });
 
-export default { add, getById, remove, search, update, audit, unaudit, finish };
+export default { getStatistics, add, getById, remove, search, update, audit, unaudit, finish };

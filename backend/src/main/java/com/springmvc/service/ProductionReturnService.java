@@ -37,6 +37,37 @@ public class ProductionReturnService extends BaseService {
     private OrderBillDAO orderBillDAO;
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            ReturnMaterialBillQuery returnMaterialBillQuery = new ReturnMaterialBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            returnMaterialBillQuery.or()
+                    .andReturnReasonEqualTo(1)
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    returnMaterialBillDAO.countByExample(returnMaterialBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 3; ++i) {
+            ReturnMaterialBillQuery returnMaterialBillQuery = new ReturnMaterialBillQuery();
+            returnMaterialBillQuery.or()
+                    .andReturnReasonEqualTo(1)
+                    .andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, returnMaterialBillDAO.countByExample(returnMaterialBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 查询退料单信息（单个）,只取生产退料对应的数据
      *
      * @param billId 订单编号

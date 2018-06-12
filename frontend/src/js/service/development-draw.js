@@ -1,5 +1,7 @@
 import { http } from '../libs/http';
 
+var getStatistics = () => http.post('development-draw/getStatistics');
+
 var getBill = (billId) => http.post('development-draw/billDetail', { billId: billId });
 
 var getMaterial = (billId) => http.post('development-draw/getMaterial', { billId: billId });
@@ -16,4 +18,4 @@ var updateBill = (bill) => http.post('development-draw/updateBill', bill)
 
 var deleteBill = (idList) => http.post('development-draw/deleteBill', { idList: idList });
 
-export default { getBill, searchBill, auditBill, unauditBill, addBill, updateBill, deleteBill };
+export default { getStatistics, getBill, searchBill, auditBill, unauditBill, addBill, updateBill, deleteBill };

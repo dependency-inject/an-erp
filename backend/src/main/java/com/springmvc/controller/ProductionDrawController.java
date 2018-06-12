@@ -21,6 +21,12 @@ public class ProductionDrawController {
     @Resource
     ProductionDrawService productionDrawService;
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return productionDrawService.getStatistics();
+    }
+
     @RequestMapping(value = "/billDetail", method = RequestMethod.POST)
     @ResponseBody
     public DrawMaterialBill getBill(int billId){

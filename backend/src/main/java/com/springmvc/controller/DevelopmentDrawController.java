@@ -6,6 +6,7 @@ import com.springmvc.annotation.PermissionRequired;
 import com.springmvc.dto.DrawMaterialBill;
 import com.springmvc.dto.DrawMaterialBillMaterial;
 import com.springmvc.dto.PageMode;
+import com.springmvc.dto.StatisticsMode;
 import com.springmvc.service.DevelopmentDrawService;
 import com.springmvc.utils.ParamUtils;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,12 @@ public class DevelopmentDrawController {
 
     @Resource
     DevelopmentDrawService developmentDrawService;
+
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return developmentDrawService.getStatistics();
+    }
 
     @RequestMapping(value = "/billDetail",method = RequestMethod.POST)
     @ResponseBody

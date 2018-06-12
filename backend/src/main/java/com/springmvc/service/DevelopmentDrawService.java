@@ -34,6 +34,37 @@ public class DevelopmentDrawService extends BaseService {
     private MaterialOutstockBillDAO materialOutstockBillDAO;
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            DrawMaterialBillQuery drawMaterialBillQuery = new DrawMaterialBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            drawMaterialBillQuery.or()
+                    .andDrawReasonEqualTo(2)
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    drawMaterialBillDAO.countByExample(drawMaterialBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 3; ++i) {
+            DrawMaterialBillQuery drawMaterialBillQuery = new DrawMaterialBillQuery();
+            drawMaterialBillQuery.or()
+                    .andDrawReasonEqualTo(2)
+                    .andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, drawMaterialBillDAO.countByExample(drawMaterialBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 查询领料单信息（单个）,只取研发领料对应的数据
      * @param billId 订单编号
      * @return

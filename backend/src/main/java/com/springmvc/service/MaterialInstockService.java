@@ -38,6 +38,34 @@ public class MaterialInstockService extends BaseService {
     private ReturnMaterialBillDAO returnMaterialBillDAO;
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            MaterialInstockBillQuery materialInstockBillQuery = new MaterialInstockBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            materialInstockBillQuery.or()
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    materialInstockBillDAO.countByExample(materialInstockBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 3; ++i) {
+            MaterialInstockBillQuery materialInstockBillQuery = new MaterialInstockBillQuery();
+            materialInstockBillQuery.or().andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, materialInstockBillDAO.countByExample(materialInstockBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 添加物料入库单
      *
      * 将主表信息保存：material_instock_bill

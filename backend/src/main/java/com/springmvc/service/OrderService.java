@@ -83,6 +83,34 @@ public class OrderService extends BaseService {
     }
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            OrderBillQuery orderBillQuery = new OrderBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            orderBillQuery.or()
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    orderBillDAO.countByExample(orderBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 5; ++i) {
+            OrderBillQuery orderBillQuery = new OrderBillQuery();
+            orderBillQuery.or().andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, orderBillDAO.countByExample(orderBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 查询订单信息（单个）
      * @param billId 订单编号
      * @return

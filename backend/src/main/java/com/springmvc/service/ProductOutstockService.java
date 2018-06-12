@@ -41,6 +41,34 @@ public class ProductOutstockService extends BaseService {
     private static final String STOCK_QUANTITY_NOT_ENOUGH = "货品库存数量不足";
 
     /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    public StatisticsMode getStatistics() {
+        List<StatisticsData> preWeek = new ArrayList<StatisticsData>();
+        for (int i = -6; i <= 0; ++i) {
+            ProductOutstockBillQuery productOutstockBillQuery = new ProductOutstockBillQuery();
+            Date beginTime = ParamUtils.getCertainDate(i);
+            Date endTime = ParamUtils.getCertainDate(i + 1);
+            productOutstockBillQuery.or()
+                    .andBillTimeGreaterThanOrEqualTo(beginTime)
+                    .andBillTimeLessThan(endTime);
+            preWeek.add(new StatisticsData(ParamUtils.dateConvert(beginTime, "yyyy-MM-dd"),
+                    productOutstockBillDAO.countByExample(productOutstockBillQuery)));
+        }
+
+        List<StatisticsData> history = new ArrayList<StatisticsData>();
+        for (int i = 1; i <= 3; ++i) {
+            ProductOutstockBillQuery productOutstockBillQuery = new ProductOutstockBillQuery();
+            productOutstockBillQuery.or().andBillStateEqualTo(i);
+            history.add(new StatisticsData("" + i, productOutstockBillDAO.countByExample(productOutstockBillQuery)));
+        }
+
+        return new StatisticsMode(preWeek, history);
+    }
+
+    /**
      * 添加货品出库单
      *
      * 将主表信息保存：product_outstock_bill

@@ -20,6 +20,12 @@ public class MaterialInstockController {
     @Resource
     MaterialInstockService materialInstockService;
 
+    @RequestMapping(value = "/getStatistics", method = RequestMethod.POST)
+    @ResponseBody
+    public StatisticsMode getStatistics() {
+        return materialInstockService.getStatistics();
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @PermissionRequired(AccessPermission.MATERIAL_INSTOCK_ADD)
