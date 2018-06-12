@@ -251,37 +251,6 @@
 }
 ```
 
-#### 修改物料的成本信息
-
-- URL
-
-| 协议 | URL                 | 方法 |
-| ---- | ------------------- | ---- |
-| HTTP | material/updateCost | POST |
-
-- 请求参数
-
-| 名称       | 类别       | 描述       |
-| ---------- | ---------- | ---------- |
-| materialId | Integer    | 物料的ID   |
-| cost       | BigDecimal | 物料的成本 |
-
-- 返回结果示例
-
-```
-{
-    "materialId": 3,
-    "materialNo": "E38NPN10",
-    "materialName": "E38上电路板 NPN 10-30V",
-    "unit": "块",
-    "categoryId": 1,
-    "spec": "50*50*200(mm)",
-    "cost": 300.00,
-    "remark": "",
-    ...
-}
-```
-
 #### 删除物料的信息
 
 - URL
